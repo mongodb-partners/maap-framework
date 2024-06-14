@@ -4,7 +4,8 @@
     "type": "module",
     "private": true,
     "scripts": {
-        "start": "tsc && node dist/examples/partnerproduct/src/index.js '/Users/utsavtalwar/Desktop/Tech-Partner/chatbot/examples/partnerproduct/src/test.yaml'"
+        "start": "tsc && node dist/examples/partnerproduct/src/index.js '/Users/utsavtalwar/Desktop/Tech-Partner/chatbot/examples/partnerproduct/src/config.yaml'",
+        "ingest" : "tsc && node dist/examples/partnerproduct/src/loader.js"
     },
     "author": "",
     "license": "ISC",

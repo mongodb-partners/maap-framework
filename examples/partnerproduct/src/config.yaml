@@ -1,17 +1,17 @@
 ingest:
     source: 'web'
-    source_path: 'https://en.wikipedia.org/wiki/Tesla,_Inc.'
+    source_path: 'https://www.careinsurance.com/sitemap.xml'
 embedding:
     top_k: ''
     class_name: OpenAIEmbeddings
     model_name: text-embedding-ada-002
 vector_store:
-    connectionString: 'mongodb+srv://venkatesh:ashwin123@freetier.kxcgwh2.mongodb.net/?retryWrites=true&w=majority'
-    dbName: 'maap'
-    collectionName: 'vertexai-test-new-2'
+    connectionString: '********'
+    dbName: 'EMBEDJS'
+    collectionName: 'embedded_content'
     embeddingKey: 'embedding'
     textKey: 'text'
-    vectorSearchIndexName: 'vector_search'
+    vectorSearchIndexName: 'vector_index'
 llms:
     class_name: OpenAi
     model_name: 'gpt-4-turbo'

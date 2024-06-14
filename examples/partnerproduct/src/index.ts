@@ -4,6 +4,7 @@ import {
     getModelClass,
     getIngestLoader,
     getEmbeddingModel,
+    getDatabaseConfigInfo
 } from '../../../src/yaml_parser/src/LoadYaml.js';
 import {
     PreProcessQuery,
@@ -30,10 +31,17 @@ import {
 import { makeMongoDbEmbeddedContentStore, makeOpenAiEmbedder, logger } from 'mongodb-rag-core';
 
 import path from 'path';
+import { fileURLToPath } from 'url';
+
 import { loadEnvVars } from './loadEnvVars.js';
 
+const __filename = fileURLToPath(import.meta.url); // get the resolved path to the file
+const __dirname = path.dirname(__filename); // get the name of the directory
+
 // Load project environment variables
-const dotenvPath = '/Users/utsavtalwar/Desktop/Tech-Partner/chatbot/examples/partnerproduct/.env'; //path.join(__dirname, "..", ".env"); // update with real path
+
+console.log(__dirname);
+const dotenvPath = path.join(__dirname, "..", ".env"); // update with real path
 const { MONGODB_CONNECTION_URI, MONGODB_DATABASE_NAME, VECTOR_SEARCH_INDEX_NAME } = loadEnvVars(dotenvPath);
 
 
@@ -66,7 +74,7 @@ const findContent = makeDefaultFindContent({
     findNearestNeighborsOptions: {
         k: 5,
         path: 'embedding',
-        indexName: VECTOR_SEARCH_INDEX_NAME,
+        indexName: vectorSearchIndexName,
         // Note: you may want to adjust the minScore depending
         // on the embedding model you use. We've found 0.9 works well
         // for OpenAI's text-embedding-ada-02 model for most use cases,
@@ -109,8 +117,10 @@ User query: ${originalUserMessage}`;
 };
 
 // Generates the user prompt for the chatbot using RAG
+console.log(embeddedContentStore)
 const generateUserPrompt: GenerateUserPromptFunc = makeRagGenerateUserPrompt({
-    findContent: findContentWithRerankAndPreprocess,
+    // findContent: findContentWithRerankAndPreprocess,
+    findContent: findContent,
     makeUserMessage,
 });
 
@@ -128,8 +138,8 @@ respond: "I'm sorry, I don't know the answer to that question. Please try to rep
 // Create MongoDB collection and service for storing user conversations
 // with the chatbot.
 
-const mongodb = new MongoClient(MONGODB_CONNECTION_URI);
-const conversations = makeMongoDbConversationsService(mongodb.db(MONGODB_DATABASE_NAME));
+const mongodb = new MongoClient(connectionString);
+const conversations = makeMongoDbConversationsService(mongodb.db(dbName));
 
 // Create the MongoDB Chatbot Server Express.js app configuration
 const config: AppConfig = {
