@@ -1,0 +1,29 @@
+ingest:
+    source: 'sitemap'
+    source_path: 'https://www.careinsurance.com/sitemap.xml'
+    chunk_size: 1000
+    chunk_overlap: 100
+embedding:
+    class_name: Nomic-v1.5
+vector_store:
+    connectionString: 'mongodb+srv://ashwin:pswd123ash@cflt-demo.2wqno.mongodb.net/?retryWrites=true&w=majority&appName=CFLT-demo'
+    dbName: 'insurance'
+    collectionName: 'embedded_content'
+    embeddingKey: 'embedding'
+    textKey: 'text'
+    vectorSearchIndexName: 'vector_index'
+llms:
+    class_name: Fireworks
+    model_name: 'accounts/fireworks/models/mixtral-8x22b-instruct'
+    temprature: ''
+    top_p: ''
+    top_k: ''
+# rag_pipeline:
+#     - vs: ''
+#       embedding: embedding
+#     - retriver:
+#           class_name: multiqueryretriver
+#           vs: vs
+#           llm: llm
+#     - chat_engine: llm
+# ingest_pipeline: []

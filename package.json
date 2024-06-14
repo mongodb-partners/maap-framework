@@ -54,6 +54,8 @@
     ],
     "homepage": "https://github.com/llm-tools/maap#readme",
     "dependencies": {
+        "@aws-sdk/client-bedrock-runtime": "^3.596.0",
+        "@aws-sdk/credential-provider-node": "^3.596.0",
         "@huggingface/inference": "^2.7.0",
         "@langchain/anthropic": "^0.1.21",
         "@langchain/azure-openai": "^0.0.10",

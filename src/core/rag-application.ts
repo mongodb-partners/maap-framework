@@ -7,11 +7,11 @@ import { RAGApplicationBuilder } from './rag-application-builder.js';
 import { DEFAULT_INSERT_BATCH_SIZE } from '../global/constants.js';
 import { BaseModel } from '../interfaces/base-model.js';
 import { BaseCache } from '../interfaces/base-cache.js';
-import { OpenAi3SmallEmbeddings } from '../index.js';
 import { RAGEmbedding } from './rag-embedding.js';
 import { cleanString } from '../util/strings.js';
 import { getUnique } from '../util/arrays.js';
 import { BaseReranker } from '../interfaces/base-reranker.js';
+import { NomicEmbeddingsv1_5 } from '../embeddings/nomic-v1-5-embeddings.js';
 
 export class RAGApplication {
     private readonly debug = createDebugMessages('maap:core');
@@ -40,7 +40,7 @@ export class RAGApplication {
         this.searchResultCount = llmBuilder.getSearchResultCount();
         this.embeddingRelevanceCutOff = llmBuilder.getEmbeddingRelevanceCutOff();
 
-        RAGEmbedding.init(llmBuilder.getEmbeddingModel() ?? new OpenAi3SmallEmbeddings());
+        RAGEmbedding.init(llmBuilder.getEmbeddingModel() ?? new NomicEmbeddingsv1_5());
         if (!this.model) throw new SyntaxError('Model not set');
         if (!this.vectorDb) throw new SyntaxError('VectorDb not set');
     }

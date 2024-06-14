@@ -43,7 +43,7 @@ export function getDatabaseConfigInfo() {
     const {
         vector_store: { connectionString, dbName, collectionName, vectorSearchIndexName },
     } = parsedData;
-
+    
     assert(typeof connectionString === 'string', 'connectionString is required');
     assert(typeof dbName === 'string', 'dbName is required');
     assert(typeof collectionName === 'string', 'collectionName is required');

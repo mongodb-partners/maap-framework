@@ -13,8 +13,8 @@ vector_store:
     textKey: 'text'
     vectorSearchIndexName: 'vector_index'
 llms:
-    class_name: OpenAi
-    model_name: 'gpt-4-turbo'
+    class_name: Fireworks
+    model_name: ''
     temprature: ''
     top_p: ''
     top_k: ''

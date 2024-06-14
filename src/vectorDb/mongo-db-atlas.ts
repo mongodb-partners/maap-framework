@@ -34,10 +34,13 @@ export class MongoDBAtlas implements BaseDb {
     async insertChunks(chunks: InsertChunkData[]): Promise<number> {
         const mapped = chunks.map((chunk) => {
             return {
-                id: chunk.metadata.id,
+                chunkIndex: chunk.metadata.id,
                 [this.textKey]: chunk.pageContent,
                 embedding: chunk.vector,
                 metadata: chunk.metadata,
+                sourceName: chunk.metadata.originalSource,
+                url: chunk.metadata.originalSource,
+                
             };
         });
 
