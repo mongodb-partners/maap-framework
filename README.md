@@ -55,6 +55,8 @@ llms:
 # ingest_pipeline: []
 
 ``` 
+Also make a copy of the `examples/partnerproduct/example.env` as `.env` to folder where you are running and added the API Keys | URL | Connection Strings | other secrets used in your application.  
+
 3. Once configured you can use the yaml file you just created say as in example `examples/partnerproduct/src/config_1.yaml`
 ## Ingest Data
 ```
