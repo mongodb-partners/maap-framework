@@ -4,6 +4,8 @@ import { AdaEmbeddings, RAGApplicationBuilder, SitemapLoader } from "../../../sr
 import { MongoDBAtlas } from "../../../src/vectorDb/mongo-db-atlas.js";
 import { exit } from 'process';
 
+
+
 // Initialize the RAG application
 const llmApplication = await new RAGApplicationBuilder()
     .setEmbeddingModel(new AdaEmbeddings())

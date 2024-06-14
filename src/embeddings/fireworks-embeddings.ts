@@ -1,7 +1,7 @@
 import { FireworksEmbeddings } from "@langchain/community/embeddings/fireworks";
 import { BaseEmbeddings } from '../interfaces/base-embeddings.js';
 
-export class NomicEmbeddingsv1 implements BaseEmbeddings {
+export class FireworksEmbedding implements BaseEmbeddings {
     private model: FireworksEmbeddings;
         private readonly modelName: string;
         private dimension: number;

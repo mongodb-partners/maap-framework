@@ -2,7 +2,7 @@
 import * as fs from 'fs';
 import * as yaml from 'js-yaml';
 import * as process from 'process';
-import { AdaEmbeddings, Anthropic, CohereEmbeddings, GeckoEmbedding, OpenAi, OpenAi3LargeEmbeddings, PdfLoader, VertexAI, WebLoader } from '../../index.js';
+import { Anthropic, CohereEmbeddings, ConfluenceLoader, DocxLoader, GeckoEmbedding, OpenAi, PdfLoader, SitemapLoader, VertexAI, WebLoader } from '../../index.js';
 import { MongoDBAtlas } from '../../vectorDb/mongo-db-atlas.js';
 import { strict as assert } from 'assert';
 import { AnyscaleModel } from '../../models/anyscale-model.js';
@@ -10,7 +10,6 @@ import { Fireworks } from '../../models/fireworks-model.js';
 import { AzureOpenAiEmbeddings } from '../../embeddings/openai-3small-embeddings.js';
 import { Bedrock } from '../../models/bedrock-model.js';
 import { TitanEmbeddings } from '../../embeddings/titan-embeddings.js';
-import { FireworksEmbeddings } from '@langchain/community/embeddings/fireworks';
 import { NomicEmbeddingsv1 } from '../../embeddings/nomic-v1-embeddings.js';
 import { NomicEmbeddingsv1_5 } from '../../embeddings/nomic-v1-5-embeddings.js';
 function getDataFromYamlFile() {
@@ -58,6 +57,10 @@ export function getDatabaseConfigInfo() {
     };
 }
 
+/**
+ * Returns an instance of the model class based on the parsed data from a YAML file.
+ * @returns An instance of the model class.
+ */
 export function getModelClass() {
     const parsedData = getDataFromYamlFile();
     if (parsedData.llms.class_name === 'VertexAI') {
@@ -77,6 +80,10 @@ export function getModelClass() {
     }
 }
 
+/**
+ * Retrieves the embedding model based on the parsed data from a YAML file.
+ * @returns The embedding model based on the parsed data.
+ */
 export function getEmbeddingModel() {
     const parsedData = getDataFromYamlFile();
     if (parsedData.embedding.class_name === 'VertexAI') {
@@ -96,12 +103,35 @@ export function getEmbeddingModel() {
     }
 }
 
+/**
+ * Returns the appropriate loader based on the parsed data from a YAML file.
+ * @returns The loader object or null if no matching loader is found.
+ */
 export function getIngestLoader() {
     const parsedData = getDataFromYamlFile();
     if (parsedData.ingest.source === 'web') {
-        return new WebLoader({ url: parsedData.ingest.source_path });
+        return new WebLoader({ url: parsedData.ingest.source_path ,
+            chunkSize: parsedData.ingest.chunk_size, 
+            chunkOverlap: parsedData.ingest.chunk_overlap});
     } else if (parsedData.ingest.source === 'pdf') {
-        return new PdfLoader({ url: parsedData.ingest.source_path });
+        return new PdfLoader({ filePath: parsedData.ingest.source_path ,
+            chunkSize: parsedData.ingest.chunk_size, 
+            chunkOverlap: parsedData.ingest.chunk_overlap});
+    } else if (parsedData.ingest.source === 'sitemap') {
+        return new SitemapLoader({ url: parsedData.ingest.source_path ,
+            chunkSize: parsedData.ingest.chunk_size, 
+            chunkOverlap: parsedData.ingest.chunk_overlap});
+    } else if (parsedData.ingest.source === 'docx') {
+        return new DocxLoader({ filePath: parsedData.ingest.source_path ,
+            chunkSize: parsedData.ingest.chunk_size, 
+            chunkOverlap: parsedData.ingest.chunk_overlap});
+    } else if (parsedData.ingest.source === 'confluence') {
+        return new ConfluenceLoader({ spaceNames: parsedData.ingest.space_names,
+            confluenceBaseUrl: parsedData.ingest.confluence_base_url,
+            confluenceUsername: parsedData.ingest.confluence_username,
+            confluenceToken: parsedData.ingest.confluence_token,
+            chunkSize: parsedData.ingest.chunk_size,
+            chunkOverlap: parsedData.ingest.chunk_overlap});
     } else {
         return null;
     }
