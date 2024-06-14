@@ -68,32 +68,7 @@ npm run ingest ./src/config_1.yaml
 ```
 npm run start ./src/config_1.yaml
 ```
-
-## Run the client
-```
-npm install
-npm run client
-```
-
-## Run the client with local data
-```
-npm install
-npm run client:local
-```
-
-## Run the client with local data and local model
-```
-npm install
-npm run client:local:model
-```
-
-## Run the client with local data and local model and local embedding
-```
-npm install
-npm run client:local:model:embedding
-```
-Your application will be running at `http://localhost:9000`    
-4. You can start your UI application by running the following command
+4. You can start your UI client application by running the following command
 ## Start your application UI
 ```
 cd ui
