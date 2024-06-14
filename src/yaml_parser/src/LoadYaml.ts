@@ -2,9 +2,17 @@
 import * as fs from 'fs';
 import * as yaml from 'js-yaml';
 import * as process from 'process';
-import { AdaEmbeddings, GeckoEmbedding, OpenAi, PdfLoader, VertexAI, WebLoader } from '../../index.js';
+import { AdaEmbeddings, Anthropic, CohereEmbeddings, GeckoEmbedding, OpenAi, OpenAi3LargeEmbeddings, PdfLoader, VertexAI, WebLoader } from '../../index.js';
 import { MongoDBAtlas } from '../../vectorDb/mongo-db-atlas.js';
 import { strict as assert } from 'assert';
+import { AnyscaleModel } from '../../models/anyscale-model.js';
+import { Fireworks } from '../../models/fireworks-model.js';
+import { AzureOpenAiEmbeddings } from '../../embeddings/openai-3small-embeddings.js';
+import { Bedrock } from '../../models/bedrock-model.js';
+import { TitanEmbeddings } from '../../embeddings/titan-embeddings.js';
+import { FireworksEmbeddings } from '@langchain/community/embeddings/fireworks';
+import { NomicEmbeddingsv1 } from '../../embeddings/nomic-v1-embeddings.js';
+import { NomicEmbeddingsv1_5 } from '../../embeddings/nomic-v1-5-embeddings.js';
 function getDataFromYamlFile() {
     const args = process.argv.slice(2);
 
@@ -54,10 +62,18 @@ export function getModelClass() {
     const parsedData = getDataFromYamlFile();
     if (parsedData.llms.class_name === 'VertexAI') {
         return new VertexAI({ modelName: parsedData.llms.model_name });
-    } else if (parsedData.llms.class_name === 'OpenAi') {
+    } else if (parsedData.llms.class_name === 'OpenAI') {
         return new OpenAi({ modelName: parsedData.llms.model_name });
+    } else if (parsedData.llms.class_name === 'Anyscale') {
+        return new AnyscaleModel({modelName: parsedData.llms.model_name});
+    } else if (parsedData.llms.class_name === 'Fireworks') {
+        return new Fireworks({modelName: parsedData.llms.model_name});
+    } else if (parsedData.llms.class_name === 'Anthropic') {
+        return new Anthropic({modelName: parsedData.llms.model_name});
+    } else if (parsedData.llms.class_name === 'Bedrock') {
+        return new Bedrock({modelName: parsedData.llms.model_name});
     } else {
-        return null;
+        return new Anthropic({modelName: parsedData.llms.model_name});
     }
 }
 
@@ -65,10 +81,18 @@ export function getEmbeddingModel() {
     const parsedData = getDataFromYamlFile();
     if (parsedData.embedding.class_name === 'VertexAI') {
         return new GeckoEmbedding();
-    } else if (parsedData.embedding.class_name === 'OpenAIEmbeddings') {
-        return new AdaEmbeddings();
+    } else if (parsedData.embedding.class_name === 'Azure-OpenAI-Embeddings') {
+        return new AzureOpenAiEmbeddings({modelName: parsedData.embedding.model_name});
+    } else if (parsedData.embedding.class_name === 'Cohere') {
+        return new CohereEmbeddings({modelName: parsedData.embedding.model_name});
+    } else if (parsedData.embedding.class_name === 'Titan') {
+        return new TitanEmbeddings();
+    } else if (parsedData.embedding.class_name === 'Nomic-v1') {
+        return new NomicEmbeddingsv1();
+    } else if (parsedData.embedding.class_name === 'Nomic-v1.5') {
+        return new NomicEmbeddingsv1_5();
     } else {
-        return null;
+        return new NomicEmbeddingsv1_5();
     }
 }
 

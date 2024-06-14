@@ -7,7 +7,7 @@ var llmApplication = await new index_js_1.RAGApplicationBuilder()
     .setSearchResultCount(30)
     .setVectorDb(new mongo_db_atlas_js_1.MongoDBAtlas({ connectionString: "mongodb+srv://ashwin:pswd123ash@bfsi-demo.2wqno.mongodb.net/?retryWrites=true&w=majority", dbName: 'sample_mflix', collectionName: 'embedded_movies', textKey: 'title' }))
     .build();
-// await llmApplication.addLoader(new WebLoader({ url: 'https://en.wikipedia.org/wiki/Tesla,_Inc.' }));
+await llmApplication.addLoader(new WebLoader({ url: 'https://en.wikipedia.org/wiki/Tesla,_Inc.' }));
 console.log((await llmApplication.query('Who founded Tesla?')).result);
 // The founder of Tesla is Elon Musk. He co-founded the company with JB Straubel, Martin Eberhard, Marc Tarpenning, and Ian Wright in 2003. Elon Musk is also the CEO of SpaceX and Neuralink.
 console.log((await llmApplication.query('Tell me about the history of Tesla?')).result);
