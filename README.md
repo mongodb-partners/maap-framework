@@ -1,7 +1,7 @@
 
 
 # Demo Video: https://www.youtube.com/watch?v=-r824BdVZt0
-
+# Steps to run the application
 1. Clone the project to you machine install dependencies
 ## Installation
 
