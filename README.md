@@ -1,4 +1,13 @@
+# MongoDB MAAP Chatbot Framework
 
+The MongoDB MAAP Chatbot Framework is a set of libraries that you can use to build your RAG Application
+using MongoDB and [Atlas Vector Search](https://www.mongodb.com/docs/atlas/atlas-vector-search/vector-search-overview/). and associated MAAP partners
+
+The repo offers the flexibility to its user to set up the rag application by simiply configuring a yaml file(details see below). The repo offers the users the flexibilty to choose from various option available through partners program. The following modules of rag are made configurable
+1. Data loaders
+2. Embedding Models
+3. Chat LLM Models
+4. Post query Reranker
 
 # Demo Video: https://www.youtube.com/watch?v=-r824BdVZt0
 # Steps to run the application
