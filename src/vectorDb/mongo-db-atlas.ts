@@ -2,8 +2,6 @@ import { MongoClient } from "mongodb";
 import { BaseDb } from '../interfaces/base-db.js';
 
 import { ExtractChunkData, InsertChunkData } from '../global/types.js';
-import AxiosDigestAuth from '@mhoc/axios-digest-auth';
-const AxiosDigestAuthval = AxiosDigestAuth.default;
 
 export class MongoDBAtlas implements BaseDb {
     private static readonly INDEX_NAME = "vector_index";
@@ -15,9 +13,11 @@ export class MongoDBAtlas implements BaseDb {
     private readonly client: MongoClient;
     private readonly embeddingKey: string;
     private readonly textKey: string;
+    private readonly numDimensions: number;
+    private readonly similarityFunction: string;
     private collection: any;
 
-    constructor({ connectionString, dbName, collectionName, embeddingKey = MongoDBAtlas.EMBEDDING_KEY, textKey = MongoDBAtlas.TEXT_KEY }: { connectionString: string; dbName: string; collectionName: string; embeddingKey?: string; textKey?: string }
+    constructor({ connectionString, dbName, collectionName, embeddingKey = MongoDBAtlas.EMBEDDING_KEY, textKey = MongoDBAtlas.TEXT_KEY, numDimensions, similarityFunction }: { connectionString: string; dbName: string; collectionName: string; embeddingKey?: string; textKey?: string; numDimensions: number; similarityFunction: string;}
     ) {
         this.connectionString = connectionString;
         this.dbName = dbName;
@@ -25,6 +25,8 @@ export class MongoDBAtlas implements BaseDb {
         this.client = new MongoClient(this.connectionString);
         this.embeddingKey = embeddingKey;
         this.textKey = textKey;
+        this.similarityFunction = similarityFunction;
+        this.numDimensions = numDimensions;
     }
 
     async init() {
@@ -97,50 +99,7 @@ export class MongoDBAtlas implements BaseDb {
         this.collection.deleteMany({});
     }
 
-    // Create Atlas Search Index
     async createVectorIndex(): Promise<void> {
-        // Define your public and private keys
-        const publicKey = 'ltpttido';
-        const privateKey = 'f23bdca2-0d60-45bb-b069-918cd192c6ea';
-
-        const data = JSON.stringify({
-            "collectionName": "training_data",
-            "database": "chatter",
-            "name": "vectorIndex",
-            "type": "vectorSearch",
-            "definition": {
-                "fields": [
-                    {
-                        "numDimensions": 1536,
-                        "path": "text_embedding",
-                        "similarity": "cosine",
-                        "type": "vector"
-                    }
-                ]
-            }
-        });
-
-
-        const digestAuth = new AxiosDigestAuthval({
-            username: publicKey,
-            password: privateKey,
-        });
-
-
-        const response = await digestAuth.request({
-            headers: {
-                'Accept': 'application/vnd.atlas.2024-05-30+json',
-                'Content-Type': 'application/json'
-            },
-            method: "POST",
-            data: data,
-            url: "https://cloud.mongodb.com/api/atlas/v2/groups/62c679e0f373002ad29fdc35/clusters/demo/search/indexes",
-        });
-        console.log(response);
-    }
-
-
-    async createVectorIndexSdk(): Promise<void> {
         try {
 
             // define your Atlas Vector Search index
@@ -151,9 +110,9 @@ export class MongoDBAtlas implements BaseDb {
                     "fields": [
                         {
                             "type": "vector",
-                            "numDimensions": 1536,
-                            "path": "plot_embedding",
-                            "similarity": "euclidean"
+                            "numDimensions": this.numDimensions,
+                            "path": this.embeddingKey,
+                            "similarity": this.similarityFunction
                         }
                     ]
                 }

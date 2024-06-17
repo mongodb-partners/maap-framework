@@ -32,6 +32,8 @@ export function getDatabaseConfig() {
         collectionName: parsedData.vector_store.collectionName,
         embeddingKey: parsedData.vector_store.embeddingKey,
         textKey: parsedData.vector_store.textKey,
+        numDimensions: parsedData.vector_store.numDimensions, 
+        similarityFunction: parsedData.vector_store.similarityFunction
     });
 }
 

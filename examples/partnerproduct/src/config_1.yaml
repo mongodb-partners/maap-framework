@@ -11,7 +11,9 @@ vector_store:
     collectionName: 'embedded_content'
     embeddingKey: 'embedding'
     textKey: 'text'
-    vectorSearchIndexName: 'vector_index'
+    vectorSearchIndexName: 'vector_index',
+    numDimensions: 1536,
+    similarityFunction: 'cosine',
 llms:
     class_name: Fireworks
     model_name: 'accounts/fireworks/models/mixtral-8x22b-instruct'

@@ -55,8 +55,6 @@ export class RAGApplication {
     }
 
     public async init() {
-        // await this.vectorDb.createVectorIndex();
-        // console.log("Created Vector Index!")
 
         await this.model.init();
         this.debug('Initialized LLM class');
@@ -126,7 +124,7 @@ export class RAGApplication {
     private async incrementalLoader(uniqueId: string, incrementalGenerator: AsyncGenerator<LoaderChunk, void, void>) {
         this.debug(`incrementalChunkAvailable for loader`, uniqueId);
         const { newInserts } = await this.batchLoadChunks(uniqueId, incrementalGenerator);
-        // TODO: Create Vector Index using CLI
+        // TODO: Create Vector Index 
         this.vectorDb.createVectorIndex();
         this.debug(`${newInserts} new incrementalChunks processed`, uniqueId);
     }
