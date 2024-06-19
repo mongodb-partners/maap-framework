@@ -124,8 +124,6 @@ export class RAGApplication {
     private async incrementalLoader(uniqueId: string, incrementalGenerator: AsyncGenerator<LoaderChunk, void, void>) {
         this.debug(`incrementalChunkAvailable for loader`, uniqueId);
         const { newInserts } = await this.batchLoadChunks(uniqueId, incrementalGenerator);
-        // TODO: Create Vector Index 
-        this.vectorDb.createVectorIndex();
         this.debug(`${newInserts} new incrementalChunks processed`, uniqueId);
     }
 
@@ -190,7 +188,7 @@ export class RAGApplication {
     public async getEmbeddings(cleanQuery: string) {
         const queryEmbedded = await RAGEmbedding.getEmbedding().embedQuery(cleanQuery);
         let unfilteredResultSet = await this.vectorDb.similaritySearch(queryEmbedded, this.searchResultCount + 10);
-        if (this.reranker){
+        if (this.reranker) {
             const rerankedResultSet = await this.reranker.reRankDocuments(cleanQuery, unfilteredResultSet); // Pass cleanQuery as the first argument
             unfilteredResultSet = rerankedResultSet;
         }
@@ -221,5 +219,14 @@ export class RAGApplication {
             sources,
             result: await this.model.query(this.queryTemplate, userQuery, context, conversationId),
         };
+    }
+
+    public async createVectorIndex() {
+        try {
+            await this.vectorDb.createVectorIndex(RAGEmbedding.getEmbedding().getDimensions());
+        }
+        catch (e) {
+            console.error('Error creating vector index', e);
+        }
     }
 }

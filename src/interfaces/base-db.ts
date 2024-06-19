@@ -5,7 +5,7 @@ export interface BaseDb {
     insertChunks(chunks: InsertChunkData[]): Promise<number>;
     similaritySearch(query: number[], k: number): Promise<ExtractChunkData[]>;
     getVectorCount(): Promise<number>;
-    createVectorIndex(): Promise<void>;
+    createVectorIndex(numDimensions: number): Promise<void>;
 
     deleteKeys(uniqueLoaderId: string): Promise<boolean>;
     reset(): Promise<void>;

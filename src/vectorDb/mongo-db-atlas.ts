@@ -13,11 +13,10 @@ export class MongoDBAtlas implements BaseDb {
     private readonly client: MongoClient;
     private readonly embeddingKey: string;
     private readonly textKey: string;
-    private readonly numDimensions: number;
-    private readonly similarityFunction: string;
+    private similarityFunction: string;
     private collection: any;
 
-    constructor({ connectionString, dbName, collectionName, embeddingKey = MongoDBAtlas.EMBEDDING_KEY, textKey = MongoDBAtlas.TEXT_KEY, numDimensions, similarityFunction }: { connectionString: string; dbName: string; collectionName: string; embeddingKey?: string; textKey?: string; numDimensions: number; similarityFunction: string;}
+    constructor({ connectionString, dbName, collectionName, embeddingKey = MongoDBAtlas.EMBEDDING_KEY, textKey = MongoDBAtlas.TEXT_KEY, similarityFunction }: { connectionString: string; dbName: string; collectionName: string; embeddingKey?: string; textKey?: string; numDimensions: number; similarityFunction: string;}
     ) {
         this.connectionString = connectionString;
         this.dbName = dbName;
@@ -26,7 +25,6 @@ export class MongoDBAtlas implements BaseDb {
         this.embeddingKey = embeddingKey;
         this.textKey = textKey;
         this.similarityFunction = similarityFunction;
-        this.numDimensions = numDimensions;
     }
 
     async init() {
@@ -99,10 +97,10 @@ export class MongoDBAtlas implements BaseDb {
         this.collection.deleteMany({});
     }
 
-    async createVectorIndex(): Promise<void> {
+    async createVectorIndex(numDimensions: number, similarityFunction?: string): Promise<void> {
         try {
-
-            // define your Atlas Vector Search index
+            this.similarityFunction = similarityFunction ?? "cosine";
+            // define your Atlas Vector Search index    
             const index = {
                 name: "vector_index",
                 type: "vectorSearch",
@@ -110,7 +108,7 @@ export class MongoDBAtlas implements BaseDb {
                     "fields": [
                         {
                             "type": "vector",
-                            "numDimensions": this.numDimensions,
+                            "numDimensions": numDimensions,
                             "path": this.embeddingKey,
                             "similarity": this.similarityFunction
                         }

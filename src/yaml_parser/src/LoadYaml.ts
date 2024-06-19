@@ -2,7 +2,7 @@
 import * as fs from 'fs';
 import * as yaml from 'js-yaml';
 import * as process from 'process';
-import { Anthropic, CohereEmbeddings, ConfluenceLoader, DocxLoader, GeckoEmbedding, OpenAi, PdfLoader, SitemapLoader, VertexAI, WebLoader } from '../../index.js';
+import { Anthropic, AzureChatOpenAI, CohereEmbeddings, ConfluenceLoader, DocxLoader, GeckoEmbedding, OpenAi, PdfLoader, SitemapLoader, VertexAI, WebLoader } from '../../index.js';
 import { MongoDBAtlas } from '../../vectorDb/mongo-db-atlas.js';
 import { strict as assert } from 'assert';
 import { AnyscaleModel } from '../../models/anyscale-model.js';
@@ -77,6 +77,12 @@ export function getModelClass() {
         return new Anthropic({modelName: parsedData.llms.model_name});
     } else if (parsedData.llms.class_name === 'Bedrock') {
         return new Bedrock({modelName: parsedData.llms.model_name});
+    } else if(parsedData.llms.class_name === 'AzureOpenAI') {
+        return new AzureChatOpenAI({
+            azureOpenAIApiDeploymentName: parsedData.llms.deployment_name, 
+            azureOpenAIApiVersion: parsedData.llms.api_version,
+            azureOpenAIApiInstanceName: parsedData.llms.azure_openai_api_instance_name
+        })
     } else {
         return new Anthropic({modelName: parsedData.llms.model_name});
     }
@@ -91,7 +97,12 @@ export function getEmbeddingModel() {
     if (parsedData.embedding.class_name === 'VertexAI') {
         return new GeckoEmbedding();
     } else if (parsedData.embedding.class_name === 'Azure-OpenAI-Embeddings') {
-        return new AzureOpenAiEmbeddings({modelName: parsedData.embedding.model_name});
+        return new AzureOpenAiEmbeddings({
+            modelName: parsedData.embedding.model_name, 
+            deploymentName: parsedData.embedding.deployment_name, 
+            apiVersion: parsedData.embedding.api_version,
+            azureOpenAIApiInstanceName: parsedData.embedding.azure_openai_api_instance_name
+        });
     } else if (parsedData.embedding.class_name === 'Cohere') {
         return new CohereEmbeddings({modelName: parsedData.embedding.model_name});
     } else if (parsedData.embedding.class_name === 'Titan') {

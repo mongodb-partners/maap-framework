@@ -42,7 +42,7 @@ const __dirname = path.dirname(__filename); // get the name of the directory
 
 console.log(__dirname);
 const dotenvPath = path.join(__dirname, "..", ".env"); // update with real path
-const { MONGODB_CONNECTION_URI, MONGODB_DATABASE_NAME, VECTOR_SEARCH_INDEX_NAME } = loadEnvVars(dotenvPath);
+// const { MONGODB_CONNECTION_URI, MONGODB_DATABASE_NAME, VECTOR_SEARCH_INDEX_NAME } = loadEnvVars(dotenvPath);
 
 
 // Load MAAP base classes

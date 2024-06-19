@@ -1,36 +1,31 @@
 import createDebugMessages from 'debug';
-import { AzureChatOpenAI } from "@langchain/azure-openai";
+import { AzureOpenAI } from "@langchain/openai";
 import { HumanMessage, AIMessage, SystemMessage } from '@langchain/core/messages';
 
 import { BaseModel } from '../interfaces/base-model.js';
 import { Chunk, ConversationHistory } from '../global/types.js';
 
-export class AzureOpenAI extends BaseModel {
+export class AzureChatOpenAI extends BaseModel {
     private readonly debug = createDebugMessages('maap:model:AzureOpenAI');
-    private readonly azureOpenAIEndpoint: string;
-    private readonly apiKey: string;
+    private readonly azureOpenAIApiInstanceName: string;
     private readonly azureOpenAIApiDeploymentName: string;
-    private model: AzureChatOpenAI;
-    private readonly modelName: string;
+    private model: AzureOpenAI;
+    private readonly azureOpenAIApiVersion: string;
 
 
-    constructor(params?: { temperature?:number,azureOpenAIEndpoint?:string, apiKey?:string, azureOpenAIApiDeploymentName?:string, modelName?:string }) {
+    constructor(params?: { temperature?:number,azureOpenAIApiInstanceName:string, azureOpenAIApiDeploymentName:string, modelName?:string, azureOpenAIApiVersion:string }) {
         super(params?.temperature);
-        this.azureOpenAIEndpoint= params?.azureOpenAIEndpoint;
-        this.apiKey= params?.apiKey;
+        this.azureOpenAIApiInstanceName= params?.azureOpenAIApiInstanceName;
         this.azureOpenAIApiDeploymentName= params?.azureOpenAIApiDeploymentName;
-        this.modelName= params?.modelName;
-      
+        this.azureOpenAIApiVersion = params?.azureOpenAIApiVersion;
     }
 
     override async init(): Promise<void> {
-        this.model = new AzureChatOpenAI({
-            temperature: this.temperature,
-            azureOpenAIEndpoint: this.azureOpenAIEndpoint,
-            apiKey: this.apiKey,
+        this.model = new AzureOpenAI({
+            azureOpenAIApiInstanceName: this.azureOpenAIApiInstanceName,
             azureOpenAIApiDeploymentName: this.azureOpenAIApiDeploymentName,
-            model: this.modelName,
-           });
+            azureOpenAIApiVersion: this.azureOpenAIApiVersion,
+          });
     }
 
     override async runQuery(
@@ -58,6 +53,6 @@ export class AzureOpenAI extends BaseModel {
         this.debug('Executing AzureOpenAI model with prompt -', userQuery);
         const result = await this.model.invoke(pastMessages);
         this.debug('AzureOpenAI response -', result);
-        return result.content.toString();
+        return result.toString();
     }
 }

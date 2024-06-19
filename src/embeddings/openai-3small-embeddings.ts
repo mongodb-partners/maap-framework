@@ -6,11 +6,17 @@ export class AzureOpenAiEmbeddings implements BaseEmbeddings {
     private azureOpenAIApiInstanceName: string;
     private modelName: string;
     private dimensions: number;
+    private deploymentName: string;
+    private apiVersion: string;
 
 
-    constructor(params?: {azureOpenAIApiInstanceName?:string, modelName?:string }) {
+    constructor(params?: {
+        deploymentName: string, apiVersion: string, azureOpenAIApiInstanceName:string, modelName:string 
+}) {
         this.azureOpenAIApiInstanceName= params?.azureOpenAIApiInstanceName;
         this.modelName= params?.modelName ?? 'text-embedding-ada-002';
+        this.deploymentName = params?.deploymentName;
+        this.apiVersion = params?.apiVersion
 
         if (this.modelName === 'text-embedding-3-small') {
             this.dimensions = 1536;
@@ -20,24 +26,12 @@ export class AzureOpenAiEmbeddings implements BaseEmbeddings {
             this.dimensions = 1536;
         }
 
-        this.model = new AzureOpenAIEmbeddings({
-            azureOpenAIApiInstanceName: this.azureOpenAIApiInstanceName,
-            azureOpenAIApiEmbeddingsDeploymentName:this.modelName,
-            maxConcurrency: 3,
-            maxRetries: 5
+        this.model = new AzureOpenAIEmbeddings({ 
+            azureOpenAIApiInstanceName: this.azureOpenAIApiInstanceName, 
+            azureOpenAIApiEmbeddingsDeploymentName: this.deploymentName, 
+            azureOpenAIApiVersion: this.apiVersion, 
           });
-
-        // this.model = new OpenAIEmbeddings({
-        //     modelName: 'text-embedding-3-large',
-        //     maxConcurrency: 3,
-        //     maxRetries: 5,
-        //     dimensions: this.dynamicDimension,
-        // });
     }
-
-    // constructor() {
-    //     this.model = new AzureOpenAIEmbeddings({ azureOpenAIEmbeddingsApiDeploymentName: 'text-embedding-3-small', maxConcurrency: 3, maxRetries: 5 });
-    // }
 
     getDimensions(): number {
         return this.dimensions;
