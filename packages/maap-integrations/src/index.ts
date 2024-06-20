@@ -30,3 +30,8 @@ export { AzureChatOpenAI } from "./models/azureopenai-model.js";
 export * from "./convertMaapToChatbotFramework.js";
 export * from "./Rerank.js";
 export * from "./PreProcessQuery.js";
+export * from "./core/rag-application.js";
+export * from "./core/rag-application-builder.js";
+export * from "./core/rag-embedding.js";
+export * from "./core/yaml-reader.js";
+export * from "./LoadYaml.js";

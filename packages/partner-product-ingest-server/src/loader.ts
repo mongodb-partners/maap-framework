@@ -1,13 +1,6 @@
 import 'dotenv/config';
-import {
-    getDatabaseConfig,
-    getIngestLoader,
-    getEmbeddingModel,
-} from '../../../src/yaml_parser/src/LoadYaml.js';
-import { RAGApplicationBuilder } from "../../../src/index.js";
-import { MongoDBAtlas } from "../../../src/vectorDb/mongo-db-atlas.js";
+import { getDatabaseConfig, getIngestLoader, getEmbeddingModel, RAGApplicationBuilder } from 'maap-integrations';
 import { exit } from 'process';
-
 
 try {
     // Initialize the RAG application
@@ -18,11 +11,10 @@ try {
 
     // Add the sitemap loader
     await llmApplication.addLoader(getIngestLoader());
-    console.log("-- Data ingersted successfully --")
+    console.log('-- Data ingersted successfully --');
     await llmApplication.createVectorIndex();
-    console.log("-- Vector index created successfully --")
-
+    console.log('-- Vector index created successfully --');
 } catch (error) {
-    console.log("-- Data Error --", error)
+    console.log('-- Data Error --', error);
 }
 exit(0);

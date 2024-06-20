@@ -156,54 +156,54 @@
   },
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js",
-      "require": "./dist/index.cjs"
+      "types": "./build/index.d.ts",
+      "import": "./build/index.js",
+      "require": "./build/index.cjs"
     },
     "./vectorDb/lance": {
-      "types": "./dist/vectorDb/lance-db.d.ts",
-      "import": "./dist/vectorDb/lance-db.js",
-      "require": "./dist/vectorDb/lance-db.cjs"
+      "types": "./build/vectorDb/lance-db.d.ts",
+      "import": "./build/vectorDb/lance-db.js",
+      "require": "./build/vectorDb/lance-db.cjs"
     },
     "./vectorDb/pinecone": {
-      "types": "./dist/vectorDb/pinecone-db.d.ts",
-      "import": "./dist/vectorDb/pinecone-db.js",
-      "require": "./dist/vectorDb/pinecone-db.cjs"
+      "types": "./build/vectorDb/pinecone-db.d.ts",
+      "import": "./build/vectorDb/pinecone-db.js",
+      "require": "./build/vectorDb/pinecone-db.cjs"
     },
     "./vectorDb/chroma": {
-      "types": "./dist/vectorDb/chroma-db.d.ts",
-      "import": "./dist/vectorDb/chroma-db.js",
-      "require": "./dist/vectorDb/chroma-db.cjs"
+      "types": "./build/vectorDb/chroma-db.d.ts",
+      "import": "./build/vectorDb/chroma-db.js",
+      "require": "./build/vectorDb/chroma-db.cjs"
     },
     "./vectorDb/qdrant": {
-      "types": "./dist/vectorDb/qdrant-db.d.ts",
-      "import": "./dist/vectorDb/qdrant-db.js",
-      "require": "./dist/vectorDb/qdrant-db.cjs"
+      "types": "./build/vectorDb/qdrant-db.d.ts",
+      "import": "./build/vectorDb/qdrant-db.js",
+      "require": "./build/vectorDb/qdrant-db.cjs"
     },
     "./vectorDb/hnswlib": {
-      "types": "./dist/vectorDb/hnswlib-db.d.ts",
-      "import": "./dist/vectorDb/hnswlib-db.js",
-      "require": "./dist/vectorDb/hnswlib-db.cjs"
+      "types": "./build/vectorDb/hnswlib-db.d.ts",
+      "import": "./build/vectorDb/hnswlib-db.js",
+      "require": "./build/vectorDb/hnswlib-db.cjs"
     },
     "./vectorDb/weaviate": {
-      "types": "./dist/vectorDb/weaviate-db.d.ts",
-      "import": "./dist/vectorDb/weaviate-db.js",
-      "require": "./dist/vectorDb/weaviate-db.cjs"
+      "types": "./build/vectorDb/weaviate-db.d.ts",
+      "import": "./build/vectorDb/weaviate-db.js",
+      "require": "./build/vectorDb/weaviate-db.cjs"
     },
     "./cache/lmdb": {
-      "types": "./dist/cache/lmdb-cache.d.ts",
-      "import": "./dist/cache/lmdb-cache.js",
-      "require": "./dist/cache/lmdb-cache.cjs"
+      "types": "./build/cache/lmdb-cache.d.ts",
+      "import": "./build/cache/lmdb-cache.js",
+      "require": "./build/cache/lmdb-cache.cjs"
     },
     "./cache/memory": {
-      "types": "./dist/cache/memory-cache.d.ts",
-      "import": "./dist/cache/memory-cache.js",
-      "require": "./dist/cache/memory-cache.cjs"
+      "types": "./build/cache/memory-cache.d.ts",
+      "import": "./build/cache/memory-cache.js",
+      "require": "./build/cache/memory-cache.cjs"
     },
     "./cache/redis": {
-      "types": "./dist/cache/redis-cache.d.ts",
-      "import": "./dist/cache/redis-cache.js",
-      "require": "./dist/cache/redis-cache.cjs"
+      "types": "./build/cache/redis-cache.d.ts",
+      "import": "./build/cache/redis-cache.js",
+      "require": "./build/cache/redis-cache.cjs"
     },
     "./package.json": "./package.json"
   },

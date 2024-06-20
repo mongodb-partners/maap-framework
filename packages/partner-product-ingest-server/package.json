@@ -1,11 +1,12 @@
 {
-    "name": "simple",
+    "name": "partner-product-ingest-server",
     "version": "1.0.0",
     "type": "module",
     "private": true,
     "scripts": {
-        "start": "tsc && node dist/examples/partnerproduct/src/index.js",
-        "ingest" : "tsc && node dist/examples/partnerproduct/src/loader.js"
+        "start": "npm run build && node dist/examples/partnerproduct/src/index.js",
+        "ingest": "npm run build && node dist/examples/partnerproduct/src/loader.js",
+        "build": "tsc"
     },
     "author": "",
     "license": "ISC",
@@ -14,6 +15,7 @@
         "axios": "^1.7.2",
         "axios-digest": "^0.3.0",
         "dotenv": "^16.4.5",
+        "maap-integrations": "*",
         "mongodb-chatbot-ui": "^0.7.2",
         "react": "^18.3.1",
         "react-dom": "^18.3.1",

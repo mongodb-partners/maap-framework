@@ -14,16 +14,16 @@ import {
   SitemapLoader,
   VertexAI,
   WebLoader,
-} from "../../index.js";
-import { MongoDBAtlas } from "../../vectorDb/mongo-db-atlas.js";
+} from "./index.js";
+import { MongoDBAtlas } from "./vectorDb/mongo-db-atlas.js";
 import { strict as assert } from "assert";
-import { AnyscaleModel } from "../../models/anyscale-model.js";
-import { Fireworks } from "../../models/fireworks-model.js";
-import { AzureOpenAiEmbeddings } from "../../embeddings/openai-3small-embeddings.js";
-import { Bedrock } from "../../models/bedrock-model.js";
-import { TitanEmbeddings } from "../../embeddings/titan-embeddings.js";
-import { NomicEmbeddingsv1 } from "../../embeddings/nomic-v1-embeddings.js";
-import { NomicEmbeddingsv1_5 } from "../../embeddings/nomic-v1-5-embeddings.js";
+import { AnyscaleModel } from "./models/anyscale-model.js";
+import { Fireworks } from "./models/fireworks-model.js";
+import { AzureOpenAiEmbeddings } from "./embeddings/openai-3small-embeddings.js";
+import { Bedrock } from "./models/bedrock-model.js";
+import { TitanEmbeddings } from "./embeddings/titan-embeddings.js";
+import { NomicEmbeddingsv1 } from "./embeddings/nomic-v1-embeddings.js";
+import { NomicEmbeddingsv1_5 } from "./embeddings/nomic-v1-5-embeddings.js";
 function getDataFromYamlFile() {
   const args = process.argv.slice(2);
 
