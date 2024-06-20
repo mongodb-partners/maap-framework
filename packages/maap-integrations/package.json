@@ -69,6 +69,7 @@
     "compute-cosine-similarity": "^1.1.0",
     "confluence.js": "^1.7.4",
     "debug": "^4.3.4",
+    "dotenv": "^16.4.5",
     "express": "^4.19.2",
     "html-to-text": "^9.0.5",
     "js-yaml": "^4.1.0",
@@ -206,22 +207,5 @@
       "require": "./build/cache/redis-cache.cjs"
     },
     "./package.json": "./package.json"
-  },
-  "jest": {
-    "moduleFileExtensions": [
-      "js",
-      "json",
-      "ts"
-    ],
-    "rootDir": "src",
-    "testRegex": ".*\\.spec\\.ts$",
-    "transform": {
-      "^.+\\.(t|j)s$": "ts-jest"
-    },
-    "collectCoverageFrom": [
-      "**/*.(t|j)s"
-    ],
-    "coverageDirectory": "../coverage",
-    "testEnvironment": "node"
   }
 }

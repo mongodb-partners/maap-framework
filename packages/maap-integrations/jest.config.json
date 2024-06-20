@@ -1,0 +1,5 @@
+{
+  "preset": "ts-jest",
+  "testPathIgnorePatterns": ["<rootDir>/build"],
+  "testMatch": ["**/*.test.ts"]
+}
