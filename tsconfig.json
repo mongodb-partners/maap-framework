@@ -1,22 +1,18 @@
 {
-    "extends": "@tsconfig/recommended",
     "compilerOptions": {
-        "rootDir": "./src",
-        "target": "ES2021",
-        "lib": ["ES2021", "ES2022.Object", "DOM"],
+        "target": "es2020",
+        "lib": ["ES2021", "DOM"],
         "module": "NodeNext",
-        "moduleResolution": "nodenext",
-        "esModuleInterop": true,
-        "declaration": true,
-        "noImplicitReturns": true,
-        "noFallthroughCasesInSwitch": true,
-        "noUnusedLocals": true,
-        "noUnusedParameters": true,
-        "useDefineForClassFields": true,
-        "strictPropertyInitialization": false,
+        "moduleResolution": "NodeNext",
         "allowJs": false,
-        "strict": false
-    },
-    "include": ["src/**/*"],
-    "exclude": ["node_modules", "dist", "docs"]
+        "declaration": true,
+        "declarationMap": true,
+        "sourceMap": true,
+        "downlevelIteration": true,
+        "esModuleInterop": true,
+        "forceConsistentCasingInFileNames": true,
+        "strictNullChecks": true,
+        "skipLibCheck": true,
+        "strict": true
+    }
 }
