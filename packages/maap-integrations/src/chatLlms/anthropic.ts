@@ -1,5 +1,4 @@
 import {
-  ChatLlm,
   makeLangchainChatLlm,
   MakeLangchainChatLlmProps,
 } from "mongodb-chatbot-server";
