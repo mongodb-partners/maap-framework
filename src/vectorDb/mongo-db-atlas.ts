@@ -39,7 +39,7 @@ export class MongoDBAtlas implements BaseDb {
                 embedding: chunk.vector,
                 metadata: chunk.metadata,
                 sourceName: chunk.metadata.originalSource,
-                url: chunk.metadata.originalSource,
+                url: chunk.metadata.source,
                 
             };
         });
