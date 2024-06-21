@@ -3,6 +3,10 @@ ingest:
     source_path: 'https://www.careinsurance.com/sitemap.xml'
     chunk_size: 1000
     chunk_overlap: 100
+  - source: 'web'
+    source_path: 'https://en.wikipedia.org/wiki/Star_Wars'
+    chunk_size: 1000
+    chunk_overlap: 100
 embedding:
     class_name: Nomic-v1.5
 vector_store:
