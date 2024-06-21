@@ -25,18 +25,20 @@ npm install
 # Configuration
 ```
 ingest:
-    source: 'sitemap'
-    source_path: 'https://www.careinsurance.com/sitemap.xml'
-    chunk_size: 1000
-    chunk_overlap: 100
+  - source: 'pdf'
+    source_path: '<file_path>'
+    chunk_size: 2000
+    chunk_overlap: 200
 embedding:
     class_name: Nomic-v1.5
 vector_store:
-    connectionString: '<mongodb connection string>'
+    connectionString: '<you_mdb_connection_string>'
     dbName: '<db_name>'
     collectionName: 'embedded_content'
     embeddingKey: 'embedding'
     textKey: 'text'
+    numCandidates: 150
+    minScore: 0.1 
     vectorSearchIndexName: 'vector_index'
 llms:
     class_name: Fireworks
@@ -44,15 +46,7 @@ llms:
     temprature: ''
     top_p: ''
     top_k: ''
-# rag_pipeline:
-#     - vs: ''
-#       embedding: embedding
-#     - retriver:
-#           class_name: multiqueryretriver
-#           vs: vs
-#           llm: llm
-#     - chat_engine: llm
-# ingest_pipeline: []
+
 
 ``` 
 Also make a copy of the `examples/partnerproduct/example.env` as `.env` to folder where you are running and added the API Keys | URL | Connection Strings | other secrets used in your application.  
