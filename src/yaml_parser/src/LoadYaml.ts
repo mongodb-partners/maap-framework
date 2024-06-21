@@ -32,8 +32,9 @@ export function getDatabaseConfig() {
         collectionName: parsedData.vector_store.collectionName,
         embeddingKey: parsedData.vector_store.embeddingKey,
         textKey: parsedData.vector_store.textKey,
-        numDimensions: parsedData.vector_store.numDimensions, 
-        similarityFunction: parsedData.vector_store.similarityFunction
+        numCandidates: parsedData.vector_store.numDimensions, 
+        similarityFunction: parsedData.vector_store.similarityFunction,
+        minScore: parsedData.vector_store.minScore
     });
 }
 
@@ -43,7 +44,7 @@ export function getDatabaseConfig() {
 export function getDatabaseConfigInfo() {
     const parsedData = getDataFromYamlFile();
     const {
-        vector_store: { connectionString, dbName, collectionName, vectorSearchIndexName },
+        vector_store: { connectionString, dbName, collectionName, vectorSearchIndexName, minScore, numCandidates},
     } = parsedData;
     
     assert(typeof connectionString === 'string', 'connectionString is required');
@@ -56,6 +57,8 @@ export function getDatabaseConfigInfo() {
         dbName,
         collectionName,
         vectorSearchIndexName,
+        minScore,
+        numCandidates
     };
 }
 

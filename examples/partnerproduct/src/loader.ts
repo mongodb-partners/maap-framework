@@ -24,7 +24,7 @@ try {
         await llmApplication.addLoader(data);
     }
 
-    console.log("-- Data ingersted successfully --")
+    console.log("-- Data inserted successfully --")
     await llmApplication.createVectorIndex();
     console.log("-- Vector index created successfully --")
 
