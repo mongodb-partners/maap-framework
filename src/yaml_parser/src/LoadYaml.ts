@@ -2,7 +2,7 @@
 import * as fs from 'fs';
 import * as yaml from 'js-yaml';
 import * as process from 'process';
-import { Anthropic, AzureChatOpenAI, CohereEmbeddings, ConfluenceLoader, DocxLoader, GeckoEmbedding, OpenAi, PdfLoader, SitemapLoader, VertexAI, WebLoader } from '../../index.js';
+import { Anthropic, BaseLoader,AzureChatOpenAI, CohereEmbeddings, ConfluenceLoader, DocxLoader, GeckoEmbedding, OpenAi, PdfLoader, SitemapLoader, VertexAI, WebLoader } from '../../index.js';
 import { MongoDBAtlas } from '../../vectorDb/mongo-db-atlas.js';
 import { strict as assert } from 'assert';
 import { AnyscaleModel } from '../../models/anyscale-model.js';
@@ -65,26 +65,23 @@ export function getDatabaseConfigInfo() {
  */
 export function getModelClass() {
     const parsedData = getDataFromYamlFile();
-    if (parsedData.llms.class_name === 'VertexAI') {
+  
+    switch (parsedData.llms.class_name) {
+      case 'VertexAI':
         return new VertexAI({ modelName: parsedData.llms.model_name });
-    } else if (parsedData.llms.class_name === 'OpenAI') {
+      case 'OpenAI':
         return new OpenAi({ modelName: parsedData.llms.model_name });
-    } else if (parsedData.llms.class_name === 'Anyscale') {
-        return new AnyscaleModel({modelName: parsedData.llms.model_name});
-    } else if (parsedData.llms.class_name === 'Fireworks') {
-        return new Fireworks({modelName: parsedData.llms.model_name});
-    } else if (parsedData.llms.class_name === 'Anthropic') {
-        return new Anthropic({modelName: parsedData.llms.model_name});
-    } else if (parsedData.llms.class_name === 'Bedrock') {
-        return new Bedrock({modelName: parsedData.llms.model_name});
-    } else if(parsedData.llms.class_name === 'AzureOpenAI') {
-        return new AzureChatOpenAI({
-            azureOpenAIApiDeploymentName: parsedData.llms.deployment_name, 
-            azureOpenAIApiVersion: parsedData.llms.api_version,
-            azureOpenAIApiInstanceName: parsedData.llms.azure_openai_api_instance_name
-        })
-    } else {
-        return new Anthropic({modelName: parsedData.llms.model_name});
+      case 'Anyscale':
+        return new AnyscaleModel({ modelName: parsedData.llms.model_name });
+      case 'Fireworks':
+        return new Fireworks({ modelName: parsedData.llms.model_name });
+      case 'Anthropic':
+        return new Anthropic({ modelName: parsedData.llms.model_name });
+      case 'Bedrock':
+        return new Bedrock({ modelName: parsedData.llms.model_name });
+      default:
+        // Handle unsupported class name (optional)
+        return new Anthropic({ modelName: parsedData.llms.model_name }); // Or throw an error
     }
 }
 
@@ -93,27 +90,28 @@ export function getModelClass() {
  * @returns The embedding model based on the parsed data.
  */
 export function getEmbeddingModel() {
-    const parsedData = getDataFromYamlFile();
-    if (parsedData.embedding.class_name === 'VertexAI') {
-        return new GeckoEmbedding();
-    } else if (parsedData.embedding.class_name === 'Azure-OpenAI-Embeddings') {
-        return new AzureOpenAiEmbeddings({
-            modelName: parsedData.embedding.model_name, 
-            deploymentName: parsedData.embedding.deployment_name, 
-            apiVersion: parsedData.embedding.api_version,
-            azureOpenAIApiInstanceName: parsedData.embedding.azure_openai_api_instance_name
-        });
-    } else if (parsedData.embedding.class_name === 'Cohere') {
-        return new CohereEmbeddings({modelName: parsedData.embedding.model_name});
-    } else if (parsedData.embedding.class_name === 'Titan') {
-        return new TitanEmbeddings();
-    } else if (parsedData.embedding.class_name === 'Nomic-v1') {
-        return new NomicEmbeddingsv1();
-    } else if (parsedData.embedding.class_name === 'Nomic-v1.5') {
-        return new NomicEmbeddingsv1_5();
-    } else {
-        return new NomicEmbeddingsv1_5();
-    }
+  const parsedData = getDataFromYamlFile();
+
+  switch (parsedData.embedding.class_name) {
+    case 'VertexAI':
+      return new GeckoEmbedding();
+    case 'Azure-OpenAI-Embeddings':
+      return new AzureOpenAiEmbeddings({ modelName: parsedData.embedding.model_name, 
+        deploymentName: parsedData.embedding.deployment_name, 
+        apiVersion: parsedData.embedding.api_version,
+        azureOpenAIApiInstanceName: parsedData.embedding.azure_openai_api_instance_name });
+    case 'Cohere':
+      return new CohereEmbeddings({ modelName: parsedData.embedding.model_name });
+    case 'Titan':
+      return new TitanEmbeddings();
+    case 'Nomic-v1':
+      return new NomicEmbeddingsv1();
+    case 'Nomic-v1.5':
+      return new NomicEmbeddingsv1_5();
+    default:
+      // Handle unsupported class name (optional)
+      return new NomicEmbeddingsv1_5(); // Or throw an error
+  }
 }
 
 /**
@@ -122,30 +120,50 @@ export function getEmbeddingModel() {
  */
 export function getIngestLoader() {
     const parsedData = getDataFromYamlFile();
-    if (parsedData.ingest.source === 'web') {
-        return new WebLoader({ url: parsedData.ingest.source_path ,
-            chunkSize: parsedData.ingest.chunk_size, 
-            chunkOverlap: parsedData.ingest.chunk_overlap});
-    } else if (parsedData.ingest.source === 'pdf') {
-        return new PdfLoader({ filePath: parsedData.ingest.source_path ,
-            chunkSize: parsedData.ingest.chunk_size, 
-            chunkOverlap: parsedData.ingest.chunk_overlap});
-    } else if (parsedData.ingest.source === 'sitemap') {
-        return new SitemapLoader({ url: parsedData.ingest.source_path ,
-            chunkSize: parsedData.ingest.chunk_size, 
-            chunkOverlap: parsedData.ingest.chunk_overlap});
-    } else if (parsedData.ingest.source === 'docx') {
-        return new DocxLoader({ filePath: parsedData.ingest.source_path ,
-            chunkSize: parsedData.ingest.chunk_size, 
-            chunkOverlap: parsedData.ingest.chunk_overlap});
-    } else if (parsedData.ingest.source === 'confluence') {
-        return new ConfluenceLoader({ spaceNames: parsedData.ingest.space_names,
-            confluenceBaseUrl: parsedData.ingest.confluence_base_url,
-            confluenceUsername: parsedData.ingest.confluence_username,
-            confluenceToken: parsedData.ingest.confluence_token,
-            chunkSize: parsedData.ingest.chunk_size,
-            chunkOverlap: parsedData.ingest.chunk_overlap});
-    } else {
-        return null;
+    const dataloaders: BaseLoader[] = [];
+    for (const data of parsedData.ingest) {
+    switch (data.source) {
+      case 'web':
+        dataloaders.push(new WebLoader({
+          url: data.source_path,
+          chunkSize: data.chunk_size,
+          chunkOverlap: data.chunk_overlap,
+        }));
+        break;
+      case 'pdf':
+        dataloaders.push(new PdfLoader({
+          filePath: data.source_path,
+          chunkSize: data.chunk_size,
+          chunkOverlap: data.chunk_overlap,
+        }));
+        break;
+      case 'sitemap':
+        dataloaders.push(new SitemapLoader({
+          url: data.source_path,
+          chunkSize: data.chunk_size,
+          chunkOverlap: data.chunk_overlap,
+        }));
+        break;
+      case 'docx':
+        dataloaders.push(new DocxLoader({
+          filePath: data.source_path,
+          chunkSize: data.chunk_size,
+          chunkOverlap: data.chunk_overlap,
+        }));
+        break;
+      case 'confluence':
+        dataloaders.push(new ConfluenceLoader({
+          spaceNames: data.space_names,
+          confluenceBaseUrl: data.confluence_base_url,
+          confluenceUsername: data.confluence_username,
+          confluenceToken: data.confluence_token,
+          chunkSize: data.chunk_size,
+          chunkOverlap: data.chunk_overlap,
+        }));
+        break;
+      default:
+        // Handle unsupported source type (optional)
     }
+  }
+    return dataloaders;
 }
