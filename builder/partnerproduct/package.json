@@ -4,8 +4,8 @@
     "type": "module",
     "private": true,
     "scripts": {
-        "start": "tsc && node dist/examples/partnerproduct/src/index.js",
-        "ingest" : "tsc && node dist/examples/partnerproduct/src/loader.js"
+        "start": "tsc && node dist/builder/partnerproduct/src/index.js",
+        "ingest" : "tsc && node dist/builder/partnerproduct/src/loader.js"
     },
     "author": "",
     "license": "ISC",
