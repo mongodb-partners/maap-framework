@@ -16,8 +16,8 @@ The repo offers the flexibility to its user to set up the rag application by sim
 
 ```
 cd chabot
-npm build:local
-cd examples/partnerproduct
+npm run build:local
+cd builder/partnerproduct
 npm install
 ```
 
@@ -76,17 +76,18 @@ Also make a copy of the `examples/partnerproduct/example.env` as `.env` to folde
 ## Ingest Data
 ```
 npm install
-npm run ingest ./src/config_1.yaml
+npm run ingest <path to your config.yaml>
 ```
 
 ## Run the server
 ```
-npm run start ./src/config_1.yaml
+npm run start <path to your config.yaml>
 ```
 4. You can start your UI client application by running the following command
 ## Start your application UI
 ```
-cd ui
+# in another terminal
+cd builder/partnerproduct/ui
 npm install
 npm run start
 ```
