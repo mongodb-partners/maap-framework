@@ -25,6 +25,9 @@ After configuring the application, the user is guided through the process of ing
 This documentation provides a clear and detailed roadmap for developers to set up and customize their RAG applications using the MongoDB MAAP Chatbot Framework, emphasizing flexibility and ease of use through configuration.
 
 # Setup and Running Demo Video: https://www.youtube.com/watch?v=-r824BdVZt0
+
+Internal Chatbot Demo Video: https://drive.google.com/file/d/14gcuJLT2BXhQcS-LpjBqvrSY234x7PK9/view?usp=sharing
+
 # Steps to run the application
 1. Clone the project to you machine install dependencies
 ## Installation
@@ -38,6 +41,9 @@ npm install
 
 2. Configure RAG application
 # Configuration
+Edit the config.yaml file to include the necessary details for data ingestion, embedding models, vector storage, and LLM models. The configuration file should include settings for data source types (e.g., PDF files), paths, chunk sizes, embedding class names, MongoDB connection strings, database and collection names, and specifics about the vector search index and LLM models.
+
+For example, the following configuration settings might be included:
 ```
 ingest:
   - source: 'pdf'
@@ -64,7 +70,7 @@ llms:
 
 
 ``` 
-Also make a copy of the `examples/partnerproduct/example.env` as `.env` to folder where you are running and added the API Keys | URL | Connection Strings | other secrets used in your application.  
+Also, please make a copy of the `examples/partnerproduct/example.env` file and rename it as `.env`. Place this file in the same folder where you are running your application. In the `.env` file, add the necessary API keys, URLs, connection strings, and any other secrets required for your application.
 
 ## Embedding Model 
     Instantiation of Embedding Classes:
