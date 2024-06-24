@@ -31,7 +31,7 @@ This documentation provides a clear and detailed roadmap for developers to set u
 
 ```
 cd chabot
-npm run build:local
+npm install
 cd builder/partnerproduct
 npm install
 ```
