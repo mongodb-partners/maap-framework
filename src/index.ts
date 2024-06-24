@@ -21,7 +21,6 @@ import { OpenAi } from './models/openai-model.js';
 import { ConfluenceLoader } from './loaders/confluence-loader.js';
 import { AdaEmbeddings } from './embeddings/ada-embeddings.js';
 import { CohereEmbeddings } from './embeddings/cohere-embeddings.js';
-import { OpenAi3LargeEmbeddings } from './embeddings/openai-3large-embeddings.js';
 import { Mistral } from './models/mistral-model.js';
 import { HuggingFace } from './models/huggingface-model.js';
 import { Anthropic } from './models/anthropic-model.js';
@@ -29,6 +28,7 @@ import { GeckoEmbedding } from './embeddings/gecko-embedding.js';
 import { VertexAI } from './models/vertexai-model.js';
 import { Ollama } from './models/ollama-model.js';
 import { AzureChatOpenAI } from './models/azureopenai-model.js';
+import { AzureOpenAiEmbeddings } from './embeddings/azure-embeddings.js';
 
 export {
     RAGApplication,
@@ -54,7 +54,7 @@ export {
     OpenAi,
     AdaEmbeddings,
     CohereEmbeddings,
-    OpenAi3LargeEmbeddings,
+    AzureOpenAiEmbeddings,
     Mistral,
     HuggingFace,
     Anthropic,

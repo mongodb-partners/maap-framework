@@ -9,6 +9,21 @@ The repo offers the flexibility to its user to set up the rag application by sim
 3. Chat LLM Models
 4. Post query Reranker
 
+# Document Preface
+The MongoDB MAAP Chatbot Framework documentation provides a comprehensive guide for setting up a Retrieval-Augmented Generation (RAG) application using MongoDB and Atlas Vector Search, along with integration options for various MAAP partners. This framework is designed to be highly configurable, allowing users to tailor their chatbot applications by simply modifying a YAML configuration file. The framework supports customization in four key areas: data loaders, embedding models, chat LLM (Large Language Models) models, and post-query rerankers.
+
+The setup process begins with cloning the project and installing dependencies. This involves navigating to the chatbot directory, building the project locally, and then installing npm packages in the builder/partnerproduct directory.
+
+Configuration of the RAG application is crucial and involves specifying details for data ingestion, embedding models, vector storage, and LLM models in a YAML file. This includes settings for data source types (e.g., PDF files), paths, chunk sizes, embedding class names, MongoDB connection strings, database and collection names, and specifics about the vector search index and LLM models.
+
+The documentation also highlights the process of instantiating embedding and LLM models based on the configuration. Different classes are instantiated based on the specified class_name in the configuration, catering to various services like VertexAI, Azure-OpenAI, Cohere, and others for embeddings, and a similar approach is taken for LLM models with classes like Fireworks, Anthropic, and Bedrock.
+
+Data loaders play a significant role in how data is ingested into the system. The framework supports multiple types of data loaders (e.g., WebLoader, PdfLoader, SitemapLoader, DocxLoader, ConfluenceLoader), each tailored to handle specific data sources like web pages, PDF files, sitemaps, DOCX documents, and Confluence spaces. These loaders are configured with parameters such as source paths and chunking details, and then added to a dataloaders array for processing.
+
+After configuring the application, the user is guided through the process of ingesting data, running the server, and starting the UI client application. The UI client application runs locally, allowing users to interact with the chatbot through a web interface.
+
+This documentation provides a clear and detailed roadmap for developers to set up and customize their RAG applications using the MongoDB MAAP Chatbot Framework, emphasizing flexibility and ease of use through configuration.
+
 # Setup and Running Demo Video: https://www.youtube.com/watch?v=-r824BdVZt0
 # Steps to run the application
 1. Clone the project to you machine install dependencies
