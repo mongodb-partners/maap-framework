@@ -9,7 +9,7 @@ The repo offers the flexibility to its user to set up the rag application by sim
 3. Chat LLM Models
 4. Post query Reranker
 
-# Demo Video: https://www.youtube.com/watch?v=-r824BdVZt0
+# Setup and Running Demo Video: https://www.youtube.com/watch?v=-r824BdVZt0
 # Steps to run the application
 1. Clone the project to you machine install dependencies
 ## Installation
