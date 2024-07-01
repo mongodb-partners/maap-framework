@@ -27,7 +27,7 @@ import { Anthropic } from './models/anthropic-model.js';
 import { GeckoEmbedding } from './embeddings/gecko-embedding.js';
 import { VertexAI } from './models/vertexai-model.js';
 import { Ollama } from './models/ollama-model.js';
-import { AzureChatOpenAI } from './models/azureopenai-model.js';
+import { AzureChatAI } from './models/azureopenai-model.js';
 import { AzureOpenAiEmbeddings } from './embeddings/azure-embeddings.js';
 
 export {
@@ -61,7 +61,7 @@ export {
     GeckoEmbedding,
     VertexAI,
     Ollama,
-    AzureChatOpenAI
+    AzureChatAI
 };
 export * from './convertMaapToChatbotFramework.js';
 export * from './Rerank.js';

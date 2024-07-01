@@ -1,17 +1,20 @@
 import createDebugMessages from 'debug';
-import { AzureOpenAI } from "@langchain/openai";
+// import { AzureOpenAI } from "@langchain/openai";
+// import { AzureChatOpenAI } from "@langchain/azure-openai";
+import { AzureChatOpenAI } from "@langchain/openai";
+// import { ChatOpenAI } from "@langchain/openai";
+
 import { HumanMessage, AIMessage, SystemMessage } from '@langchain/core/messages';
 
 import { BaseModel } from '../interfaces/base-model.js';
 import { Chunk, ConversationHistory } from '../global/types.js';
 
-export class AzureChatOpenAI extends BaseModel {
+export class AzureChatAI extends BaseModel {
     private readonly debug = createDebugMessages('maap:model:AzureOpenAI');
     private readonly azureOpenAIApiInstanceName: string;
     private readonly azureOpenAIApiDeploymentName: string;
-    private model: AzureOpenAI;
+    private model: AzureChatOpenAI;
     private readonly azureOpenAIApiVersion: string;
-
 
     constructor(params?: { temperature?:number,azureOpenAIApiInstanceName:string, azureOpenAIApiDeploymentName:string, modelName?:string, azureOpenAIApiVersion:string }) {
         super(params?.temperature);
@@ -21,10 +24,11 @@ export class AzureChatOpenAI extends BaseModel {
     }
 
     override async init(): Promise<void> {
-        this.model = new AzureOpenAI({
+        this.model = new AzureChatOpenAI({
             azureOpenAIApiInstanceName: this.azureOpenAIApiInstanceName,
             azureOpenAIApiDeploymentName: this.azureOpenAIApiDeploymentName,
             azureOpenAIApiVersion: this.azureOpenAIApiVersion,
+            temperature: this.temperature
           });
     }
 
@@ -53,6 +57,6 @@ export class AzureChatOpenAI extends BaseModel {
         this.debug('Executing AzureOpenAI model with prompt -', userQuery);
         const result = await this.model.invoke(pastMessages);
         this.debug('AzureOpenAI response -', result);
-        return result.toString();
+        return result.content.toString();
     }
 }

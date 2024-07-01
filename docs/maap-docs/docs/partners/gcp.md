@@ -88,7 +88,7 @@ To use VetexAI embedding with MAAP framework, you would need to feed below value
   Provided below are the values required to be added in `config.yaml` file in embedding section.
   ```
   embedding:
-      class_name: VertexAI
+      class_name = VertexAI
   ```
 
 

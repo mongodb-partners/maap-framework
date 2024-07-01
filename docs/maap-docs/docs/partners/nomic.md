@@ -33,7 +33,7 @@ To use Nomic embedding with MAAP framework, you would need to feed below values.
   Below value(s) are to be added in .env file
 
   ```
-  NOMIC_API_KEY : <check_references_below>
+  NOMIC_API_KEY = <check_references_below>
   ```
 
 

@@ -56,7 +56,7 @@ To use Azure OpenAI embedding with MAAP framework, you would need to feed below 
   Below value(s) are to be added in .env file
 
   ```
-  FIREWORKS_API_KEY : <check_references_below>
+  FIREWORKS_API_KEY = <check_references_below>
   ```
 
 

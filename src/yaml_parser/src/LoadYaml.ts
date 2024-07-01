@@ -2,7 +2,7 @@
 import * as fs from 'fs';
 import * as yaml from 'js-yaml';
 import * as process from 'process';
-import { Anthropic, BaseLoader, AzureChatOpenAI, CohereEmbeddings, ConfluenceLoader, DocxLoader, GeckoEmbedding, OpenAi, PdfLoader, SitemapLoader, VertexAI, WebLoader } from '../../index.js';
+import { Anthropic, BaseLoader, AzureChatAI, CohereEmbeddings, ConfluenceLoader, DocxLoader, GeckoEmbedding, OpenAi, PdfLoader, SitemapLoader, VertexAI, WebLoader } from '../../index.js';
 import { MongoDBAtlas } from '../../vectorDb/mongo-db-atlas.js';
 import { strict as assert } from 'assert';
 import { AnyscaleModel } from '../../models/anyscale-model.js';
@@ -83,7 +83,7 @@ export function getModelClass() {
     case 'Bedrock':
       return new Bedrock({ modelName: parsedData.llms.model_name });
     case 'AzureOpenAI':
-      return new AzureChatOpenAI({
+      return new AzureChatAI({
         modelName: parsedData.embedding.model_name,
         azureOpenAIApiDeploymentName: parsedData.embedding.deployment_name,
         azureOpenAIApiVersion: parsedData.embedding.api_version,

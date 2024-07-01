@@ -30,7 +30,7 @@ To use Antrhopic model with MAAP framework, you would need to feed below values.
   Below value(s) are to be added in `.env` file
 
   ```
-  ANTHROPIC_API_KEY : <check_references_below>
+  ANTHROPIC_API_KEY = <check_references_below>
   ```
 
 ### References

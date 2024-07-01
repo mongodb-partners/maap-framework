@@ -34,9 +34,9 @@ To use Amazon FM with MAAP framework, you would need to the below components to 
   Below value(s) are to be added in .env file
 
   ```
-    BEDROCK_AWS_REGION : <check_references_below>
-    BEDROCK_AWS_ACCESS_KEY_ID : <check_references_below>
-    BEDROCK_AWS_SECRET_ACCESS_KEY : <check_references_below>
+    BEDROCK_AWS_REGION = <check_references_below>
+    BEDROCK_AWS_ACCESS_KEY_ID = <check_references_below>
+    BEDROCK_AWS_SECRET_ACCESS_KEY = <check_references_below>
   ```
 
 
@@ -59,9 +59,9 @@ To use AWS Titan embedding with MAAP framework, you would need to feed below val
   Below value(s) are to be added in .env file
 
   ```
-    BEDROCK_AWS_REGION : <check_references_below>
-    BEDROCK_AWS_ACCESS_KEY_ID : <check_references_below>
-    BEDROCK_AWS_SECRET_ACCESS_KEY : <check_references_below>
+    BEDROCK_AWS_REGION = <check_references_below>
+    BEDROCK_AWS_ACCESS_KEY_ID = <check_references_below>
+    BEDROCK_AWS_SECRET_ACCESS_KEY = <check_references_below>
   ```
 
 
