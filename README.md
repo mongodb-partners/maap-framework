@@ -33,7 +33,7 @@ Internal Chatbot Demo Video: https://drive.google.com/file/d/14gcuJLT2BXhQcS-Lpj
 ## Installation
 
 ```
-cd chabot
+cd maap-chabot-builder
 npm install
 cd builder/partnerproduct
 npm install
