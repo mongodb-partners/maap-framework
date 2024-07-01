@@ -12,6 +12,7 @@ import { TitanEmbeddings } from '../../embeddings/titan-embeddings.js';
 import { NomicEmbeddingsv1 } from '../../embeddings/nomic-v1-embeddings.js';
 import { NomicEmbeddingsv1_5 } from '../../embeddings/nomic-v1-5-embeddings.js';
 import { AzureOpenAiEmbeddings } from '../../embeddings/azure-embeddings.js';
+import { BedrockEmbedding } from '../../embeddings/bedrock-embeddings.js';
 
 // src/loaders/confluence-loader.ts src/loaders/docx-loader.ts src/loaders/excel-loader.ts src/loaders/json-loader.ts src/loaders/pdf-loader.ts src/loaders/ppt-loader.ts src/loaders/sitemap-loader.ts src/loaders/text-loader.ts src/loaders/web-loader.ts src/loaders/youtube-channel-loader.ts src/loaders/youtube-loader.ts src/loaders/youtube-search-loader.ts
 function getDataFromYamlFile() {
@@ -118,6 +119,8 @@ export function getEmbeddingModel() {
       return new CohereEmbeddings({ modelName: parsedData.embedding.model_name });
     case 'Titan':
       return new TitanEmbeddings();
+    case 'Bedrock':
+      return new BedrockEmbedding({ modelName: parsedData.embedding.model_name, dimension: parsedData.embedding.dimension});
     case 'Nomic-v1':
       return new NomicEmbeddingsv1();
     case 'Nomic-v1.5':
