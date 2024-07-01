@@ -28,16 +28,16 @@ To use Azure OpenAI model with MAAP framework, you would need to feed below valu
   ```
   llms:
       class_name: AzureOpenAI
-      deployment_name: <check_references_below>
-      api_version: <check_references_below>
-      azure_openai_api_instance_name: <check_references_below>
   ```
 
 - #### Environment Variable :
   Below value(s) are to be added in `.env` file
 
   ```
-  AZURE_OPENAI_API_KEY : <check_references_below>
+  AZURE_OPENAI_API_KEY=<check_references_below>
+  AZURE_OPENAI_API_INSTANCE_NAME=<check_references_below>
+  AZURE_OPENAI_API_VERSION=<check_references_below>
+  AZURE_OPENAI_API_DEPLOYMENT_NAME=<check_references_below>
   ```
 
 
@@ -59,17 +59,17 @@ To use Azure OpenAI embedding with MAAP framework, you would need to feed below 
   ```
   embedding:
       class_name: Azure-OpenAI-Embeddings
-      model_name: <check_references_below> 
-      deployment_name: <check_references_below>
-      api_version: <check_references_below>
-      azure_openai_api_instance_name: <check_references_below>
+      model_name: <check_references_below>
   ```
 
 - #### Environment Variable :
   Below value(s) are to be added in .env file
 
   ```
-  AZURE_OPENAI_API_KEY : <check_references_below>
+  AZURE_OPENAI_API_KEY=<check_references_below>
+  AZURE_OPENAI_API_INSTANCE_NAME=<check_references_below>
+  AZURE_OPENAI_API_EMBEDDINGS_DEPLOYMENT_NAME=<check_references_below>
+  AZURE_OPENAI_API_VERSION=<check_references_below>
   ```
 
 

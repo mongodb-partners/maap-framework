@@ -2,7 +2,7 @@
 import * as fs from 'fs';
 import * as yaml from 'js-yaml';
 import * as process from 'process';
-import { Anthropic, BaseLoader,AzureChatOpenAI, CohereEmbeddings, ConfluenceLoader, DocxLoader, GeckoEmbedding, OpenAi, PdfLoader, SitemapLoader, VertexAI, WebLoader } from '../../index.js';
+import { Anthropic, BaseLoader, AzureChatOpenAI, CohereEmbeddings, ConfluenceLoader, DocxLoader, GeckoEmbedding, OpenAi, PdfLoader, SitemapLoader, VertexAI, WebLoader } from '../../index.js';
 import { MongoDBAtlas } from '../../vectorDb/mongo-db-atlas.js';
 import { strict as assert } from 'assert';
 import { AnyscaleModel } from '../../models/anyscale-model.js';
@@ -13,53 +13,53 @@ import { NomicEmbeddingsv1 } from '../../embeddings/nomic-v1-embeddings.js';
 import { NomicEmbeddingsv1_5 } from '../../embeddings/nomic-v1-5-embeddings.js';
 import { AzureOpenAiEmbeddings } from '../../embeddings/azure-embeddings.js';
 function getDataFromYamlFile() {
-    const args = process.argv.slice(2);
+  const args = process.argv.slice(2);
 
-    // Check if a file path is provided
-    if (!args[0]) {
-        throw new Error('Please provide the YAML file path as an argument.');
-    }
-    const data = fs.readFileSync(args[0], 'utf8');
-    const parsedData = yaml.load(data);
-    return parsedData;
+  // Check if a file path is provided
+  if (!args[0]) {
+    throw new Error('Please provide the YAML file path as an argument.');
+  }
+  const data = fs.readFileSync(args[0], 'utf8');
+  const parsedData = yaml.load(data);
+  return parsedData;
 }
 
 export function getDatabaseConfig() {
-    const parsedData = getDataFromYamlFile();
-    return new MongoDBAtlas({
-        connectionString: parsedData.vector_store.connectionString,
-        dbName: parsedData.vector_store.dbName,
-        collectionName: parsedData.vector_store.collectionName,
-        embeddingKey: parsedData.vector_store.embeddingKey,
-        textKey: parsedData.vector_store.textKey,
-        numCandidates: parsedData.vector_store.numDimensions, 
-        similarityFunction: parsedData.vector_store.similarityFunction,
-        minScore: parsedData.vector_store.minScore
-    });
+  const parsedData = getDataFromYamlFile();
+  return new MongoDBAtlas({
+    connectionString: parsedData.vector_store.connectionString,
+    dbName: parsedData.vector_store.dbName,
+    collectionName: parsedData.vector_store.collectionName,
+    embeddingKey: parsedData.vector_store.embeddingKey,
+    textKey: parsedData.vector_store.textKey,
+    numCandidates: parsedData.vector_store.numDimensions,
+    similarityFunction: parsedData.vector_store.similarityFunction,
+    minScore: parsedData.vector_store.minScore
+  });
 }
 
 /**
  Gets the DB info to use in the chatbot application
  */
 export function getDatabaseConfigInfo() {
-    const parsedData = getDataFromYamlFile();
-    const {
-        vector_store: { connectionString, dbName, collectionName, vectorSearchIndexName, minScore, numCandidates},
-    } = parsedData;
-    
-    assert(typeof connectionString === 'string', 'connectionString is required');
-    assert(typeof dbName === 'string', 'dbName is required');
-    assert(typeof collectionName === 'string', 'collectionName is required');
-    assert(typeof vectorSearchIndexName === 'string', 'vectorSearchIndexName is required');
+  const parsedData = getDataFromYamlFile();
+  const {
+    vector_store: { connectionString, dbName, collectionName, vectorSearchIndexName, minScore, numCandidates },
+  } = parsedData;
 
-    return {
-        connectionString,
-        dbName,
-        collectionName,
-        vectorSearchIndexName,
-        minScore,
-        numCandidates
-    };
+  assert(typeof connectionString === 'string', 'connectionString is required');
+  assert(typeof dbName === 'string', 'dbName is required');
+  assert(typeof collectionName === 'string', 'collectionName is required');
+  assert(typeof vectorSearchIndexName === 'string', 'vectorSearchIndexName is required');
+
+  return {
+    connectionString,
+    dbName,
+    collectionName,
+    vectorSearchIndexName,
+    minScore,
+    numCandidates
+  };
 }
 
 /**
@@ -67,25 +67,32 @@ export function getDatabaseConfigInfo() {
  * @returns An instance of the model class.
  */
 export function getModelClass() {
-    const parsedData = getDataFromYamlFile();
-  
-    switch (parsedData.llms.class_name) {
-      case 'VertexAI':
-        return new VertexAI({ modelName: parsedData.llms.model_name });
-      case 'OpenAI':
-        return new OpenAi({ modelName: parsedData.llms.model_name });
-      case 'Anyscale':
-        return new AnyscaleModel({ modelName: parsedData.llms.model_name });
-      case 'Fireworks':
-        return new Fireworks({ modelName: parsedData.llms.model_name });
-      case 'Anthropic':
-        return new Anthropic({ modelName: parsedData.llms.model_name });
-      case 'Bedrock':
-        return new Bedrock({ modelName: parsedData.llms.model_name });
-      default:
-        // Handle unsupported class name (optional)
-        return new Anthropic({ modelName: parsedData.llms.model_name }); // Or throw an error
-    }
+  const parsedData = getDataFromYamlFile();
+
+  switch (parsedData.llms.class_name) {
+    case 'VertexAI':
+      return new VertexAI({ modelName: parsedData.llms.model_name });
+    case 'OpenAI':
+      return new OpenAi({ modelName: parsedData.llms.model_name });
+    case 'Anyscale':
+      return new AnyscaleModel({ modelName: parsedData.llms.model_name });
+    case 'Fireworks':
+      return new Fireworks({ modelName: parsedData.llms.model_name });
+    case 'Anthropic':
+      return new Anthropic({ modelName: parsedData.llms.model_name });
+    case 'Bedrock':
+      return new Bedrock({ modelName: parsedData.llms.model_name });
+    case 'AzureOpenAI':
+      return new AzureChatOpenAI({
+        modelName: parsedData.embedding.model_name,
+        azureOpenAIApiDeploymentName: parsedData.embedding.deployment_name,
+        azureOpenAIApiVersion: parsedData.embedding.api_version,
+        azureOpenAIApiInstanceName: parsedData.embedding.azure_openai_api_instance_name
+      });
+    default:
+      // Handle unsupported class name (optional)
+      return new Anthropic({ modelName: parsedData.llms.model_name }); // Or throw an error
+  }
 }
 
 /**
@@ -99,10 +106,12 @@ export function getEmbeddingModel() {
     case 'VertexAI':
       return new GeckoEmbedding();
     case 'Azure-OpenAI-Embeddings':
-      return new AzureOpenAiEmbeddings({ modelName: parsedData.embedding.model_name, 
-        deploymentName: parsedData.embedding.deployment_name, 
+      return new AzureOpenAiEmbeddings({
+        modelName: parsedData.embedding.model_name,
+        deploymentName: parsedData.embedding.deployment_name,
         apiVersion: parsedData.embedding.api_version,
-        azureOpenAIApiInstanceName: parsedData.embedding.azure_openai_api_instance_name });
+        azureOpenAIApiInstanceName: parsedData.embedding.azure_openai_api_instance_name
+      });
     case 'Cohere':
       return new CohereEmbeddings({ modelName: parsedData.embedding.model_name });
     case 'Titan':
@@ -122,9 +131,9 @@ export function getEmbeddingModel() {
  * @returns The loader object or null if no matching loader is found.
  */
 export function getIngestLoader() {
-    const parsedData = getDataFromYamlFile();
-    const dataloaders: BaseLoader[] = [];
-    for (const data of parsedData.ingest) {
+  const parsedData = getDataFromYamlFile();
+  const dataloaders: BaseLoader[] = [];
+  for (const data of parsedData.ingest) {
     switch (data.source) {
       case 'web':
         dataloaders.push(new WebLoader({
@@ -165,8 +174,8 @@ export function getIngestLoader() {
         }));
         break;
       default:
-        // Handle unsupported source type (optional)
+      // Handle unsupported source type (optional)
     }
   }
-    return dataloaders;
+  return dataloaders;
 }
