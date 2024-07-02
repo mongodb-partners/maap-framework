@@ -222,3 +222,10 @@ export function getIngestLoader() {
   }
   return dataloaders;
 }
+
+export function getStreamOptions() {
+  const parsedData = getDataFromYamlFile();
+  return {
+    stream: parsedData.stream_options.stream ?? false,
+  };
+}

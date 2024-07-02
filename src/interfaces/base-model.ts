@@ -44,10 +44,30 @@ export abstract class BaseModel {
         return result;
     }
 
+    public async queryStream(
+        system: string,
+        userQuery: string,
+        supportingContext: Chunk[],
+        conversationId: string = 'default',
+    ): Promise<any> {
+        if (!this.conversationMap.has(conversationId)) this.conversationMap.set(conversationId, []);
+
+        const conversationHistory = this.conversationMap.get(conversationId);
+        this.baseDebug(`${conversationHistory.length} history entries found for conversationId '${conversationId}'`);
+        return this.runStreamQuery(system, userQuery, supportingContext, conversationHistory);
+    }
+
     protected abstract runQuery(
         system: string,
         userQuery: string,
         supportingContext: Chunk[],
         pastConversations: ConversationHistory[],
     ): Promise<string>;
+
+    protected abstract runStreamQuery(
+        system: string,
+        userQuery: string,
+        supportingContext: Chunk[],
+        pastConversations: ConversationHistory[],
+    ): Promise<any>;
 }

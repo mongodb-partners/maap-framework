@@ -35,9 +35,69 @@ export async function convertBaseModelToChatLlm(baseModel: BaseModel): Promise<C
                 content: modelResponse,
             };
         },
-        answerQuestionStream({ messages }) {
-            throw new Error('Not implemented');
-        },
+        // async answerQuestionStream({ messages }) {
+        //     const systemMessage = messages.find((m) => m.role === 'system');
+        //     const userMessage = messages[messages.length - 1] as UserMessage;
+        //     const modelStream = await baseModel.queryStream( 
+        //         systemMessage.content,
+        //         userMessage.contentForLlm ?? userMessage.content,
+        //         [],
+        //     );
+        //     let index = 0;
+        //     for await (const chunk of modelStream) {
+        //         index++;
+        //         yield {
+        //             id: index.toString(),
+        //             created: new Date(),
+        //             choices: [
+        //                 {
+        //                     finalReason: null,
+        //                     index: index,
+        //                     delta: {
+        //                         role: "assistant",
+        //                         content:
+        //                           typeof chunk.content === "string" ? chunk.content : "",
+        //                         toolCalls: [],
+        //                     },
+        //                 }
+        //             ],
+        //             promptFilterResults: [],
+        //             // role: 'assistant',
+        //             // content: chunk,
+        //         };
+        //     }
+        // },
+        answerQuestionStream: async ({ messages }) =>
+            (async function* () {
+                const systemMessage = messages.find((m) => m.role === 'system');
+                const userMessage = messages[messages.length - 1] as UserMessage;
+                const modelStream = await baseModel.queryStream( 
+                    systemMessage.content,
+                    userMessage.contentForLlm ?? userMessage.content,
+                    [],
+                );
+              let index = 0;
+              for await (const chunk of modelStream) {
+                index++;
+                yield {
+                  id: index.toString(),
+                  created: new Date(),
+                  choices: [
+                    {
+                      finishReason: null,
+                      index: index,
+                      delta: {
+                        role: "assistant",
+                        content:
+                          typeof chunk.content === "string" ? chunk.content : "",
+                        toolCalls: [],
+                      },
+                    },
+                  ],
+                  promptFilterResults: [],
+                };
+              }
+            })(),
     } satisfies ChatLlm;
 }
 
