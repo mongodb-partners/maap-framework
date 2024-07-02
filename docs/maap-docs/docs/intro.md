@@ -19,7 +19,7 @@ The repo offers the flexibility to its user to set up the rag application by sim
 Below given is the reference architecture of the framework with various components. 
 
 
-![alt text](RAG_MAAP_2.drawio.png)
+![alt text](MAAP_Arch.png)
 
 #### Overview of Advanced RAG Approaches
 
