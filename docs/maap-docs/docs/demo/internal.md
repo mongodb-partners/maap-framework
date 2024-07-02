@@ -10,7 +10,7 @@ This page describes how to setup and showcase a simple RAG bot in order to demon
 ## Setup
 Use the below `.config` and `.env` files to setup the demo for external RAG chatbot.
 
-- ### Data
+- ### Data Ingestion
     Update the missing fields with your personal values;
     The source path should be the PDF file location from your local.
 
@@ -48,8 +48,8 @@ Use the below `.config` and `.env` files to setup the demo for external RAG chat
 
 - ### Environment Variables
 
-Update the FIREWORKS_API_KEY with your personal key or [generate one](https://readme.fireworks.ai/docs/quickstart) if not available.
+    Update the FIREWORKS_API_KEY with your personal key or [generate one](https://readme.fireworks.ai/docs/quickstart) if not available.
 
-````
-FIREWORKS_API_KEY=
-````
+    ````
+    FIREWORKS_API_KEY=
+    ````

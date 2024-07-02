@@ -81,23 +81,7 @@ const config = {
       },
       footer: {
         style: 'dark',
-        links: [
-          
-          {
-            title: 'Community',
-            items: [
-              {
-                label: 'MongoDB Community',
-                href: 'https://community.mongodb.com',
-              },
-              {
-                label: 'Stack Overflow',
-                href: 'https://stackoverflow.com/questions/tagged/mongodb',
-              },
-            ],
-          }
-          
-        ],
+        
         copyright: `© ${new Date().getFullYear()} MongoDB, Inc.`,
       },
       prism: {

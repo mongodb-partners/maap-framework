@@ -2,7 +2,7 @@
 sidebar_position: 2
 ---
 
-# UI
+# User Interface (UI)
 
 The frontend of the chatbot.
 
