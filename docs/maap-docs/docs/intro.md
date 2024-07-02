@@ -4,6 +4,7 @@ sidebar_position: 1
 
 # MAAP Chatbot Framework [WIP]
 
+### Introduction 
 The [MongoDB AI Applications Program (MAAP)](https://www.mongodb.com/services/consulting/ai-applications-program) chatbot framework is a set of libraries that you can use to build your RAG Application
 using MongoDB and [Atlas Vector Search](https://www.mongodb.com/docs/atlas/atlas-vector-search/vector-search-overview/) and associated MAAP partners
 
@@ -20,11 +21,46 @@ Below given is the reference architecture of the framework with various componen
 
 ![alt text](RAG_MAAP_2.drawio.png)
 
+#### Overview of Advanced RAG Approaches
+
+1. **Data Loading**
+
+    Applications based on Large Language Models (LLMs) often involve extracting data from databases or files, such as PDFs, and converting it into a format usable by LLMs. The pivotal component here is the data source, containing private knowledge or content obtained.
+
+2. **Data Indexing and Embedding Models: Chunking & Vectorization**
+
+    Initially, we construct a vector index to represent the contents of our text documents. This involves breaking down the documents into smaller chunks and converting them into numerical vectors. The vectorized content forms the basis for subsequent retrieval and generation steps.
+
+3. **Post Retrieval: Retrieval, Reranking & Filtering**
+    
+    After retrieving relevant documents, we refine the context further through reranking and filtering:
+    
+    - **Reranking**: Prioritizing documents based on relevance.
+    - **Filtering**: Removing less relevant or noisy documents.
+
+4. **Pre Query Retrieval: Query Transformations**
+
+    Advanced RAG models explore various transformations of user queries to enhance retrieval accuracy. Techniques include query expansion and other modifications.
+
+5. **Chat Engine: LLM**
+
+    The chat engine combines retrieved context with the user’s query to create a prompt for the language model. This prompt guides the language model in generating contextually relevant responses.
+
+6. **Chat Engine: RAG Agents**
+
+    RAG agents manage the entire RAG process, coordinating retrieval, generation, and other components. They ensure seamless interaction between the search index, language model, and other modules.
+
+7. **Prompting: Response Synthesizer**
+
+    The response synthesizer generates the actual answer based on the combined context and user query. Attention and prompt engineering mechanisms may be employed to focus on relevant parts of retrieved documents during generation.
+
+
 
 ## Environment
-The application is tested with below tools.
+The application is tested with below configurations.
 - Node Version :        **v20.0+**
-- MongoDB Version (Atlas) :     **v7.0**
+- MongoDB Version (Atlas) :     **v7.0 (M10 Cluster Tier)** 
+
 
 ## Document Preface
 The MongoDB MAAP Chatbot Framework documentation provides a comprehensive guide for setting up a Retrieval-Augmented Generation (RAG) application using MongoDB and Atlas Vector Search, along with integration options for various MAAP partners. This framework is designed to be highly configurable, allowing users to tailor their chatbot applications by simply modifying a YAML configuration file. The framework supports customization in four key areas: data loaders, embedding models, chat LLM (Large Language Models) models, and post-query rerankers.
@@ -53,7 +89,7 @@ This documentation provides a clear and detailed roadmap for developers to set u
 Clone the project to your machine, and install dependencies.
 
 ```
-cd chabot
+cd maap-chabot-builder
 npm install
 cd builder/partnerproduct
 npm install
@@ -87,10 +123,27 @@ llms:
     temprature: ''
     top_p: ''
     top_k: ''
-
-
 ``` 
 Also, please make a copy of the `examples/partnerproduct/example.env` file and rename it as `.env`. Place this file in the same folder where you are running your application. In the `.env` file, add the necessary API keys, URLs, connection strings, and any other secrets required for your application.
+
+### MAAP Partner Integrations
+
+Partner specific information can be found as below; 
+Go to [this](https://mongodb-partners.github.io/maap-chatbot-builder/docs/category/partners) page for partner specific documentations.
+
+| Sr # | MAAP Partner  | Partner Type  | Documentation                                                                                      |
+|------|---------------|---------------|--------------------------------------------------------------------------------------------------------|
+| 1    | AWS           | Cloud provider| [Link](https://mongodb-partners.github.io/maap-chatbot-builder/docs/partners/amazon)                   |
+| 2    | Azure         | Cloud provider| [Link](https://mongodb-partners.github.io/maap-chatbot-builder/docs/partners/azure)                    |
+| 3    | GCP           | Cloud provider| [Link](https://mongodb-partners.github.io/maap-chatbot-builder/docs/partners/gcp)                      |
+| 4    | Anthropic     | AI tech       | [Link](https://mongodb-partners.github.io/maap-chatbot-builder/docs/partners/anthropic)                |
+| 5    | Anyscale      | AI tech       | [Link](https://mongodb-partners.github.io/maap-chatbot-builder/docs/partners/anyscale)                 |
+| 6    | Cohere        | AI tech       | [Link](https://mongodb-partners.github.io/maap-chatbot-builder/docs/partners/cohere)                   |
+| 7    | [Fireworks.AI](https://example.com) | AI tech       | [Link](https://mongodb-partners.github.io/maap-chatbot-builder/docs/partners/fireworksai)               |
+| 8    | Langchain     | AI tech       | [Link](https://mongodb-partners.github.io/maap-chatbot-builder/docs/partners/langchain)                |
+| 9   | Nomic         | AI tech       | [Link](https://mongodb-partners.github.io/maap-chatbot-builder/docs/partners/nomic)                    |
+
+
 
 
 ### Ingest Data
@@ -100,6 +153,8 @@ Once configured you can use the yaml file you just created say as in example `ex
 npm install
 npm run ingest <path to your config.yaml>
 ```
+
+Go to [this](https://mongodb-partners.github.io/maap-chatbot-builder/docs/category/app-modules) page for loader specific documentations.
 
 ### Run the server
 ```

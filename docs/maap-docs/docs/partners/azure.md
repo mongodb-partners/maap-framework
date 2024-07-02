@@ -45,10 +45,7 @@ To use Azure OpenAI model with MAAP framework, you would need to feed below valu
 
 You can follow the same steps as above to delploy the embedding model as well. The process is documented [here](https://learn.microsoft.com/en-us/azure/ai-services/openai/how-to/create-resource).
 
-Supported embedding models:  
-- text-embedding-ada-002
-- text-embedding-3-small
-- text-embedding-3-large
+
 
 #### Usage with MAAP
 To use Azure OpenAI embedding with MAAP framework, you would need to feed below values.
@@ -59,8 +56,16 @@ To use Azure OpenAI embedding with MAAP framework, you would need to feed below 
   ```
   embedding:
       class_name: Azure-OpenAI-Embeddings
-      model_name: <check_references_below>
+      model_name: <model_selected>
   ```
+
+
+    Model name specified should be one of the below listed:  
+    - text-embedding-ada-002
+    - text-embedding-3-small
+    - text-embedding-3-large
+
+
 
 - #### Environment Variable :
   Below value(s) are to be added in .env file
@@ -78,7 +83,7 @@ To use Azure OpenAI embedding with MAAP framework, you would need to feed below 
 Provided below are the instructions on how to procure the right values for building your MAAP framework.
 
 - ##### Deployment Name
-  You can pick the deployment name as shown below from your [console](https://oai.azure.com/portal).
+  You can pick the deployment name for AZURE_OPENAI_API_EMBEDDINGS_DEPLOYMENT_NAME and AZURE_OPENAI_API_DEPLOYMENT_NAME as shown below from your [console](https://oai.azure.com/portal).
 
   ![Console Image](./img/image_azure_llm.png)
 
@@ -96,3 +101,6 @@ Provided below are the instructions on how to procure the right values for build
 
 
   Refer [here](https://learn.microsoft.com/en-us/azure/ai-services/openai/tutorials/embeddings#retrieve-key-and-endpoint) for further details.
+
+- ##### API Version
+  Check the docs [here](https://learn.microsoft.com/en-us/azure/ai-services/openai/reference) to pass the right api-version.

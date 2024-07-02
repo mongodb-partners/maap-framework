@@ -24,12 +24,13 @@ After configuring the application, the user is guided through the process of ing
 
 This documentation provides a clear and detailed roadmap for developers to set up and customize their RAG applications using the MongoDB MAAP Chatbot Framework, emphasizing flexibility and ease of use through configuration.
 
-# Setup and Running Demo Video: https://www.youtube.com/watch?v=-r824BdVZt0
+- Setup and Running Demo Video: https://www.youtube.com/watch?v=-r824BdVZt0
 
-Internal Chatbot Demo Video: https://drive.google.com/file/d/14gcuJLT2BXhQcS-LpjBqvrSY234x7PK9/view?usp=sharing
+- Internal Chatbot Demo Video: https://drive.google.com/file/d/14gcuJLT2BXhQcS-LpjBqvrSY234x7PK9/view?usp=sharing
 
 # Steps to run the application
 1. Clone the project to you machine install dependencies
+
 ## Installation
 
 ```
@@ -67,8 +68,6 @@ llms:
     temprature: ''
     top_p: ''
     top_k: ''
-
-
 ``` 
 Also, please make a copy of the `examples/partnerproduct/example.env` file and rename it as `.env`. Place this file in the same folder where you are running your application. In the `.env` file, add the necessary API keys, URLs, connection strings, and any other secrets required for your application.
 
@@ -92,6 +91,24 @@ Also, please make a copy of the `examples/partnerproduct/example.env` file and r
     * DocxLoader: Used for loading data from DOCX documents. It is initialized with a file path.
     * ConfluenceLoader: Used for loading data from Confluence spaces. It is initialized with space names and Confluence connection details.
 
+### MAAP Partner Integrations
+
+Partner specific information can be found as below; 
+Go to [this](https://mongodb-partners.github.io/maap-chatbot-builder/docs/category/partners) page for partner specific documentations.
+
+
+| Sr # | MAAP Partner  | Partner Type  | Documentation                                                                                      |
+|------|---------------|---------------|--------------------------------------------------------------------------------------------------------|
+| 1    | AWS           | Cloud provider| [Link](https://mongodb-partners.github.io/maap-chatbot-builder/docs/partners/amazon)                   |
+| 2    | Azure         | Cloud provider| [Link](https://mongodb-partners.github.io/maap-chatbot-builder/docs/partners/azure)                    |
+| 3    | GCP           | Cloud provider| [Link](https://mongodb-partners.github.io/maap-chatbot-builder/docs/partners/gcp)                      |
+| 4    | Anthropic     | AI tech       | [Link](https://mongodb-partners.github.io/maap-chatbot-builder/docs/partners/anthropic)                |
+| 5    | Anyscale      | AI tech       | [Link](https://mongodb-partners.github.io/maap-chatbot-builder/docs/partners/anyscale)                 |
+| 6    | Cohere        | AI tech       | [Link](https://mongodb-partners.github.io/maap-chatbot-builder/docs/partners/cohere)                   |
+| 7    | [Fireworks.AI](https://example.com) | AI tech       | [Link](https://mongodb-partners.github.io/maap-chatbot-builder/docs/partners/fireworksai)               |
+| 8    | Langchain     | AI tech       | [Link](https://mongodb-partners.github.io/maap-chatbot-builder/docs/partners/langchain)                |
+| 9   | Nomic         | AI tech       | [Link](https://mongodb-partners.github.io/maap-chatbot-builder/docs/partners/nomic)                    |
+
 
 3. Once configured you can use the yaml file you just created say as in example `examples/partnerproduct/src/config_1.yaml`
 ## Ingest Data
@@ -112,5 +129,5 @@ cd builder/partnerproduct/ui
 npm install
 npm run start
 ```
-Your application ui will be running at `http://localhost:3000`
+Your application ui will be running at [http://localhost:3000](http://localhost:3000)
 
