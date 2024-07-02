@@ -6,6 +6,9 @@ import { Chunk, ConversationHistory } from '../global/types.js';
 import { BaseModel } from '../interfaces/base-model.js';
 
 export class Ollama extends BaseModel {
+    protected runStreamQuery(system: string, userQuery: string, supportingContext: Chunk[], pastConversations: ConversationHistory[]): Promise<any> {
+        throw new Error('Method not implemented.');
+    }
     private readonly debug = createDebugMessages('maap:model:Ollama');
     private model: ChatOllamaAI;
 

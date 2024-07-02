@@ -2,7 +2,7 @@
 import * as fs from 'fs';
 import * as yaml from 'js-yaml';
 import * as process from 'process';
-import { Anthropic, BaseLoader, AzureChatAI, CohereEmbeddings, ConfluenceLoader, DocxLoader, GeckoEmbedding, OpenAi, PdfLoader, SitemapLoader, VertexAI, WebLoader } from '../../index.js';
+import { Anthropic, BaseLoader, AzureChatAI, CohereEmbeddings, ConfluenceLoader, DocxLoader, GeckoEmbedding, OpenAi, PdfLoader, SitemapLoader, VertexAI, WebLoader, YoutubeSearchLoader, YoutubeLoader, YoutubeChannelLoader, PptLoader, JsonLoader } from '../../index.js';
 import { MongoDBAtlas } from '../../vectorDb/mongo-db-atlas.js';
 import { strict as assert } from 'assert';
 import { AnyscaleModel } from '../../models/anyscale-model.js';
@@ -12,6 +12,10 @@ import { TitanEmbeddings } from '../../embeddings/titan-embeddings.js';
 import { NomicEmbeddingsv1 } from '../../embeddings/nomic-v1-embeddings.js';
 import { NomicEmbeddingsv1_5 } from '../../embeddings/nomic-v1-5-embeddings.js';
 import { AzureOpenAiEmbeddings } from '../../embeddings/azure-embeddings.js';
+import { BedrockEmbedding } from '../../embeddings/bedrock-embeddings.js';
+import { FireworksEmbedding } from '../../embeddings/fireworks-embeddings.js';
+
+// src/loaders/confluence-loader.ts src/loaders/docx-loader.ts src/loaders/excel-loader.ts src/loaders/json-loader.ts src/loaders/pdf-loader.ts src/loaders/ppt-loader.ts src/loaders/sitemap-loader.ts src/loaders/text-loader.ts src/loaders/web-loader.ts src/loaders/youtube-channel-loader.ts src/loaders/youtube-loader.ts src/loaders/youtube-search-loader.ts
 function getDataFromYamlFile() {
   const args = process.argv.slice(2);
 
@@ -116,6 +120,10 @@ export function getEmbeddingModel() {
       return new CohereEmbeddings({ modelName: parsedData.embedding.model_name });
     case 'Titan':
       return new TitanEmbeddings();
+    case 'Bedrock':
+      return new BedrockEmbedding({ modelName: parsedData.embedding.model_name, dimension: parsedData.embedding.dimension});
+    case 'Fireworks':
+      return new FireworksEmbedding({ modelName: parsedData.embedding.model_name, dimension: parsedData.embedding.dimension});  
     case 'Nomic-v1':
       return new NomicEmbeddingsv1();
     case 'Nomic-v1.5':
@@ -173,9 +181,51 @@ export function getIngestLoader() {
           chunkOverlap: data.chunk_overlap,
         }));
         break;
+      case 'youtube-search':
+        dataloaders.push(new YoutubeSearchLoader({
+          searchString: data.query,
+          chunkSize: data.chunk_size,
+          chunkOverlap: data.chunk_overlap,
+        }));
+        break;
+        case 'youtube':
+          dataloaders.push(new YoutubeLoader({
+            videoIdOrUrl: data.video_id_or_url,
+            chunkSize: data.chunk_size,
+            chunkOverlap: data.chunk_overlap,
+          }));
+        break;
+        case 'youtube-channel':
+          dataloaders.push(new YoutubeChannelLoader({
+            channelId: data.channel_id,
+            chunkSize: data.chunk_size,
+            chunkOverlap: data.chunk_overlap,
+          }));
+        break;
+        case 'ppt':
+          dataloaders.push(new PptLoader({
+            filePath: data.source_path,
+            chunkSize: data.chunk_size,
+            chunkOverlap: data.chunk_overlap,
+          }));
+        break;
+        case 'ppt':
+          dataloaders.push(new PptLoader({
+            filePath: data.source_path,
+            chunkSize: data.chunk_size,
+            chunkOverlap: data.chunk_overlap,
+          }));
+        break;
       default:
       // Handle unsupported source type (optional)
     }
   }
   return dataloaders;
+}
+
+export function getStreamOptions() {
+  const parsedData = getDataFromYamlFile();
+  return {
+    stream: parsedData.stream_options.stream ?? false,
+  };
 }
