@@ -93,8 +93,8 @@ Also, please make a copy of the `examples/partnerproduct/example.env` file and r
 
 ### MAAP Partner Integrations
 
-Partner specific information can be found as below; 
-Go to [this](https://mongodb-partners.github.io/maap-chatbot-builder/docs/category/partners) page for partner specific documentations.
+Partner-specific information can be found below; 
+Go to [this](https://mongodb-partners.github.io/maap-chatbot-builder/docs/category/partners) page for partner-specific documentation.
 
 
 | Sr # | MAAP Partner  | Partner Type  | Documentation                                                                                      |
@@ -105,9 +105,9 @@ Go to [this](https://mongodb-partners.github.io/maap-chatbot-builder/docs/catego
 | 4    | Anthropic     | AI tech       | [Link](https://mongodb-partners.github.io/maap-chatbot-builder/docs/partners/anthropic)                |
 | 5    | Anyscale      | AI tech       | [Link](https://mongodb-partners.github.io/maap-chatbot-builder/docs/partners/anyscale)                 |
 | 6    | Cohere        | AI tech       | [Link](https://mongodb-partners.github.io/maap-chatbot-builder/docs/partners/cohere)                   |
-| 7    | [Fireworks.AI](https://example.com) | AI tech       | [Link](https://mongodb-partners.github.io/maap-chatbot-builder/docs/partners/fireworksai)               |
+| 7    | Fireworks.AI  | AI tech       | [Link](https://mongodb-partners.github.io/maap-chatbot-builder/docs/partners/fireworksai)               |
 | 8    | Langchain     | AI tech       | [Link](https://mongodb-partners.github.io/maap-chatbot-builder/docs/partners/langchain)                |
-| 9   | Nomic         | AI tech       | [Link](https://mongodb-partners.github.io/maap-chatbot-builder/docs/partners/nomic)                    |
+| 9   | Nomic          | AI tech       | [Link](https://mongodb-partners.github.io/maap-chatbot-builder/docs/partners/nomic)                    |
 
 
 3. Once configured you can use the yaml file you just created say as in example `examples/partnerproduct/src/config_1.yaml`
