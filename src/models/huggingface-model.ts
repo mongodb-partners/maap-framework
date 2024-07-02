@@ -5,6 +5,9 @@ import { BaseModel } from '../interfaces/base-model.js';
 import { Chunk, ConversationHistory } from '../global/types.js';
 
 export class HuggingFace extends BaseModel {
+    protected runStreamQuery(system: string, userQuery: string, supportingContext: Chunk[], pastConversations: ConversationHistory[]): Promise<any> {
+        throw new Error('Method not implemented.');
+    }
     private readonly debug = createDebugMessages('maap:model:HuggingFace');
 
     private readonly modelName: string;
