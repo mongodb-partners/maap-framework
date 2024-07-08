@@ -133,6 +133,7 @@ export class RAGApplication {
         await loader.init();
 
         const chunks = await loader.getChunks();
+
         if (this.cache && (await this.cache.hasLoader(uniqueId))) {
             const { chunkCount: previousChunkCount } = await this.cache.getLoader(uniqueId);
 
@@ -222,11 +223,10 @@ export class RAGApplication {
     }
 
     public async createVectorIndex() {
-        try {
-            await this.vectorDb.createVectorIndex(RAGEmbedding.getEmbedding().getDimensions());
-        }
-        catch (e) {
-            console.error('Error creating vector index', e);
-        }
+        await this.vectorDb.createVectorIndex(RAGEmbedding.getEmbedding().getDimensions());
+    }
+
+    public async docsCount() : Promise<number> {
+        return await this.vectorDb.docsCount();
     }
 }

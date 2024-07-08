@@ -151,6 +151,7 @@ export class MongoDBAtlas implements BaseDb {
      */
     async createVectorIndex(numDimensions: number, similarityFunction?: string): Promise<void> {
         try {
+            
             this.similarityFunction = similarityFunction ?? "cosine";
             const index = {
                 name: "vector_index",
@@ -166,10 +167,20 @@ export class MongoDBAtlas implements BaseDb {
                     ]
                 }
             }
-            const result = await this.collection.createSearchIndex(index);
-            console.log(result);
+            await this.collection.createSearchIndex(index);
+            console.log("\n-- Vector index created --")
         } catch (e) {
-            console.error(e);
+            return Promise.reject(e.codeName);
+        }
+    }
+
+    async docsCount(): Promise<number> {
+        try {
+            const docsCount = await this.client.db(this.dbName).collection(this.collectionName).estimatedDocumentCount();
+            return docsCount;
+        }
+        catch (e) {
+            return 0;
         }
     }
 }
