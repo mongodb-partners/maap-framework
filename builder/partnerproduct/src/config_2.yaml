@@ -1,6 +1,6 @@
 ingest:
     - source: 'web'
-      source_path: 'https://en.wikipedia.org/wiki/MongoDB'
+      source_path: 'https://mongodb-partners.github.io/maap-chatbot-builder/docs/intro'
       chunk_size: 1000
       chunk_overlap: 100
     

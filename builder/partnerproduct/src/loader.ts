@@ -6,11 +6,12 @@ import {
     getModelClass,
 } from '../../../src/yaml_parser/src/LoadYaml.js';
 import { RAGApplicationBuilder } from "../../../src/index.js";
-import { MongoDBAtlas } from "../../../src/vectorDb/mongo-db-atlas.js";
 import { exit } from 'process';
 
 
 try {
+    let chunksAdded = 0;
+
     // Initialize the RAG application
     const llmApplication = await new RAGApplicationBuilder()
         .setModel(getModelClass())
@@ -18,17 +19,23 @@ try {
         .setVectorDb(getDatabaseConfig())
         .build();
 
-    // Add the sitemap loader
     const dataloader = getIngestLoader();
-    for(const data of dataloader){
-        await llmApplication.addLoader(data);
+    for(const data of dataloader) {
+        await llmApplication.addLoader(data).then((chunks) => {
+            console.log(`\n-- Data inserted --`)
+            chunksAdded += chunks.entriesAdded;
+        });
+    }
+    
+    if (chunksAdded > 0) {
+        console.log(`\n Total documents added : ${chunksAdded} `)
+        await llmApplication.createVectorIndex();
+    }
+    else {
+        console.log("\n-- Data not inserted, please retry --")
     }
 
-    console.log("-- Data inserted successfully --")
-    await llmApplication.createVectorIndex();
-    console.log("-- Vector index created successfully --")
-
-} catch (error) {
-    console.log("-- Data Error --", error)
+} catch (e) {
+    console.log("\n Data Error : ", e)
 }
 exit(0);

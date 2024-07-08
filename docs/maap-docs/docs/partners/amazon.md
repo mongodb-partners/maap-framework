@@ -42,7 +42,7 @@ To use Amazon FM with MAAP framework, you would need to the below components to 
 
 ### Embedding Model
 
-To use Amazon powered embedding model `amazon.titan-embed-text-v1` with MAAP framework, use the below configurations.
+To use Amazon powered embedding model with MAAP framework, use the below configurations.
 
 #### Usage with MAAP
 To use AWS Titan embedding with MAAP framework, you would need to feed below values.
@@ -53,6 +53,7 @@ To use AWS Titan embedding with MAAP framework, you would need to feed below val
   ```
   embedding:
       class_name: Titan
+      model_name: `amazon.titan-embed-image-v1` or `amazon.titan-embed-text-v2:0`
   ```
 
 - #### Environment Variable :
@@ -64,4 +65,17 @@ To use AWS Titan embedding with MAAP framework, you would need to feed below val
     BEDROCK_AWS_SECRET_ACCESS_KEY = <check_references_below>
   ```
 
+
+### References
+
+Provided below are the instructions on how to procure the right values for building your MAAP framework.
+
+- ##### Model Name 
+  Based on the provider you are using, you can use the Model ID for the model name. The list of base models can be found [here](https://docs.aws.amazon.com/bedrock/latest/userguide/model-ids.html#model-ids-arns).
+
+- ##### BEDROCK_AWS_REGION
+  The aws-region you are using. Listed [here](https://docs.aws.amazon.com/bedrock/latest/userguide/bedrock-regions.html) are the supported AWS Regions. 
+
+- ##### BEDROCK_AWS_ACCESS_KEY_ID and BEDROCK_AWS_SECRET_ACCESS_KEY
+  You can follow any method listed [here](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html#Using_CreateAccessKey_CLIAPI) to get your access key ID and its secret.
 
