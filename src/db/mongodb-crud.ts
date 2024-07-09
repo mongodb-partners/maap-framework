@@ -7,7 +7,7 @@ export class MongoDBCrud {
     private client: MongoClient;
     private collection: any;
 
-    constructor({ connectionString, dbName, collectionName }: { connectionString: string; dbName: string; collectionName: string; embeddingKey?: string; textKey?: string; numCandidates: number; similarityFunction: string; minScore: number; }
+    constructor({ connectionString, dbName, collectionName }: { connectionString: string; dbName: string; collectionName: string; }
     ) {
         this.connectionString = connectionString;
         this.dbName = dbName;

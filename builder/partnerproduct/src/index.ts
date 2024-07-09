@@ -2,7 +2,7 @@ import 'dotenv/config';
 import {
     getModelClass,
     getEmbeddingModel,
-    getDatabaseConfigInfo
+    getVBDConfigInfo
 } from '../../../src/yaml_parser/src/LoadYaml.js';
 import {
     PreProcessQuery,
@@ -27,12 +27,28 @@ import {
     makeApp,
 } from 'mongodb-chatbot-server';
 import { makeMongoDbEmbeddedContentStore, logger } from 'mongodb-rag-core';
+import { MongoDBCrud } from '../../../src/db/mongodb-crud.js';
 
 
 // Load MAAP base classes
 const model = getModelClass();
 const embedding_model = getEmbeddingModel();
-const { dbName, connectionString, vectorSearchIndexName, minScore, numCandidates } = getDatabaseConfigInfo();
+const { dbName, connectionString, vectorSearchIndexName, minScore, numCandidates } = getVBDConfigInfo();
+
+
+// Load crud operator with query and name of the operator
+const crudOperatorConfigs = getCrudOperatorConfigs();
+const conditionalLLM = await new RAGApplicationBuilder().setModel(getModelClass());
+for(const crudConfig of crudOperatorConfigs) {
+    const crud = new MongoDBCrud(crudConfig.connectionString, crudConfig.dbName, crudConfig.collectionName);
+    conditionalLLM.setDb(
+        crud,
+        crudConfig.curdName,
+        crudConfig.query
+    );
+}
+
+
 
 // MongoDB data source for the content used in RAG.
 // Generated with the Ingest CLI.
