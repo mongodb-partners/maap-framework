@@ -19,6 +19,7 @@ export class RAGApplication {
     private readonly searchResultCount: number;
     private readonly cache?: BaseCache;
     private readonly vectorDb: BaseDb;
+    private readonly dbLookup: Map<string, any> = new Map();
     private readonly reranker: BaseReranker;
     private readonly model: BaseModel;
     private readonly embeddingRelevanceCutOff: number;
@@ -36,6 +37,7 @@ export class RAGApplication {
 
         this.loaders = llmBuilder.getLoaders();
         this.vectorDb = llmBuilder.getVectorDb();
+        this.dbLookup = llmBuilder.getDbLookup();
         this.reranker = llmBuilder.getReranker();
         this.searchResultCount = llmBuilder.getSearchResultCount();
         this.embeddingRelevanceCutOff = llmBuilder.getEmbeddingRelevanceCutOff();
@@ -206,8 +208,22 @@ export class RAGApplication {
 
         const cleanQuery = cleanString(query);
         const rawContext = await this.getEmbeddings(cleanQuery);
-
         return [...new Map(rawContext.map((item) => [item.pageContent, item])).values()];
+    }
+
+
+    async getQueryContext(cleanQuery: string) {
+        //TODO: Method override. Create a MQL query with user prompts using LLM. 
+        // Generate output query with the user prompt and the context.
+        const result = await this.model.query(this.queryTemplate, cleanQuery, [], "cond");
+        let resultJson;
+        try{
+            resultJson = JSON.parse(result);
+            return this.dbLookup.get(resultJson['collectionName']).aggregate(resultJson['query']);
+        } catch(er){
+            this.debug(`Error parsing result to JSON: ${result}`);
+            return false;
+        }
     }
 
     public async query(
@@ -217,9 +233,21 @@ export class RAGApplication {
         result: string;
         sources: string[];
     }> {
-        const context = await this.getContext(userQuery);
-        const sources = [...new Set(context.map((chunk) => chunk.metadata.source))];
-
+        let sources;
+        let context;
+        if (this.vectorDb) {
+            // retrieval by vector search
+            context = await this.getContext(userQuery);
+            sources = [...new Set(context.map((chunk) => chunk.metadata.source))];
+        } else if (this.dbLookup.size>0){
+            // retrieval by aggregate pipeline
+            context = await this.getQueryContext(userQuery);
+            sources = [...new Set(context.map((doc) => JSON.stringify(doc)))];
+        } else {
+            // If there is not context lookup provided
+            sources = [];
+        }
+        
         return {
             sources,
             result: await this.model.query(this.queryTemplate, userQuery, context, conversationId),
