@@ -12,9 +12,6 @@ import { getModelClass } from '../yaml_parser/src/LoadYaml.js';
 import { MongoDBCrud } from '../db/mongodb-crud.js';
 
 export class RAGApplicationBuilder {
-    getDbLookup(): Map<string, any> {
-        throw new Error('Method not implemented.');
-    }
     private searchResultCount: number;
     private loaders: BaseLoader[];
     private vectorDb: BaseDb;

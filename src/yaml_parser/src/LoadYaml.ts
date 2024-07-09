@@ -42,10 +42,25 @@ export function getDatabaseConfig() {
   });
 }
 
+export function getAggregateOperatorConfigs(){
+  const parsedData = getDataFromYamlFile();
+  const aggregateOperatorConfigs = [];
+  for (const aggregateConfig of parsedData.aggregate_operators) {
+    aggregateOperatorConfigs.push({
+      connectionString: aggregateConfig.connectionString,
+      dbName: aggregateConfig.dbName,
+      collectionName: aggregateConfig.collectionName,
+      aggregatePipelineName: aggregateConfig.aggregatePipelineName,
+      query: aggregateConfig.query // TODO read from respective text file
+    });
+  }
+  return aggregateOperatorConfigs;
+}
+
 /**
  Gets the DB info to use in the chatbot application
  */
-export function getDatabaseConfigInfo() {
+export function getVBDConfigInfo() {
   const parsedData = getDataFromYamlFile();
   const {
     vector_store: { connectionString, dbName, collectionName, vectorSearchIndexName, minScore, numCandidates },
