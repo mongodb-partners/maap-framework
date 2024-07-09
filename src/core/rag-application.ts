@@ -44,6 +44,7 @@ export class RAGApplication {
         RAGEmbedding.init(llmBuilder.getEmbeddingModel() ?? new NomicEmbeddingsv1_5());
         if (!this.model) throw new SyntaxError('Model not set');
         if (!this.vectorDb) throw new SyntaxError('VectorDb not set');
+        // TODO: Make builder components conditional. If not set, work wihtout it. Add a warning message and move forward.
     }
 
     private async embedChunks(chunks: Pick<Chunk, 'pageContent'>[]) {
@@ -207,6 +208,9 @@ export class RAGApplication {
     }
 
     public async getContext(query: string) {
+        //TODO: Method override. Create a MQL query with user prompts using LLM. 
+        // Generate output query with the user prompt and the context.
+
         const cleanQuery = cleanString(query);
         const rawContext = await this.getEmbeddings(cleanQuery);
 
