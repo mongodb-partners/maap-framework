@@ -8,8 +8,13 @@ import { SIMPLE_MODELS, SIMPLE_RANKERS } from '../global/constants.js';
 import { OpenAi } from '../models/openai-model.js';
 import { BaseReranker } from '../interfaces/base-reranker.js';
 import { CohereReranker } from '../reranker/cohere-reranker.js';
+import { getModelClass } from '../yaml_parser/src/LoadYaml.js';
+import { MongoDBCrud } from '../db/mongodb-crud.js';
 
 export class RAGApplicationBuilder {
+    getDbLookup(): Map<string, any> {
+        throw new Error('Method not implemented.');
+    }
     private searchResultCount: number;
     private loaders: BaseLoader[];
     private vectorDb: BaseDb;
@@ -20,6 +25,7 @@ export class RAGApplicationBuilder {
     private model: BaseModel;
     private embeddingRelevanceCutOff: number;
     private reranker: BaseReranker;
+    private dbLookup: Map<string, any> = new Map<string, any>();
 
     constructor() {
         this.loaders = [];
@@ -31,7 +37,7 @@ export class RAGApplicationBuilder {
         
         Do not use words like context or training data when responding. You can say you do not have all the information but do not indicate that you are not a reliable source.`;
 
-        this.setModel(SIMPLE_MODELS.OPENAI_GPT4_O);
+        this.setModel(getModelClass());
         this.embeddingRelevanceCutOff = 0;
     }
 
@@ -54,6 +60,10 @@ export class RAGApplicationBuilder {
     setVectorDb(vectorDb: BaseDb) {
         this.vectorDb = vectorDb;
         return this;
+    }
+
+    setDb(db: MongoDBCrud, key: string, query: any[]) {
+        this.dbLookup.set(key,{"database": db, "aggregateQuery": query});
     }
 
     setTemperature(temperature: number) {
@@ -109,6 +119,8 @@ export class RAGApplicationBuilder {
         return this;
     }
 
+    
+
     getLoaders() {
         return this.loaders;
     }
@@ -119,6 +131,14 @@ export class RAGApplicationBuilder {
 
     getVectorDb() {
         return this.vectorDb;
+    }
+
+    getDbLookup(){
+        return this.dbLookup;
+    }
+
+    getDb(key: string) {
+        return this.dbLookup.get(key);
     }
 
     getTemperature() {
