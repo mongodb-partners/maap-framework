@@ -2,7 +2,8 @@ import 'dotenv/config';
 import {
     getModelClass,
     getEmbeddingModel,
-    getVBDConfigInfo
+    getVBDConfigInfo,
+    getAggregateOperatorConfigs
 } from '../../../src/yaml_parser/src/LoadYaml.js';
 import {
     PreProcessQuery,
@@ -37,10 +38,10 @@ const { dbName, connectionString, vectorSearchIndexName, minScore, numCandidates
 
 
 // Load crud operator with query and name of the operator
-const crudOperatorConfigs = getCrudOperatorConfigs();
+const crudOperatorConfigs = getAggregateOperatorConfigs();
 const conditionalLLM = await new RAGApplicationBuilder().setModel(getModelClass());
 for(const crudConfig of crudOperatorConfigs) {
-    const crud = new MongoDBCrud(crudConfig.connectionString, crudConfig.dbName, crudConfig.collectionName);
+    const crud = new MongoDBCrud({connectionString:crudConfig.connectionString, dbName:crudConfig.dbName, collectionName: crudConfig.collectionName});
     conditionalLLM.setDb(
         crud,
         crudConfig.curdName,

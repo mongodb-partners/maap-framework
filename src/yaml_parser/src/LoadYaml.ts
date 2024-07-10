@@ -60,6 +60,20 @@ export function getAggregateOperatorConfigs(){
   return aggregateOperatorConfigs;
 }
 
+export function getConditionOpConfigs(){
+  const parsedData = getDataFromYamlFile();
+  const conditionOpConfigs = [];
+  for (const conditionConfig of parsedData.conditional_operators) {
+    conditionOpConfigs.push({
+      name: conditionConfig.name,
+      description: conditionConfig.description,
+      prompt: conditionConfig.prompt,
+      aggregatePipelineName: conditionConfig.aggregatePipelineName
+    });
+  }
+  return conditionOpConfigs;
+}
+
 /**
  Gets the DB info to use in the chatbot application
  */
