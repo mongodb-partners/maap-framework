@@ -44,7 +44,8 @@ export class RAGApplication {
 
         RAGEmbedding.init(llmBuilder.getEmbeddingModel() ?? new NomicEmbeddingsv1_5());
         if (!this.model) throw new SyntaxError('Model not set');
-        if (!this.vectorDb) throw new SyntaxError('VectorDb not set');
+        console.log("DB lookup size",this.dbLookup.size);
+        if (!this.vectorDb && this.dbLookup.size<=0) throw new SyntaxError('VectorDb or MongoDB Aggregator not set');
         // TODO: Make builder components conditional. If not set, work wihtout it. Add a warning message and move forward.
     }
 
@@ -61,9 +62,10 @@ export class RAGApplication {
 
         await this.model.init();
         this.debug('Initialized LLM class');
-
-        await this.vectorDb.init({ dimensions: RAGEmbedding.getEmbedding().getDimensions() });
-        this.debug('Initialized vector database');
+        if(this.vectorDb){
+            await this.vectorDb.init({ dimensions: RAGEmbedding.getEmbedding().getDimensions() });
+            this.debug('Initialized vector database');
+        }
 
         if (this.cache) {
             await this.cache.init();
@@ -203,19 +205,21 @@ export class RAGApplication {
     }
 
     public async getContext(query: string) {
-        //TODO: Method override. Create a MQL query with user prompts using LLM. 
-        // Generate output query with the user prompt and the context.
-
         const cleanQuery = cleanString(query);
         const rawContext = await this.getEmbeddings(cleanQuery);
         return [...new Map(rawContext.map((item) => [item.pageContent, item])).values()];
     }
 
 
-    async getQueryContext(cleanQuery: string) {
+    public async getQueryContext(cleanQuery: string, pipelineName: string) {
         //TODO: Method override. Create a MQL query with user prompts using LLM. 
         // Generate output query with the user prompt and the context.
-        const result = await this.model.query(this.queryTemplate, cleanQuery, [], "cond");
+        const mqlQuery = await this.dbLookup.get(pipelineName).query;
+        console.log("MQL Template", mqlQuery);
+        console.log('Query Template', this.queryTemplate);
+        const evalQueryTemplate = eval(this.queryTemplate);
+        console.log('Query Template', evalQueryTemplate);
+        const result = await this.model.query(evalQueryTemplate, cleanQuery, [], "cond");
         let resultJson;
         try{
             resultJson = JSON.parse(result);
@@ -241,7 +245,7 @@ export class RAGApplication {
             sources = [...new Set(context.map((chunk) => chunk.metadata.source))];
         } else if (this.dbLookup.size>0){
             // retrieval by aggregate pipeline
-            context = await this.getQueryContext(userQuery);
+            context = await this.getQueryContext(userQuery, "testing"); // TODO make it pluggable
             sources = [...new Set(context.map((doc) => JSON.stringify(doc)))];
         } else {
             // If there is not context lookup provided
@@ -260,5 +264,9 @@ export class RAGApplication {
 
     public async docsCount() : Promise<number> {
         return await this.vectorDb.docsCount();
+    }
+
+    public getDb(key: string): Map<string, any> {
+        return this.dbLookup.get(key);
     }
 }

@@ -5,7 +5,9 @@
     "private": true,
     "scripts": {
         "start": "tsc && node dist/builder/partnerproduct/src/index.js",
-        "ingest": "tsc && node dist/builder/partnerproduct/src/loader.js"
+        "ingest": "tsc && node dist/builder/partnerproduct/src/loader.js",
+        "test": "tsc && node dist/builder/partnerproduct/src/test.js",
+        "build": "tsc"
     },
     "author": "",
     "license": "ISC",

@@ -134,10 +134,6 @@ export class RAGApplicationBuilder {
         return this.dbLookup;
     }
 
-    getDb(key: string) {
-        return this.dbLookup.get(key);
-    }
-
     getTemperature() {
         return this.temperature;
     }
