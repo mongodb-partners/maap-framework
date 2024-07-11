@@ -30,7 +30,8 @@ export class YoutubeLoader extends BaseLoader<{ type: 'YoutubeLoader' }> {
         });
 
         try {
-            const transcripts = await YoutubeTranscript.fetchTranscript(this.videoIdOrUrl, { lang: 'en' });
+            // const transcripts = await YoutubeTranscript.fetchTranscript(this.videoIdOrUrl, { lang: 'en' });
+            const transcripts = await YoutubeTranscript.fetchTranscript(this.videoIdOrUrl);
             this.debug(`Transcripts (length ${transcripts.length}) obtained for video`, this.videoIdOrUrl);
 
             for (const transcript of transcripts) {
