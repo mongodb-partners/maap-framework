@@ -1,0 +1,8 @@
+{
+  "label": "Partners",
+  "position": 1,
+  "link": {
+    "type": "generated-index",
+    "description": "Find a list of all the partners, how to configure them to customize and build your own RAG."
+  }
+}

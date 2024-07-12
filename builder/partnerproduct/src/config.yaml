@@ -1,0 +1,22 @@
+ingest:
+  - source: 'pdf'
+    source_path: '<file_path>'
+    chunk_size: 2000
+    chunk_overlap: 200
+embedding:
+    class_name: Nomic-v1.5
+vector_store:
+    connectionString: '<you_mdb_connection_string>'
+    dbName: '<db_name>'
+    collectionName: 'embedded_content'
+    embeddingKey: 'embedding'
+    textKey: 'text'
+    numCandidates: 150
+    minScore: 0.1 
+    vectorSearchIndexName: 'vector_index'
+llms:
+    class_name: Fireworks
+    model_name: 'accounts/fireworks/models/mixtral-8x22b-instruct'
+    temprature: ''
+    top_p: ''
+    top_k: ''

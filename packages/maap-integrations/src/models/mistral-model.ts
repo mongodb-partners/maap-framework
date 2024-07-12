@@ -6,6 +6,9 @@ import { Chunk, ConversationHistory } from '../global/types.js';
 import { BaseModel } from '../interfaces/base-model.js';
 
 export class Mistral extends BaseModel {
+    protected runStreamQuery(system: string, userQuery: string, supportingContext: Chunk[], pastConversations: ConversationHistory[]): Promise<any> {
+        throw new Error('Method not implemented.');
+    }
     private readonly debug = createDebugMessages('maap:model:Mistral');
     private model: ChatMistralAI;
 
