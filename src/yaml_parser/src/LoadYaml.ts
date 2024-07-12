@@ -45,6 +45,7 @@ export function getDatabaseConfig() {
 export function getAggregateOperatorConfigs(){
   const parsedData = getDataFromYamlFile();
   const aggregateOperatorConfigs = [];
+  console.log("aggregate_operators", parsedData.aggregate_operators)
   for (const aggregateConfig of parsedData.aggregate_operators) {
     aggregateOperatorConfigs.push({
       connectionString: aggregateConfig.connectionString,
@@ -134,7 +135,6 @@ export function getModelClass() {
  */
 export function getEmbeddingModel() {
   const parsedData = getDataFromYamlFile();
-
   switch (parsedData.embedding.class_name) {
     case 'VertexAI':
       return new GeckoEmbedding();
