@@ -48,6 +48,7 @@ export function getDatabaseConfig() {
 export function getAggregateOperatorConfigs(){
   const parsedData = getDataFromYamlFile();
   const aggregateOperatorConfigs = [];
+  console.log("aggregate_operators", parsedData.aggregate_operators)
   for (const aggregateConfig of parsedData.aggregate_operators) {
     aggregateOperatorConfigs.push({
       connectionString: aggregateConfig.connectionString,

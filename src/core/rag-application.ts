@@ -43,10 +43,10 @@ export class RAGApplication {
         this.searchResultCount = llmBuilder.getSearchResultCount();
         this.embeddingRelevanceCutOff = llmBuilder.getEmbeddingRelevanceCutOff();
 
+        console.log("llmBuilder.getEmbeddingModel()", llmBuilder.getEmbeddingModel())
         RAGEmbedding.init(llmBuilder.getEmbeddingModel() ?? new NomicEmbeddingsv1_5());
         if (!this.model) throw new SyntaxError('Model not set');
-        console.log("DB lookup size",this.dbLookup.size);
-        if (!this.vectorDb && this.dbLookup.size<=0) throw new SyntaxError('VectorDb or MongoDB Aggregator not set');
+        if (!this.vectorDb && this.dbLookup.size<=0) throw new SyntaxError('VectorDB or MongoDB Aggregator not set');
         // TODO: Make builder components conditional. If not set, work wihtout it. Add a warning message and move forward.
     }
 
@@ -66,6 +66,11 @@ export class RAGApplication {
         if(this.vectorDb){
             await this.vectorDb.init({ dimensions: RAGEmbedding.getEmbedding().getDimensions() });
             this.debug('Initialized vector database');
+        }
+        if(this.dbLookup.size > 0) {
+            this.dbLookup.forEach(async (db) => {
+                await db.database.init();
+            })
         }
 
         if (this.cache) {
@@ -218,21 +223,21 @@ export class RAGApplication {
     }
 
 
-    public async getQueryContext(cleanQuery: string, pipelineName: string) {
+    public async getQueryContext(cleanQuery: string, aggregatePipelineName: string) {
         //TODO: Method override. Create a MQL query with user prompts using LLM. 
         // Generate output query with the user prompt and the context.
-        const mqlQuery = await this.dbLookup.get(pipelineName).query;
-        console.log("MQL Template", mqlQuery);
-        console.log('Query Template', this.queryTemplate);
+        
+        let mqlQuery = await this.dbLookup.get(aggregatePipelineName).aggregateQuery;
+        mqlQuery = JSON.stringify(mqlQuery);
         const evalQueryTemplate = eval(this.queryTemplate);
-        console.log('Query Template', evalQueryTemplate);
         const result = await this.model.query(evalQueryTemplate, cleanQuery, [], "cond");
-        let resultJson;
+        console.log('Result Query :: ', result);
         try{
-            resultJson = JSON.parse(result);
-            return this.dbLookup.get(resultJson['collectionName']).aggregate(resultJson['query']);
+            let resultJson = JSON.parse(result);
+            return this.dbLookup.get(aggregatePipelineName).database.aggregate(resultJson);
+
         } catch(er){
-            this.debug(`Error parsing result to JSON: ${result}`);
+            console.log(`Error ::: ${er}`);
             return false;
         }
     }

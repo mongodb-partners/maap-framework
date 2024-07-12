@@ -4,22 +4,28 @@ ingest:
     chunk_size: 2000
     chunk_overlap: 200
 embedding:
-    class_name: Nomic-v1.5
+    class_name: Azure-OpenAI-Embeddings
+    model_name: 'text-embedding-ada-002' 
+    deployment_name: "leafy-embedding-ada-002"
+    api_version: "2023-03-15-preview"
+    azure_openai_api_instance_name: "leafyhospopenai"
+
 vector_store:
-    connectionString: 'mongodb+srv://ashwinprsnl:p5w6ash@cflt-demo.2wqno.mongodb.net/?retryWrites=true&w=majority&appName=CFLT-demo'
-    dbName: 'travel_insurance_policy'
+    connectionString: 'mongodb+srv://admin:test123@demo.fmxyq.mongodb.net/'
+    dbName: 'chatter'
     collectionName: 'embedded_content'
     embeddingKey: 'embedding'
     textKey: 'text'
+    vectorSearchIndexName: 'vector_index'
     numCandidates: 150
     minScore: 0.1 
-    vectorSearchIndexName: 'vector_index'
+    similarityFunction: 'cosine'
 llms:
-    class_name: Fireworks
-    model_name: 'accounts/fireworks/models/mixtral-8x22b-instruct'
+    class_name: AzureOpenAI
+    deployment_name: "leafyhosp-gpt-35-turbo"
+    api_version: "2023-03-15-preview"
+    azure_openai_api_instance_name: "leafyhospopenai"
     temprature: ''
-    top_p: ''
-    top_k: ''
 stream_options:
     stream: true
 aggregate_operators:
@@ -34,4 +40,3 @@ conditional_operators:
       description: 'given last name and fist name fetch message'
       prompt: "`Convert natural langugage query to MongoDB aggregation / MQL query given the the template for query : ${mqlQuery} \n Instruction=Replace or fill in the variables in query that is represented as enclosed <_>`"
       aggregatePipelineName: 'testing'
-

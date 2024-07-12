@@ -87,6 +87,7 @@ const dummyRerank: Rerank = async ({ query, results }) => {
     return { results };
 };
 const dummyPreprocess: PreProcessQuery = async ({ query }) => {
+    // Aggreation query result + User query
     return { preprocessedQuery: query };
 };
 const findContentWithRerank = withReranker({ findContentFunc: findContent, reranker: dummyRerank });

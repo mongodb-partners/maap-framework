@@ -41,8 +41,10 @@ const { dbName, connectionString, vectorSearchIndexName, minScore, numCandidates
 const crudOperatorConfigs = getAggregateOperatorConfigs();
 const conditionOpConfigs = getConditionOpConfigs();
 for (const conditionConfig of conditionOpConfigs) {
-    let llmbuilder = new RAGApplicationBuilder().setModel(getModelClass())
-            .setQueryTemplate(conditionConfig.prompt);
+    let llmbuilder = new RAGApplicationBuilder().setModel(model)
+            .setQueryTemplate(conditionConfig.prompt)
+            .setEmbeddingModel(embedding_model);
+
     for (const crudConfig of crudOperatorConfigs) {
         const crud = new MongoDBCrud({ connectionString: crudConfig.connectionString, dbName: crudConfig.dbName, collectionName: crudConfig.collectionName });
         llmbuilder.setDb(
@@ -52,8 +54,8 @@ for (const conditionConfig of conditionOpConfigs) {
         );
     }
     const conditionalLLM = await llmbuilder.build();
-    console.log("DB lookup", conditionalLLM.getDb("testing"));
-    console.log("query context", await conditionalLLM.getQueryContext("I want the message for Ashwin Gangadhar", "testing"));
+    // console.log("DB lookup", conditionalLLM.getDb("testing"));
+    console.log("query context", await conditionalLLM.getQueryContext("fetch me messages for someone named Ashwin ", "testing"));
 }
 
 

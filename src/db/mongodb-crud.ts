@@ -15,18 +15,20 @@ export class MongoDBCrud {
         
     }
 
-    async init() {
-        this.client = new MongoClient(this.connectionString);
-        
+    public async init() {
+        if(!this.client) this.client = new MongoClient(this.connectionString);
     }
 
-    async aggregate(query: any[]): Promise<any[]> {
+    public async aggregate(query: any[]): Promise<any[]> {
+        let result: any 
         try {
-            this.init();
             this.collection = this.client.db(this.dbName).collection(this.collectionName);
-            return this.collection.aggregate(query).toArray();
+            result = this.collection.aggregate(query).toArray();
+        } catch(err) {
+            console.error(err);
         } finally {
-            await this.client.close();
+            // TODO : await this.client.close();
         }
+        return result;
     }
 }
