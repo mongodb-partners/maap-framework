@@ -1,24 +1,73 @@
 # MongoDB MAAP Chatbot Framework
+### Introduction 
+The [MongoDB AI Applications Program (MAAP)](https://www.mongodb.com/services/consulting/ai-applications-program) chatbot framework is a set of libraries that you can use to build your RAG Application
+using MongoDB and [Atlas Vector Search](https://www.mongodb.com/docs/atlas/atlas-vector-search/vector-search-overview/) and associated MAAP partners
 
-The MongoDB MAAP Chatbot Framework is a set of libraries that you can use to build your RAG Application
-using MongoDB and [Atlas Vector Search](https://www.mongodb.com/docs/atlas/atlas-vector-search/vector-search-overview/). and associated MAAP partners
-
-The repo offers the flexibility to its user to set up the rag application by simiply configuring a yaml file(details see below). The repo offers the users the flexibilty to choose from various option available through partners program. The following modules of rag are made configurable
+The repo offers flexibility to its users to set up the RAG application by simply configuring a YAML file(details see below). The repo allows users to choose from various options through the partners' program. The following modules of RAG are made configurable
 1. Data loaders
 2. Embedding Models
 3. Chat LLM Models
-4. Post query Reranker
+4. Post query Re-ranker
 
-# Document Preface
-The MongoDB MAAP Chatbot Framework documentation provides a comprehensive guide for setting up a Retrieval-Augmented Generation (RAG) application using MongoDB and Atlas Vector Search, along with integration options for various MAAP partners. This framework is designed to be highly configurable, allowing users to tailor their chatbot applications by simply modifying a YAML configuration file. The framework supports customization in four key areas: data loaders, embedding models, chat LLM (Large Language Models) models, and post-query rerankers.
 
-The setup process begins with cloning the project and installing dependencies. This involves navigating to the chatbot directory, building the project locally, and then installing npm packages in the builder/partnerproduct directory.
+### Reference Architecture Diagram
+Below given is the reference architecture of the framework with various components. 
+
+
+![image](https://github.com/user-attachments/assets/1086e809-62f7-4859-a2b5-0d4a21b721df)
+
+
+#### Overview of Advanced RAG Approaches
+
+1. **Data Loading**
+
+    Applications based on Large Language Models (LLMs) often involve extracting data from databases or files, such as PDFs, and converting it into a format usable by LLMs. The pivotal component here is the data source, containing private knowledge or content obtained.
+
+2. **Data Indexing and Embedding Models: Chunking & Vectorization**
+
+    Initially, we construct a vector index to represent the contents of our text documents. This involves breaking down the documents into smaller chunks and converting them into numerical vectors. The vectorized content forms the basis for subsequent retrieval and generation steps.
+
+3. **Post Retrieval: Retrieval, Reranking & Filtering**
+    
+    After retrieving relevant documents, we refine the context further through re-ranking and filtering:
+    
+    - **Re-ranking**: Prioritizing documents based on relevance.
+    - **Filtering**: Removing less relevant or noisy documents.
+
+4. **Pre Query Retrieval: Query Transformations**
+
+    Advanced RAG models explore various transformations of user queries to enhance retrieval accuracy. Techniques include query expansion and other modifications.
+
+5. **Chat Engine: LLM**
+
+    The chat engine combines retrieved context with the user’s query to create a prompt for the language model. This prompt guides the language model in generating contextually relevant responses.
+
+6. **Chat Engine: RAG Agents**
+
+    RAG agents manage the entire RAG process, coordinating retrieval, generation, and other components. They ensure seamless interaction between the search index, language model, and other modules.
+
+7. **Prompting: Response Synthesizer**
+
+    The response synthesizer generates the actual answer based on the combined context and user query. Attention and prompt engineering mechanisms may be employed to focus on relevant parts of retrieved documents during generation.
+
+
+
+## Environment
+The application is tested with below configurations.
+- Node Version:        **v20.0+**
+- MongoDB Version (Atlas):     **v7.0 (M10 Cluster Tier)** 
+
+
+## Document Preface
+The MongoDB MAAP Chatbot Framework documentation provides a comprehensive guide for setting up a Retrieval-Augmented Generation (RAG) application using MongoDB and Atlas Vector Search, along with integration options for various MAAP partners. This framework is designed to be highly configurable, allowing users to tailor their chatbot applications by simply modifying a YAML configuration file. The framework supports customization in four key areas: data loaders, embedding models, chat LLM (Large Language Models) models, and post-query re-rankers.
+
+The setup process begins with cloning the project and installing dependencies. This involves navigating to the chatbot directory, building the project locally, and then installing npm packages in the builder/partner product directory.
 
 Configuration of the RAG application is crucial and involves specifying details for data ingestion, embedding models, vector storage, and LLM models in a YAML file. This includes settings for data source types (e.g., PDF files), paths, chunk sizes, embedding class names, MongoDB connection strings, database and collection names, and specifics about the vector search index and LLM models.
 
 The documentation also highlights the process of instantiating embedding and LLM models based on the configuration. Different classes are instantiated based on the specified class_name in the configuration, catering to various services like VertexAI, Azure-OpenAI, Cohere, and others for embeddings, and a similar approach is taken for LLM models with classes like Fireworks, Anthropic, and Bedrock.
 
-Data loaders play a significant role in how data is ingested into the system. The framework supports multiple types of data loaders (e.g., WebLoader, PdfLoader, SitemapLoader, DocxLoader, ConfluenceLoader), each tailored to handle specific data sources like web pages, PDF files, sitemaps, DOCX documents, and Confluence spaces. These loaders are configured with parameters such as source paths and chunking details, and then added to a dataloaders array for processing.
+Data loaders play a significant role in how data is ingested into the system. The framework supports multiple types of data loaders (e.g., WebLoader, PdfLoader, SitemapLoader, DocxLoader, ConfluenceLoader), each tailored to handle specific data sources like web pages, PDF files, sitemaps, DOCX documents, and Confluence spaces. These loaders are configured with parameters such as source paths and chunking details, and then added to a data loaders array for processing.
 
 After configuring the application, the user is guided through the process of ingesting data, running the server, and starting the UI client application. The UI client application runs locally, allowing users to interact with the chatbot through a web interface.
 
@@ -28,21 +77,23 @@ This documentation provides a clear and detailed roadmap for developers to set u
 
 - Internal Chatbot Demo Video: https://drive.google.com/file/d/14gcuJLT2BXhQcS-LpjBqvrSY234x7PK9/view?usp=sharing
 
-# Steps to run the application
-1. Clone the project to you machine install dependencies
 
-## Installation
+## Steps to run the application
+
+### Installation
+
+Clone the project to your machine, and install dependencies.
 
 ```
-cd maap-chabot-builder
+cd maap-chatbot-builder
 npm install
 cd builder/partnerproduct
 npm install
 ```
 
-2. Configure RAG application
-# Configuration
-Edit the config.yaml file to include the necessary details for data ingestion, embedding models, vector storage, and LLM models. The configuration file should include settings for data source types (e.g., PDF files), paths, chunk sizes, embedding class names, MongoDB connection strings, database and collection names, and specifics about the vector search index and LLM models.
+
+### Configuration
+Edit the `config.yaml` file to include the necessary details for data ingestion, embedding models, vector storage, and LLM models. The configuration file should include settings for data source types (e.g., PDF files), paths, chunk sizes, embedding class names, MongoDB connection strings, database and collection names, and specifics about the vector search index and LLM models.
 
 For example, the following configuration settings might be included:
 ```
@@ -65,39 +116,18 @@ vector_store:
 llms:
     class_name: Fireworks
     model_name: 'accounts/fireworks/models/mixtral-8x22b-instruct'
-    temprature: ''
+    temperature: ''
     top_p: ''
     top_k: ''
 ``` 
 Also, please make a copy of the `examples/partnerproduct/example.env` file and rename it as `.env`. Place this file in the same folder where you are running your application. In the `.env` file, add the necessary API keys, URLs, connection strings, and any other secrets required for your application.
 
-## Embedding Model 
-    Instantiation of Embedding Classes:
-    
-    * For 'VertexAI', it instantiates GeckoEmbedding without any parameters.
-    * For 'Azure-OpenAI-Embeddings', it creates an instance of AzureOpenAiEmbeddings, passing in an object with properties like modelName, deploymentName, apiVersion, and azureOpenAIApiInstanceName, all derived from parsedData.embedding.
-    * The 'Cohere' case instantiates CohereEmbeddings with a modelName parameter.
-    * 'Titan' leads to the creation of a TitanEmbeddings instance without parameters.
-    * Both 'Nomic-v1' and 'Nomic-v1.5' cases instantiate their respective classes, NomicEmbeddingsv1 and NomicEmbeddingsv1_5, without parameters.
-## LLM Model
-    Each case in the switch corresponds to a different class name (VertexAI, OpenAI, Anyscale, Fireworks, Anthropic, Bedrock). If the class_name matches one of these cases, a new instance of the corresponding class is created and returned. The constructor of each class is called with an object containing a modelName, which is also obtained from parsedData.llms.model_name. modelName corresponds to the LLM Model that is being used as part of the demo
-
-## Data Loaders
-    For each case, a new instance of the corresponding loader class (WebLoader, PdfLoader, SitemapLoader, DocxLoader, ConfluenceLoader) is created and configured with parameters extracted from the data object. These parameters typically include the path or URL to the data source (source_path), and may also include settings for how the data should be chunked (chunkSize, chunkOverlap). The newly created loader instance is then added to the dataloaders array for later processing.
-
-    * WebLoader: Used for loading data from web pages. It is initialized with a URL.
-    * PdfLoader: Used for loading data from PDF files. It is initialized with a file path.
-    * SitemapLoader: Used for loading data from sitemaps. It is initialized with a URL to the sitemap.
-    * DocxLoader: Used for loading data from DOCX documents. It is initialized with a file path.
-    * ConfluenceLoader: Used for loading data from Confluence spaces. It is initialized with space names and Confluence connection details.
-
 ### MAAP Partner Integrations
 
-Partner-specific information can be found below; 
-Go to [this](https://mongodb-partners.github.io/maap-chatbot-builder/docs/category/partners) page for partner-specific documentation.
+Partner specific information can be found as below; 
+Go to [this](https://mongodb-partners.github.io/maap-chatbot-builder/docs/category/partners) page for partner specific documentations.
 
-
-| Sr # | MAAP Partner  | Partner Type  | Documentation                                                                                      |
+| Sr # | MAAP Partner  | Partner Type  | Documentation                                                                                          |
 |------|---------------|---------------|--------------------------------------------------------------------------------------------------------|
 | 1    | AWS           | Cloud provider| [Link](https://mongodb-partners.github.io/maap-chatbot-builder/docs/partners/amazon)                   |
 | 2    | Azure         | Cloud provider| [Link](https://mongodb-partners.github.io/maap-chatbot-builder/docs/partners/azure)                    |
@@ -105,29 +135,33 @@ Go to [this](https://mongodb-partners.github.io/maap-chatbot-builder/docs/catego
 | 4    | Anthropic     | AI tech       | [Link](https://mongodb-partners.github.io/maap-chatbot-builder/docs/partners/anthropic)                |
 | 5    | Anyscale      | AI tech       | [Link](https://mongodb-partners.github.io/maap-chatbot-builder/docs/partners/anyscale)                 |
 | 6    | Cohere        | AI tech       | [Link](https://mongodb-partners.github.io/maap-chatbot-builder/docs/partners/cohere)                   |
-| 7    | Fireworks.AI  | AI tech       | [Link](https://mongodb-partners.github.io/maap-chatbot-builder/docs/partners/fireworksai)               |
+| 7    | Fireworks.AI  | AI tech       | [Link](https://mongodb-partners.github.io/maap-chatbot-builder/docs/partners/fireworksai)              |
 | 8    | Langchain     | AI tech       | [Link](https://mongodb-partners.github.io/maap-chatbot-builder/docs/partners/langchain)                |
-| 9   | Nomic          | AI tech       | [Link](https://mongodb-partners.github.io/maap-chatbot-builder/docs/partners/nomic)                    |
+| 9    | Nomic         | AI tech       | [Link](https://mongodb-partners.github.io/maap-chatbot-builder/docs/partners/nomic)                    |
 
 
-3. Once configured you can use the yaml file you just created say as in example `examples/partnerproduct/src/config_1.yaml`
-## Ingest Data
+
+
+### Ingest Data
+Once configured you can use the yaml file you just created say as in example `examples/partnerproduct/src/config_1.yaml`.
+
 ```
 npm install
 npm run ingest <path to your config.yaml>
 ```
 
-## Run the server
+Go to [this](https://mongodb-partners.github.io/maap-chatbot-builder/docs/category/app-modules) page for loader specific documentations.
+
+### Run the server
 ```
 npm run start <path to your config.yaml>
 ```
-4. You can start your UI client application by running the following command
-## Start your application UI
+
+### Start your application UI
+You can start your UI client application by running the following command in a separate terminal.
 ```
-# in another terminal
 cd builder/partnerproduct/ui
 npm install
 npm run start
 ```
-Your application ui will be running at [http://localhost:3000](http://localhost:3000)
-
+Your application will be running at [http://localhost:3000](http://localhost:3000).
