@@ -22,17 +22,17 @@ _You can use role [Vertex AI User](https://cloud.google.com/vertex-ai/docs/gener
  
  Documentation: [VertexAI Authentication](https://cloud.google.com/vertex-ai/docs/authentication)
 
-1)  `gcloud CLI` Application default login.  (**Prefered for local development.**)
+1)  `gcloud CLI` Application default login.  (**Preferred for local development.**)
  
     - Refer [here](https://cloud.google.com/docs/authentication/application-default-credentials#personal) for documentation.
 
-    -  You should be logged in an account, which have permissions for the project.
+    -  You should be logged in an account, which has permissions for the project.
       ```
       gcloud auth application-default login
       ```
 
 2) **On Google Cloud Platform**: 
-    - Using a service account which have permissions to the project and VertexAI
+    - Using a service account which has permissions to the project and VertexAI
 
     - Refer [here](https://cloud.google.com/vertex-ai/docs/authentication#on-gcp) for documentation.
 

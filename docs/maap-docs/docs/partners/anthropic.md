@@ -16,7 +16,7 @@ Anthropic offers the capability to deploy various Chat Models(LLM) under its umb
 Refer to their [documentation](https://docs.anthropic.com/en/docs/about-claude/models) to understand the latest offerings, with feature and cost comparisons.
 
 #### Usage with MAAP
-To use Antrhopic model with MAAP framework, you would need to feed below values.
+To use Anthropic model with MAAP framework, you would need to feed below values.
 
 - #### Config File :
   Provided below are the values required to be added in `config.yaml` file in LLM section.
@@ -38,7 +38,7 @@ To use Antrhopic model with MAAP framework, you would need to feed below values.
 Provided below are the instructions on how to procure the right values for building your MAAP framework.
 
 - ##### Model Name
-  You can pick any model from the [updated list](https://docs.anthropic.com/en/docs/about-claude/models#model-names) given in Antropic documents.
+  You can pick any model from the [updated list](https://docs.anthropic.com/en/docs/about-claude/models#model-names) given in Anthropic documents.
 
 - ##### API Key 
 

@@ -10,7 +10,7 @@ sidebar_position: 8
 
 
 ## Deploying your model
-Nomic offers the capability to deploy various embedding models under its umbrella, to facilitate easy and scaleable embedding options. 
+Nomic offers the capability to deploy various embedding models under its umbrella, to facilitate easy and scalable embedding options. 
 
 
 ### Embedding Model

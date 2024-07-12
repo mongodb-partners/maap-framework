@@ -12,7 +12,7 @@ The repo offers flexibility to its users to set up the RAG application by simply
 1. Data loaders
 2. Embedding Models
 3. Chat LLM Models
-4. Post query Reranker
+4. Post query Re-ranker
 
 
 ### Reference Architecture Diagram
@@ -33,9 +33,9 @@ Below given is the reference architecture of the framework with various componen
 
 3. **Post Retrieval: Retrieval, Reranking & Filtering**
     
-    After retrieving relevant documents, we refine the context further through reranking and filtering:
+    After retrieving relevant documents, we refine the context further through re-ranking and filtering:
     
-    - **Reranking**: Prioritizing documents based on relevance.
+    - **Re-ranking**: Prioritizing documents based on relevance.
     - **Filtering**: Removing less relevant or noisy documents.
 
 4. **Pre Query Retrieval: Query Transformations**
@@ -63,7 +63,7 @@ The application is tested with below configurations.
 
 
 ## Document Preface
-The MongoDB MAAP Chatbot Framework documentation provides a comprehensive guide for setting up a Retrieval-Augmented Generation (RAG) application using MongoDB and Atlas Vector Search, along with integration options for various MAAP partners. This framework is designed to be highly configurable, allowing users to tailor their chatbot applications by simply modifying a YAML configuration file. The framework supports customization in four key areas: data loaders, embedding models, chat LLM (Large Language Models) models, and post-query rerankers.
+The MongoDB MAAP Chatbot Framework documentation provides a comprehensive guide for setting up a Retrieval-Augmented Generation (RAG) application using MongoDB and Atlas Vector Search, along with integration options for various MAAP partners. This framework is designed to be highly configurable, allowing users to tailor their chatbot applications by simply modifying a YAML configuration file. The framework supports customization in four key areas: data loaders, embedding models, chat LLM (Large Language Models) models, and post-query re-rankers.
 
 The setup process begins with cloning the project and installing dependencies. This involves navigating to the chatbot directory, building the project locally, and then installing npm packages in the builder/partner product directory.
 
@@ -71,7 +71,7 @@ Configuration of the RAG application is crucial and involves specifying details 
 
 The documentation also highlights the process of instantiating embedding and LLM models based on the configuration. Different classes are instantiated based on the specified class_name in the configuration, catering to various services like VertexAI, Azure-OpenAI, Cohere, and others for embeddings, and a similar approach is taken for LLM models with classes like Fireworks, Anthropic, and Bedrock.
 
-Data loaders play a significant role in how data is ingested into the system. The framework supports multiple types of data loaders (e.g., WebLoader, PdfLoader, SitemapLoader, DocxLoader, ConfluenceLoader), each tailored to handle specific data sources like web pages, PDF files, sitemaps, DOCX documents, and Confluence spaces. These loaders are configured with parameters such as source paths and chunking details, and then added to a dataloaders array for processing.
+Data loaders play a significant role in how data is ingested into the system. The framework supports multiple types of data loaders (e.g., WebLoader, PdfLoader, SitemapLoader, DocxLoader, ConfluenceLoader), each tailored to handle specific data sources like web pages, PDF files, sitemaps, DOCX documents, and Confluence spaces. These loaders are configured with parameters such as source paths and chunking details, and then added to a data loaders array for processing.
 
 After configuring the application, the user is guided through the process of ingesting data, running the server, and starting the UI client application. The UI client application runs locally, allowing users to interact with the chatbot through a web interface.
 
@@ -89,7 +89,7 @@ This documentation provides a clear and detailed roadmap for developers to set u
 Clone the project to your machine, and install dependencies.
 
 ```
-cd maap-chabot-builder
+cd maap-chatbot-builder
 npm install
 cd builder/partnerproduct
 npm install
@@ -120,7 +120,7 @@ vector_store:
 llms:
     class_name: Fireworks
     model_name: 'accounts/fireworks/models/mixtral-8x22b-instruct'
-    temprature: ''
+    temperature: ''
     top_p: ''
     top_k: ''
 ``` 

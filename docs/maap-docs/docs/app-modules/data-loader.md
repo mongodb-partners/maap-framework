@@ -6,7 +6,7 @@ sidebar_position: 2
 
 These data loaders facilitate the seamless integration of data into MongoDB's vector store, leveraging specific embedding models. They are designed to support the construction of Retrieval-Augmented Generation (RAG) chatbot applications
 
-Currently the following data loaders can be used with the MAAP Fram
+Currently, the following data loaders can be used with the MAAP Framework;
 
 | Loader Name            | Usage         | Description                                             |
 |------------------------|---------------|---------------------------------------------------------|

@@ -16,7 +16,7 @@ Azure OpenAI Studio, offers the capability to deploy both Chat Models(LLM) as we
 
 ### Chat Model 
 
-Go throught the Azure [documentation](https://learn.microsoft.com/en-us/azure/ai-services/openai/how-to/create-resource?pivots=web-portal) and start deploying your model. You can test out the model in Azure OpenAI Studio > Chat Playground. Here is a [Quick Start](https://learn.microsoft.com/en-us/azure/ai-services/openai/chatgpt-quickstart) to help you in the process.
+Go through the Azure [documentation](https://learn.microsoft.com/en-us/azure/ai-services/openai/how-to/create-resource?pivots=web-portal) and start deploying your model. You can test out the model in Azure OpenAI Studio > Chat Playground. Here is a [Quick Start](https://learn.microsoft.com/en-us/azure/ai-services/openai/chatgpt-quickstart) to help you in the process.
 
 Once your model is deployed successfully, you can use it to serve the LLM purpose in the MAAP framework.
 
@@ -43,7 +43,7 @@ To use Azure OpenAI model with MAAP framework, you would need to feed below valu
 
 ### Embedding Model
 
-You can follow the same steps as above to delploy the embedding model as well. The process is documented [here](https://learn.microsoft.com/en-us/azure/ai-services/openai/how-to/create-resource).
+You can follow the same steps as above to deploy the embedding model as well. The process is documented [here](https://learn.microsoft.com/en-us/azure/ai-services/openai/how-to/create-resource).
 
 
 
