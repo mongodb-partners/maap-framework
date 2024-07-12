@@ -12,14 +12,14 @@ import { CohereReranker } from "../reranker/cohere-reranker.js";
 export class RAGApplicationBuilder {
   private searchResultCount: number;
   private loaders: BaseLoader[];
-  private vectorDb?: BaseDb;
+  private vectorDb!: BaseDb;
   private temperature: number;
   private queryTemplate: string;
   private cache?: BaseCache;
-  private embeddingModel?: BaseEmbeddings;
-  private model?: BaseModel;
+  private embeddingModel!: BaseEmbeddings;
+  private model!: BaseModel;
   private embeddingRelevanceCutOff: number;
-  private reranker?: BaseReranker;
+  private reranker!: BaseReranker | null;
 
   constructor() {
     this.loaders = [];
@@ -108,7 +108,7 @@ export class RAGApplicationBuilder {
           modelName: "rerank-english-v2.0",
           k: 3,
         });
-      else this.reranker = undefined;
+      else this.reranker = null;
     }
     return this;
   }

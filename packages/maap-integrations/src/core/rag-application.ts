@@ -1,5 +1,5 @@
 import createDebugMessages from "debug";
-import { strict as assert } from "assert";
+
 import { BaseDb } from "../interfaces/base-db.js";
 import { BaseLoader } from "../interfaces/base-loader.js";
 import {
@@ -24,7 +24,7 @@ export class RAGApplication {
   private readonly searchResultCount: number;
   private readonly cache?: BaseCache;
   private readonly vectorDb: BaseDb;
-  private readonly reranker: BaseReranker;
+  private readonly reranker: BaseReranker | null;
   private readonly model: BaseModel;
   private readonly embeddingRelevanceCutOff: number;
   private loaders: BaseLoader[];
@@ -33,21 +33,15 @@ export class RAGApplication {
     this.cache = llmBuilder.getCache();
     BaseLoader.setCache(this.cache);
 
-    const model = llmBuilder.getModel();
-    assert(model, "Model not set");
-    this.model = model;
+    this.model = llmBuilder.getModel();
     BaseModel.setDefaultTemperature(llmBuilder.getTemperature());
 
     this.queryTemplate = cleanString(llmBuilder.getQueryTemplate());
     this.debug(`Using system query template - "${this.queryTemplate}"`);
 
     this.loaders = llmBuilder.getLoaders();
-    const vectorDb = llmBuilder.getVectorDb();
-    assert(vectorDb, "VectorDb not set");
-    this.vectorDb = vectorDb;
-    const reranker = llmBuilder.getReranker();
-    assert(reranker, "Reranker not set");
-    this.reranker = reranker;
+    this.vectorDb = llmBuilder.getVectorDb();
+    this.reranker = llmBuilder.getReranker();
     this.searchResultCount = llmBuilder.getSearchResultCount();
     this.embeddingRelevanceCutOff = llmBuilder.getEmbeddingRelevanceCutOff();
 
@@ -56,6 +50,7 @@ export class RAGApplication {
     );
     if (!this.model) throw new SyntaxError("Model not set");
     if (!this.vectorDb) throw new SyntaxError("VectorDb not set");
+    // TODO: Make builder components conditional. If not set, work wihtout it. Add a warning message and move forward.
   }
 
   private async embedChunks(chunks: Pick<Chunk, "pageContent">[]) {
@@ -162,6 +157,7 @@ export class RAGApplication {
     await loader.init();
 
     const chunks = await loader.getChunks();
+
     if (this.cache && (await this.cache.hasLoader(uniqueId))) {
       const { chunkCount: previousChunkCount } =
         await this.cache.getLoader(uniqueId);
@@ -258,6 +254,9 @@ export class RAGApplication {
   }
 
   public async getContext(query: string) {
+    //TODO: Method override. Create a MQL query with user prompts using LLM.
+    // Generate output query with the user prompt and the context.
+
     const cleanQuery = cleanString(query);
     const rawContext = await this.getEmbeddings(cleanQuery);
 
@@ -288,12 +287,12 @@ export class RAGApplication {
   }
 
   public async createVectorIndex() {
-    try {
-      await this.vectorDb.createVectorIndex(
-        RAGEmbedding.getEmbedding().getDimensions(),
-      );
-    } catch (e) {
-      console.error("Error creating vector index", e);
-    }
+    await this.vectorDb.createVectorIndex(
+      RAGEmbedding.getEmbedding().getDimensions(),
+    );
+  }
+
+  public async docsCount(): Promise<number> {
+    return await this.vectorDb.docsCount();
   }
 }

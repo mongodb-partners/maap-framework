@@ -1,5 +1,9 @@
 import createDebugMessages from "debug";
-import { AzureOpenAI } from "@langchain/openai";
+// import { AzureOpenAI } from "@langchain/openai";
+// import { AzureChatOpenAI } from "@langchain/azure-openai";
+import { AzureChatOpenAI } from "@langchain/openai";
+// import { ChatOpenAI } from "@langchain/openai";
+
 import {
   HumanMessage,
   AIMessage,
@@ -8,12 +12,13 @@ import {
 
 import { BaseModel } from "../interfaces/base-model.js";
 import { Chunk, ConversationHistory } from "../global/types.js";
+import { StringOutputParser } from "@langchain/core/output_parsers";
 
-export class AzureChatOpenAI extends BaseModel {
+export class AzureChatAI extends BaseModel {
   private readonly debug = createDebugMessages("maap:model:AzureOpenAI");
   private readonly azureOpenAIApiInstanceName: string;
   private readonly azureOpenAIApiDeploymentName: string;
-  private model: AzureOpenAI;
+  private model!: AzureChatOpenAI;
   private readonly azureOpenAIApiVersion: string;
 
   constructor(params: {
@@ -27,14 +32,16 @@ export class AzureChatOpenAI extends BaseModel {
     this.azureOpenAIApiInstanceName = params?.azureOpenAIApiInstanceName;
     this.azureOpenAIApiDeploymentName = params?.azureOpenAIApiDeploymentName;
     this.azureOpenAIApiVersion = params?.azureOpenAIApiVersion;
-    this.model = new AzureOpenAI({
+  }
+
+  override async init(): Promise<void> {
+    this.model = new AzureChatOpenAI({
       azureOpenAIApiInstanceName: this.azureOpenAIApiInstanceName,
       azureOpenAIApiDeploymentName: this.azureOpenAIApiDeploymentName,
       azureOpenAIApiVersion: this.azureOpenAIApiVersion,
+      temperature: this.temperature,
     });
   }
-
-  override async init(): Promise<void> {}
 
   override async runQuery(
     system: string,
@@ -42,6 +49,41 @@ export class AzureChatOpenAI extends BaseModel {
     supportingContext: Chunk[],
     pastConversations: ConversationHistory[],
   ): Promise<string> {
+    const pastMessages: (AIMessage | SystemMessage | HumanMessage)[] =
+      this.generatePastMessages(
+        system,
+        supportingContext,
+        pastConversations,
+        userQuery,
+      );
+    const result = await this.model.invoke(pastMessages);
+    this.debug("AzureOpenAI response -", result);
+    return result.content.toString();
+  }
+
+  protected runStreamQuery(
+    system: string,
+    userQuery: string,
+    supportingContext: Chunk[],
+    pastConversations: ConversationHistory[],
+  ): Promise<any> {
+    const pastMessages: (AIMessage | SystemMessage | HumanMessage)[] =
+      this.generatePastMessages(
+        system,
+        supportingContext,
+        pastConversations,
+        userQuery,
+      );
+    const parser = new StringOutputParser();
+    return this.model.pipe(parser).stream(pastMessages);
+  }
+
+  private generatePastMessages(
+    system: string,
+    supportingContext: Chunk[],
+    pastConversations: ConversationHistory[],
+    userQuery: string,
+  ) {
     const pastMessages: (AIMessage | SystemMessage | HumanMessage)[] = [
       new SystemMessage(
         `${system}. Supporting context: ${supportingContext.map((s) => s.pageContent).join("; ")}`,
@@ -60,8 +102,6 @@ export class AzureChatOpenAI extends BaseModel {
     pastMessages.push(new HumanMessage(`${userQuery}?`));
 
     this.debug("Executing AzureOpenAI model with prompt -", userQuery);
-    const result = await this.model.invoke(pastMessages);
-    this.debug("AzureOpenAI response -", result);
-    return result.toString();
+    return pastMessages;
   }
 }

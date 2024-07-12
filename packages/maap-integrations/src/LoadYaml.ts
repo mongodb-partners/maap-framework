@@ -1,10 +1,11 @@
-// @ts-nocheck - not checking this file b/c so full of errors
+// Import required modules
 import * as fs from "fs";
 import * as yaml from "js-yaml";
 import * as process from "process";
 import {
   Anthropic,
-  AzureChatOpenAI,
+  BaseLoader,
+  AzureChatAI,
   CohereEmbeddings,
   ConfluenceLoader,
   DocxLoader,
@@ -14,16 +15,26 @@ import {
   SitemapLoader,
   VertexAI,
   WebLoader,
+  YoutubeSearchLoader,
+  YoutubeLoader,
+  YoutubeChannelLoader,
+  PptLoader,
+  JsonLoader,
 } from "./index.js";
 import { MongoDBAtlas } from "./vectorDb/mongo-db-atlas.js";
 import { strict as assert } from "assert";
 import { AnyscaleModel } from "./models/anyscale-model.js";
 import { Fireworks } from "./models/fireworks-model.js";
-import { AzureOpenAiEmbeddings } from "./embeddings/openai-3small-embeddings.js";
 import { Bedrock } from "./models/bedrock-model.js";
 import { TitanEmbeddings } from "./embeddings/titan-embeddings.js";
 import { NomicEmbeddingsv1 } from "./embeddings/nomic-v1-embeddings.js";
 import { NomicEmbeddingsv1_5 } from "./embeddings/nomic-v1-5-embeddings.js";
+import { AzureOpenAiEmbeddings } from "./embeddings/azure-embeddings.js";
+import { BedrockEmbedding } from "./embeddings/bedrock-embeddings.js";
+import { FireworksEmbedding } from "./embeddings/fireworks-embeddings.js";
+import { ConfigFileSchema } from "./ConfigFileSchema.js";
+
+// src/loaders/confluence-loader.ts src/loaders/docx-loader.ts src/loaders/excel-loader.ts src/loaders/json-loader.ts src/loaders/pdf-loader.ts src/loaders/ppt-loader.ts src/loaders/sitemap-loader.ts src/loaders/text-loader.ts src/loaders/web-loader.ts src/loaders/youtube-channel-loader.ts src/loaders/youtube-loader.ts src/loaders/youtube-search-loader.ts
 function getDataFromYamlFile() {
   const args = process.argv.slice(2);
 
@@ -32,8 +43,15 @@ function getDataFromYamlFile() {
     throw new Error("Please provide the YAML file path as an argument.");
   }
   const data = fs.readFileSync(args[0], "utf8");
-  // TODO: validate the schema of th YAML file and map it to a typescript type
-  const parsedData = yaml.load(data);
+  const parsedData = ConfigFileSchema.parse(
+    yaml.load(data),
+  ) satisfies ConfigFileSchema;
+
+  /* TODO: you really, really really should define this
+   * `parsedData` object as a type, so that you can use it
+   * in a type-safe way throughout your code.
+   * Consider using zod https://www.npmjs.com/package/zod
+   */
   return parsedData;
 }
 
@@ -45,8 +63,9 @@ export function getDatabaseConfig() {
     collectionName: parsedData.vector_store.collectionName,
     embeddingKey: parsedData.vector_store.embeddingKey,
     textKey: parsedData.vector_store.textKey,
-    numDimensions: parsedData.vector_store.numDimensions,
+    numCandidates: parsedData.vector_store.numDimensions ?? 10,
     similarityFunction: parsedData.vector_store.similarityFunction,
+    minScore: parsedData.vector_store.minScore,
   });
 }
 
@@ -61,6 +80,8 @@ export function getDatabaseConfigInfo() {
       dbName,
       collectionName,
       vectorSearchIndexName,
+      minScore,
+      numCandidates,
     },
   } = parsedData;
 
@@ -77,6 +98,8 @@ export function getDatabaseConfigInfo() {
     dbName,
     collectionName,
     vectorSearchIndexName,
+    minScore,
+    numCandidates,
   };
 }
 
@@ -86,27 +109,36 @@ export function getDatabaseConfigInfo() {
  */
 export function getModelClass() {
   const parsedData = getDataFromYamlFile();
-  if (parsedData.llms.class_name === "VertexAI") {
-    return new VertexAI({ modelName: parsedData.llms.model_name });
-  } else if (parsedData.llms.class_name === "OpenAI") {
-    return new OpenAi({ modelName: parsedData.llms.model_name });
-  } else if (parsedData.llms.class_name === "Anyscale") {
-    return new AnyscaleModel({ modelName: parsedData.llms.model_name });
-  } else if (parsedData.llms.class_name === "Fireworks") {
-    return new Fireworks({ modelName: parsedData.llms.model_name });
-  } else if (parsedData.llms.class_name === "Anthropic") {
-    return new Anthropic({ modelName: parsedData.llms.model_name });
-  } else if (parsedData.llms.class_name === "Bedrock") {
-    return new Bedrock({ modelName: parsedData.llms.model_name });
-  } else if (parsedData.llms.class_name === "AzureOpenAI") {
-    return new AzureChatOpenAI({
-      azureOpenAIApiDeploymentName: parsedData.llms.deployment_name,
-      azureOpenAIApiVersion: parsedData.llms.api_version,
-      azureOpenAIApiInstanceName:
-        parsedData.llms.azure_openai_api_instance_name,
-    });
-  } else {
-    return new Anthropic({ modelName: parsedData.llms.model_name });
+
+  switch (parsedData.llms.class_name) {
+    case "VertexAI":
+      return new VertexAI({ modelName: parsedData.llms.model_name });
+    case "OpenAI":
+      return new OpenAi({
+        modelName: parsedData.llms.model_name ?? "gpt-4-1106-preview",
+      });
+    case "Anyscale":
+      return new AnyscaleModel({
+        modelName:
+          parsedData.llms.model_name ?? "mlabonne/NeuralHermes-2.5-Mistral-7B",
+      });
+    case "Fireworks":
+      return new Fireworks({ modelName: parsedData.llms.model_name });
+    case "Anthropic":
+      return new Anthropic({ modelName: parsedData.llms.model_name });
+    case "Bedrock":
+      return new Bedrock({ modelName: parsedData.llms.model_name });
+    case "AzureOpenAI":
+      return new AzureChatAI({
+        modelName: parsedData.embedding.model_name,
+        azureOpenAIApiDeploymentName: parsedData.embedding.deployment_name,
+        azureOpenAIApiVersion: parsedData.embedding.api_version ?? "",
+        azureOpenAIApiInstanceName:
+          parsedData.embedding.azure_openai_api_instance_name ?? "",
+      });
+    default:
+      // Handle unsupported class name (optional)
+      return new Anthropic({ modelName: parsedData.llms.model_name }); // Or throw an error
   }
 }
 
@@ -116,26 +148,41 @@ export function getModelClass() {
  */
 export function getEmbeddingModel() {
   const parsedData = getDataFromYamlFile();
-  if (parsedData.embedding.class_name === "VertexAI") {
-    return new GeckoEmbedding();
-  } else if (parsedData.embedding.class_name === "Azure-OpenAI-Embeddings") {
-    return new AzureOpenAiEmbeddings({
-      modelName: parsedData.embedding.model_name,
-      deploymentName: parsedData.embedding.deployment_name,
-      apiVersion: parsedData.embedding.api_version,
-      azureOpenAIApiInstanceName:
-        parsedData.embedding.azure_openai_api_instance_name,
-    });
-  } else if (parsedData.embedding.class_name === "Cohere") {
-    return new CohereEmbeddings({ modelName: parsedData.embedding.model_name });
-  } else if (parsedData.embedding.class_name === "Titan") {
-    return new TitanEmbeddings();
-  } else if (parsedData.embedding.class_name === "Nomic-v1") {
-    return new NomicEmbeddingsv1();
-  } else if (parsedData.embedding.class_name === "Nomic-v1.5") {
-    return new NomicEmbeddingsv1_5();
-  } else {
-    return new NomicEmbeddingsv1_5();
+
+  switch (parsedData.embedding.class_name) {
+    case "VertexAI":
+      return new GeckoEmbedding();
+    case "Azure-OpenAI-Embeddings":
+      return new AzureOpenAiEmbeddings({
+        modelName: parsedData.embedding.model_name,
+        deploymentName: parsedData.embedding.deployment_name,
+        apiVersion: parsedData.embedding.api_version ?? "",
+        azureOpenAIApiInstanceName:
+          parsedData.embedding.azure_openai_api_instance_name ?? "",
+      });
+    case "Cohere":
+      return new CohereEmbeddings({
+        modelName: parsedData.embedding.model_name,
+      });
+    case "Titan":
+      return new TitanEmbeddings();
+    case "Bedrock":
+      return new BedrockEmbedding({
+        modelName: parsedData.embedding.model_name,
+        dimension: parsedData.embedding.dimension,
+      });
+    case "Fireworks":
+      return new FireworksEmbedding({
+        modelName: parsedData.embedding.model_name,
+        dimension: parsedData.embedding.dimension,
+      });
+    case "Nomic-v1":
+      return new NomicEmbeddingsv1();
+    case "Nomic-v1.5":
+      return new NomicEmbeddingsv1_5();
+    default:
+      // Handle unsupported class name (optional)
+      return new NomicEmbeddingsv1_5(); // Or throw an error
   }
 }
 
@@ -145,40 +192,112 @@ export function getEmbeddingModel() {
  */
 export function getIngestLoader() {
   const parsedData = getDataFromYamlFile();
-  if (parsedData.ingest.source === "web") {
-    return new WebLoader({
-      url: parsedData.ingest.source_path,
-      chunkSize: parsedData.ingest.chunk_size,
-      chunkOverlap: parsedData.ingest.chunk_overlap,
-    });
-  } else if (parsedData.ingest.source === "pdf") {
-    return new PdfLoader({
-      filePath: parsedData.ingest.source_path,
-      chunkSize: parsedData.ingest.chunk_size,
-      chunkOverlap: parsedData.ingest.chunk_overlap,
-    });
-  } else if (parsedData.ingest.source === "sitemap") {
-    return new SitemapLoader({
-      url: parsedData.ingest.source_path,
-      chunkSize: parsedData.ingest.chunk_size,
-      chunkOverlap: parsedData.ingest.chunk_overlap,
-    });
-  } else if (parsedData.ingest.source === "docx") {
-    return new DocxLoader({
-      filePath: parsedData.ingest.source_path,
-      chunkSize: parsedData.ingest.chunk_size,
-      chunkOverlap: parsedData.ingest.chunk_overlap,
-    });
-  } else if (parsedData.ingest.source === "confluence") {
-    return new ConfluenceLoader({
-      spaceNames: parsedData.ingest.space_names,
-      confluenceBaseUrl: parsedData.ingest.confluence_base_url,
-      confluenceUsername: parsedData.ingest.confluence_username,
-      confluenceToken: parsedData.ingest.confluence_token,
-      chunkSize: parsedData.ingest.chunk_size,
-      chunkOverlap: parsedData.ingest.chunk_overlap,
-    });
-  } else {
-    return null;
+  const dataloaders: BaseLoader[] = [];
+  for (const data of parsedData.ingest) {
+    switch (data.source) {
+      case "web":
+        dataloaders.push(
+          new WebLoader({
+            url: data.source_path,
+            chunkSize: data.chunk_size,
+            chunkOverlap: data.chunk_overlap,
+          }),
+        );
+        break;
+      case "pdf":
+        dataloaders.push(
+          new PdfLoader({
+            filePath: data.source_path,
+            chunkSize: data.chunk_size,
+            chunkOverlap: data.chunk_overlap,
+          }),
+        );
+        break;
+      case "sitemap":
+        dataloaders.push(
+          new SitemapLoader({
+            url: data.source_path,
+            chunkSize: data.chunk_size,
+            chunkOverlap: data.chunk_overlap,
+          }),
+        );
+        break;
+      case "docx":
+        dataloaders.push(
+          new DocxLoader({
+            filePath: data.source_path,
+            chunkSize: data.chunk_size,
+            chunkOverlap: data.chunk_overlap,
+          }),
+        );
+        break;
+      case "confluence":
+        dataloaders.push(
+          new ConfluenceLoader({
+            spaceNames: data.space_names,
+            confluenceBaseUrl: data.confluence_base_url,
+            confluenceUsername: data.confluence_username,
+            confluenceToken: data.confluence_token,
+            chunkSize: data.chunk_size,
+            chunkOverlap: data.chunk_overlap,
+          }),
+        );
+        break;
+      case "youtube-search":
+        dataloaders.push(
+          new YoutubeSearchLoader({
+            searchString: data.query,
+            chunkSize: data.chunk_size,
+            chunkOverlap: data.chunk_overlap,
+          }),
+        );
+        break;
+      case "youtube":
+        dataloaders.push(
+          new YoutubeLoader({
+            videoIdOrUrl: data.video_id_or_url,
+            chunkSize: data.chunk_size,
+            chunkOverlap: data.chunk_overlap,
+          }),
+        );
+        break;
+      case "youtube-channel":
+        dataloaders.push(
+          new YoutubeChannelLoader({
+            channelId: data.channel_id,
+            chunkSize: data.chunk_size,
+            chunkOverlap: data.chunk_overlap,
+          }),
+        );
+        break;
+      case "ppt":
+        dataloaders.push(
+          new PptLoader({
+            filePath: data.source_path,
+            chunkSize: data.chunk_size,
+            chunkOverlap: data.chunk_overlap,
+          }),
+        );
+        break;
+      case "ppt":
+        dataloaders.push(
+          new PptLoader({
+            filePath: data.source_path,
+            chunkSize: data.chunk_size,
+            chunkOverlap: data.chunk_overlap,
+          }),
+        );
+        break;
+      default:
+      // Handle unsupported source type (optional)
+    }
   }
+  return dataloaders;
+}
+
+export function getStreamOptions() {
+  const parsedData = getDataFromYamlFile();
+  return {
+    stream: parsedData?.stream_options?.stream ?? false,
+  };
 }

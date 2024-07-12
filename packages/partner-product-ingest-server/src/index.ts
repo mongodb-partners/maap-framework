@@ -22,25 +22,8 @@ import {
     AppConfig,
     makeApp,
 } from 'mongodb-chatbot-server';
-<<<<<<<< HEAD:packages/partner-product-ingest-server/src/index.ts
-import { makeMongoDbEmbeddedContentStore, makeOpenAiEmbedder, logger, MongoClient } from 'mongodb-rag-core';
 
-import path from 'path';
-import { fileURLToPath } from 'url';
-
-import { loadEnvVars } from './loadEnvVars.js';
-
-const __filename = fileURLToPath(import.meta.url); // get the resolved path to the file
-const __dirname = path.dirname(__filename); // get the name of the directory
-
-// Load project environment variables
-
-console.log(__dirname);
-const dotenvPath = path.join(__dirname, '..', '.env'); // update with real path
-// const { MONGODB_CONNECTION_URI, MONGODB_DATABASE_NAME, VECTOR_SEARCH_INDEX_NAME } = loadEnvVars(dotenvPath);
-========
-import { makeMongoDbEmbeddedContentStore, logger } from 'mongodb-rag-core';
->>>>>>>> origin/stage:builder/partnerproduct/src/index.ts
+import { makeMongoDbEmbeddedContentStore, logger, MongoClient } from 'mongodb-rag-core';
 
 // Load MAAP base classes
 const model = getModelClass();
@@ -108,10 +91,7 @@ User query: ${originalUserMessage}`;
 };
 
 // Generates the user prompt for the chatbot using RAG
-<<<<<<<< HEAD:packages/partner-product-ingest-server/src/index.ts
-console.log(embeddedContentStore);
-========
->>>>>>>> origin/stage:builder/partnerproduct/src/index.ts
+
 const generateUserPrompt: GenerateUserPromptFunc = makeRagGenerateUserPrompt({
     // findContent: findContentWithRerankAndPreprocess,
     findContent: findContent,

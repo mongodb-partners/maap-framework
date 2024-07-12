@@ -10,7 +10,10 @@ try {
         .build();
 
     // Add the sitemap loader
-    await llmApplication.addLoader(getIngestLoader());
+    const ingestLoaders = getIngestLoader();
+    for (const loader of ingestLoaders) {
+        await llmApplication.addLoader(loader);
+    }
     console.log('-- Data ingersted successfully --');
     await llmApplication.createVectorIndex();
     console.log('-- Vector index created successfully --');

@@ -5,29 +5,34 @@ import {
   AIMessage,
   SystemMessage,
 } from "@langchain/core/messages";
-import { strict as assert } from "assert";
+import { StringOutputParser } from "@langchain/core/output_parsers";
+
 import { BaseModel } from "../interfaces/base-model.js";
 import { Chunk, ConversationHistory } from "../global/types.js";
+import assert from "assert";
 
 export class Fireworks extends BaseModel {
   private readonly debug = createDebugMessages("maap:model:Fireworks");
   private readonly modelName: string;
   private apiKey: string;
-  private model: ChatFireworks;
+  private model!: ChatFireworks;
 
   constructor(params?: {
     temperature?: number;
     modelName?: string;
     apiKey?: string;
   }) {
+    assert(
+      params?.apiKey ?? process.env.FIREWORKS_API_KEY,
+      "API key is required",
+    );
+    const apiKey = (params?.apiKey ?? process.env.FIREWORKS_API_KEY) as string;
     super(params?.temperature);
     this.modelName = params?.modelName ?? "llama-v3-70b-instruct";
-    assert(
-      typeof params?.apiKey === "string" ||
-        typeof process.env.FIREWORKS_API_KEY === "string",
-    );
-    // @ts-ignore
-    this.apiKey = params?.apiKey ?? process.env.FIREWORKS_API_KEY;
+    this.apiKey = apiKey;
+  }
+
+  override async init(): Promise<void> {
     this.model = new ChatFireworks({
       temperature: this.temperature,
       model: this.modelName,
@@ -35,14 +40,12 @@ export class Fireworks extends BaseModel {
     });
   }
 
-  override async init(): Promise<void> {}
-
-  override async runQuery(
+  private generatePastMessages(
     system: string,
-    userQuery: string,
     supportingContext: Chunk[],
     pastConversations: ConversationHistory[],
-  ): Promise<string> {
+    userQuery: string,
+  ) {
     const pastMessages: (AIMessage | SystemMessage | HumanMessage)[] = [
       new SystemMessage(
         `${system}. Supporting context: ${supportingContext.map((s) => s.pageContent).join("; ")}`,
@@ -61,8 +64,42 @@ export class Fireworks extends BaseModel {
     pastMessages.push(new HumanMessage(`${userQuery}?`));
 
     this.debug("Executing Fireworks model with prompt -", userQuery);
+    return pastMessages;
+  }
+
+  override async runQuery(
+    system: string,
+    userQuery: string,
+    supportingContext: Chunk[],
+    pastConversations: ConversationHistory[],
+  ): Promise<string> {
+    const pastMessages: (AIMessage | SystemMessage | HumanMessage)[] =
+      this.generatePastMessages(
+        system,
+        supportingContext,
+        pastConversations,
+        userQuery,
+      );
     const result = await this.model.invoke(pastMessages);
     this.debug("Fireworks response -", result);
     return result.content.toString();
+  }
+
+  override async runStreamQuery(
+    system: string,
+    userQuery: string,
+    supportingContext: Chunk[],
+    pastConversations: ConversationHistory[],
+  ): Promise<any> {
+    const pastMessages: (AIMessage | SystemMessage | HumanMessage)[] =
+      this.generatePastMessages(
+        system,
+        supportingContext,
+        pastConversations,
+        userQuery,
+      );
+    const parser = new StringOutputParser();
+    const stream = await this.model.pipe(parser).stream(pastMessages);
+    return stream;
   }
 }

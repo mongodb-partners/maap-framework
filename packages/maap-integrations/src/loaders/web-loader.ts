@@ -7,6 +7,7 @@ import { strict as assert } from "assert";
 
 import { BaseLoader } from "../interfaces/base-loader.js";
 import { cleanString, truncateCenterString } from "../util/strings.js";
+import { UnfilteredLoaderChunk } from "../global/types.js";
 
 export class WebLoader extends BaseLoader<{ type: "WebLoader" }> {
   private readonly debug = createDebugMessages("maap:loader:WebLoader");
@@ -37,15 +38,11 @@ export class WebLoader extends BaseLoader<{ type: "WebLoader" }> {
     );
 
     this.isUrl = content ? false : true;
-    assert(
-      typeof content === "string" || typeof url === "string",
-      "Either filePath or url must be provided",
-    );
-    // @ts-ignore ignoring b/c above line guarantees one of these is a string
-    this.contentOrUrl = content ?? url;
+    const contentOrUrl = content ?? url;
+    assert(contentOrUrl, "Either content or url must be provided");
+    this.contentOrUrl = contentOrUrl;
   }
 
-  // @ts-ignore - not sure how to fix
   override async *getUnfilteredChunks() {
     const chunker = new RecursiveCharacterTextSplitter({
       chunkSize: this.chunkSize,
@@ -76,10 +73,10 @@ export class WebLoader extends BaseLoader<{ type: "WebLoader" }> {
           pageContent: chunk,
           metadata: {
             type: <"WebLoader">"WebLoader",
-            source: this.isUrl ? this.contentOrUrl : tuncatedObjectString,
+            source:
+              (this.isUrl ? this.contentOrUrl : tuncatedObjectString) ?? "",
           },
-          source: "TODO: not sure what this should be",
-        };
+        } satisfies UnfilteredLoaderChunk<{ type: "WebLoader" }>;
       }
     } catch (e) {
       this.debug("Could not parse input", this.contentOrUrl, e);

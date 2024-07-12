@@ -22,7 +22,7 @@ export class ConfluenceLoader extends BaseLoader<{ type: "ConfluenceLoader" }> {
     chunkSize,
     chunkOverlap,
   }: {
-    spaceNames: [string, ...string[]];
+    spaceNames: string[];
     confluenceBaseUrl?: string;
     confluenceUsername?: string;
     confluenceToken?: string;
