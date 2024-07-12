@@ -37,7 +37,7 @@ To use Fireworks model with MAAP framework, you would need to feed below values.
 
 ### Embedding Model
 
-You can follow the same steps as above to delploy the embedding model as well. The process is documented [here](https://learn.microsoft.com/en-us/azure/ai-services/openai/how-to/create-resource).
+You can follow the same steps as above to deploy the embedding model as well. The process is documented [here](https://learn.microsoft.com/en-us/azure/ai-services/openai/how-to/create-resource).
 
 
 #### Usage with MAAP

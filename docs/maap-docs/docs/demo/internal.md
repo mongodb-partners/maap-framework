@@ -38,7 +38,7 @@ Use the below `.config` and `.env` files to setup the demo for external RAG chat
     llms:
         class_name: Fireworks
         model_name: 'accounts/fireworks/models/mixtral-8x22b-instruct'
-        temprature: ''
+        temperature: ''
         top_p: ''
         top_k: ''
     ````

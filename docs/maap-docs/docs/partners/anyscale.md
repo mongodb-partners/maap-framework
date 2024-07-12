@@ -6,7 +6,7 @@ sidebar_position: 5
 
 ## Introduction
 
-[Anyscale](https://Anyscale.com/) is a Canadian multinational technology firm that concentrates on enterprise artificial intelligence, specializing particularly in large-scale language models.
+[Anyscale](https://anyscale.com/) is a Canadian multinational technology firm that concentrates on enterprise artificial intelligence, specializing particularly in large-scale language models.
 
 ## Deploying your model
 Anyscale offers the capability to deploy various Chat Models(LLM) under its umbrella. 

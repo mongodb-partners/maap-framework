@@ -43,4 +43,4 @@ Provided below are the instructions on how to procure the right values for build
 
 - ##### API Key 
 
-  You will need to [sign up](https://dashboard.cohere.com/api-keys) and retrieve an Cohere API Key.
+  You will need to [sign up](https://dashboard.cohere.com/api-keys) and retrieve a Cohere API Key.

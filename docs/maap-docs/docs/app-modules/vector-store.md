@@ -13,7 +13,7 @@ Atlas Vector Search lets you search unstructured data. You can create vector emb
 
 ## Setting up 
 
-By following the steps given below you can setup MongoDB to used as a vector store for your RAG application.
+By following the steps given below you can setup MongoDB to be used as a vector store for your RAG application.
 
 
     - To get started with MongoDB and building RAG Chatbot with it, you will need to sign-up to [MongoDB Atlas](https://cloud.mongodb.com).
