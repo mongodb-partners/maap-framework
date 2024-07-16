@@ -10,9 +10,17 @@ import { BaseModel } from "../interfaces/base-model.js";
 import { Chunk, ConversationHistory } from "../global/types.js";
 
 export class OpenAi extends BaseModel {
+  protected runStreamQuery(
+    system: string,
+    userQuery: string,
+    supportingContext: Chunk[],
+    pastConversations: ConversationHistory[],
+  ): Promise<any> {
+    throw new Error("Method not implemented.");
+  }
   private readonly debug = createDebugMessages("maap:model:OpenAi");
   private readonly modelName: string;
-  private model: ChatOpenAI;
+  private model!: ChatOpenAI;
 
   constructor({
     temperature,
@@ -23,13 +31,14 @@ export class OpenAi extends BaseModel {
   }) {
     super(temperature);
     this.modelName = modelName;
+  }
+
+  override async init(): Promise<void> {
     this.model = new ChatOpenAI({
       temperature: this.temperature,
       model: this.modelName,
     });
   }
-
-  override async init(): Promise<void> {}
 
   override async runQuery(
     system: string,

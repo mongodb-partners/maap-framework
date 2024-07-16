@@ -1,5 +1,6 @@
 import createDebugMessages from "debug";
 import { Chunk, ConversationHistory } from "../global/types.js";
+import { strict as assert } from "assert";
 
 export abstract class BaseModel {
   private readonly baseDebug = createDebugMessages("maap:model:BaseModel");
@@ -29,10 +30,12 @@ export abstract class BaseModel {
     supportingContext: Chunk[],
     conversationId: string = "default",
   ): Promise<string> {
-    if (!this.conversationMap.has(conversationId))
+    if (!this.conversationMap.has(conversationId)) {
       this.conversationMap.set(conversationId, []);
+    }
 
-    const conversationHistory = this.conversationMap.get(conversationId) ?? [];
+    const conversationHistory = this.conversationMap.get(conversationId);
+    assert(conversationHistory !== undefined, "Conversation history not found");
     this.baseDebug(
       `${conversationHistory.length} history entries found for conversationId '${conversationId}'`,
     );
@@ -52,10 +55,40 @@ export abstract class BaseModel {
     return result;
   }
 
+  public async queryStream(
+    system: string,
+    userQuery: string,
+    supportingContext: Chunk[],
+    conversationId: string = "default",
+  ): Promise<any> {
+    if (!this.conversationMap.has(conversationId)) {
+      this.conversationMap.set(conversationId, []);
+    }
+
+    const conversationHistory = this.conversationMap.get(conversationId);
+    assert(conversationHistory !== undefined, "Conversation history not found");
+    this.baseDebug(
+      `${conversationHistory.length} history entries found for conversationId '${conversationId}'`,
+    );
+    return this.runStreamQuery(
+      system,
+      userQuery,
+      supportingContext,
+      conversationHistory,
+    );
+  }
+
   protected abstract runQuery(
     system: string,
     userQuery: string,
     supportingContext: Chunk[],
     pastConversations: ConversationHistory[],
   ): Promise<string>;
+
+  protected abstract runStreamQuery(
+    system: string,
+    userQuery: string,
+    supportingContext: Chunk[],
+    pastConversations: ConversationHistory[],
+  ): Promise<any>;
 }

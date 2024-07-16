@@ -5,12 +5,20 @@ import { BaseModel } from "../interfaces/base-model.js";
 import { Chunk, ConversationHistory } from "../global/types.js";
 
 export class HuggingFace extends BaseModel {
+  protected runStreamQuery(
+    system: string,
+    userQuery: string,
+    supportingContext: Chunk[],
+    pastConversations: ConversationHistory[],
+  ): Promise<any> {
+    throw new Error("Method not implemented.");
+  }
   private readonly debug = createDebugMessages("maap:model:HuggingFace");
 
   private readonly modelName: string;
   private readonly maxNewTokens: number;
   private readonly endpointUrl?: string;
-  private model: HuggingFaceInference;
+  private model!: HuggingFaceInference;
 
   constructor(params?: {
     modelName?: string;
@@ -24,6 +32,9 @@ export class HuggingFace extends BaseModel {
     this.maxNewTokens = params?.maxNewTokens ?? 300;
     this.modelName =
       params?.modelName ?? "mistralai/Mixtral-8x7B-Instruct-v0.1";
+  }
+
+  override async init(): Promise<void> {
     this.model = new HuggingFaceInference({
       model: this.modelName,
       maxTokens: this.maxNewTokens,
@@ -33,8 +44,6 @@ export class HuggingFace extends BaseModel {
       maxRetries: 1,
     });
   }
-
-  override async init(): Promise<void> {}
 
   override async runQuery(
     system: string,

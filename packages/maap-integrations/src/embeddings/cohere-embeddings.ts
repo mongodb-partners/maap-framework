@@ -36,6 +36,7 @@ export class CohereEmbeddings implements BaseEmbeddings {
         }
         this.model = new LangChainCohereEmbeddings({
             model: this.modelName,
+            inputType: "search_query",
             maxConcurrency: 3,
             maxRetries: 5,
         });

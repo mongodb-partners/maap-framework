@@ -26,7 +26,7 @@ export { Anthropic } from "./models/anthropic-model.js";
 export { GeckoEmbedding } from "./embeddings/gecko-embedding.js";
 export { VertexAI } from "./models/vertexai-model.js";
 export { Ollama } from "./models/ollama-model.js";
-export { AzureChatOpenAI } from "./models/azureopenai-model.js";
+export { AzureChatAI } from "./models/azureopenai-model.js";
 export * from "./convertMaapToChatbotFramework.js";
 export * from "./Rerank.js";
 export * from "./PreProcessQuery.js";

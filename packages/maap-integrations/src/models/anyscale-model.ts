@@ -8,11 +8,12 @@ import {
 
 import { BaseModel } from "../interfaces/base-model.js";
 import { Chunk, ConversationHistory } from "../global/types.js";
+import { StringOutputParser } from "@langchain/core/output_parsers";
 
 export class AnyscaleModel extends BaseModel {
   private readonly debug = createDebugMessages("maap:model:OpenAi");
   private readonly modelName: string;
-  private model: ChatOpenAI;
+  private model!: ChatOpenAI;
 
   constructor({
     temperature,
@@ -23,6 +24,9 @@ export class AnyscaleModel extends BaseModel {
   }) {
     super(temperature);
     this.modelName = modelName;
+  }
+
+  override async init(): Promise<void> {
     this.model = new ChatOpenAI({
       temperature: this.temperature,
       model: this.modelName,
@@ -31,14 +35,47 @@ export class AnyscaleModel extends BaseModel {
     });
   }
 
-  override async init(): Promise<void> {}
-
   override async runQuery(
     system: string,
     userQuery: string,
     supportingContext: Chunk[],
     pastConversations: ConversationHistory[],
   ): Promise<string> {
+    const pastMessages: (AIMessage | SystemMessage | HumanMessage)[] =
+      this.generatePastMessages(
+        system,
+        supportingContext,
+        pastConversations,
+        userQuery,
+      );
+    const result = await this.model.invoke(pastMessages);
+    this.debug("OpenAI response -", result);
+    return result.content.toString();
+  }
+
+  protected runStreamQuery(
+    system: string,
+    userQuery: string,
+    supportingContext: Chunk[],
+    pastConversations: ConversationHistory[],
+  ): Promise<any> {
+    const pastMessages: (AIMessage | SystemMessage | HumanMessage)[] =
+      this.generatePastMessages(
+        system,
+        supportingContext,
+        pastConversations,
+        userQuery,
+      );
+    const parser = new StringOutputParser();
+    return this.model.pipe(parser).stream(pastMessages);
+  }
+
+  private generatePastMessages(
+    system: string,
+    supportingContext: Chunk[],
+    pastConversations: ConversationHistory[],
+    userQuery: string,
+  ) {
     const pastMessages: (AIMessage | SystemMessage | HumanMessage)[] = [
       new SystemMessage(system),
     ];
@@ -60,8 +97,6 @@ export class AnyscaleModel extends BaseModel {
     pastMessages.push(new HumanMessage(`${userQuery}?`));
 
     this.debug("Executing openai model with prompt -", userQuery);
-    const result = await this.model.invoke(pastMessages);
-    this.debug("OpenAI response -", result);
-    return result.content.toString();
+    return pastMessages;
   }
 }
