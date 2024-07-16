@@ -1,0 +1,23 @@
+# Internal Enterprise Search
+ingest:
+    - source: 'sitemap'
+      source_path: 'https://www.careinsurance.com/sitemap.xml'
+      chunk_size: 2000
+      chunk_overlap: 200
+embedding:
+    class_name: Nomic-v1.5
+vector_store:
+    connectionString: 'mongodb+srv://venkatesh:ashwin123@cflt-demo.2wqno.mongodb.net/'
+    dbName: 'travel_insurance_policy'
+    collectionName: 'embedded_content'
+    embeddingKey: 'embedding'
+    textKey: 'text'
+    numCandidates: 150
+    minScore: 0.7
+    vectorSearchIndexName: 'vector_index'
+llms:
+    class_name: AzureOpenAI
+    deployment_name: "leafyhosp-gpt-35-turbo"
+    api_version: "2023-03-15-preview"
+    azure_openai_api_instance_name: "leafyhospopenai"
+    
