@@ -73,7 +73,43 @@ After configuring the application, the user is guided through the process of ing
 
 This documentation provides a clear and detailed roadmap for developers to set up and customize their RAG applications using the MongoDB MAAP Framework, emphasizing flexibility and ease of use through configuration.
 
-- Setup and Running Demo Video: https://www.youtube.com/watch?v=-r824BdVZt0
+Setup and running demo video: https://www.youtube.com/watch?v=-r824BdVZt0
+
+
+## Demo Walkthroughs
+Given below are the two use cases for demonstrating the power of the MAAP Framework.
+
+### 1. Internal Enterprise Search:
+An Enterprise search chatbot is an AI-powered virtual assistant within a company, designed to streamline tasks and boost employee productivity.
+
+#### Level setting for demo
+
+What?
+ - Assist company employees in understanding their corporate insurance policy, including coverage and conditions, using the RAG-powered chatbot.
+
+Why?
+ - Insurance policies are often long, complex, and filled with fine print, making them difficult to understand. In times of need, asking specific questions is much easier than sifting through a lengthy policy. Employees need a convenient way to learn about specific policy coverage, the claim submission process, and other policy details.
+
+How?
+ - Enterprise Search chatbots empower employees with 24/7 access to insurance policy details and a streamlined claims submission process.
+
+The demo can be viewed here : [https://drive.google.com/file/d/14gcuJLT2BXhQcS-LpjBqvrSY234x7PK9/view?resourcekey](https://drive.google.com/file/d/14gcuJLT2BXhQcS-LpjBqvrSY234x7PK9/view?resourcekey)
+
+### 2. Customer Service Chatbot:
+Customer Service chatbots are AI-powered assistants that engage customers 24/7, offering support, handling inquiries, and assisting with external services.
+
+#### Level setting for demo
+
+What?
+ - Consider Customer support is crucial, but it can be expensive to maintain and train a team. Getting through to a representative often takes up a significant amount of customer time."
+
+Why?
+ - Frustrated customers seeking to return or replace online purchases can now receive personalized assistance. This eliminates confusion and ensures they choose the right option, saving valuable time and effort.
+
+How?
+ - To streamline the return and replacement process for online shoppers, we've introduced a personalized assistant. This guides customers through the options, ensuring they make informed choices and complete the process efficiently.
+
+The demo can be viewed here : [https://drive.google.com/file/d/1iONEOYPGmru3-NpUJqSNHoY2837aim9Y/view?resourcekey](https://drive.google.com/file/d/1iONEOYPGmru3-NpUJqSNHoY2837aim9Y/view?resourcekey)
 
 
 ## Steps to run the application
