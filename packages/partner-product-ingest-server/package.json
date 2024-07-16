@@ -1,0 +1,40 @@
+{
+    "name": "partner-product-ingest-server",
+    "version": "1.0.0",
+    "type": "module",
+    "private": true,
+    "scripts": {
+        "start": "npm run build && node ./dist/index.js",
+        "ingest": "npm run build && node ./dist/loader.js",
+        "build": "tsc"
+    },
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "@aws-crypto/sha256-js": "^5.2.0",
+        "@aws-sdk/client-s3": "^3.600.0",
+        "@aws-sdk/credential-provider-node": "^3.600.0",
+        "@aws-sdk/types": "^3.598.0",
+        "@mhoc/axios-digest-auth": "^0.8.0",
+        "@smithy/eventstream-codec": "^3.1.1",
+        "@smithy/protocol-http": "^4.0.2",
+        "@smithy/signature-v4": "^3.1.1",
+        "@smithy/util-utf8": "^3.0.0",
+        "axios": "^1.7.2",
+        "axios-digest": "^0.3.0",
+        "dotenv": "^16.4.5",
+        "i": "^0.3.7",
+        "maap-integrations": "*",
+        "mongodb-chatbot-ui": "^0.7.2",
+        "npm": "^10.8.1",
+        "react": "^18.3.1",
+        "react-dom": "^18.3.1",
+        "request": "^2.88.2",
+        "ts-node": "^10.9.2",
+        "zod": "^3.23.8"
+    },
+    "devDependencies": {
+        "@types/express": "^4.17.21",
+        "@types/node": "^20.12.11"
+    }
+}
