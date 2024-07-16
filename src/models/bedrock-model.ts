@@ -10,17 +10,21 @@ export class Bedrock extends BaseModel {
 
     private readonly debug = createDebugMessages('maap:model:Bedrock');
     private readonly modelName: string;
-    private readonly region: string;
     private model: BedrockChat;
 
-    constructor(params?: { region?: string; modelName?: string; }) {
+    constructor(params?: { modelName?: string; }) {
         super();
-        this.region = params?.region;
         this.modelName = params?.modelName;
     }
 
     override async init(): Promise<void> {
-        this.model = new BedrockChat({ region: this.region, model: this.modelName, });
+        this.model = new BedrockChat({ model: this.modelName, 
+            region: process.env.BEDROCK_AWS_REGION!,
+            credentials: {
+              accessKeyId: process.env.BEDROCK_AWS_ACCESS_KEY_ID!,
+              secretAccessKey: process.env.BEDROCK_AWS_SECRET_ACCESS_KEY!,
+            }
+        });
     }
 
     override async runQuery(
