@@ -16,6 +16,7 @@ export class MongoDBAtlas implements BaseDb {
     private readonly client: MongoClient;
     private readonly embeddingKey: string;
     private readonly textKey: string;
+    private readonly indexName: string;
     private similarityFunction: string;
     private collection: any;
     private numCandidates: number;
@@ -31,7 +32,7 @@ export class MongoDBAtlas implements BaseDb {
      * @param numCandidates The number of candidates to consider during similarity search. Default is 100.
      * @param similarityFunction The similarity function to use during similarity search.
      */
-    constructor({ connectionString, dbName, collectionName, embeddingKey = MongoDBAtlas.EMBEDDING_KEY, textKey = MongoDBAtlas.TEXT_KEY, numCandidates = 100, similarityFunction, minScore = 0.1 }: { connectionString: string; dbName: string; collectionName: string; embeddingKey?: string; textKey?: string; numCandidates: number; similarityFunction: string; minScore: number; }
+    constructor({ connectionString, dbName, collectionName, embeddingKey = MongoDBAtlas.EMBEDDING_KEY, textKey = MongoDBAtlas.TEXT_KEY, indexName = MongoDBAtlas.INDEX_NAME, numCandidates = 100, similarityFunction, minScore = 0.1 }: { connectionString: string; dbName: string; collectionName: string; embeddingKey?: string; textKey?: string; indexName?: string; numCandidates: number; similarityFunction: string; minScore: number; }
     ) {
         this.connectionString = connectionString;
         this.dbName = dbName;
@@ -39,6 +40,7 @@ export class MongoDBAtlas implements BaseDb {
         this.client = new MongoClient(this.connectionString);
         this.embeddingKey = embeddingKey;
         this.textKey = textKey;
+        this.indexName = indexName;
         this.similarityFunction = similarityFunction;
         this.numCandidates = numCandidates;
         this.minScore = minScore;
@@ -104,7 +106,7 @@ export class MongoDBAtlas implements BaseDb {
     async getVectorSearchQuery(searchVector: number[], k: number): Promise<{}> {
         return {
             "$vectorSearch": {
-                "index": MongoDBAtlas.INDEX_NAME,
+                "index": this.indexName,
                 "path": this.embeddingKey,
                 "queryVector": searchVector,
                 "numCandidates": this.numCandidates,
@@ -154,7 +156,7 @@ export class MongoDBAtlas implements BaseDb {
             
             this.similarityFunction = similarityFunction ?? "cosine";
             const index = {
-                name: "vector_index",
+                name: this.indexName,
                 type: "vectorSearch",
                 definition: {
                     "fields": [
