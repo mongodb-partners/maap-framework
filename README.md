@@ -15,7 +15,7 @@ The repo offers flexibility to its users to set up the RAG application by simply
 Below given is the reference architecture of the framework with various components. 
 
 
-![alt text](MAAP_Arch.png)
+<img width="1251" alt="image" src="https://github.com/user-attachments/assets/08210097-869e-4219-b0c2-b6d1a92195f7">
 
 #### Overview of Advanced RAG Approaches
 
