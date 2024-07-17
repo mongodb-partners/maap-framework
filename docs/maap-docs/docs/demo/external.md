@@ -2,25 +2,36 @@
 sidebar_position: 2
 ---
 
-# External Demo Setup
+# Customer Service   
+External / public facing chatbot.
 
 ## Introduction
-This page describes how to setup and showcase a simple RAG bot in order to demonstrate it to customers.
+This page describes how to setup and showcase a simple RAG chatbot for a customer service use-case. 
 
-## Setup
-Use the below `.config` and `.env` files to setup the demo for external RAG chatbot.
+The data here is being loaded from the sitemap of Care Insurance Inc and other local `pdf` and `docx` sources. The sitemap contains a structured list of URLs that represent various pages and resources available on their website. This includes pages related to their insurance products, services, customer support, educational content, and possibly other relevant sections such as blogs or news updates. 
 
-- ### Data Ingestion
-    The data here is being loaded from the sitemap of Care Insurance Inc. It contains a structured list of URLs that represent various pages and resources available on their website. This includes pages related to their insurance products, services, customer support, educational content, and possibly other relevant sections such as blogs or news updates. 
+
+## Demo Setup
+ Clone the MAAP Framework github repository : [MAAP Framework Github](https://github.com/mongodb-partners/maap-chatbot-builder/) 
+
+ ### Pre-requisites 
+    Before proceeding, ensure that your environment meets the following requirements:
+    - Node Version: **v20.0+**
+    - MongoDB Version (Atlas): **v7.0 (M10 Cluster Tier)** 
     
-    The data here can be loaded from different data sources of your choice, listed here is data from sitemap of Care Insurance website.
+    You are also required to generate a `FIREWORKS.AI` API key in order to get access to the model. Visit this [quick-start](https://readme.fireworks.ai/docs/quickstart) guide to generate a key. 
 
+    Once generated, store it in the `.env` file, located at `builder/partnerproduct/.env` as;
+    ````
+    FIREWORKS_API_KEY=xxxxx
+    ````
 
-    A user can ask tailored question about their specific product and services.
-
-- ### Config.yaml
-    Update the missing fields with your personal generated values below.
-
+ ### Components selection
+    The first step in the setup process is configuring the `config.yaml` file. You can adjust the necessary settings from the list of available partners to make it best work for your needs. For this demo, we are utilizing the `Nomic` embedding class and the `Mixtral` model for LLMs.
+    
+    You are required to update the fields as required with your personal generated values below.
+    
+    _Note: For `pdf` and `docx` files you can use any file of your choice that is locally available._
     ````
     ingest:
         - source: 'sitemap'
@@ -28,11 +39,11 @@ Use the below `.config` and `.env` files to setup the demo for external RAG chat
           chunk_size: 2000
           chunk_overlap: 200
         - source: 'pdf'
-          source_path: '<path-to-local-file>'
+          source_path: '<path-to-pdf-local-file>'
           chunk_size: 2000
           chunk_overlap: 200
         - source: 'docx'
-          source_path: '<path-to-local-file>'
+          source_path: '<path-to-docx-local-file>'
           chunk_size: 2000
           chunk_overlap: 200          
     embedding:
@@ -54,10 +65,43 @@ Use the below `.config` and `.env` files to setup the demo for external RAG chat
         top_k: ''
     ````
 
-- ### Environment Variables
+ ### Data ingestion    
 
-    Update the FIREWORKS_API_KEY with your personal key or [generate one](https://readme.fireworks.ai/docs/quickstart) if not available.
+    The data can be loaded from different data sources of your choice, we are using `pdf`, `docx` and `sitemap` in this case. 
 
-    ````
-    FIREWORKS_API_KEY=
-    ````
+    In order to start ingesting the data run the below command.
+
+    ```
+    npm run ingest <path_to_your_config.yaml>
+    ```
+
+    This command takes into considerations the `ingest` pipeline mentioned in the `config.yaml` file and starts ingesting data from the listed sources. After the data is loaded successfully, the required vector index is also created automatically.
+
+    The data is loaded in `embedded_content` collection, and must have created vector search index named `vector_index`. Verify this before proceeding the to next step.
+
+
+### Running the application
+    In order to start the application, the server and front-end should be running in two separate terminals.
+
+    - #### Run the server
+        Navigate to the src folder, and run the server using below command.
+        ```
+        npm run start <path_to_your_config.yaml>
+        ```
+
+    - #### Start your application UI
+        You can start your UI client by running the following command.
+        ```
+        cd builder/partnerproduct/ui
+        npm install
+        npm run start
+        ```
+        
+        The `npm install` will help you in installing the required libraries.
+        
+        Your application will be running at [http://localhost:3000](http://localhost:3000).
+
+
+### Asking questions 
+
+    Be creative and ask questions related the data you ingested. 

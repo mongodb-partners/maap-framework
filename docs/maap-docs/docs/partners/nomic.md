@@ -22,11 +22,10 @@ To use Nomic embedding with MAAP framework, you would need to feed below values.
 
 
 - #### Config File :
-  Provided below are the values required to be added in `config.yaml` file in embedding section.
+  Provided below are the values required to be added in `config.yaml` file in embedding section. You can select the version 1 or 1.5 for Nomic.
   ```
   embedding:
       class_name: Nomic-v1.5 or Nomic-v1
-      model_name: <check_references_below> 
   ```
 
 - #### Environment Variable :

@@ -13,7 +13,7 @@ Anyscale offers the capability to deploy various Chat Models(LLM) under its umbr
 
 ### LLM Model 
 
-Refer to their [documentation](https://docs.anthropic.com/en/docs/about-claude/models) to understand the latest offerings, with feature and cost comparisons.
+Refer to their [documentation](https://docs.anyscale.com/) to understand the latest offerings, with feature and cost comparisons.
 
 #### Usage with MAAP
 To use Anyscale model with MAAP framework, you would need to feed below values.
@@ -21,7 +21,7 @@ To use Anyscale model with MAAP framework, you would need to feed below values.
 - #### Config File :
   Provided below are the values required to be added in `config.yaml` file in embedding section.
   ```
-  embedding:
+  llms:
       class_name: Anyscale
       model_name: <check_references_below>
   ```

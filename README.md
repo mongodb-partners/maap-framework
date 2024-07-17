@@ -1,6 +1,7 @@
-# MongoDB MAAP Chatbot Framework
+# MAAP Framework 
+
 ### Introduction 
-The [MongoDB AI Applications Program (MAAP)](https://www.mongodb.com/services/consulting/ai-applications-program) chatbot framework is a set of libraries that you can use to build your RAG Application
+The [MongoDB AI Applications Program (MAAP)](https://www.mongodb.com/services/consulting/ai-applications-program) framework is a set of libraries that you can use to build your RAG Application
 using MongoDB and [Atlas Vector Search](https://www.mongodb.com/docs/atlas/atlas-vector-search/vector-search-overview/) and associated MAAP partners
 
 The repo offers flexibility to its users to set up the RAG application by simply configuring a YAML file(details see below). The repo allows users to choose from various options through the partners' program. The following modules of RAG are made configurable
@@ -14,8 +15,7 @@ The repo offers flexibility to its users to set up the RAG application by simply
 Below given is the reference architecture of the framework with various components. 
 
 
-![image](https://github.com/user-attachments/assets/1086e809-62f7-4859-a2b5-0d4a21b721df)
-
+![alt text](MAAP_Arch.png)
 
 #### Overview of Advanced RAG Approaches
 
@@ -27,7 +27,7 @@ Below given is the reference architecture of the framework with various componen
 
     Initially, we construct a vector index to represent the contents of our text documents. This involves breaking down the documents into smaller chunks and converting them into numerical vectors. The vectorized content forms the basis for subsequent retrieval and generation steps.
 
-3. **Post Retrieval: Retrieval, Reranking & Filtering**
+3. **Post Retrieval: Retrieval, Re-ranking & Filtering**
     
     After retrieving relevant documents, we refine the context further through re-ranking and filtering:
     
@@ -54,12 +54,12 @@ Below given is the reference architecture of the framework with various componen
 
 ## Environment
 The application is tested with below configurations.
-- Node Version:        **v20.0+**
-- MongoDB Version (Atlas):     **v7.0 (M10 Cluster Tier)** 
+- Node Version :        **v20.0+**
+- MongoDB Version (Atlas) :     **v7.0 (M10 Cluster Tier)** 
 
 
 ## Document Preface
-The MongoDB MAAP Chatbot Framework documentation provides a comprehensive guide for setting up a Retrieval-Augmented Generation (RAG) application using MongoDB and Atlas Vector Search, along with integration options for various MAAP partners. This framework is designed to be highly configurable, allowing users to tailor their chatbot applications by simply modifying a YAML configuration file. The framework supports customization in four key areas: data loaders, embedding models, chat LLM (Large Language Models) models, and post-query re-rankers.
+The MongoDB MAAP Framework documentation provides a comprehensive guide for setting up a Retrieval-Augmented Generation (RAG) application using MongoDB and Atlas Vector Search, along with integration options for various MAAP partners. This framework is designed to be highly configurable, allowing users to tailor their applications by simply modifying a YAML configuration file. The framework supports customization in four key areas: data loaders, embedding models, chat LLM (Large Language Models) models, and post-query re-rankers.
 
 The setup process begins with cloning the project and installing dependencies. This involves navigating to the chatbot directory, building the project locally, and then installing npm packages in the builder/partner product directory.
 
@@ -69,14 +69,17 @@ The documentation also highlights the process of instantiating embedding and LLM
 
 Data loaders play a significant role in how data is ingested into the system. The framework supports multiple types of data loaders (e.g., WebLoader, PdfLoader, SitemapLoader, DocxLoader, ConfluenceLoader), each tailored to handle specific data sources like web pages, PDF files, sitemaps, DOCX documents, and Confluence spaces. These loaders are configured with parameters such as source paths and chunking details, and then added to a data loaders array for processing.
 
-After configuring the application, the user is guided through the process of ingesting data, running the server, and starting the UI client application. The UI client application runs locally, allowing users to interact with the chatbot through a web interface.
+After configuring the application, the user is guided through the process of ingesting data, running the server, and starting the UI client application. The UI client application runs locally, allowing users to interact with the application through a web interface.
 
-This documentation provides a clear and detailed roadmap for developers to set up and customize their RAG applications using the MongoDB MAAP Chatbot Framework, emphasizing flexibility and ease of use through configuration.
+This documentation provides a clear and detailed roadmap for developers to set up and customize their RAG applications using the MongoDB MAAP Framework, emphasizing flexibility and ease of use through configuration.
 
 - Setup and Running Demo Video: https://www.youtube.com/watch?v=-r824BdVZt0
 
-- Internal Chatbot Demo Video: https://drive.google.com/file/d/14gcuJLT2BXhQcS-LpjBqvrSY234x7PK9/view?usp=sharing
 
+
+## Steps to run the application
+
+### Installation
 
 ## Steps to run the application
 
@@ -143,7 +146,7 @@ Go to [this](https://mongodb-partners.github.io/maap-chatbot-builder/docs/catego
 
 
 ### Ingest Data
-Once configured you can use the yaml file you just created say as in example `examples/partnerproduct/src/config_1.yaml`.
+Once configured you can use the yaml file you just created say as in example `examples/partnerproduct/src/config.yaml`.
 
 ```
 npm install

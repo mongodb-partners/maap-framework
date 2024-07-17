@@ -45,10 +45,11 @@ To use Azure OpenAI embedding with MAAP framework, you would need to feed below 
 
 
 - #### Config File :
-  Provided below are the values required to be added in `config.yaml` file in embedding section.
+  Provided below are the values required to be added in `config.yaml` file in embedding section. 
+  The `class_name` should be appropriate to the embedding model being used.
   ```
   embedding:
-      class_name: Nomic-v1.5 or Nomic-v1
+      class_name: Fireworks
       model_name: <check_references_below> 
   ```
 
@@ -65,7 +66,7 @@ To use Azure OpenAI embedding with MAAP framework, you would need to feed below 
 Provided below are the instructions on how to procure the right values for building your MAAP framework.
 
 - ##### Model Name
-  You can pick any model from the [updated list](https://docs.Fireworks.com/docs/Fireworks-embed#english-models) given in Fireworks documentation.
+  You can pick any model from the [updated list](https://docs.fireworks.ai/guides/querying-embeddings-models#list-of-available-models) given in Fireworks documentation.
 
 - ##### API Key 
 
