@@ -36,6 +36,7 @@ export function getDatabaseConfig() {
     collectionName: parsedData.vector_store.collectionName,
     embeddingKey: parsedData.vector_store.embeddingKey,
     textKey: parsedData.vector_store.textKey,
+    indexName: parsedData.vector_store.vectorSearchIndexName,
     numCandidates: parsedData.vector_store.numDimensions,
     similarityFunction: parsedData.vector_store.similarityFunction,
     minScore: parsedData.vector_store.minScore
