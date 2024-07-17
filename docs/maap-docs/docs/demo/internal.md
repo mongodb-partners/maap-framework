@@ -2,22 +2,32 @@
 sidebar_position: 1
 ---
 
-# Internal Demo Setup
+#  Enterprise Search 
+Internal enterprise level chatbot.
 
 ## Introduction
-This page describes how to setup and showcase a simple RAG bot in order to demonstrate it to customers.
+This page describes how to setup and showcase a simple RAG chatbot for enterprise use-case. This chatbot is focused on training using the data that is internal to an organization and is maybe proprietary in nature. Data here will be ingested using pdf file(s).  
 
-## Setup
-Use the below `.config` and `.env` files to setup the demo for external RAG chatbot.
+## Demo Setup
+ Clone the MAAP Framework github repository : [MAAP Framework Github](https://github.com/mongodb-partners/maap-chatbot-builder/) 
 
-- ### Data Ingestion
-    Update the missing fields with your personal values;
-    The source path should be the PDF file location from your local.
+ ### Pre-requisites 
+    Before proceeding, ensure that your environment meets the following requirements:
+    - Node Version: **v20.0+**
+    - MongoDB Version (Atlas): **v7.0 (M10 Cluster Tier)** 
+    
+    You are also required to generate a `FIREWORKS.AI` API key in order to get access to the model. Visit this [quick-start](https://readme.fireworks.ai/docs/quickstart) guide to generate a key. 
 
-- ### Config.yaml
-    Update the missing fields with your personal generated values below.
+    Once generated, store it in the `.env` file, located at `builder/partnerproduct/.env` as;
+    ````
+    FIREWORKS_API_KEY=xxxxx
+    ````
 
-
+ ### Components selection
+    The first step in the setup process is configuring the `config.yaml` file. You can adjust the necessary settings from the list of available partners to make it best work for your needs. For this demo, we are utilizing the `Nomic` embedding class and the `Mixtral` model for LLMs.
+    
+    You are required to update the fields as required with your personal generated values below.
+    
     ````
     ingest:
         - source: 'pdf'
@@ -43,13 +53,43 @@ Use the below `.config` and `.env` files to setup the demo for external RAG chat
         top_k: ''
     ````
 
-    The data here can be loaded from different data sources of your choice.
+ ### Data ingestion    
+
+    The data can be loaded from different data sources of your choice, we are using `pdf` in this case. 
+
+    In order to start ingesting the data run the below command.
+
+    ```
+    npm run ingest <path_to_your_config.yaml>
+    ```
+
+    This command takes into considerations the `ingest` pipeline mentioned in the `config.yaml` file and starts ingesting data from the listed sources. After the data is loaded successfully, the required vector index is also created automatically.
+
+    The data is loaded in `embedded_content` collection, and must have created vector search index named `vector_index`. Verify this before proceeding the to next step.
 
 
-- ### Environment Variables
+### Running the application
+    In order to start the application, the server and front-end should be running in two separate terminals.
 
-    Update the FIREWORKS_API_KEY with your personal key or [generate one](https://readme.fireworks.ai/docs/quickstart) if not available.
+    - #### Run the server
+        Navigate to the src folder, and run the server using below command.
+        ```
+        npm run start <path_to_your_config.yaml>
+        ```
 
-    ````
-    FIREWORKS_API_KEY=
-    ````
+    - #### Start your application UI
+        You can start your UI client by running the following command.
+        ```
+        cd builder/partnerproduct/ui
+        npm install
+        npm run start
+        ```
+        
+        The `npm install` will help you in installing the required libraries.
+        
+        Your application will be running at [http://localhost:3000](http://localhost:3000).
+
+
+### Asking questions 
+
+    Be creative and ask questions related the data you ingested. 
