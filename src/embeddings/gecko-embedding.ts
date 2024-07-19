@@ -3,9 +3,20 @@ import { BaseEmbeddings } from '../interfaces/base-embeddings.js';
 
 export class GeckoEmbedding implements BaseEmbeddings {
     private model: GoogleVertexAIEmbeddings;
+    private modelName: string;
 
-    constructor() {
-        this.model = new GoogleVertexAIEmbeddings({model:'textembedding-gecko', maxConcurrency: 3, maxRetries: 5 });
+    // constructor() {
+    //     this.model = new GoogleVertexAIEmbeddings({model:'textembedding-gecko', maxConcurrency: 3, maxRetries: 5 });
+    // }
+    constructor(params?: {modelName:string }) {
+        this.modelName= params?.modelName ?? 'textembedding-gecko';
+
+
+        this.model = new GoogleVertexAIEmbeddings({
+            model:this.modelName, 
+            maxConcurrency: 3, 
+            maxRetries: 5 
+        });
     }
 
     getDimensions(): number {
