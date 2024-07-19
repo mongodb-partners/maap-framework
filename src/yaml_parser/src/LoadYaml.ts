@@ -138,7 +138,7 @@ export function getEmbeddingModel() {
   const parsedData = getDataFromYamlFile();
   switch (parsedData.embedding.class_name) {
     case 'VertexAI':
-      return new GeckoEmbedding();
+      return new GeckoEmbedding({modelName: parsedData.embedding.model_name});
     case 'Azure-OpenAI-Embeddings':
       return new AzureOpenAiEmbeddings({
         modelName: parsedData.embedding.model_name,
