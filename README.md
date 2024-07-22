@@ -161,6 +161,23 @@ llms:
 ``` 
 Also, please make a copy of the `examples/partnerproduct/example.env` file and rename it as `.env`. Place this file in the same folder where you are running your application. In the `.env` file, add the necessary API keys, URLs, connection strings, and any other secrets required for your application.
 
+The following contents are added in the `.env` (Environment File):
+```
+COHERE_API_KEY=
+FIREWORKS_API_KEY=
+OPENAI_API_KEY=sk-
+ANYSCALE_API_KEY=esecret_
+ANYSCALE_BASE_URL=https://api.endpoints.anyscale.com/v1
+BEDROCK_AWS_REGION=us-east-1
+BEDROCK_AWS_ACCESS_KEY_ID=
+BEDROCK_AWS_SECRET_ACCESS_KEY=
+AZURE_OPENAI_API_KEY=
+AZURE_OPENAI_API_INSTANCE_NAME=
+AZURE_OPENAI_API_EMBEDDINGS_DEPLOYMENT_NAME=
+AZURE_OPENAI_API_VERSION=
+AZURE_OPENAI_API_DEPLOYMENT_NAME=
+```
+
 ### MAAP Partner Integrations
 
 Partner specific information can be found as below; 
