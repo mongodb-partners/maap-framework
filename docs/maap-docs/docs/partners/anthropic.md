@@ -27,7 +27,7 @@ To use Anthropic model with MAAP framework, you would need to feed below values.
   ```
 
 - #### Environment Variable :
-  Below value(s) are to be added in `.env` file
+  Below value(s) are to be added in `.env` file, present at `builder/partnerproduct/`.
 
   ```
   ANTHROPIC_API_KEY = <check_references_below>

@@ -31,7 +31,7 @@ To use Azure OpenAI model with MAAP framework, you would need to feed below valu
   ```
 
 - #### Environment Variable :
-  Below value(s) are to be added in `.env` file
+  Below value(s) are to be added in `.env` file, present at `builder/partnerproduct/`.
 
   ```
   AZURE_OPENAI_API_KEY=<check_references_below>
@@ -68,7 +68,7 @@ To use Azure OpenAI embedding with MAAP framework, you would need to feed below 
 
 
 - #### Environment Variable :
-  Below value(s) are to be added in .env file
+  Below value(s) are to be added in `.env` file, present at `builder/partnerproduct/`.
 
   ```
   AZURE_OPENAI_API_KEY=<check_references_below>

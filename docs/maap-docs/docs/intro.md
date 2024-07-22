@@ -185,3 +185,11 @@ npm install
 npm run start
 ```
 Your application will be running at [http://localhost:3000](http://localhost:3000).
+
+
+## Identified Limitations 
+
+The following limitations have been recognized within the current framework. These will be addressed in upcoming updates and releases:
+
+- Support for only `.pptx` format in `ppt` dataloader.
+- Local PDF, PPT, and DOCX files mentioned in the chatbot sources response cannot be opened directly.
