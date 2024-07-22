@@ -21,8 +21,8 @@ try {
 
     const dataloader = getIngestLoader();
     for(const data of dataloader) {
+        console.log(`\n -- Preparing to add documents to the database... --`)
         await llmApplication.addLoader(data).then((chunks) => {
-            console.log(`\n-- Data inserted --`)
             chunksAdded += chunks.entriesAdded;
         });
     }
