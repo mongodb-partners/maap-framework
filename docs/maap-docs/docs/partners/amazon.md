@@ -31,7 +31,7 @@ To use Amazon FM with MAAP framework, you would need to the below components to 
       model_name: <check_references_below>
   ```
 - #### Environment Variable :
-  Below value(s) are to be added in .env file
+  Below value(s) are to be added in `.env` file, present at `builder/partnerproduct/`.
 
   ```
     BEDROCK_AWS_REGION = <check_references_below>
@@ -52,12 +52,12 @@ To use AWS Titan embedding with MAAP framework, you would need to feed below val
 
   ```
   embedding:
-      class_name: Titan
+      class_name: Bedrock
       model_name: `amazon.titan-embed-image-v1` or `amazon.titan-embed-text-v2:0`
   ```
 
 - #### Environment Variable :
-  Below value(s) are to be added in .env file
+  Below value(s) are to be added in `.env` file, present at `builder/partnerproduct/`.
 
   ```
     BEDROCK_AWS_REGION = <check_references_below>

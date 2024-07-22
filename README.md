@@ -93,7 +93,7 @@ Why?
 How?
  - Enterprise Search chatbots empower employees with 24/7 access to insurance policy details and a streamlined claims submission process.
 
-The demo can be viewed here : [https://drive.google.com/file/d/14gcuJLT2BXhQcS-LpjBqvrSY234x7PK9/view?resourcekey](https://drive.google.com/file/d/14gcuJLT2BXhQcS-LpjBqvrSY234x7PK9/view?resourcekey)
+The demo can be viewed here : [https://view.highspot.com/viewer/669e29cf3732ccf8afddabb5](https://view.highspot.com/viewer/669e29cf3732ccf8afddabb5)
 
 ### 2. Customer Service Chatbot:
 Customer Service chatbots are AI-powered assistants that engage customers 24/7, offering support, handling inquiries, and assisting with external services.
@@ -109,7 +109,7 @@ Why?
 How?
  - To streamline the return and replacement process for online shoppers, we've introduced a personalized assistant. This guides customers through the options, ensuring they make informed choices and complete the process efficiently.
 
-The demo can be viewed here : [https://drive.google.com/file/d/1iONEOYPGmru3-NpUJqSNHoY2837aim9Y/view?resourcekey](https://drive.google.com/file/d/1iONEOYPGmru3-NpUJqSNHoY2837aim9Y/view?resourcekey)
+The demo can be viewed here : [https://view.highspot.com/viewer/669e2a512571a42ba8d43454](https://view.highspot.com/viewer/669e2a512571a42ba8d43454)
 
 
 

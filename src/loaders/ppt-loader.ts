@@ -43,9 +43,13 @@ export class PptLoader extends BaseLoader<{ type: 'PptLoader' }> {
                 pageContent: chunk,
                 metadata: {
                     type: <'PptLoader'>'PptLoader',
-                    source: this.pathOrUrl,
+                    source: this.reformatFilePath(this.pathOrUrl),
                 },
             };
         }
+    }
+
+    reformatFilePath(filePath: string) {
+        return `file:///`+filePath.replace(/ /g, '%20');    
     }
 }

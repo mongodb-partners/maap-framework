@@ -43,9 +43,13 @@ export class DocxLoader extends BaseLoader<{ type: 'DocxLoader' }> {
                 pageContent: chunk,
                 metadata: {
                     type: <'DocxLoader'>'DocxLoader',
-                    source: this.pathOrUrl,
+                    source: this.reformatFilePath(this.pathOrUrl),
                 },
             };
         }
+    }
+
+    reformatFilePath(filePath: string) {
+        return `file:///`+filePath.replace(/ /g, '%20');    
     }
 }

@@ -28,7 +28,7 @@ To use Fireworks model with MAAP framework, you would need to feed below values.
   ```
 
 - #### Environment Variable :
-  Below value(s) are to be added in `.env` file
+  Below value(s) are to be added in `.env` file, present at `builder/partnerproduct/`.
 
   ```
   FIREWORKS_API_KEY : <check_references_below>
@@ -54,7 +54,7 @@ To use Azure OpenAI embedding with MAAP framework, you would need to feed below 
   ```
 
 - #### Environment Variable :
-  Below value(s) are to be added in .env file
+  Below value(s) are to be added in `.env` file, present at `builder/partnerproduct/`.
 
   ```
   FIREWORKS_API_KEY = <check_references_below>

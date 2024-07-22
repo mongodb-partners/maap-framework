@@ -29,10 +29,10 @@ To use Nomic embedding with MAAP framework, you would need to feed below values.
   ```
 
 - #### Environment Variable :
-  Below value(s) are to be added in .env file
+  Below value(s) are to be added in `.env` file, present at `builder/partnerproduct/`.
 
   ```
-  NOMIC_API_KEY = <check_references_below>
+  FIREWORKS_API_KEY = <check_references_below>
   ```
 
 
@@ -40,9 +40,6 @@ To use Nomic embedding with MAAP framework, you would need to feed below values.
 
 Provided below are the instructions on how to procure the right values for building your MAAP framework.
 
-- ##### Model Name
-  You can pick any model from the [updated list](https://blog.nomic.ai/posts/nomic-embed-text-v1) given in Nomic documentation.
-
 - ##### API Key 
 
-  You will need to [sign up](https://docs.nomic.ai/atlas/introduction/quick-start) and retrieve a Nomic API Key.
+  Nomic works using Fireworks underneath, thus Fireworks API key needs to be updated here. You will need to [sign up](https://readme.fireworks.ai/docs/quickstart) and retrieve a Fireworks API Key.

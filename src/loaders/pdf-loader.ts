@@ -43,9 +43,13 @@ export class PdfLoader extends BaseLoader<{ type: 'PdfLoader' }> {
                 pageContent: chunk,
                 metadata: {
                     type: <'PdfLoader'>'PdfLoader',
-                    source: this.pathOrUrl,
+                    source: this.reformatFilePath(this.pathOrUrl)
                 },
             };
         }
+    }
+
+    reformatFilePath(filePath: string) {
+        return `file:///`+filePath.replace(/ /g, '%20');    
     }
 }
