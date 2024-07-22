@@ -10,15 +10,18 @@ export class Bedrock extends BaseModel {
 
     private readonly debug = createDebugMessages('maap:model:Bedrock');
     private readonly modelName: string;
+    private readonly maxTokens: number;
     private model: BedrockChat;
 
-    constructor(params?: { modelName?: string; }) {
-        super();
+    constructor(params?: { modelName?: string;  maxTokens?: number; temperature?: number }) {
+        super(params?.temperature ?? 0.1);
         this.modelName = params?.modelName;
+        this.maxTokens = params?.maxTokens ?? 2048;
     }
 
     override async init(): Promise<void> {
         this.model = new BedrockChat({ model: this.modelName, 
+            maxTokens: this.maxTokens,
             region: process.env.BEDROCK_AWS_REGION!,
             credentials: {
               accessKeyId: process.env.BEDROCK_AWS_ACCESS_KEY_ID!,
