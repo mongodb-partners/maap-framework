@@ -109,7 +109,7 @@ Customer Service are AI-powered assistants that engage customers 24/7, offering 
 =======
  - Enterprise Search chatbots empower employees with 24/7 access to insurance policy details and a streamlined claims submission process.
 
-The demo can be viewed here : [https://drive.google.com/file/d/14gcuJLT2BXhQcS-LpjBqvrSY234x7PK9/view?resourcekey](https://drive.google.com/file/d/14gcuJLT2BXhQcS-LpjBqvrSY234x7PK9/view?resourcekey)
+The demo can be viewed here : [https://view.highspot.com/viewer/669e29cf3732ccf8afddabb5](https://view.highspot.com/viewer/669e29cf3732ccf8afddabb5)
 
 ### 2. Customer Service Chatbot:
 Customer Service chatbots are AI-powered assistants that engage customers 24/7, offering support, handling inquiries, and assisting with external services.
