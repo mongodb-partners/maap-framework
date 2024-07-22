@@ -193,3 +193,6 @@ The following limitations have been recognized within the current framework. The
 
 - Support for only `.pptx` format in `ppt` dataloader.
 - Local PDF, PPT, and DOCX files mentioned in the chatbot sources response cannot be opened directly.
+- `collectionName`, `embeddingKey`, `textKey` values in the `.config` file are fixed and cannot be changed.
+- There might be frequent timeouts in AnyScale LLM. 
+- Confluence loader fails at authentication. 
