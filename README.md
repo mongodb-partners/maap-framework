@@ -116,10 +116,6 @@ The demo can be viewed here : [https://drive.google.com/file/d/1iONEOYPGmru3-NpU
 
 ### Installation
 
-## Steps to run the application
-
-### Installation
-
 Clone the project to your machine, and install dependencies.
 
 ```
