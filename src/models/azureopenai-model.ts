@@ -17,12 +17,19 @@ export class AzureChatAI extends BaseModel {
     private readonly azureOpenAIApiDeploymentName: string;
     private model: AzureChatOpenAI;
     private readonly azureOpenAIApiVersion: string;
+    private readonly maxTokens: number;
+    private readonly topP: number;
+    private readonly topK: number;
 
-    constructor(params?: { temperature?:number,azureOpenAIApiInstanceName:string, azureOpenAIApiDeploymentName:string, modelName?:string, azureOpenAIApiVersion:string }) {
-        super(params?.temperature);
-        this.azureOpenAIApiInstanceName= params?.azureOpenAIApiInstanceName;
-        this.azureOpenAIApiDeploymentName= params?.azureOpenAIApiDeploymentName;
+    constructor(params?: { azureOpenAIApiInstanceName?: string; azureOpenAIApiDeploymentName?: string; azureOpenAIApiVersion?: string; modelName?: string; temperature?: number; maxTokens?: number; topP?:number; topK?:number }) {
+        super(params?.temperature ?? 0.1);
+        this.azureOpenAIApiInstanceName = params?.azureOpenAIApiInstanceName;
+        this.azureOpenAIApiDeploymentName = params?.azureOpenAIApiDeploymentName;
         this.azureOpenAIApiVersion = params?.azureOpenAIApiVersion;
+        this.maxTokens = params?.maxTokens ?? 2048;
+        this.topP = params?.topP ?? 0.9;
+        this.topK = params?.topK ?? 40;
+
     }
 
     override async init(): Promise<void> {
@@ -30,7 +37,9 @@ export class AzureChatAI extends BaseModel {
             azureOpenAIApiInstanceName: this.azureOpenAIApiInstanceName,
             azureOpenAIApiDeploymentName: this.azureOpenAIApiDeploymentName,
             azureOpenAIApiVersion: this.azureOpenAIApiVersion,
-            temperature: this.temperature
+            temperature: this.temperature,
+            maxTokens: this.maxTokens,
+            topP: this.topP
           });
     }
 

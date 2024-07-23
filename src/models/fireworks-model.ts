@@ -10,17 +10,19 @@ export class Fireworks extends BaseModel {
 
     private readonly debug = createDebugMessages('maap:model:Fireworks');
     private readonly modelName: string;
+    private readonly maxTokens: number;
     private apiKey: string;
     private model: ChatFireworks;
 
-    constructor(params?: { temperature?: number; modelName?: string; apiKey?: string}) {
-        super(params?.temperature);
+    constructor(params?: { temperature?: number; maxTokens?: number; modelName?: string; apiKey?: string}) {
+        super(params?.temperature ?? 0.1);
         this.modelName = params?.modelName ?? 'llama-v3-70b-instruct';
         this.apiKey = params?.apiKey ?? process.env.FIREWORKS_API_KEY;
+        this.maxTokens = params?.maxTokens ?? 2048;
     }
 
     override async init(): Promise<void> {
-        this.model = new ChatFireworks({ temperature: this.temperature, model: this.modelName, apiKey: this.apiKey});
+        this.model = new ChatFireworks({ temperature: this.temperature, maxTokens: this.maxTokens, model: this.modelName, apiKey: this.apiKey});
     }
 
 

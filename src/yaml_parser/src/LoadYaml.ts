@@ -2,7 +2,7 @@
 import * as fs from 'fs';
 import * as yaml from 'js-yaml';
 import * as process from 'process';
-import { Anthropic, BaseLoader, AzureChatAI, CohereEmbeddings, ConfluenceLoader, DocxLoader, GeckoEmbedding, OpenAi, PdfLoader, SitemapLoader, VertexAI, WebLoader, YoutubeSearchLoader, YoutubeLoader, YoutubeChannelLoader, PptLoader, JsonLoader } from '../../index.js';
+import { Anthropic, BaseLoader, CohereEmbeddings, ConfluenceLoader, DocxLoader, GeckoEmbedding, OpenAi, PdfLoader, SitemapLoader, VertexAI, WebLoader, YoutubeSearchLoader, YoutubeLoader, YoutubeChannelLoader, PptLoader, JsonLoader } from '../../index.js';
 import { MongoDBAtlas } from '../../vectorDb/mongo-db-atlas.js';
 import { strict as assert } from 'assert';
 import { AnyscaleModel } from '../../models/anyscale-model.js';
@@ -14,6 +14,7 @@ import { NomicEmbeddingsv1_5 } from '../../embeddings/nomic-v1-5-embeddings.js';
 import { AzureOpenAiEmbeddings } from '../../embeddings/azure-embeddings.js';
 import { BedrockEmbedding } from '../../embeddings/bedrock-embeddings.js';
 import { FireworksEmbedding } from '../../embeddings/fireworks-embeddings.js';
+import { AzureChatAI } from '../../models/azureopenai-model.js';
 
 // src/loaders/confluence-loader.ts src/loaders/docx-loader.ts src/loaders/excel-loader.ts src/loaders/json-loader.ts src/loaders/pdf-loader.ts src/loaders/ppt-loader.ts src/loaders/sitemap-loader.ts src/loaders/text-loader.ts src/loaders/web-loader.ts src/loaders/youtube-channel-loader.ts src/loaders/youtube-loader.ts src/loaders/youtube-search-loader.ts
 function getDataFromYamlFile() {
@@ -73,30 +74,40 @@ export function getDatabaseConfigInfo() {
  */
 export function getModelClass() {
   const parsedData = getDataFromYamlFile();
-
+  const params = {};
+  if(parsedData.llms.temperature) params["temperature"] = parsedData.llms.temperature;
+  if(parsedData.llms.maxTokens) params["maxTokens"] = parsedData.llms.max_tokens;
   switch (parsedData.llms.class_name) {
     case 'VertexAI':
-      return new VertexAI({ modelName: parsedData.llms.model_name });
+      assert(typeof parsedData.llms.model_name === 'string', 'model_name of VertexAI is required');
+      params["modelName"] = parsedData.llms.model_name;
+      return new VertexAI(params);
     case 'OpenAI':
-      return new OpenAi({ modelName: parsedData.llms.model_name });
+      assert(typeof parsedData.llms.model_name === 'string', 'model_name of OpenAI is required');
+      params["modelName"] = parsedData.llms.model_name;
+      return new OpenAi(params);
     case 'Anyscale':
-      return new AnyscaleModel({ modelName: parsedData.llms.model_name });
+      assert(typeof parsedData.llms.model_name === 'string', 'model_name of Anyscale is required');
+      params["modelName"] = parsedData.llms.model_name;
+      return new AnyscaleModel(params);
     case 'Fireworks':
-      return new Fireworks({ modelName: parsedData.llms.model_name });
+      assert(typeof parsedData.llms.model_name === 'string', 'model_name of Fireworks is required');
+      params["modelName"] = parsedData.llms.model_name;
+      return new Fireworks(params);
     case 'Anthropic':
-      return new Anthropic({ modelName: parsedData.llms.model_name });
+      assert(typeof parsedData.llms.model_name === 'string', 'model_name of Anthropic is required');
+      params["modelName"] = parsedData.llms.model_name;
+      return new Anthropic(params);
     case 'Bedrock':
-      return new Bedrock({ modelName: parsedData.llms.model_name });
+      assert(typeof parsedData.llms.model_name === 'string', 'model_name of Bedrock is required');
+      params["modelName"] = parsedData.llms.model_name;
+      return new Bedrock(params);
     case 'AzureOpenAI':
-      return new AzureChatAI({
-        modelName: parsedData.embedding.model_name,
-        azureOpenAIApiDeploymentName: parsedData.embedding.deployment_name,
-        azureOpenAIApiVersion: parsedData.embedding.api_version,
-        azureOpenAIApiInstanceName: parsedData.embedding.azure_openai_api_instance_name
-      });
+      return new AzureChatAI(params);
     default:
-      // Handle unsupported class name (optional)
-      return new Anthropic({ modelName: parsedData.llms.model_name }); // Or throw an error
+      throw new Error('Unsupported model class name');
+      // // Handle unsupported class name (optional)
+      // return new Anthropic({ modelName: parsedData.llms.model_name }); // Or throw an error
   }
 }
 
@@ -106,7 +117,6 @@ export function getModelClass() {
  */
 export function getEmbeddingModel() {
   const parsedData = getDataFromYamlFile();
-
   switch (parsedData.embedding.class_name) {
     case 'VertexAI':
       return new GeckoEmbedding({modelName: parsedData.embedding.model_name});

@@ -8,17 +8,19 @@ import { StringOutputParser } from '@langchain/core/output_parsers';
 
 export class AnyscaleModel extends BaseModel {
 
-    private readonly debug = createDebugMessages('maap:model:OpenAi');
+    private readonly debug = createDebugMessages('maap:model:AnyscaleLLM');
     private readonly modelName: string;
+    private readonly maxTokens: number;
     private model: ChatOpenAI;
 
-    constructor({ temperature, modelName }: { temperature?: number; modelName: string }) {
-        super(temperature);
-        this.modelName = modelName;
+    constructor(params?: { temperature?: number; modelName?: string; maxTokens?: number}) {
+        super(params?.temperature ?? 0.1);
+        this.modelName = params?.modelName;
+        this.maxTokens = params?.maxTokens ?? 2048;
     }
 
     override async init(): Promise<void> {
-        this.model = new ChatOpenAI({ temperature: this.temperature, model: this.modelName, apiKey: process.env.ANYSCALE_API_KEY ,configuration:{ baseURL: process.env.ANYSCALE_BASE_URL} 
+        this.model = new ChatOpenAI({ temperature: this.temperature, maxTokens:this.maxTokens ,model: this.modelName, apiKey: process.env.ANYSCALE_API_KEY ,configuration:{ baseURL: process.env.ANYSCALE_BASE_URL} 
         });
     }
 
