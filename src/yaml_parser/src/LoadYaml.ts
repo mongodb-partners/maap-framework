@@ -103,12 +103,6 @@ export function getModelClass() {
       params["modelName"] = parsedData.llms.model_name;
       return new Bedrock(params);
     case 'AzureOpenAI':
-      assert(typeof parsedData.llms.deployment_name === 'string', 'deployment_name is required');
-      assert(typeof parsedData.llms.api_version === 'string', 'api_version is required');
-      assert(typeof parsedData.llms.azure_openai_api_instance_name === 'string', 'azure_openai_api_instance_name is required');
-      params["azureOpenAIApiDeploymentName"] = parsedData.llms.deployment_name;
-      params["azureOpenAIApiVersion"] = parsedData.llms.api_version;
-      params["azureOpenAIApiInstanceName"] = parsedData.llms.azure_openai_api_instance_name;
       return new AzureChatAI(params);
     default:
       throw new Error('Unsupported model class name');
