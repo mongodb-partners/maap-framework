@@ -13,9 +13,9 @@ export class OpenAi extends BaseModel {
     private readonly modelName: string;
     private model: ChatOpenAI;
 
-    constructor({ temperature, modelName }: { temperature?: number; modelName: string }) {
-        super(temperature);
-        this.modelName = modelName;
+    constructor(params?: { temperature?: number; modelName?: string; }) {
+        super(params?.temperature ?? 0.1);
+        this.modelName = params?.modelName ?? 'gpt-3.5-turbo';
     }
 
     override async init(): Promise<void> {

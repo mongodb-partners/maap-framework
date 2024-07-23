@@ -11,9 +11,12 @@ export class VertexAI extends BaseModel {
     private readonly debug = createDebugMessages('maap:model:VertexAI');
     private model: ChatVertexAI;
 
-    constructor({ temperature, modelName }: { temperature?: number; modelName?: string }) {
-        super(temperature);
-        this.model = new ChatVertexAI({ model: modelName ?? 'gemini-1.0-pro' });
+    constructor( params?: { temperature?: number; modelName?: string; maxTokens?: number }) {
+        super();
+        this.model = new ChatVertexAI({ 
+            maxOutputTokens: params?.maxTokens ?? 1024,
+            temperature: params?.temperature ?? 0,
+            model: params?.modelName ?? 'gemini-1.0-pro' });
     }
 
     override async runQuery(

@@ -10,15 +10,17 @@ export class Anthropic extends BaseModel {
 
     private readonly debug = createDebugMessages('maap:model:Anthropic');
     private readonly modelName: string;
+    private readonly maxTokens: number;
     private model: ChatAnthropic;
 
-    constructor(params?: { temperature?: number; modelName?: string }) {
+    constructor(params?: { temperature?: number; modelName?: string; maxTokens?: number; topP?: number; topK?: number }) {
         super(params?.temperature);
         this.modelName = params?.modelName ?? 'claude-3-sonnet-20240229';
+        this.maxTokens = params?.maxTokens ?? 2048;
     }
 
     override async init(): Promise<void> {
-        this.model = new ChatAnthropic({ temperature: this.temperature, model: this.modelName });
+        this.model = new ChatAnthropic({ temperature: this.temperature, model: this.modelName, maxTokens:this.maxTokens, apiKey: process.env.ANTHROPIC_API_KEY});
     }
 
     override async runQuery(
