@@ -122,7 +122,7 @@ llms:
     top_p: ''
     top_k: ''
 ``` 
-Also, please make a copy of the `examples/partnerproduct/example.env` file and rename it as `.env`. Place this file in the same folder where you are running your application. In the `.env` file, add the necessary API keys, URLs, connection strings, and any other secrets required for your application.
+Also, please make a copy of the `builder/partnerproduct/example.env` file and rename it as `.env`. Place this file in the same folder where you are running your application. In the `.env` file, add the necessary API keys, URLs, connection strings, and any other secrets required for your application.
 
 The following contents are added in the `.env` (Environment File):
 ```
@@ -163,7 +163,7 @@ Go to [this](https://mongodb-partners.github.io/maap-chatbot-builder/docs/catego
 
 
 ### Ingest Data
-Once configured you can use the yaml file you just created say as in example `examples/partnerproduct/src/config.yaml`.
+Once configured you can use the yaml file you just created say as in example `builder/partnerproduct/src/config.yaml`.
 
 ```
 npm install

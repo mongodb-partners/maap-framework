@@ -62,7 +62,7 @@ interface YamlData {
   llms: {
     class_name: string;
     model_name: string;
-    temprature?: number; // Optional property with number type
+    temperature?: number; // Optional property with number type
     top_p?: number;       // Optional property with number type
   }[];
   rag_pipeline: {
