@@ -24,6 +24,8 @@ To use Anyscale model with MAAP framework, you would need to feed below values.
   llms:
       class_name: Anyscale
       model_name: <check_references_below>
+      max_tokens: <integer_value>
+      temperature: <integer_value>
   ```
 
 - #### Environment Variable :
