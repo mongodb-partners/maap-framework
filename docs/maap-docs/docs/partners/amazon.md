@@ -29,6 +29,8 @@ To use Amazon FM with MAAP framework, you would need to the below components to 
   llms:
       class_name: Bedrock
       model_name: <check_references_below>
+      max_tokens: <integer_value>
+      temperature: <integer_value>
   ```
 - #### Environment Variable :
   Below value(s) are to be added in `.env` file, present at `builder/partnerproduct/`.

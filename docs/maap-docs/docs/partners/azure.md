@@ -57,6 +57,8 @@ To use Azure OpenAI embedding with MAAP framework, you would need to feed below 
   embedding:
       class_name: Azure-OpenAI-Embeddings
       model_name: <model_selected>
+      max_tokens: <integer_value>
+      temperature: <integer_value>
   ```
 
 

@@ -22,9 +22,11 @@ To use Fireworks model with MAAP framework, you would need to feed below values.
 - #### Config File :
   Provided below are the values required to be added in `config.yaml` file in embedding section.
   ```
-  embedding:
+  llms:
       class_name: Fireworks
       model_name: <check_references_below>
+      max_tokens: <integer_value>
+      temperature: <integer_value>
   ```
 
 - #### Environment Variable :
