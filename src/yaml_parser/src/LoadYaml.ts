@@ -76,7 +76,7 @@ export function getModelClass() {
   const parsedData = getDataFromYamlFile();
   const params = {};
   if(parsedData.llms.temperature) params["temperature"] = parsedData.llms.temperature;
-  if(parsedData.llms.maxTokens) params["maxTokens"] = parsedData.llms.maxTokens;
+  if(parsedData.llms.maxTokens) params["maxTokens"] = parsedData.llms.max_tokens;
   switch (parsedData.llms.class_name) {
     case 'VertexAI':
       assert(typeof parsedData.llms.model_name === 'string', 'model_name of VertexAI is required');
@@ -103,12 +103,12 @@ export function getModelClass() {
       params["modelName"] = parsedData.llms.model_name;
       return new Bedrock(params);
     case 'AzureOpenAI':
-      assert(typeof parsedData.embedding.deployment_name === 'string', 'deployment_name is required');
-      assert(typeof parsedData.embedding.api_version === 'string', 'api_version is required');
-      assert(typeof parsedData.embedding.azure_openai_api_instance_name === 'string', 'azure_openai_api_instance_name is required');
-      params["azureOpenAIApiDeploymentName"] = parsedData.embedding.deployment_name;
-      params["azureOpenAIApiVersion"] = parsedData.embedding.api_version;
-      params["azureOpenAIApiInstanceName"] = parsedData.embedding.azure_openai_api_instance_name;
+      assert(typeof parsedData.llms.deployment_name === 'string', 'deployment_name is required');
+      assert(typeof parsedData.llms.api_version === 'string', 'api_version is required');
+      assert(typeof parsedData.llms.azure_openai_api_instance_name === 'string', 'azure_openai_api_instance_name is required');
+      params["azureOpenAIApiDeploymentName"] = parsedData.llms.deployment_name;
+      params["azureOpenAIApiVersion"] = parsedData.llms.api_version;
+      params["azureOpenAIApiInstanceName"] = parsedData.llms.azure_openai_api_instance_name;
       return new AzureChatAI(params);
     default:
       throw new Error('Unsupported model class name');
