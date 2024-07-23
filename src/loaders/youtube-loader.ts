@@ -19,7 +19,7 @@ export class YoutubeLoader extends BaseLoader<{ type: 'YoutubeLoader' }> {
         chunkSize?: number;
         chunkOverlap?: number;
     }) {
-        super(`YoutubeLoader_${md5(videoIdOrUrl)}`, chunkSize ?? 2000, chunkOverlap ?? 0);
+        super(`YoutubeLoader_${md5(videoIdOrUrl)}`, chunkSize ?? 2000, chunkOverlap ?? 100);
         this.videoIdOrUrl = videoIdOrUrl;
     }
 
@@ -32,19 +32,24 @@ export class YoutubeLoader extends BaseLoader<{ type: 'YoutubeLoader' }> {
         try {
             // const transcripts = await YoutubeTranscript.fetchTranscript(this.videoIdOrUrl, { lang: 'en' });
             const transcripts = await YoutubeTranscript.fetchTranscript(this.videoIdOrUrl);
-            this.debug(`Transcripts (length ${transcripts.length}) obtained for video`, this.videoIdOrUrl);
+            console.log(`Transcripts (length ${transcripts.length}) obtained for video`, this.videoIdOrUrl);
 
-            for (const transcript of transcripts) {
-                for (const chunk of await chunker.splitText(cleanString(transcript.text))) {
-                    yield {
-                        pageContent: chunk,
-                        metadata: {
-                            type: <'YoutubeLoader'>'YoutubeLoader',
-                            source: this.videoIdOrUrl,
-                        },
-                    };
-                }
+            // Consolidate all transcripts into one string to be split into larger chunks
+            const overallTranscript = transcripts.reduce((accumulator, transcript) => {
+                return accumulator + transcript.text;
+            }, '');
+            
+            // Split the overall transcript into chunks
+            for (const chunk of await chunker.splitText(cleanString(overallTranscript))) {
+                yield {
+                    pageContent: chunk,
+                    metadata: {
+                        type: <'YoutubeLoader'>'YoutubeLoader',
+                        source: this.videoIdOrUrl,
+                    },
+                };
             }
+
         } catch (e) {
             this.debug('Could not get transcripts for video', this.videoIdOrUrl, e);
         }

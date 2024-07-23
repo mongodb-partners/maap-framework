@@ -92,4 +92,4 @@ This page describes how to setup and showcase a simple RAG chatbot for enterpris
 
 ### Asking questions 
 
-    Be creative and ask questions related the data you ingested. 
+    Be creative and ask questions related to the data you ingested. 

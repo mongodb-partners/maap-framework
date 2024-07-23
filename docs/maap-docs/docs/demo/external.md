@@ -104,4 +104,4 @@ The data here is being loaded from the sitemap of Care Insurance Inc and other l
 
 ### Asking questions 
 
-    Be creative and ask questions related the data you ingested. 
+    Be creative and ask questions related to the data you ingested. 
