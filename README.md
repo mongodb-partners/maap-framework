@@ -195,7 +195,7 @@ Go to [this](https://mongodb-partners.github.io/maap-chatbot-builder/docs/catego
 
 
 ### Ingest Data
-Once configured you can use the yaml file you just created say as in example `examples/partnerproduct/src/config.yaml`.
+Once configured you can use the yaml file you just created say as in example `partnerproduct/src/config.yaml`.
 
 ```
 npm install
