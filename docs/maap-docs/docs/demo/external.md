@@ -21,7 +21,7 @@ The data here is being loaded from the sitemap of Care Insurance Inc and other l
     
     You are also required to generate a `FIREWORKS.AI` API key in order to get access to the model. Visit this [quick-start](https://readme.fireworks.ai/docs/quickstart) guide to generate a key. 
 
-    Once generated, store it in the `.env` file, located at `builder/partnerproduct/.env` as;
+    Rename the file locateted at builder/parterproduct/example.env to .env file. Paste the fireworks key to FIREWORKS_API_KEY.
     ````
     FIREWORKS_API_KEY=xxxxx
     ````
@@ -32,6 +32,9 @@ The data here is being loaded from the sitemap of Care Insurance Inc and other l
     You are required to update the fields as required with your personal generated values below.
     
     _Note: For `pdf` and `docx` files you can use any file of your choice that is locally available._
+
+    [Link](https://drive.google.com/file/d/1X8cWuZIHzLHnraS4BOBKre0BCPR5SbU4/view?usp=drive_link) to the pdf file used in the demo. Download this pdf file to your machine.
+
     ````
     ingest:
         - source: 'sitemap'
