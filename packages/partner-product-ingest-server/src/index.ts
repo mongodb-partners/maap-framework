@@ -10,7 +10,6 @@ import {
     withQueryPreprocessor,
     withReranker,
 } from 'maap-integrations';
-
 import {
     makeDefaultFindContent,
     MakeUserMessageFunc,
@@ -21,8 +20,8 @@ import {
     makeMongoDbConversationsService,
     AppConfig,
     makeApp,
+    UserMessage,
 } from 'mongodb-chatbot-server';
-
 import { makeMongoDbEmbeddedContentStore, logger, MongoClient } from 'mongodb-rag-core';
 
 // Load MAAP base classes
@@ -75,10 +74,7 @@ const findContentWithRerankAndPreprocess = withQueryPreprocessor({
 
 // Constructs the user message sent to the LLM from the initial user message
 // and the content found by the findContent function.
-const makeUserMessage: MakeUserMessageFunc = async function ({
-    content,
-    originalUserMessage,
-}): Promise<OpenAiChatMessage & { role: 'user' }> {
+const makeUserMessage: MakeUserMessageFunc = async function ({ content, originalUserMessage }) {
     const chunkSeparator = '~~~~~~';
     const context = content.map((c) => c.text).join(`\n${chunkSeparator}\n`);
     const contentForLlm = `Using the following information, answer the user query.
@@ -87,7 +83,15 @@ Information:
 ${context}
 
 User query: ${originalUserMessage}`;
-    return { role: 'user', content: contentForLlm };
+    return {
+        role: 'user',
+        content: originalUserMessage,
+        contentForLlm,
+        contextContent: content.map((c) => ({
+            url: c.url,
+            text: c.text,
+        })),
+    } satisfies UserMessage;
 };
 
 // Generates the user prompt for the chatbot using RAG
