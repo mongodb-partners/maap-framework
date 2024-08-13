@@ -1,7 +1,9 @@
 // Import required modules
 import * as fs from 'fs';
+import * as path from 'path';
 import * as yaml from 'js-yaml';
 import * as process from 'process';
+
 import { Anthropic, BaseLoader, CohereEmbeddings, ConfluenceLoader, DocxLoader, GeckoEmbedding, OpenAi, PdfLoader, SitemapLoader, VertexAI, WebLoader, YoutubeSearchLoader, YoutubeLoader, YoutubeChannelLoader, PptLoader, JsonLoader } from '../../index.js';
 import { MongoDBAtlas } from '../../vectorDb/mongo-db-atlas.js';
 import { strict as assert } from 'assert';
@@ -162,11 +164,21 @@ export function getIngestLoader() {
         }));
         break;
       case 'pdf':
-        dataloaders.push(new PdfLoader({
-          filePath: data.source_path,
-          chunkSize: data.chunk_size,
-          chunkOverlap: data.chunk_overlap,
-        }));
+        const directoryPath = data.source_path;
+        const files = fs.readdirSync(directoryPath);
+
+        // Filter out only PDF files
+        const pdfFiles = files.filter(file => path.extname(file).toLowerCase() === '.pdf');
+
+        // Create a PdfLoader for each PDF file
+        for (const pdfFile of pdfFiles) {
+          dataloaders.push(new PdfLoader({
+            filePath: path.join(directoryPath, pdfFile),
+            chunkSize: data.chunk_size,
+            chunkOverlap: data.chunk_overlap,
+          }));
+          console.log(`Planning to ingest PDF file: ${pdfFile}`);
+        }
         break;
       case 'sitemap':
         dataloaders.push(new SitemapLoader({
