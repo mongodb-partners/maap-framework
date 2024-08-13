@@ -28,6 +28,8 @@ To use Cohere model with MAAP framework, you would need to feed below values.
   ```
 
 - #### Environment Variable :
+  _NOTE: Rename the file located at `builder/parterproduct/example.env` to `.env` file._ 
+  
   Below value(s) are to be added in `.env` file, present at `builder/partnerproduct/`.
 
   ```

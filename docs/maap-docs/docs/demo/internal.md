@@ -18,6 +18,8 @@ This page describes how to setup and showcase a simple RAG chatbot for enterpris
     
     You are also required to generate a `FIREWORKS.AI` API key in order to get access to the model. Visit this [quick-start](https://readme.fireworks.ai/docs/quickstart) guide to generate a key. 
 
+    _NOTE: Rename the file located at `builder/parterproduct/example.env` to `.env` file._ 
+    
     Once generated, store it in the `.env` file, located at `builder/partnerproduct/.env` as;
     ````
     FIREWORKS_API_KEY=xxxxx
@@ -28,6 +30,8 @@ This page describes how to setup and showcase a simple RAG chatbot for enterpris
     
     You are required to update the fields as required with your personal generated values below.
     
+    [Link](https://drive.google.com/file/d/1fqYmznw7mAe744anSyiTlvCFgVXN72kJ/view?usp=drive_link) to the pdf file used in the demo. Download this pdf file to your machine.
+
     ````
     ingest:
         - source: 'pdf'

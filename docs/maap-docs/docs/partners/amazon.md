@@ -33,6 +33,8 @@ To use Amazon FM with MAAP framework, you would need to the below components to 
       temperature: <integer_value>
   ```
 - #### Environment Variable :
+  _NOTE: Rename the file located at `builder/parterproduct/example.env` to `.env` file._ 
+  
   Below value(s) are to be added in `.env` file, present at `builder/partnerproduct/`.
 
   ```

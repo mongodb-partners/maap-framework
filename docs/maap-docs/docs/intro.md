@@ -122,6 +122,9 @@ llms:
     top_p: ''
     top_k: ''
 ``` 
+
+_NOTE: Rename the file located at `builder/parterproduct/example.env` to `.env` file._ 
+
 Also, please make a copy of the `builder/partnerproduct/example.env` file and rename it as `.env`. Place this file in the same folder where you are running your application. In the `.env` file, add the necessary API keys, URLs, connection strings, and any other secrets required for your application.
 
 The following contents are added in the `.env` (Environment File):

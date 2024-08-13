@@ -8,7 +8,7 @@ External / public facing chatbot.
 ## Introduction
 This page describes how to setup and showcase a simple RAG chatbot for a customer service use-case. 
 
-The data here is being loaded from the sitemap of Care Insurance Inc and other local `pdf` and `docx` sources. The sitemap contains a structured list of URLs that represent various pages and resources available on their website. This includes pages related to their insurance products, services, customer support, educational content, and possibly other relevant sections such as blogs or news updates. 
+The data here is being loaded from the website of [firstcry](https://www.firstcry.com/returnpolicy) and other local `pdf` and `docx` sources. This includes pages related to their products and refund policy. 
 
 
 ## Demo Setup
@@ -21,7 +21,9 @@ The data here is being loaded from the sitemap of Care Insurance Inc and other l
     
     You are also required to generate a `FIREWORKS.AI` API key in order to get access to the model. Visit this [quick-start](https://readme.fireworks.ai/docs/quickstart) guide to generate a key. 
 
-    Rename the file locateted at builder/parterproduct/example.env to .env file. Paste the fireworks key to FIREWORKS_API_KEY.
+    _NOTE: Rename the file located at `builder/parterproduct/example.env` to `.env` file._. 
+    
+    Paste the fireworks key to FIREWORKS_API_KEY.
     ````
     FIREWORKS_API_KEY=xxxxx
     ````
@@ -37,18 +39,18 @@ The data here is being loaded from the sitemap of Care Insurance Inc and other l
 
     ````
     ingest:
-        - source: 'sitemap'
-          source_path: 'https://www.careinsurance.com/sitemap.xml'
-          chunk_size: 2000
-          chunk_overlap: 200
-        - source: 'pdf'
-          source_path: '<path-to-pdf-local-file>'
-          chunk_size: 2000
-          chunk_overlap: 200
-        - source: 'docx'
-          source_path: '<path-to-docx-local-file>'
-          chunk_size: 2000
-          chunk_overlap: 200          
+      - source: 'web'
+        source_path: 'https://www.firstcry.com/returnpolicy'
+        chunk_size: 2000
+        chunk_overlap: 200
+      - source: 'pdf'
+        source_path: '/Users/utsavtalwar/Downloads/external/refund_customer_support.pdf'
+        chunk_size: 2000
+        chunk_overlap: 200
+      - source: 'docx'
+        source_path: '/Users/utsavtalwar/Downloads/external/refund-policy-template-digital.docx'
+        chunk_size: 2000
+        chunk_overlap: 200      
     embedding:
         class_name: Nomic-v1.5
     vector_store:
@@ -70,7 +72,7 @@ The data here is being loaded from the sitemap of Care Insurance Inc and other l
 
  ### Data ingestion    
 
-    The data can be loaded from different data sources of your choice, we are using `pdf`, `docx` and `sitemap` in this case. 
+    The data can be loaded from different data sources of your choice, we are using `pdf`, `docx` and `web` in this case. 
 
     In order to start ingesting the data run the below command.
 
