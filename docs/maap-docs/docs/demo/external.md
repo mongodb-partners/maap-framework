@@ -12,7 +12,7 @@ The data here is being loaded from the sitemap of Care Insurance Inc and other l
 
 
 ## Demo Setup
- Clone the MAAP Framework github repository : [MAAP Framework Github](https://github.com/mongodb-partners/maap-chatbot-builder/) 
+ Clone the MAAP Framework github repository : [MAAP Framework Github](https://github.com/mongodb-partners/maap-rag-framework/) 
 
  ### Pre-requisites 
     Before proceeding, ensure that your environment meets the following requirements:
