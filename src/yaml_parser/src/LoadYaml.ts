@@ -25,7 +25,7 @@ function getDataFromYamlFile() {
   if (!args[0]) {
     throw new Error('Please provide the YAML file path as an argument.');
   }
-  const data = fs.readFileSync(args[0], 'utf8');
+  const data = readFileSync(args[0], 'utf8');
   const parsedData = yaml.load(data);
   return parsedData;
 }
@@ -50,12 +50,16 @@ export function getAggregateOperatorConfigs(){
   const aggregateOperatorConfigs = [];
   console.log("aggregate_operators", parsedData.aggregate_operators)
   for (const aggregateConfig of parsedData.aggregate_operators) {
+    let query = "[]";
+    if(aggregateConfig.queryFilePath){
+      query = readFileSync(aggregateConfig.queryFilePath, 'utf8');
+    }
     aggregateOperatorConfigs.push({
       connectionString: aggregateConfig.connectionString,
       dbName: aggregateConfig.dbName,
       collectionName: aggregateConfig.collectionName,
       aggregatePipelineName: aggregateConfig.aggregatePipelineName,
-      query: aggregateConfig.query // TODO read from respective text file
+      query: query
     });
   }
   return aggregateOperatorConfigs;
@@ -65,10 +69,14 @@ export function getConditionOpConfigs(){
   const parsedData = getDataFromYamlFile();
   const conditionOpConfigs = [];
   for (const conditionConfig of parsedData.conditional_operators) {
+    let prompt = '[]';
+    if(conditionConfig.promptFilePath){
+      prompt = readFileSync(conditionConfig.promptFilePath, 'utf8');
+    }
     conditionOpConfigs.push({
       name: conditionConfig.name,
       description: conditionConfig.description,
-      prompt: conditionConfig.prompt,
+      prompt: prompt,
       aggregatePipelineName: conditionConfig.aggregatePipelineName
     });
   }
