@@ -13,15 +13,15 @@ const config = {
   favicon: 'img/favicon.ico',
 
   // Set the production url of your site here
-  url: 'https://maap-chatbot-builder.github.io',
+  url: 'https://maap-rag-framework.github.io',
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
-  baseUrl: '/maap-chatbot-builder/',
+  baseUrl: '/maap-rag-framework/',
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
   organizationName: 'mongodb-partners', // Usually your GitHub org/user name.
-  projectName: 'maap-chatbot-builder', // Usually your repo name.
+  projectName: 'maap-rag-framework', // Usually your repo name.
 
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
@@ -73,7 +73,7 @@ const config = {
             label: 'Docs',
           },
           {
-            href: 'https://github.com/mongodb-partners/maap-chatbot-builder/',
+            href: 'https://github.com/mongodb-partners/maap-rag-framework/',
             label: 'GitHub',
             position: 'right',
           },
