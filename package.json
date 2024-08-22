@@ -72,6 +72,7 @@
         "confluence.js": "^1.7.4",
         "debug": "^4.3.4",
         "express": "^4.19.2",
+        "fs": "^0.0.1-security",
         "html-to-text": "^9.0.5",
         "langchain": "^0.2.0",
         "md5": "^2.3.0",
