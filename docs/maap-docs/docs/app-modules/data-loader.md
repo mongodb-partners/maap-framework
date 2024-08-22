@@ -4,7 +4,7 @@ sidebar_position: 2
 
 # Data Loaders
 
-These data loaders facilitate the seamless integration of data into MongoDB's vector store, leveraging specific embedding models. They are designed to support the construction of Retrieval-Augmented Generation (RAG) chatbot applications
+These data loaders facilitate the seamless integration of data into MongoDB's vector store, leveraging specific embedding models. They are designed to support the construction of gen AI application.
 
 
 ## Loaders with their usage

@@ -3,10 +3,10 @@ sidebar_position: 2
 ---
 
 # Customer Service   
-External / public facing chatbot.
+External / public facing customer service app.
 
 ## Introduction
-This page describes how to setup and showcase a simple RAG chatbot for a customer service use-case. 
+This page describes how to setup and showcase a gen AI application for a customer service use-case. 
 
 The data here is being loaded from the sitemap of Care Insurance Inc and other local `pdf` and `docx` sources. The sitemap contains a structured list of URLs that represent various pages and resources available on their website. This includes pages related to their insurance products, services, customer support, educational content, and possibly other relevant sections such as blogs or news updates. 
 
@@ -60,9 +60,6 @@ The data here is being loaded from the sitemap of Care Insurance Inc and other l
     llms:
         class_name: Fireworks
         model_name: 'accounts/fireworks/models/mixtral-8x22b-instruct'
-        temperature: ''
-        top_p: ''
-        top_k: ''
     ````
 
  ### Data ingestion    

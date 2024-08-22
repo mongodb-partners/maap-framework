@@ -65,7 +65,7 @@ The application is tested with below configurations.
 ## Document Preface
 The MongoDB MAAP Framework documentation provides a comprehensive guide for setting up a Retrieval-Augmented Generation (RAG) application using MongoDB and Atlas Vector Search, along with integration options for various MAAP partners. This framework is designed to be highly configurable, allowing users to tailor their applications by simply modifying a YAML configuration file. The framework supports customization in four key areas: data loaders, embedding models, chat LLM (Large Language Models) models, and post-query re-rankers.
 
-The setup process begins with cloning the project and installing dependencies. This involves navigating to the chatbot directory, building the project locally, and then installing npm packages in the builder/partner product directory.
+The setup process begins with cloning the project and installing dependencies. This involves navigating to the [builder/partnerproduct](https://github.com/mongodb-partners/maap-framework/tree/main/builder/partnerproduct) directory, building the project locally, and then installing npm packages in the builder/partner product directory.
 
 Configuration of the RAG application is crucial and involves specifying details for data ingestion, embedding models, vector storage, and LLM models in a YAML file. This includes settings for data source types (e.g., PDF files), paths, chunk sizes, embedding class names, MongoDB connection strings, database and collection names, and specifics about the vector search index and LLM models.
 
@@ -192,7 +192,7 @@ Your application will be running at [http://localhost:3000](http://localhost:300
 The following limitations have been recognized within the current framework. These will be addressed in upcoming updates and releases:
 
 - Support for only `.pptx` format in `ppt` dataloader.
-- Local PDF, PPT, and DOCX files mentioned in the chatbot sources response cannot be opened directly.
+- Local PDF, PPT, and DOCX files mentioned in the data sources response cannot be opened directly.
 - `collectionName`, `embeddingKey`, `textKey` values in the `.config` file are fixed and cannot be changed.
 - There might be frequent timeouts in AnyScale LLM. 
 - Confluence loader fails at authentication. 
