@@ -13,15 +13,15 @@ const config = {
   favicon: 'img/favicon.ico',
 
   // Set the production url of your site here
-  url: 'https://maap-rag-framework.github.io',
+  url: 'https://maap-framework.github.io',
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
-  baseUrl: '/maap-rag-framework/',
+  baseUrl: '/maap-framework/',
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
   organizationName: 'mongodb-partners', // Usually your GitHub org/user name.
-  projectName: 'maap-rag-framework', // Usually your repo name.
+  projectName: 'maap-framework', // Usually your repo name.
 
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
@@ -73,7 +73,7 @@ const config = {
             label: 'Docs',
           },
           {
-            href: 'https://github.com/mongodb-partners/maap-rag-framework/',
+            href: 'https://github.com/mongodb-partners/maap-framework/',
             label: 'GitHub',
             position: 'right',
           },
