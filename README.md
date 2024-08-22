@@ -19,34 +19,34 @@ Below given is the reference architecture of the framework with various componen
 
 #### Overview of Advanced RAG Approaches
 
-1. **Data Loading**
+- **Data Loading**
 
     Applications based on Large Language Models (LLMs) often involve extracting data from databases or files, such as PDFs, and converting it into a format usable by LLMs. The pivotal component here is the data source, containing private knowledge or content obtained.
 
-2. **Data Indexing and Embedding Models: Chunking & Vectorization**
+- **Data Indexing and Embedding Models: Chunking & Vectorization**
 
     Initially, we construct a vector index to represent the contents of our text documents. This involves breaking down the documents into smaller chunks and converting them into numerical vectors. The vectorized content forms the basis for subsequent retrieval and generation steps.
 
-3. **Post Retrieval: Retrieval, Re-ranking & Filtering**
+- **Post Retrieval: Retrieval, Re-ranking & Filtering**
     
     After retrieving relevant documents, we refine the context further through re-ranking and filtering:
     
     - **Re-ranking**: Prioritizing documents based on relevance.
     - **Filtering**: Removing less relevant or noisy documents.
 
-4. **Pre Query Retrieval: Query Transformations**
+- **Pre Query Retrieval: Query Transformations**
 
     Advanced RAG models explore various transformations of user queries to enhance retrieval accuracy. Techniques include query expansion and other modifications.
 
-5. **Chat Engine: LLM**
+- **Chat Engine: LLM**
 
     The chat engine combines retrieved context with the user’s query to create a prompt for the language model. This prompt guides the language model in generating contextually relevant responses.
 
-6. **Chat Engine: RAG Agents**
+- **Chat Engine: RAG Agents**
 
     RAG agents manage the entire RAG process, coordinating retrieval, generation, and other components. They ensure seamless interaction between the search index, language model, and other modules.
 
-7. **Prompting: Response Synthesizer**
+- **Prompting: Response Synthesizer**
 
     The response synthesizer generates the actual answer based on the combined context and user query. Attention and prompt engineering mechanisms may be employed to focus on relevant parts of retrieved documents during generation.
 
@@ -61,7 +61,7 @@ The application is tested with below configurations.
 ## Document Preface
 The MongoDB MAAP Framework documentation provides a comprehensive guide for setting up a Retrieval-Augmented Generation (RAG) application using MongoDB and Atlas Vector Search, along with integration options for various MAAP partners. This framework is designed to be highly configurable, allowing users to tailor their applications by simply modifying a YAML configuration file. The framework supports customization in four key areas: data loaders, embedding models, chat LLM (Large Language Models) models, and post-query re-rankers.
 
-The setup process begins with cloning the project and installing dependencies. This involves navigating to the chatbot directory, building the project locally, and then installing npm packages in the builder/partner product directory.
+The setup process begins with cloning the project and installing dependencies. This involves navigating to the [builder/partnerproduct](https://github.com/mongodb-partners/maap-framework/tree/main/builder/partnerproduct) directory, building the project locally, and then installing npm packages in the builder/partner product directory.
 
 Configuration of the RAG application is crucial and involves specifying details for data ingestion, embedding models, vector storage, and LLM models in a YAML file. This includes settings for data source types (e.g., PDF files), paths, chunk sizes, embedding class names, MongoDB connection strings, database and collection names, and specifics about the vector search index and LLM models.
 
@@ -80,23 +80,23 @@ Setup and running demo video: https://www.youtube.com/watch?v=-r824BdVZt0
 Given below are the two use cases for demonstrating the power of the MAAP Framework.
 
 ### 1. Internal Enterprise Search:
-An Enterprise search chatbot is an AI-powered virtual assistant within a company, designed to streamline tasks and boost employee productivity.
+An Enterprise search is an AI-powered virtual assistant within a company, designed to streamline tasks and boost employee productivity.
 
 #### Level setting for demo
 
 What?
- - Assist company employees in understanding their corporate insurance policy, including coverage and conditions, using the RAG-powered chatbot.
+ - Assist company employees in understanding their corporate insurance policy, including coverage and conditions, using the RAG-powered application.
 
 Why?
  - Insurance policies are often long, complex, and filled with fine print, making them difficult to understand. In times of need, asking specific questions is much easier than sifting through a lengthy policy. Employees need a convenient way to learn about specific policy coverage, the claim submission process, and other policy details.
 
 How?
- - Enterprise Search chatbots empower employees with 24/7 access to insurance policy details and a streamlined claims submission process.
+ - Enterprise Search empowers employees with 24/7 access to insurance policy details and a streamlined claims submission process.
 
 The demo can be viewed here : [https://view.highspot.com/viewer/669e29cf3732ccf8afddabb5](https://view.highspot.com/viewer/669e29cf3732ccf8afddabb5)
 
-### 2. Customer Service Chatbot:
-Customer Service chatbots are AI-powered assistants that engage customers 24/7, offering support, handling inquiries, and assisting with external services.
+### 2. Customer Service:
+Customer Service are AI-powered assistants that engage customers 24/7, offering support, handling inquiries, and assisting with external services.
 
 #### Level setting for demo
 
@@ -120,7 +120,7 @@ The demo can be viewed here : [https://view.highspot.com/viewer/669e2a512571a42b
 Clone the project to your machine, and install dependencies.
 
 ```
-cd maap-rag-framework
+cd maap-framework
 npm install
 cd builder/partnerproduct
 npm install
@@ -177,19 +177,19 @@ AZURE_OPENAI_API_DEPLOYMENT_NAME=
 ### MAAP Partner Integrations
 
 Partner specific information can be found as below; 
-Go to [this](https://mongodb-partners.github.io/maap-rag-framework/docs/category/partners) page for partner specific documentations.
+Go to [this](https://mongodb-partners.github.io/maap-framework/docs/category/partners) page for partner specific documentations.
 
 | Sr # | MAAP Partner  | Partner Type  | Documentation                                                                                          |
 |------|---------------|---------------|--------------------------------------------------------------------------------------------------------|
-| 1    | AWS           | Cloud provider| [Link](https://mongodb-partners.github.io/maap-rag-framework/docs/partners/amazon)                   |
-| 2    | Azure         | Cloud provider| [Link](https://mongodb-partners.github.io/maap-rag-framework/docs/partners/azure)                    |
-| 3    | GCP           | Cloud provider| [Link](https://mongodb-partners.github.io/maap-rag-framework/docs/partners/gcp)                      |
-| 4    | Anthropic     | AI tech       | [Link](https://mongodb-partners.github.io/maap-rag-framework/docs/partners/anthropic)                |
-| 5    | Anyscale      | AI tech       | [Link](https://mongodb-partners.github.io/maap-rag-framework/docs/partners/anyscale)                 |
-| 6    | Cohere        | AI tech       | [Link](https://mongodb-partners.github.io/maap-rag-framework/docs/partners/cohere)                   |
-| 7    | Fireworks.AI  | AI tech       | [Link](https://mongodb-partners.github.io/maap-rag-framework/docs/partners/fireworksai)              |
-| 8    | Langchain     | AI tech       | [Link](https://mongodb-partners.github.io/maap-rag-framework/docs/partners/langchain)                |
-| 9    | Nomic         | AI tech       | [Link](https://mongodb-partners.github.io/maap-rag-framework/docs/partners/nomic)                    |
+| 1    | AWS           | Cloud provider| [Link](https://mongodb-partners.github.io/maap-framework/docs/partners/amazon)                   |
+| 2    | Azure         | Cloud provider| [Link](https://mongodb-partners.github.io/maap-framework/docs/partners/azure)                    |
+| 3    | GCP           | Cloud provider| [Link](https://mongodb-partners.github.io/maap-framework/docs/partners/gcp)                      |
+| 4    | Anthropic     | AI tech       | [Link](https://mongodb-partners.github.io/maap-framework/docs/partners/anthropic)                |
+| 5    | Anyscale      | AI tech       | [Link](https://mongodb-partners.github.io/maap-framework/docs/partners/anyscale)                 |
+| 6    | Cohere        | AI tech       | [Link](https://mongodb-partners.github.io/maap-framework/docs/partners/cohere)                   |
+| 7    | Fireworks.AI  | AI tech       | [Link](https://mongodb-partners.github.io/maap-framework/docs/partners/fireworksai)              |
+| 8    | Langchain     | AI tech       | [Link](https://mongodb-partners.github.io/maap-framework/docs/partners/langchain)                |
+| 9    | Nomic         | AI tech       | [Link](https://mongodb-partners.github.io/maap-framework/docs/partners/nomic)                    |
 
 
 
@@ -202,7 +202,7 @@ npm install
 npm run ingest <path to your config.yaml>
 ```
 
-Go to [this](https://mongodb-partners.github.io/maap-rag-framework/docs/category/app-modules) page for loader specific documentations.
+Go to [this](https://mongodb-partners.github.io/maap-framework/docs/category/app-modules) page for loader specific documentations.
 
 ### Run the server
 ```

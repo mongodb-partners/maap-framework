@@ -87,7 +87,7 @@ This documentation provides a clear and detailed roadmap for developers to set u
 Clone the project to your machine, and install dependencies.
 
 ```
-cd maap-rag-framework
+cd maap-framework
 npm install
 cd builder/partnerproduct
 npm install
@@ -145,19 +145,19 @@ AZURE_OPENAI_API_DEPLOYMENT_NAME=
 ### MAAP Partner Integrations
 
 Partner specific information can be found as below; 
-Go to [this](https://mongodb-partners.github.io/maap-rag-framework/docs/category/partners) page for partner specific documentations.
+Go to [this](https://mongodb-partners.github.io/maap-framework/docs/category/partners) page for partner specific documentations.
 
 | Sr # | MAAP Partner  | Partner Type  | Documentation                                                                                          |
 |------|---------------|---------------|--------------------------------------------------------------------------------------------------------|
-| 1    | AWS           | Cloud provider| [Link](https://mongodb-partners.github.io/maap-rag-framework/docs/partners/amazon)                   |
-| 2    | Azure         | Cloud provider| [Link](https://mongodb-partners.github.io/maap-rag-framework/docs/partners/azure)                    |
-| 3    | GCP           | Cloud provider| [Link](https://mongodb-partners.github.io/maap-rag-framework/docs/partners/gcp)                      |
-| 4    | Anthropic     | AI tech       | [Link](https://mongodb-partners.github.io/maap-rag-framework/docs/partners/anthropic)                |
-| 5    | Anyscale      | AI tech       | [Link](https://mongodb-partners.github.io/maap-rag-framework/docs/partners/anyscale)                 |
-| 6    | Cohere        | AI tech       | [Link](https://mongodb-partners.github.io/maap-rag-framework/docs/partners/cohere)                   |
-| 7    | Fireworks.AI  | AI tech       | [Link](https://mongodb-partners.github.io/maap-rag-framework/docs/partners/fireworksai)              |
-| 8    | Langchain     | AI tech       | [Link](https://mongodb-partners.github.io/maap-rag-framework/docs/partners/langchain)                |
-| 9    | Nomic         | AI tech       | [Link](https://mongodb-partners.github.io/maap-rag-framework/docs/partners/nomic)                    |
+| 1    | AWS           | Cloud provider| [Link](https://mongodb-partners.github.io/maap-framework/docs/partners/amazon)                   |
+| 2    | Azure         | Cloud provider| [Link](https://mongodb-partners.github.io/maap-framework/docs/partners/azure)                    |
+| 3    | GCP           | Cloud provider| [Link](https://mongodb-partners.github.io/maap-framework/docs/partners/gcp)                      |
+| 4    | Anthropic     | AI tech       | [Link](https://mongodb-partners.github.io/maap-framework/docs/partners/anthropic)                |
+| 5    | Anyscale      | AI tech       | [Link](https://mongodb-partners.github.io/maap-framework/docs/partners/anyscale)                 |
+| 6    | Cohere        | AI tech       | [Link](https://mongodb-partners.github.io/maap-framework/docs/partners/cohere)                   |
+| 7    | Fireworks.AI  | AI tech       | [Link](https://mongodb-partners.github.io/maap-framework/docs/partners/fireworksai)              |
+| 8    | Langchain     | AI tech       | [Link](https://mongodb-partners.github.io/maap-framework/docs/partners/langchain)                |
+| 9    | Nomic         | AI tech       | [Link](https://mongodb-partners.github.io/maap-framework/docs/partners/nomic)                    |
 
 
 
@@ -170,7 +170,7 @@ npm install
 npm run ingest <path to your config.yaml>
 ```
 
-Go to [this](https://mongodb-partners.github.io/maap-rag-framework/docs/category/app-modules) page for loader specific documentations.
+Go to [this](https://mongodb-partners.github.io/maap-framework/docs/category/app-modules) page for loader specific documentations.
 
 ### Run the server
 ```
