@@ -13,10 +13,10 @@ Atlas Vector Search lets you search unstructured data. You can create vector emb
 
 ## Setting up 
 
-By following the steps given below you can setup MongoDB to be used as a vector store for your RAG application.
+By following the steps given below you can setup MongoDB to be used as a vector store for your gen AI application.
 
 
-    - To get started with MongoDB and building RAG Chatbot with it, you will need to sign-up to [MongoDB Atlas](https://cloud.mongodb.com).
+    - To get started with MongoDB and building gen AI application with it, you will need to sign-up to [MongoDB Atlas](https://cloud.mongodb.com).
 
     - You can deploy a cluster (use M0 for free-tier), and start working with it to set up the application. The detailed steps can be found [here](https://www.mongodb.com/docs/guides/atlas/cluster/).
 

@@ -3,10 +3,10 @@ sidebar_position: 1
 ---
 
 #  Enterprise Search 
-Internal enterprise level chatbot.
+Internal enterprise level search.
 
 ## Introduction
-This page describes how to setup and showcase a simple RAG chatbot for enterprise use-case. This chatbot is focused on training using the data that is internal to an organization and is maybe proprietary in nature. Data here will be ingested using pdf file(s).  
+This page describes how to setup and showcase a gen AI application for enterprise search use-case. This search application is focused on training using the data that is internal to an organization and is maybe proprietary in nature. Data here will be ingested using pdf file(s).  
 
 ## Demo Setup
  Clone the MAAP Framework github repository : [MAAP Framework Github](https://github.com/mongodb-partners/maap-framework/) 
