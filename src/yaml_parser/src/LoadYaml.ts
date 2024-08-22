@@ -2,7 +2,7 @@
 import * as fs from 'fs';
 import * as yaml from 'js-yaml';
 import * as process from 'process';
-import { Anthropic, BaseLoader, CohereEmbeddings, ConfluenceLoader, DocxLoader, GeckoEmbedding, OpenAi, PdfLoader, SitemapLoader, VertexAI, WebLoader, YoutubeSearchLoader, YoutubeLoader, YoutubeChannelLoader, PptLoader, JsonLoader } from '../../index.js';
+import { Anthropic, BaseLoader, CohereEmbeddings, ConfluenceLoader, DocxLoader, GeckoEmbedding, OpenAi, PdfLoader, SitemapLoader, VertexAI, WebLoader, YoutubeSearchLoader, YoutubeLoader, YoutubeChannelLoader, PptLoader, TextLoader } from '../../index.js';
 import { MongoDBAtlas } from '../../vectorDb/mongo-db-atlas.js';
 import { strict as assert } from 'assert';
 import { AnyscaleModel } from '../../models/anyscale-model.js';
@@ -15,6 +15,7 @@ import { AzureOpenAiEmbeddings } from '../../embeddings/azure-embeddings.js';
 import { BedrockEmbedding } from '../../embeddings/bedrock-embeddings.js';
 import { FireworksEmbedding } from '../../embeddings/fireworks-embeddings.js';
 import { AzureChatAI } from '../../models/azureopenai-model.js';
+import { readFileSync, readdirSync } from 'fs';
 
 // src/loaders/confluence-loader.ts src/loaders/docx-loader.ts src/loaders/excel-loader.ts src/loaders/json-loader.ts src/loaders/pdf-loader.ts src/loaders/ppt-loader.ts src/loaders/sitemap-loader.ts src/loaders/text-loader.ts src/loaders/web-loader.ts src/loaders/youtube-channel-loader.ts src/loaders/youtube-loader.ts src/loaders/youtube-search-loader.ts
 function getDataFromYamlFile() {
@@ -199,39 +200,95 @@ export function getIngestLoader() {
           chunkOverlap: data.chunk_overlap,
         }));
         break;
-        case 'youtube':
-          dataloaders.push(new YoutubeLoader({
-            videoIdOrUrl: data.video_id_or_url,
-            chunkSize: data.chunk_size,
-            chunkOverlap: data.chunk_overlap,
-          }));
+      case 'youtube':
+        dataloaders.push(new YoutubeLoader({
+          videoIdOrUrl: data.video_id_or_url,
+          chunkSize: data.chunk_size,
+          chunkOverlap: data.chunk_overlap,
+        }));
         break;
-        case 'youtube-channel':
-          dataloaders.push(new YoutubeChannelLoader({
-            channelId: data.channel_id,
-            chunkSize: data.chunk_size,
-            chunkOverlap: data.chunk_overlap,
-          }));
+      case 'youtube-channel':
+        dataloaders.push(new YoutubeChannelLoader({
+          channelId: data.channel_id,
+          chunkSize: data.chunk_size,
+          chunkOverlap: data.chunk_overlap,
+        }));
         break;
-        case 'ppt':
-          dataloaders.push(new PptLoader({
-            filePath: data.source_path,
-            chunkSize: data.chunk_size,
-            chunkOverlap: data.chunk_overlap,
-          }));
+      case 'ppt':
+        dataloaders.push(new PptLoader({
+          filePath: data.source_path,
+          chunkSize: data.chunk_size,
+          chunkOverlap: data.chunk_overlap,
+        }));
         break;
-        case 'ppt':
-          dataloaders.push(new PptLoader({
-            filePath: data.source_path,
-            chunkSize: data.chunk_size,
-            chunkOverlap: data.chunk_overlap,
-          }));
+      case 'ppt':
+        dataloaders.push(new PptLoader({
+          filePath: data.source_path,
+          chunkSize: data.chunk_size,
+          chunkOverlap: data.chunk_overlap,
+        }));
+        break;
+      case 'text':
+        console.log('Text case');
+        const file = readFileSync(data.source_path, 'utf-8');
+        dataloaders.push(new TextLoader({
+          text: file,
+          chunkSize: data.chunk_size,
+          chunkOverlap: data.chunk_overlap,
+        }));
+        break;
+      case 'folder':
+        const files = readdirSync(data.source_path);
+        getNAddFileLoader(files, data, dataloaders);
         break;
       default:
-      // Handle unsupported source type (optional)
+        // Handle unsupported source type (optional)
+        console.log(`Unsupported source type: ${data.source}`);
     }
   }
   return dataloaders;
+}
+
+function getNAddFileLoader(files: string[], data: any, dataloaders: BaseLoader<Record<string, string | number | boolean>, Record<string, null>>[]) {
+  for (const file of files) {
+    const filePath = `${data.source_path}/${file}`;
+    const fileType = file.split('.').pop();
+    switch (fileType) {
+      case 'txt':
+        dataloaders.push(new TextLoader(
+          {
+            text: readFileSync(filePath, 'utf-8'),
+            chunkSize: data.chunk_size,
+            chunkOverlap: data.chunk_overlap,
+          }
+        ));
+        break;
+      case 'pdf':
+        dataloaders.push(new PdfLoader({
+          filePath: filePath,
+          chunkSize: data.chunk_size,
+          chunkOverlap: data.chunk_overlap,
+        }));
+        break;
+      case 'docx':
+        dataloaders.push(new DocxLoader({
+          filePath: filePath,
+          chunkSize: data.chunk_size,
+          chunkOverlap: data.chunk_overlap,
+        }));
+        break;
+      case 'ppt':
+        dataloaders.push(new PptLoader({
+          filePath: filePath,
+          chunkSize: data.chunk_size,
+          chunkOverlap: data.chunk_overlap,
+        }));
+        break;
+      default:
+        // Handle unsupported file type (optional)
+        console.log(`Unsupported file type: ${fileType}`);
+    }
+  }
 }
 
 export function getStreamOptions() {
