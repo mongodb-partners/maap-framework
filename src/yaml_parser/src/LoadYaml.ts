@@ -15,6 +15,7 @@ import { AzureOpenAiEmbeddings } from '../../embeddings/azure-embeddings.js';
 import { BedrockEmbedding } from '../../embeddings/bedrock-embeddings.js';
 import { FireworksEmbedding } from '../../embeddings/fireworks-embeddings.js';
 import { AzureChatAI } from '../../models/azureopenai-model.js';
+import { readFileSync } from 'fs';
 
 // src/loaders/confluence-loader.ts src/loaders/docx-loader.ts src/loaders/excel-loader.ts src/loaders/json-loader.ts src/loaders/pdf-loader.ts src/loaders/ppt-loader.ts src/loaders/sitemap-loader.ts src/loaders/text-loader.ts src/loaders/web-loader.ts src/loaders/youtube-channel-loader.ts src/loaders/youtube-loader.ts src/loaders/youtube-search-loader.ts
 function getDataFromYamlFile() {
@@ -24,7 +25,7 @@ function getDataFromYamlFile() {
   if (!args[0]) {
     throw new Error('Please provide the YAML file path as an argument.');
   }
-  const data = fs.readFileSync(args[0], 'utf8');
+  const data = readFileSync(args[0], 'utf8');
   const parsedData = yaml.load(data);
   return parsedData;
 }
@@ -49,12 +50,16 @@ export function getAggregateOperatorConfigs(){
   const aggregateOperatorConfigs = [];
   console.log("aggregate_operators", parsedData.aggregate_operators)
   for (const aggregateConfig of parsedData.aggregate_operators) {
+    let query = "[]";
+    if(aggregateConfig.queryFilePath){
+      query = readFileSync(aggregateConfig.queryFilePath, 'utf8');
+    }
     aggregateOperatorConfigs.push({
       connectionString: aggregateConfig.connectionString,
       dbName: aggregateConfig.dbName,
       collectionName: aggregateConfig.collectionName,
       aggregatePipelineName: aggregateConfig.aggregatePipelineName,
-      query: aggregateConfig.query // TODO read from respective text file
+      query: query
     });
   }
   return aggregateOperatorConfigs;
@@ -64,10 +69,14 @@ export function getConditionOpConfigs(){
   const parsedData = getDataFromYamlFile();
   const conditionOpConfigs = [];
   for (const conditionConfig of parsedData.conditional_operators) {
+    let prompt = '[]';
+    if(conditionConfig.promptFilePath){
+      prompt = readFileSync(conditionConfig.promptFilePath, 'utf8');
+    }
     conditionOpConfigs.push({
       name: conditionConfig.name,
       description: conditionConfig.description,
-      prompt: conditionConfig.prompt,
+      prompt: prompt,
       aggregatePipelineName: conditionConfig.aggregatePipelineName
     });
   }
