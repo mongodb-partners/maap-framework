@@ -226,18 +226,18 @@ export class RAGApplication {
     public async getQueryContext(cleanQuery: string, aggregatePipelineName: string) {
         //TODO: Method override. Create a MQL query with user prompts using LLM. 
         // Generate output query with the user prompt and the context.
-        
         let mqlQuery = await this.dbLookup.get(aggregatePipelineName).aggregateQuery;
         mqlQuery = JSON.stringify(mqlQuery);
-        const evalQueryTemplate = eval(this.queryTemplate);
-        const result = await this.model.query(evalQueryTemplate, cleanQuery, [], "cond");
+        const queryTemplate = this.queryTemplate.replace("${mqlQuery}", mqlQuery);
+        // const evalQueryTemplate = eval(this.queryTemplate);
+        const result = await this.model.query(queryTemplate, cleanQuery, [], "cond");
         console.log('Result Query :: ', result);
         try{
             let resultJson = JSON.parse(result);
             return this.dbLookup.get(aggregatePipelineName).database.aggregate(resultJson);
 
         } catch(er){
-            console.log(`Error ::: ${er}`);
+            console.log(`Error :${aggregatePipelineName} :: ${er}`);
             return false;
         }
     }
