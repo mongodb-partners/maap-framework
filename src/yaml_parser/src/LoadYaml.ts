@@ -30,6 +30,12 @@ function getDataFromYamlFile() {
   return parsedData;
 }
 
+export function getSystemPrompt() {
+  const parsedData = getDataFromYamlFile();
+  const systemPrompt = readFileSync(parsedData.systemPromptPath, 'utf8'); 
+  return systemPrompt; 
+}
+
 export function getDatabaseConfig() {
   const parsedData = getDataFromYamlFile();
   return new MongoDBAtlas({

@@ -46,7 +46,7 @@ for(const crudConfig of crudOperatorConfigs) {
     crud.init();
     const aggQuery = JSON.parse(crudConfig.query);
     const result = await crud.aggregate(aggQuery);
-    structuredQueryContext = structuredQueryContext +"/n"+ result;
+    structuredQueryContext = structuredQueryContext +"/n"+ JSON.stringify(result);
 }
 // MongoDB data source for the content used in RAG.
 // Generated with the Ingest CLI.
@@ -70,7 +70,7 @@ const findContent = makeDefaultFindContent({
     embedder,
     store: embeddedContentStore,
     findNearestNeighborsOptions: {
-        k: 5,
+        k: 2,
         path: 'embedding',
         indexName: vectorSearchIndexName,
         numCandidates: numCandidates,
@@ -95,6 +95,7 @@ const findContentWithRerankAndPreprocess = withQueryPreprocessor({
 
 // Constructs the user message sent to the LLM from the initial user message
 // and the content found by the findContent function.
+console.log("structuredQueryContext :: ",structuredQueryContext);
 const makeUserMessage: MakeUserMessageFunc = async function ({
     content,
     originalUserMessage,
