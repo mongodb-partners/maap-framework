@@ -69,6 +69,8 @@ The data here is being loaded from the sitemap of Care Insurance Inc and other l
     [Link](https://drive.google.com/file/d/1X8cWuZIHzLHnraS4BOBKre0BCPR5SbU4/view?usp=drive_link) to the pdf file used in the demo. Download this pdf file to your machine.
 
 
+    [Link](https://drive.google.com/file/d/1X8cWuZIHzLHnraS4BOBKre0BCPR5SbU4/view?usp=drive_link) to the pdf file used in the demo. Download this pdf file to your machine.
+    
     In order to start ingesting the data run the below command.
 
     ```
