@@ -50,10 +50,12 @@ export function getAggregateOperatorConfigs(){
   const aggregateOperatorConfigs = [];
   console.log("aggregate_operators", parsedData.aggregate_operators)
   for (const aggregateConfig of parsedData.aggregate_operators) {
-    let query = "[]";
-    if(aggregateConfig.queryFilePath){
-      query = readFileSync(aggregateConfig.queryFilePath, 'utf8');
-    }
+    const query = readFileSync('/Users/ashwin.gangadhar/demo/maap-chatbot-builder/builder/partnerproduct/src/mdb_query.txt', 'utf8');
+    // if(aggregateConfig.queryFilePath){
+    //   console.log("aggregateConfig.queryFilePath", aggregateConfig.queryFilePath)
+    //   query = readFileSync(aggregateConfig.queryFilePath, 'utf8');
+    //   console.log("query", query)
+    // }
     aggregateOperatorConfigs.push({
       connectionString: aggregateConfig.connectionString,
       dbName: aggregateConfig.dbName,
