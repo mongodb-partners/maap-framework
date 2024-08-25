@@ -1,0 +1,24 @@
+# Internal Enterprise Search
+
+ingest:
+  - source: 'sitemap'
+    source_path: 'https://developers.amadeus.com/sitemap.xml'
+    chunk_size: 500
+    chunk_overlap: 100
+
+embedding:
+    class_name: Azure-OpenAI-Embeddings
+    model_name: 'text-embedding-ada-002'
+
+vector_store:
+    connectionString: 'mongodb+srv://admin:test123@demo.fmxyq.mongodb.net/'
+    dbName: 'new_folder_content'
+    collectionName: 'embedded_content'
+    embeddingKey: 'embedding'
+    textKey: 'text'
+    numCandidates: 150
+    minScore: 0.1 
+    numDimensions: 1536
+    vectorSearchIndexName: 'vector_index'
+llms:
+    class_name: AzureOpenAI

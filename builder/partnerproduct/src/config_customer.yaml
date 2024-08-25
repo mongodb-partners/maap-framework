@@ -1,0 +1,33 @@
+### Customer chatbot
+
+ingest:
+  - source: 'web'
+    source_path: 'https://www.firstcry.com/returnpolicy'
+    chunk_size: 2000
+    chunk_overlap: 200
+  - source: 'pdf'
+    source_path: '/Users/utsavtalwar/Downloads/external/refund_customer_support.pdf'
+    chunk_size: 2000
+    chunk_overlap: 200
+  - source: 'docx'
+    source_path: '/Users/utsavtalwar/Downloads/external/refund-policy-template-digital.docx'
+    chunk_size: 2000
+    chunk_overlap: 200
+embedding:
+    class_name: Cohere
+    model_name: embed-english-light-v3.0
+vector_store:
+    connectionString: 'mongodb+srv://admin:test123@demo.fmxyq.mongodb.net/'
+    dbName: 'ecomm'
+    collectionName: 'embedded_content'
+    embeddingKey: 'embedding'
+    textKey: 'text'
+    numCandidates: 150
+    minScore: 0.5 
+    vectorSearchIndexName: 'vector_index'
+llms:
+    class_name: Fireworks
+    model_name: 'accounts/fireworks/models/mixtral-8x22b-instruct'
+    temperature: ''
+    top_p: ''
+    top_k: ''

@@ -1,0 +1,33 @@
+ingest:
+  - source: 'sitemap'
+    source_path: 'https://developers.amadeus.com/sitemap.xml'
+    chunk_size: 500
+    chunk_overlap: 100
+
+embedding:
+    class_name: AzureOpenAiEmbeddings
+    deployment_name: "leafyhosp-gpt-35-turbo"
+    api_version: "2023-03-15-preview"
+    azure_openai_api_instance_name: "leafyhospopenai"
+
+vector_store:
+  connectionString: 'mongodb+srv://admin:test123@demo.fmxyq.mongodb.net/'
+  dbName: 'mongodb-chatbot-framework-chatbot'
+  collectionName: 'embedded_content'
+  embeddingKey: 'embedding'
+  textKey: 'text'
+  vectorSearchIndexName: 'vector_index'
+  numCandidates: 150
+  minScore: 0.5
+  # numDimensions: 1536
+  similarityFunction: 'cosine'
+
+llms:
+    class_name: AzureOpenAI
+    deployment_name: "leafyhosp-gpt-35-turbo"
+    api_version: "2023-03-15-preview"
+    azure_openai_api_instance_name: "leafyhospopenai"
+    temperature: '' 
+
+stream_option:
+  stream: true
