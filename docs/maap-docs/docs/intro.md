@@ -23,34 +23,34 @@ Below given is the reference architecture of the framework with various componen
 
 #### Overview of Advanced RAG Approaches
 
-1. **Data Loading**
+- **Data Loading**
 
     Applications based on Large Language Models (LLMs) often involve extracting data from databases or files, such as PDFs, and converting it into a format usable by LLMs. The pivotal component here is the data source, containing private knowledge or content obtained.
 
-2. **Data Indexing and Embedding Models: Chunking & Vectorization**
+- **Data Indexing and Embedding Models: Chunking & Vectorization**
 
     Initially, we construct a vector index to represent the contents of our text documents. This involves breaking down the documents into smaller chunks and converting them into numerical vectors. The vectorized content forms the basis for subsequent retrieval and generation steps.
 
-3. **Post Retrieval: Retrieval, Re-ranking & Filtering**
+- **Post Retrieval: Retrieval, Re-ranking & Filtering**
     
     After retrieving relevant documents, we refine the context further through re-ranking and filtering:
     
     - **Re-ranking**: Prioritizing documents based on relevance.
     - **Filtering**: Removing less relevant or noisy documents.
 
-4. **Pre Query Retrieval: Query Transformations**
+- **Pre Query Retrieval: Query Transformations**
 
     Advanced RAG models explore various transformations of user queries to enhance retrieval accuracy. Techniques include query expansion and other modifications.
 
-5. **Chat Engine: LLM**
+- **Chat Engine: LLM**
 
     The chat engine combines retrieved context with the user’s query to create a prompt for the language model. This prompt guides the language model in generating contextually relevant responses.
 
-6. **Chat Engine: RAG Agents**
+- **Chat Engine: RAG Agents**
 
     RAG agents manage the entire RAG process, coordinating retrieval, generation, and other components. They ensure seamless interaction between the search index, language model, and other modules.
 
-7. **Prompting: Response Synthesizer**
+- **Prompting: Response Synthesizer**
 
     The response synthesizer generates the actual answer based on the combined context and user query. Attention and prompt engineering mechanisms may be employed to focus on relevant parts of retrieved documents during generation.
 
@@ -127,13 +127,16 @@ Also, please make a copy of the `builder/partnerproduct/example.env` file and re
 The following contents are added in the `.env` (Environment File):
 ```
 COHERE_API_KEY=
+
 FIREWORKS_API_KEY=
-OPENAI_API_KEY=sk-
+
 ANYSCALE_API_KEY=esecret_
 ANYSCALE_BASE_URL=https://api.endpoints.anyscale.com/v1
+
 BEDROCK_AWS_REGION=us-east-1
 BEDROCK_AWS_ACCESS_KEY_ID=
 BEDROCK_AWS_SECRET_ACCESS_KEY=
+
 AZURE_OPENAI_API_KEY=
 AZURE_OPENAI_API_INSTANCE_NAME=
 AZURE_OPENAI_API_EMBEDDINGS_DEPLOYMENT_NAME=
@@ -146,7 +149,7 @@ Ensure you source the environment (.env file) by running
 . ./.env
 ```
 
-After you source the environment, echo any of the environment variables to ensure they are properly sourced. For example run `echo $OPENAI_API_KEY`.
+After you source the environment, echo any of the environment variables to ensure they are properly sourced. For example run `echo $COHERE_API_KEY`.
 
 
 ### MAAP Partner Integrations
