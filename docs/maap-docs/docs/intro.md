@@ -141,6 +141,13 @@ AZURE_OPENAI_API_VERSION=
 AZURE_OPENAI_API_DEPLOYMENT_NAME=
 ```
 
+Ensure you source the environment (.env file) by running
+```
+. ./.env
+```
+
+After you source the environment, echo any of the environment variables to ensure they are properly sourced. For example run `echo $OPENAI_API_KEY`.
+
 
 ### MAAP Partner Integrations
 
@@ -163,7 +170,8 @@ Go to [this](https://mongodb-partners.github.io/maap-framework/docs/category/par
 
 
 ### Ingest Data
-Once configured you can use the yaml file you just created say as in example `builder/partnerproduct/src/config.yaml`.
+Once configured you can use the yaml file you just created say as in example `builder/partnerproduct/src/config.yaml`. Run the following from the same terminal as where you sourced `.env`. Normally this would be under 
+`builder/partnerproduct/src`
 
 ```
 npm install
@@ -172,9 +180,11 @@ npm run ingest <path to your config.yaml>
 
 Go to [this](https://mongodb-partners.github.io/maap-framework/docs/category/app-modules) page for loader specific documentations.
 
+_NOTE: After ingesting your first content, ensure the vector index has been created properly and with the correct vector dimension. You can verify the size of the  `embedding` array on the `embedded_content` collection, and then set the same size on the `numDimensions` field of the `vector_index`._
+
 ### Run the server
 ```
-npm run start <path to your config.yaml>
+npm run start <full path to your config.yaml>
 ```
 
 ### Start your application UI
