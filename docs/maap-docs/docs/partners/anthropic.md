@@ -9,7 +9,7 @@ sidebar_position: 4
 [Anthropic](https://www.anthropic.com/) is a San Francisco-based company specializing in AI safety and research. 
 
 ## Deploying your model
-Anthropic offers the capability to deploy various Chat Models(LLM) under its umbrella. 
+Anthropic offers a family of three state-of-the-art models in ascending order of capability: Claude 3 Haiku, Claude 3 Sonnet, and Claude 3 Opus.
 
 ### LLM Model 
 
@@ -45,4 +45,4 @@ Provided below are the instructions on how to procure the right values for build
 
 - ##### API Key 
 
-  You will need to [sign up](https://www.anthropic.com/) and retrieve an Anthropic API Key.
+  You will need to [sign up](https://www.anthropic.com/api) and retrieve an Anthropic API Key.
