@@ -238,8 +238,19 @@ export function getIngestLoader() {
         }));
         break;
       case 'folder':
-        const files = readdirSync(data.source_path);
-        getNAddFileLoader(files, data, dataloaders);
+        let files = [];
+        if(data.file_type) {
+          console.log(`File type filter: ${data.file_type}`);
+          files = readdirSync(data.source_path).filter(file => file.endsWith(data.file_type));
+        } else{
+          files = readdirSync(data.source_path);
+        }
+        console.log( `Files found in the folder: ${files}`);
+        if(files.length>0){
+          getNAddFileLoader(files, data, dataloaders);
+        } else {
+          console.log(`No files found in the folder: ${data.source_path}`);
+        }
         break;
       default:
         // Handle unsupported source type (optional)
@@ -286,6 +297,7 @@ function getNAddFileLoader(files: string[], data: any, dataloaders: BaseLoader<R
         break;
       default:
         // Handle unsupported file type (optional)
+        console.log(`Failed to load file: ${file}`);
         console.log(`Unsupported file type: ${fileType}`);
     }
   }
