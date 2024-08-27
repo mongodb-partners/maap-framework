@@ -8,7 +8,8 @@ External / public facing customer service app.
 ## Introduction
 This page describes how to setup and showcase a gen AI application for a customer service use-case. 
 
-The data here is being loaded from the sitemap of Care Insurance Inc and other local `pdf` and `docx` sources. The sitemap contains a structured list of URLs that represent various pages and resources available on their website. This includes pages related to their insurance products, services, customer support, educational content, and possibly other relevant sections such as blogs or news updates. 
+The data here is being loaded from the web i.e First Cry return policy local `pdf` and `docx` sources. The web link contains a online static page that can be loaded directly.
+This usecase setup to demonstrate service where customers can get answers to their greeviances and also guide them with their returns and refund related queries.
 
 
 ## Demo Setup
@@ -34,18 +35,18 @@ The data here is being loaded from the sitemap of Care Insurance Inc and other l
     _Note: For `pdf` and `docx` files you can use any file of your choice that is locally available._
     ````
     ingest:
-        - source: 'sitemap'
-          source_path: 'https://www.careinsurance.com/sitemap.xml'
+        - source: 'web'
+          source_path: 'https://www.firstcry.com/returnpolicy'
           chunk_size: 2000
           chunk_overlap: 200
         - source: 'pdf'
-          source_path: '<path-to-pdf-local-file>'
+          source_path: 'refund_customer_support.pdf'
           chunk_size: 2000
           chunk_overlap: 200
         - source: 'docx'
-          source_path: '<path-to-docx-local-file>'
+          source_path: 'refund-policy-template-digital.docx'
           chunk_size: 2000
-          chunk_overlap: 200          
+          chunk_overlap: 200      
     embedding:
         class_name: Nomic-v1.5
     vector_store:
@@ -64,10 +65,7 @@ The data here is being loaded from the sitemap of Care Insurance Inc and other l
 
  ### Data ingestion    
 
-    The data can be loaded from different data sources of your choice, we are using `pdf`, `docx` and `sitemap` in this case. 
-    
-    [Link](https://drive.google.com/file/d/1X8cWuZIHzLHnraS4BOBKre0BCPR5SbU4/view?usp=drive_link) to the pdf file used in the demo. Download this pdf file to your machine.
-
+    The data can be loaded from different data sources of your choice, we are using `pdf`, `docx` and `sitemap` in this case.
 
     [Link](https://drive.google.com/file/d/1X8cWuZIHzLHnraS4BOBKre0BCPR5SbU4/view?usp=drive_link) to the pdf file used in the demo. Download this pdf file to your machine.
     
