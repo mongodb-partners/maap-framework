@@ -56,19 +56,19 @@ export function getAggregateOperatorConfigs(){
   const aggregateOperatorConfigs = [];
   console.log("aggregate_operators", parsedData.aggregate_operators)
   for (const aggregateConfig of parsedData.aggregate_operators) {
-    const query = readFileSync('/Users/ashwin.gangadhar/demo/maap-chatbot-builder/builder/partnerproduct/src/mdb_query.txt', 'utf8');
-    // if(aggregateConfig.queryFilePath){
-    //   console.log("aggregateConfig.queryFilePath", aggregateConfig.queryFilePath)
-    //   query = readFileSync(aggregateConfig.queryFilePath, 'utf8');
-    //   console.log("query", query)
-    // }
-    aggregateOperatorConfigs.push({
-      connectionString: aggregateConfig.connectionString,
-      dbName: aggregateConfig.dbName,
-      collectionName: aggregateConfig.collectionName,
-      aggregatePipelineName: aggregateConfig.aggregatePipelineName,
-      query: query
-    });
+    try {
+      const query = readFileSync(aggregateConfig.queryFilePath, 'utf8');
+      aggregateOperatorConfigs.push({
+        connectionString: aggregateConfig.connectionString,
+        dbName: aggregateConfig.dbName,
+        collectionName: aggregateConfig.collectionName,
+        aggregatePipelineName: aggregateConfig.aggregatePipelineName,
+        query: query
+      });
+        
+    } catch (error) {
+      console.log('Error reading aggregate operator query file:', error);    
+    }
   }
   return aggregateOperatorConfigs;
 }
