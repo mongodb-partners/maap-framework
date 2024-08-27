@@ -214,7 +214,7 @@ export function getIngestLoader() {
           chunkOverlap: data.chunk_overlap,
         }));
         break;
-      case 'ppt':
+      case 'pptx':
         dataloaders.push(new PptLoader({
           filePath: data.source_path,
           chunkSize: data.chunk_size,
@@ -277,7 +277,7 @@ function getNAddFileLoader(files: string[], data: any, dataloaders: BaseLoader<R
           chunkOverlap: data.chunk_overlap,
         }));
         break;
-      case 'ppt':
+      case 'pptx':
         dataloaders.push(new PptLoader({
           filePath: filePath,
           chunkSize: data.chunk_size,
