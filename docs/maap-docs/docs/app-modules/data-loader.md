@@ -22,8 +22,8 @@ ingest:
      confluence_base_url:
      confluence_username:
      confluence_token:
-     chunk_size:
-     chunk_overlap:
+     chunk_size: 1000
+     chunk_overlap: 100
 ```
 
 ---
@@ -37,8 +37,8 @@ Utilized for extracting and processing content from Microsoft Word documents.
 ingest:
    - source: docx
      source_path:
-     chunk_size:
-     chunk_overlap:
+     chunk_size: 1000
+     chunk_overlap: 100
 ```
 
 ---
@@ -52,8 +52,8 @@ Designed for loading and extracting text from PDF files.
 ingest:
    - source: pdf
      source_path:
-     chunk_size:
-     chunk_overlap:
+     chunk_size: 1000
+     chunk_overlap: 100
 ```
 
 ---
@@ -67,8 +67,8 @@ Facilitates the extraction of content from PowerPoint presentations for further 
 ingest:
    - source: ppt
      source_path:
-     chunk_size:
-     chunk_overlap:
+     chunk_size: 1000
+     chunk_overlap: 100
 ```
 
 ---
@@ -82,8 +82,9 @@ Used for loading and processing sitemap files, typically for SEO purposes and na
 ingest:
    - source: sitemap
      source_path:
-     chunk_size:
-     chunk_overlap:
+     chunk_size: 1000
+     chunk_overlap: 100
+
 ```
 
 ---
@@ -97,8 +98,9 @@ Extracts and processes content from web pages or HTML files.
 ingest:
    - source: web
      source_path:
-     chunk_size:
-     chunk_overlap:
+     chunk_size: 1000
+     chunk_overlap: 100
+
 ```
 
 ---
@@ -112,8 +114,9 @@ Ingests content from a specified YouTube channel by channel ID, suitable for pro
 ingest:
    - source: youtube-channel
      channel_id:
-     chunk_size:
-     chunk_overlap:
+     chunk_size: 1000
+     chunk_overlap: 100
+    
 ```
 
 ---
@@ -126,9 +129,10 @@ Extracts content from individual YouTube videos using their video ID or URL.
 ```js
 ingest:
    - source: youtube
-     video_id_or_url:
-     chunk_size:
-     chunk_overlap:
+     video_id_or_url: <video_id_or_url>
+     chunk_size:   1000
+     chunk_overlap: 100
+    
 ```
 
 ---
@@ -141,7 +145,29 @@ Facilitates content extraction from the results of YouTube searches based on spe
 ```js
 ingest:
    - source: youtube-search
-     query:
-     chunk_size:
-     chunk_overlap:
+     query: <query>
+     chunk_size: 1000
+     chunk_overlap: 100
+    
 ```
+---
+
+### 10. Folder MIME type Loader
+
+Loads and processes content from a specified folder on the local file system. Automatically detects and processes supported file types.
+i.e. PDF, PPTX, DOCX, TXT
+
+The file type filter is an optional field. If filter is not provided then the loader will process all the supported file type files in the folder.
+
+**Usage:**
+```js
+ingest:
+   - source: 'folder'
+     source_path: '/path/to/folder'
+     file_type: <'pdf'| 'txt' | 'pptx' | 'docx'> 
+     chunk_size: 1000
+     chunk_overlap: 100
+    
+```
+
+---
