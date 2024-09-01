@@ -13,6 +13,7 @@ import { getUnique } from '../util/arrays.js';
 import { BaseReranker } from '../interfaces/base-reranker.js';
 import { NomicEmbeddingsv1_5 } from '../embeddings/nomic-v1-5-embeddings.js';
 
+
 export class RAGApplication {
     private readonly debug = createDebugMessages('maap:core');
     private readonly queryTemplate: string;
@@ -197,6 +198,12 @@ export class RAGApplication {
             .filter((result) => result.score > this.embeddingRelevanceCutOff)
             .sort((a, b) => b.score - a.score)
             .slice(0, this.searchResultCount);
+    }
+
+    public async vectorQuery(query: string) {
+        const cleanQuery = cleanString(query);
+        const queryEmbedded = await RAGEmbedding.getEmbedding().embedQuery(cleanQuery);
+        return await this.vectorDb.similaritySearch(queryEmbedded, this.searchResultCount);
     }
 
     public async getContext(query: string) {
