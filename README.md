@@ -80,40 +80,23 @@ Setup and running demo video: https://www.youtube.com/watch?v=-r824BdVZt0
 Given below are the two use cases for demonstrating the power of the MAAP Framework.
 
 ### 1. Internal Enterprise Search:
-<<<<<<< HEAD
 An Enterprise search is an AI-powered virtual assistant within a company, designed to streamline tasks and boost employee productivity.
-=======
-An Enterprise search chatbot is an AI-powered virtual assistant within a company, designed to streamline tasks and boost employee productivity.
->>>>>>> f9e6501 (Update README.md)
 
 #### Level setting for demo
 
 What?
-<<<<<<< HEAD
  - Assist company employees in understanding their corporate insurance policy, including coverage and conditions, using the RAG-powered application.
-=======
- - Assist company employees in understanding their corporate insurance policy, including coverage and conditions, using the RAG-powered chatbot.
->>>>>>> f9e6501 (Update README.md)
 
 Why?
  - Insurance policies are often long, complex, and filled with fine print, making them difficult to understand. In times of need, asking specific questions is much easier than sifting through a lengthy policy. Employees need a convenient way to learn about specific policy coverage, the claim submission process, and other policy details.
 
 How?
-<<<<<<< HEAD
  - Enterprise Search empowers employees with 24/7 access to insurance policy details and a streamlined claims submission process.
 
 The demo can be viewed here : [https://view.highspot.com/viewer/669e29cf3732ccf8afddabb5](https://view.highspot.com/viewer/669e29cf3732ccf8afddabb5)
 
 ### 2. Customer Service:
 Customer Service are AI-powered assistants that engage customers 24/7, offering support, handling inquiries, and assisting with external services.
-=======
- - Enterprise Search chatbots empower employees with 24/7 access to insurance policy details and a streamlined claims submission process.
-
-The demo can be viewed here : [https://view.highspot.com/viewer/669e29cf3732ccf8afddabb5](https://view.highspot.com/viewer/669e29cf3732ccf8afddabb5)
-
-### 2. Customer Service Chatbot:
-Customer Service chatbots are AI-powered assistants that engage customers 24/7, offering support, handling inquiries, and assisting with external services.
->>>>>>> f9e6501 (Update README.md)
 
 #### Level setting for demo
 
@@ -126,11 +109,7 @@ Why?
 How?
  - To streamline the return and replacement process for online shoppers, we've introduced a personalized assistant. This guides customers through the options, ensuring they make informed choices and complete the process efficiently.
 
-<<<<<<< HEAD
 The demo can be viewed here : [https://view.highspot.com/viewer/669e2a512571a42ba8d43454](https://view.highspot.com/viewer/669e2a512571a42ba8d43454)
-=======
-The demo can be viewed here : [https://drive.google.com/file/d/1iONEOYPGmru3-NpUJqSNHoY2837aim9Y/view?resourcekey](https://drive.google.com/file/d/1iONEOYPGmru3-NpUJqSNHoY2837aim9Y/view?resourcekey)
->>>>>>> f9e6501 (Update README.md)
 
 
 ## Steps to run the application
