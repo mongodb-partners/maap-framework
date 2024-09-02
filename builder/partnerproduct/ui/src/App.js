@@ -28,7 +28,7 @@ function App() {
             <br></br>
             <Link onClick={handleTabClick(0)} className="link" to="/">
               <SideNavItem onClick={handleTabClick(0)} active={activeTab === 0} glyph={<Icon glyph="Dashboard" />}>
-                MAAP Framework Overview
+                Overview
               </SideNavItem>
             </Link>
             <SideNavItem
@@ -38,7 +38,7 @@ function App() {
               glyph={<Icon glyph="University" />}>
               Documentation
             </SideNavItem>
-            <SideNavGroup header="Demo" glyph={<Icon glyph="Apps" />}>
+            <SideNavGroup header="Capabilities" glyph={<Icon glyph="Apps" />}>
               <Link onClick={handleTabClick(1)} className="link" to="/rag-chatbot">
                 <SideNavItem active={activeTab === 1} glyph={<Icon glyph="Sparkle" />}>
                   RAG Chatbot

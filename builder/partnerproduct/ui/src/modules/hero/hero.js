@@ -8,7 +8,7 @@ function Hero() {
     <>
       <div>
         <H1 className={"header"}>
-          Why build on MongoDB?
+          MongoDB AI Applications Framework
         </H1>
       </div>
       <div className="data-layer-container">

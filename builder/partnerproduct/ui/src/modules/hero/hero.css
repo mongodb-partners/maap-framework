@@ -64,3 +64,25 @@
     margin-right: 2%;
     margin-top: 2%;
 }
+
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 columns */
+    grid-template-rows: repeat(2, auto); /* 2 rows */
+    gap: 16px; /* Adjust the gap between items as necessary */
+    justify-content: center; /* Center items horizontally */
+    align-items: center; /* Center items vertically */
+    height: 100vh; /* Ensure the container takes full height */
+  }
+  
+  .data-layer-box {
+    padding: 16px;
+    border: 1px solid #ccc; /* Optional: Add border */
+    border-radius: 8px; /* Optional: Add border-radius for rounded corners */
+    background-color: #f9f9f9; /* Optional: Add background color */
+    text-align: center; /* Center text */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100px; /* Adjust height as necessary */
+  }
