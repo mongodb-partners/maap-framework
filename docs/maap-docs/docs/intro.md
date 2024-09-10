@@ -121,6 +121,14 @@ llms:
     temperature: ''
     top_p: ''
     top_k: ''
+systemPromptPath: '<your_system_prompt_file_path>'
+aggregate_operators:        # This is optional
+    - connectionString: "<your_mdb_connection_string>"
+      dbName: '<db_name>'
+      collectionName: '<collection_name>'
+      aggregatePipelineName: '<pipeline_name>'
+      queryFilePath: '<your_mql_query_file_path>'
+
 ``` 
 Also, please make a copy of the `builder/partnerproduct/example.env` file and rename it as `.env`. Place this file in the same folder where you are running your application. In the `.env` file, add the necessary API keys, URLs, connection strings, and any other secrets required for your application.
 

@@ -5,7 +5,8 @@
     "private": true,
     "scripts": {
         "start": "tsc && node dist/builder/partnerproduct/src/index.js",
-        "ingest": "tsc && node dist/builder/partnerproduct/src/loader.js"
+        "ingest": "tsc && node dist/builder/partnerproduct/src/loader.js",
+        "start-semantic-search": "tsc && node dist/builder/partnerproduct/src/semantic-search.js"
     },
     "author": "",
     "license": "ISC",

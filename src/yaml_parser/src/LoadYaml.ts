@@ -25,9 +25,15 @@ function getDataFromYamlFile() {
   if (!args[0]) {
     throw new Error('Please provide the YAML file path as an argument.');
   }
-  const data = fs.readFileSync(args[0], 'utf8');
+  const data = readFileSync(args[0], 'utf8');
   const parsedData = yaml.load(data);
   return parsedData;
+}
+
+export function getSystemPrompt() {
+  const parsedData = getDataFromYamlFile();
+  const systemPrompt = readFileSync(parsedData.systemPromptPath, 'utf8'); 
+  return systemPrompt; 
 }
 
 export function getDatabaseConfig() {
@@ -45,10 +51,50 @@ export function getDatabaseConfig() {
   });
 }
 
+export function getAggregateOperatorConfigs(){
+  const parsedData = getDataFromYamlFile();
+  const aggregateOperatorConfigs = [];
+  console.log("aggregate_operators", parsedData.aggregate_operators)
+  for (const aggregateConfig of parsedData.aggregate_operators) {
+    try {
+      const query = readFileSync(aggregateConfig.queryFilePath, 'utf8');
+      aggregateOperatorConfigs.push({
+        connectionString: aggregateConfig.connectionString,
+        dbName: aggregateConfig.dbName,
+        collectionName: aggregateConfig.collectionName,
+        aggregatePipelineName: aggregateConfig.aggregatePipelineName,
+        query: query
+      });
+        
+    } catch (error) {
+      console.log('Error reading aggregate operator query file:', error);    
+    }
+  }
+  return aggregateOperatorConfigs;
+}
+
+export function getConditionOpConfigs(){
+  const parsedData = getDataFromYamlFile();
+  const conditionOpConfigs = [];
+  for (const conditionConfig of parsedData.conditional_operators) {
+    let prompt = '[]';
+    if(conditionConfig.promptFilePath){
+      prompt = readFileSync(conditionConfig.promptFilePath, 'utf8');
+    }
+    conditionOpConfigs.push({
+      name: conditionConfig.name,
+      description: conditionConfig.description,
+      prompt: prompt,
+      aggregatePipelineName: conditionConfig.aggregatePipelineName
+    });
+  }
+  return conditionOpConfigs;
+}
+
 /**
  Gets the DB info to use in the chatbot application
  */
-export function getDatabaseConfigInfo() {
+export function getVBDConfigInfo() {
   const parsedData = getDataFromYamlFile();
   const {
     vector_store: { connectionString, dbName, collectionName, vectorSearchIndexName, minScore, numCandidates },
