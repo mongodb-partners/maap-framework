@@ -1,0 +1,88 @@
+.data-layer-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    padding: 20px;
+    /* height: 80%; */
+  }
+  
+  .data-layer-box {
+    background-color: #e5c1f1;
+    border-radius: 8px;
+    text-align: center;
+    align-content: center;
+    width: 250px;
+    height: 110px;
+    font-size: larger;
+    font-weight: bold;
+    margin-top: 3%;
+  }
+  
+  .data-layer-central {
+    background-color: #d7f5e9;
+    padding: 15px 20px;
+    border-radius: 8px;
+    text-align: center;
+    width: 380px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .data-layer-central p {
+    margin: 0;
+    font-weight: bold;
+  }
+  
+  .data-layer-central img {
+    margin-top: 10px;
+    width: 150px; 
+  }
+
+  h1 {
+    color: #d7f5e9;
+    display: flex;
+  }
+
+.header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #ffffff;
+}
+
+.paragraph {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: larger;
+    color: white;
+    margin-left: 2%;
+    margin-right: 2%;
+    margin-top: 2%;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 columns */
+    grid-template-rows: repeat(2, auto); /* 2 rows */
+    gap: 16px; /* Adjust the gap between items as necessary */
+    justify-content: center; /* Center items horizontally */
+    align-items: center; /* Center items vertically */
+    height: 100vh; /* Ensure the container takes full height */
+  }
+  
+  .data-layer-box {
+    padding: 16px;
+    border: 1px solid #ccc; /* Optional: Add border */
+    border-radius: 8px; /* Optional: Add border-radius for rounded corners */
+    background-color: #f9f9f9; /* Optional: Add background color */
+    text-align: center; /* Center text */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100px; /* Adjust height as necessary */
+  }

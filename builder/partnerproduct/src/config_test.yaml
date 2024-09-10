@@ -1,11 +1,10 @@
 ingest:
-    - source: 'web'
-      source_path: 'https://mongodb-partners.github.io/maap-chatbot-builder/docs/intro'
-      chunk_size: 1000
-      chunk_overlap: 100
-    
+  - source: 'pdf'
+    source_path: '/Users/ashwin.gangadhar/demo/maap-chatbot-builder/builder/partnerproduct/data/travel-policy.pdf'
+    chunk_size: 2000
+    chunk_overlap: 200
 embedding:
-    class_name: "Azure-OpenAI-Embeddings"
+    class_name: Azure-OpenAI-Embeddings
     model_name: 'text-embedding-ada-002' 
     deployment_name: "leafy-embedding-ada-002"
     api_version: "2023-03-15-preview"
@@ -27,22 +26,17 @@ llms:
     api_version: "2023-03-15-preview"
     azure_openai_api_instance_name: "leafyhospopenai"
     temprature: ''
-
 stream_options:
     stream: true
 aggregate_operators:
-    - connectionString: "mongodb+srv://ashwinprsnl:p5w6ash@cflt-demo.2wqno.mongodb.net/?retryWrites=true&w=majority&appName=CFLT-demo"
+    - connectionString: mongodb+srv://ashwinprsnl:p5w6ash@cflt-demo.2wqno.mongodb.net/?retryWrites=true&w=majority&appName=CFLT-demo'
       dbName: test
       collectionName: test
       aggregatePipelineName: testing
-      query: [{"$match": {"$or": [{"fistName": "<first_Name>"}]}}]
-      queryFilePath: '/your-file-path'
+      query: [{"$match": {"$or": [{"fistName": "<first_Name>"}, {"lastName": "<last_name>"}]}}]
+
 conditional_operators:
     - name: 'lnfn'
       description: 'given last name and fist name fetch message'
-      prompt: "`Given : ${mqlQuery}, replace the <> values with the actual values from the natual language query.
-                For example, QueryTemplate: [{'$match': {'firstName': <first_name>}}]
-                User query: fetch the message for John Doe
-                Result Query: [{'$match': {'firstName': 'John'}}]`"
-      promptFilePath: '/your-file-path'
+      prompt: "`Convert natural langugage query to MongoDB aggregation / MQL query given the the template for query : ${mqlQuery} \n Instruction=Replace or fill in the variables in query that is represented as enclosed <_>`"
       aggregatePipelineName: 'testing'

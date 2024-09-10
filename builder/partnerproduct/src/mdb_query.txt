@@ -1,0 +1,1 @@
+ [{"$match": {"$or": [{"fistName": "Ashwin"}, {"lastName": "Gangadhar"}]}}, {"$project": {"_id": 0 , "message": 1}}]

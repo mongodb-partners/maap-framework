@@ -2,7 +2,9 @@ import 'dotenv/config';
 import {
     getModelClass,
     getEmbeddingModel,
-    getDatabaseConfigInfo
+    getVBDConfigInfo,
+    getAggregateOperatorConfigs,
+    getSystemPrompt
 } from '../../../src/yaml_parser/src/LoadYaml.js';
 import {
     PreProcessQuery,
@@ -27,13 +29,25 @@ import {
     makeApp,
 } from 'mongodb-chatbot-server';
 import { makeMongoDbEmbeddedContentStore, logger } from 'mongodb-rag-core';
-
+import { MongoDBCrud } from '../../../src/db/mongodb-crud.js';
+import { readFileSync } from 'fs';
 
 // Load MAAP base classes
 const model = getModelClass();
 const embedding_model = getEmbeddingModel();
-const { dbName, connectionString, vectorSearchIndexName, minScore, numCandidates } = getDatabaseConfigInfo();
+const { dbName, connectionString, vectorSearchIndexName, minScore, numCandidates } = getVBDConfigInfo();
 
+
+// Load crud operator with query and name of the operator
+const crudOperatorConfigs = getAggregateOperatorConfigs();
+var structuredQueryContext = "";
+for(const crudConfig of crudOperatorConfigs) {
+    const crud = new MongoDBCrud({connectionString:crudConfig.connectionString, dbName:crudConfig.dbName, collectionName: crudConfig.collectionName});
+    crud.init();
+    const aggQuery = JSON.parse(crudConfig.query);
+    const result = await crud.aggregate(aggQuery);
+    structuredQueryContext = structuredQueryContext +"/n"+ JSON.stringify(result);
+}
 // MongoDB data source for the content used in RAG.
 // Generated with the Ingest CLI.
 const embeddedContentStore = makeMongoDbEmbeddedContentStore({
@@ -56,7 +70,7 @@ const findContent = makeDefaultFindContent({
     embedder,
     store: embeddedContentStore,
     findNearestNeighborsOptions: {
-        k: 5,
+        k: 2,
         path: 'embedding',
         indexName: vectorSearchIndexName,
         numCandidates: numCandidates,
@@ -70,6 +84,7 @@ const dummyRerank: Rerank = async ({ query, results }) => {
     return { results };
 };
 const dummyPreprocess: PreProcessQuery = async ({ query }) => {
+    // Aggreation query result + User query
     return { preprocessedQuery: query };
 };
 const findContentWithRerank = withReranker({ findContentFunc: findContent, reranker: dummyRerank });
@@ -80,6 +95,7 @@ const findContentWithRerankAndPreprocess = withQueryPreprocessor({
 
 // Constructs the user message sent to the LLM from the initial user message
 // and the content found by the findContent function.
+console.log("structuredQueryContext :: ",structuredQueryContext);
 const makeUserMessage: MakeUserMessageFunc = async function ({
     content,
     originalUserMessage,
@@ -87,9 +103,13 @@ const makeUserMessage: MakeUserMessageFunc = async function ({
     const chunkSeparator = '~~~~~~';
     const context = content.map((c) => c.text).join(`\n${chunkSeparator}\n`);
     const contentForLlm = `Using the following information, answer the user query.
+    the context is seperated by Chunk Separator: ${chunkSeparator}
 
 Information:
 ${context}
+
+Operational Information:
+${structuredQueryContext}
 
 User query: ${originalUserMessage}`;
     return { role: 'user', content: contentForLlm };
@@ -105,10 +125,7 @@ const generateUserPrompt: GenerateUserPromptFunc = makeRagGenerateUserPrompt({
 // System prompt for chatbot
 const systemPrompt: SystemPrompt = {
     role: 'system',
-    content: `You are a helpful human like chat bot. Use relevant provided context and chat history to answer the query at the end. Answer in full.
-    If you don't know the answer, just say that you don't know, don't try to make up an answer. 
-    
-    Do not use words like context or training data when responding. You can say you do not have all the information but do not indicate that you are not a reliable source.`,
+    content: getSystemPrompt(),
 };
 
 // Create MongoDB collection and service for storing user conversations

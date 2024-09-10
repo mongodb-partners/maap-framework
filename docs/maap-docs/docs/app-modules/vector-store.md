@@ -2,9 +2,9 @@
 sidebar_position: 2
 ---
 
-# Vector Store
+# Document Store
 
-MongoDB as the Vector Store.
+MongoDB as the Document Store.
 
 ## Introduction 
 
@@ -13,6 +13,7 @@ Atlas Vector Search lets you search unstructured data. You can create vector emb
 
 ## Setting up 
 
+### Vector Store
 By following the steps given below you can setup MongoDB to be used as a vector store for your gen AI application.
 
 
@@ -33,3 +34,44 @@ By following the steps given below you can setup MongoDB to be used as a vector 
             minScore: 0.1 
             vectorSearchIndexName: 'vector_index'
         ```
+
+### ODL (Operational Data Layer)
+
+Follow the below steps to setup MongoDB as an operational data layer; 
+
+    - The setup requires 2 files to be created; 
+
+        1. Query file;
+            This is a `txt` file containing the operational query to be made to MongoDB.
+            Eg. 
+                ```
+                    [{"$match": {"$or": [{"fistName": "John"}, {"lastName": "Doe"}]}}, {"$project": {"_id": 0 , "message": 1}}]
+                ```
+
+        2. System Prompt file;
+            The prompt to be provided for the LLM, this can be modified based on the needs of the application and how the LLM should respond.
+            Eg.
+                ```
+                You are a helpful human like chat bot. Use relevant provided context and chat history to answer the query at the end. Answer in full. 
+                If you don't know the answer, just say that you don't know, don't try to make up an answer. 
+                Do not use words like context or training data when responding. You can say you do not have all the information but do not indicate that you are not a reliable source.
+                ```
+
+
+    -  Once the above files are in place, add the following in `config.yaml` file with updated values; 
+
+            ```
+            aggregate_operators:
+                - connectionString: "<your_mdb_connection_string>"
+                dbName: '<db_name>'
+                collectionName: '<collection_name>'
+                aggregatePipelineName: '<pipeline_name>'
+                queryFilePath: '<your_mql_query_file_path>'
+
+            systemPromptPath: '<your_system_prompt_file_path>'
+
+            ```
+
+
+
+
