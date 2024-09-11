@@ -159,18 +159,28 @@ Also, please make a copy of the `partnerproduct/example.env` file and rename it 
 The following contents are added in the `.env` (Environment File):
 ```
 COHERE_API_KEY=
+
 FIREWORKS_API_KEY=
-OPENAI_API_KEY=sk-
-ANYSCALE_API_KEY=esecret_
-ANYSCALE_BASE_URL=https://api.endpoints.anyscale.com/v1
-BEDROCK_AWS_REGION=us-east-1
+
+ANYSCALE_API_KEY=
+ANYSCALE_BASE_URL=
+
+BEDROCK_AWS_REGION=
 BEDROCK_AWS_ACCESS_KEY_ID=
 BEDROCK_AWS_SECRET_ACCESS_KEY=
+
 AZURE_OPENAI_API_KEY=
 AZURE_OPENAI_API_INSTANCE_NAME=
 AZURE_OPENAI_API_EMBEDDINGS_DEPLOYMENT_NAME=
 AZURE_OPENAI_API_VERSION=
 AZURE_OPENAI_API_DEPLOYMENT_NAME=
+
+ANTHROPIC_API_KEY=
+```
+
+After entering your environment variables, ensure you source the environment (.env file) by running
+```
+. ./.env
 ```
 
 ### MAAP Partner Integrations
@@ -198,14 +208,14 @@ Once configured you can use the yaml file you just created say as in example `pa
 
 ```
 npm install
-npm run ingest <path to your config.yaml>
+npm run ingest <full path to your config.yaml>
 ```
 
 Go to [this](https://mongodb-partners.github.io/maap-framework/docs/category/app-modules) page for loader specific documentations.
 
 ### Run the server
 ```
-npm run start <path to your config.yaml>
+npm run start <full path to your config.yaml>
 ```
 
 ### Start your application UI
