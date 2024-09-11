@@ -31,7 +31,7 @@ app.get('/semantic-search', async (req: Request, res: Response) => {
       return res.status(400).send('Query is required');
     }
 
-    llmApplication.vectorQuery(userQuery).then((result) => {
+    llmApplication.vectorQuery(userQuery as string).then((result) => {
       console.log('Result:', result);
       res.send(result);
     });
