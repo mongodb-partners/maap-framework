@@ -52,25 +52,30 @@ export function getDatabaseConfig() {
 }
 
 export function getAggregateOperatorConfigs(){
-  const parsedData = getDataFromYamlFile();
-  const aggregateOperatorConfigs = [];
-  console.log("aggregate_operators", parsedData.aggregate_operators)
-  for (const aggregateConfig of parsedData.aggregate_operators) {
-    try {
-      const query = readFileSync(aggregateConfig.queryFilePath, 'utf8');
-      aggregateOperatorConfigs.push({
-        connectionString: aggregateConfig.connectionString,
-        dbName: aggregateConfig.dbName,
-        collectionName: aggregateConfig.collectionName,
-        aggregatePipelineName: aggregateConfig.aggregatePipelineName,
-        query: query
-      });
-        
-    } catch (error) {
-      console.log('Error reading aggregate operator query file:', error);    
+try {
+    const parsedData = getDataFromYamlFile();
+    const aggregateOperatorConfigs = [];
+    console.log("aggregate_operators", parsedData.aggregate_operators)
+    for (const aggregateConfig of parsedData.aggregate_operators) {
+      try {
+        const query = readFileSync(aggregateConfig.queryFilePath, 'utf8');
+        aggregateOperatorConfigs.push({
+          connectionString: aggregateConfig.connectionString,
+          dbName: aggregateConfig.dbName,
+          collectionName: aggregateConfig.collectionName,
+          aggregatePipelineName: aggregateConfig.aggregatePipelineName,
+          query: query
+        });
+          
+      } catch (error) {
+        console.log('Error reading aggregate operator query file:', error);    
+      }
     }
-  }
-  return aggregateOperatorConfigs;
+    return aggregateOperatorConfigs;
+} catch (error) {
+  console.log('INFO reading aggregate operator query file or aggregate operator not configured:', error);
+  return null;
+}
 }
 
 export function getConditionOpConfigs(){
