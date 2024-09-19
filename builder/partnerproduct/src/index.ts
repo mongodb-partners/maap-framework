@@ -41,13 +41,16 @@ const { dbName, connectionString, vectorSearchIndexName, minScore, numCandidates
 // Load crud operator with query and name of the operator
 const crudOperatorConfigs = getAggregateOperatorConfigs();
 var structuredQueryContext = "";
-for(const crudConfig of crudOperatorConfigs) {
-    const crud = new MongoDBCrud({connectionString:crudConfig.connectionString, dbName:crudConfig.dbName, collectionName: crudConfig.collectionName});
-    crud.init();
-    const aggQuery = JSON.parse(crudConfig.query);
-    const result = await crud.aggregate(aggQuery);
-    structuredQueryContext = structuredQueryContext +"/n"+ JSON.stringify(result);
+if(crudOperatorConfigs) {    
+    for(const crudConfig of crudOperatorConfigs) {
+        const crud = new MongoDBCrud({connectionString:crudConfig.connectionString, dbName:crudConfig.dbName, collectionName: crudConfig.collectionName});
+        crud.init();
+        const aggQuery = JSON.parse(crudConfig.query);
+        const result = await crud.aggregate(aggQuery);
+        structuredQueryContext = structuredQueryContext +"/n"+ JSON.stringify(result);
+    }
 }
+
 // MongoDB data source for the content used in RAG.
 // Generated with the Ingest CLI.
 const embeddedContentStore = makeMongoDbEmbeddedContentStore({
