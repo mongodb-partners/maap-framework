@@ -68,4 +68,8 @@ export class Bedrock extends BaseModel {
         this.debug('Executing Bedrock model with prompt -', userQuery);
         return pastMessages;
     }
+
+    public getModel() {
+        return this.model;
+    }
 }

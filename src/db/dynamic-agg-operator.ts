@@ -8,19 +8,27 @@ import { BaseModel } from "../interfaces/base-model.js";
 dotenv.config();
 
 export class AggMqlOperator {
-    private readonly llm: BaseModel;
+    private readonly llm: any;
     private queryTemplate: string;
-    private userQuery: string;
     private zodSchema: z.ZodSchema;
 
-    constructor(params?: { model: BaseModel; queryTemplate: string; userQuery: string, zodSchema: z.ZodSchema }) {
-        this.llm = params?.model;
+    constructor(params?: { model: any; queryTemplate: string; zodSchema: z.ZodSchema }) {
+        try{
+            this.llm = params?.model.getModel();
+        } catch (e) {
+            console.error("Error initializing LLM model: ", e);
+            this.llm = null
+        }
         this.queryTemplate = params?.queryTemplate;
-        this.userQuery = params?.userQuery;
         this.zodSchema = params?.zodSchema;
     }
 
-    public async runQuery(): Promise<string> {
+    public async runQuery(userQuery: string): Promise<string> {
+
+        if (!this.llm) {
+            console.error("LLM model not properly initialized in AggMqlOperator");
+            return null;
+        }
 
         const parser = StructuredOutputParser.fromZodSchema(this.zodSchema);
 
@@ -28,12 +36,12 @@ export class AggMqlOperator {
             PromptTemplate.fromTemplate(
               "Answer the users question as best as possible.\n{format_instructions}\n{question}"
             ),
-            this.llm.getModel(),
+            this.llm,
             parser
         ]);
 
         const response = await chain.invoke({
-            question: this.userQuery,
+            question: userQuery,
             format_instructions: parser.getFormatInstructions(),
         });
 

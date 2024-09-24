@@ -61,4 +61,8 @@ export class Anthropic extends BaseModel {
         this.debug('Executing anthropic model with prompt -', userQuery);
         return pastMessages;
     }
+
+    public getModel() {
+        return this.model;
+    }
 }

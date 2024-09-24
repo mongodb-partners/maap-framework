@@ -66,4 +66,8 @@ export class Fireworks extends BaseModel {
         return stream;
     }
 
+    public getModel() {
+        return this.model;
+    }
+
 }
