@@ -23,5 +23,13 @@ aggregate_operators:
       collectionName: '<collection_name>'
       aggregatePipelineName: '<pipeline_name>'
       queryFilePath: '<your_mql_query_file_path>'
+      variables:
+        type: 'object'
+        properties:
+            answer:
+                type: 'string'
+                description: 'Answer to the question'
+        required:
+            - 'answer'
 
 systemPromptPath: '<your_system_prompt_file_path>'

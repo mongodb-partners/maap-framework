@@ -4,6 +4,7 @@ import { Chunk, ConversationHistory } from '../global/types.js';
 export abstract class BaseModel {
     private readonly baseDebug = createDebugMessages('maap:model:BaseModel');
     private static defaultTemperature: number;
+    private model: any;
 
     public static setDefaultTemperature(temperature?: number) {
         BaseModel.defaultTemperature = temperature;
@@ -19,6 +20,10 @@ export abstract class BaseModel {
 
     public get temperature() {
         return this._temperature ?? BaseModel.defaultTemperature;
+    }
+
+    public get getModel(){
+        return this.model;
     }
 
     public async init(): Promise<void> {}

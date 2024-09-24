@@ -2,6 +2,8 @@
 import * as fs from 'fs';
 import * as yaml from 'js-yaml';
 import * as process from 'process';
+import { z } from "zod";
+import { jsonSchemaToZod } from "json-schema-to-zod";
 import { Anthropic, BaseLoader, CohereEmbeddings, ConfluenceLoader, DocxLoader, GeckoEmbedding, OpenAi, PdfLoader, SitemapLoader, VertexAI, WebLoader, YoutubeSearchLoader, YoutubeLoader, YoutubeChannelLoader, PptLoader, TextLoader } from '../../index.js';
 import { MongoDBAtlas } from '../../vectorDb/mongo-db-atlas.js';
 import { strict as assert } from 'assert';
@@ -59,12 +61,15 @@ try {
     for (const aggregateConfig of parsedData.aggregate_operators) {
       try {
         const query = readFileSync(aggregateConfig.queryFilePath, 'utf8');
+        const jsonSchema = aggregateConfig.variables;
+        const zodSchema = jsonSchemaToZod(jsonSchema);
         aggregateOperatorConfigs.push({
           connectionString: aggregateConfig.connectionString,
           dbName: aggregateConfig.dbName,
           collectionName: aggregateConfig.collectionName,
           aggregatePipelineName: aggregateConfig.aggregatePipelineName,
-          query: query
+          query: query,
+          zodSchema: zodSchema
         });
           
       } catch (error) {
