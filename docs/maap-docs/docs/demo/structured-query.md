@@ -2,6 +2,9 @@
 sidebar_position: 4
 ---
 
+#  Structured Query 
+MongoDB Atlas LLM powered Structured Query in-action!
+
 ## Introduction
 
 This document will guide you through the process of creating a Structured Query in MongoDB Atlas. where the you can create place holders in your template mql query to be replaced by the values of the variables in the query using the help of configured LLM.
