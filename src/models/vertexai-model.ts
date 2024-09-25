@@ -54,8 +54,11 @@ export class VertexAI extends BaseModel {
         this.debug('Executing VertexAI model with prompt -', userQuery);
         return pastMessages;
     }
-
     public getModel() {
+        if (!this.model) {
+            this.init();
+        }
         return this.model;
     }
+
 }

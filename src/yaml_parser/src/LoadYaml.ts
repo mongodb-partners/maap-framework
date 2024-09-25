@@ -57,19 +57,19 @@ export function getAggregateOperatorConfigs(){
 try {
     const parsedData = getDataFromYamlFile();
     const aggregateOperatorConfigs = [];
-    console.log("aggregate_operators", parsedData.aggregate_operators)
+    // console.log("aggregate_operators", parsedData.aggregate_operators)
     for (const aggregateConfig of parsedData.aggregate_operators) {
       try {
         const query = readFileSync(aggregateConfig.queryFilePath, 'utf8');
-        const jsonSchema = aggregateConfig.variables;
-        const zodSchema = jsonSchemaToZod(jsonSchema);
+        var jsonSchema = null;
+        if(aggregateConfig.variables) jsonSchema = aggregateConfig.variables;
         aggregateOperatorConfigs.push({
           connectionString: aggregateConfig.connectionString,
           dbName: aggregateConfig.dbName,
           collectionName: aggregateConfig.collectionName,
           aggregatePipelineName: aggregateConfig.aggregatePipelineName,
           query: query,
-          zodSchema: zodSchema
+          jsonSchema: jsonSchema
         });
           
       } catch (error) {

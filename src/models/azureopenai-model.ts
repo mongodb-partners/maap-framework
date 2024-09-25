@@ -83,6 +83,10 @@ export class AzureChatAI extends BaseModel {
     }
 
     public getModel() {
+        if (!this.model) {
+            this.init();
+        }
         return this.model;
     }
+
 }

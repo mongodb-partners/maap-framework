@@ -64,6 +64,10 @@ export class AnyscaleModel extends BaseModel {
     }
 
     public getModel() {
+        if (!this.model) {
+            this.init();
+        }
         return this.model;
     }
+
 }

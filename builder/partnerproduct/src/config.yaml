@@ -22,14 +22,9 @@ aggregate_operators:
       dbName: '<db_name>'
       collectionName: '<collection_name>'
       aggregatePipelineName: '<pipeline_name>'
-      queryFilePath: '<your_mql_query_file_path>'
+      queryFilePath: '<your_mql_query_file_path>' # must contain ${fieldName} for variables or can be just a static query
       variables:
-        type: 'object'
-        properties:
-            answer:
-                type: 'string'
-                description: 'Answer to the question'
-        required:
-            - 'answer'
+        <fieldName>: '<Field description>'
+        <fieldName2>: '<Field description2>'
 
 systemPromptPath: '<your_system_prompt_file_path>'

@@ -21,14 +21,16 @@ export class MongoDBCrud {
 
     public async aggregate(query: any[]): Promise<any[]> {
         let result: any 
+        // console.log("MongoDB structured Query :: ", JSON.stringify(query));
         try {
             this.collection = this.client.db(this.dbName).collection(this.collectionName);
-            result = this.collection.aggregate(query).toArray();
+            result = await this.collection.aggregate(query).toArray();
+            // console.log("MongoDB structured Query Result 1 :: ", result);
         } catch(err) {
+            // console.log("Error in MongoDB structured Query :: ", err);
             console.error(err);
-        } finally {
-            // TODO : await this.client.close();
         }
+        // console.info("MongoDB structured Query Result 2 :: ", JSON.stringify(result));
         return result;
     }
 }
