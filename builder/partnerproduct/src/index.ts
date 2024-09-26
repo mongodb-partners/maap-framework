@@ -7,6 +7,7 @@ import {
     getSystemPrompt
 } from '../../../src/yaml_parser/src/LoadYaml.js';
 import {
+    BaseModel,
     PreProcessQuery,
     RAGApplicationBuilder,
     Rerank,
@@ -30,6 +31,7 @@ import {
 } from 'mongodb-chatbot-server';
 import { makeMongoDbEmbeddedContentStore, logger } from 'mongodb-rag-core';
 import { MongoDBCrud } from '../../../src/db/mongodb-crud.js';
+import { AggMqlOperator } from '../../../src/db/dynamic-agg-operator.js';
 import { readFileSync } from 'fs';
 
 // Load MAAP base classes
@@ -40,16 +42,32 @@ const { dbName, connectionString, vectorSearchIndexName, minScore, numCandidates
 
 // Load crud operator with query and name of the operator
 const crudOperatorConfigs = getAggregateOperatorConfigs();
-var structuredQueryContext = "";
+var aggregatorPipelines = [];
 if(crudOperatorConfigs) {    
     for(const crudConfig of crudOperatorConfigs) {
         const crud = new MongoDBCrud({connectionString:crudConfig.connectionString, dbName:crudConfig.dbName, collectionName: crudConfig.collectionName});
         crud.init();
-        const aggQuery = JSON.parse(crudConfig.query);
-        const result = await crud.aggregate(aggQuery);
-        structuredQueryContext = structuredQueryContext +"/n"+ JSON.stringify(result);
+        const aggQueryTemplate = JSON.parse(crudConfig.query);
+        aggregatorPipelines.push({crudOperator: crud, aggregator: new AggMqlOperator({model: model, queryTemplate: aggQueryTemplate, jsonSchema: crudConfig.jsonSchema})});
     }
 }
+
+// Asynchronously generates a structured query context based on the original user message.
+async function getStructuredQueryContext(originalUserMessage: string, recall?: boolean, p0?: boolean) {
+    var structuredQueryContext = "";
+    for (const aggregatorPipeline of aggregatorPipelines) {
+        recall = recall ?? false;
+        const query = await aggregatorPipeline.aggregator.runQuery(originalUserMessage, recall);
+        // if query is null do not append to structuredQueryContext
+        if (query) {
+            aggregatorPipeline.crudOperator.init();
+            const result = await aggregatorPipeline.crudOperator.aggregate(query);
+            structuredQueryContext = structuredQueryContext + "\n" + JSON.stringify(result);
+        }
+    }
+    return structuredQueryContext;
+}
+
 
 // MongoDB data source for the content used in RAG.
 // Generated with the Ingest CLI.
@@ -63,7 +81,6 @@ const embeddedContentStore = makeMongoDbEmbeddedContentStore({
 const embedder = convertBaseEmbeddingsToEmbedder(embedding_model);
 
 // Convert MAAP base LLM to framework's ChatLlm
-console.log(model);
 const llm = await convertBaseModelToChatLlm(model);
 
 
@@ -87,41 +104,44 @@ const dummyRerank: Rerank = async ({ query, results }) => {
     return { results };
 };
 const dummyPreprocess: PreProcessQuery = async ({ query }) => {
-    // Aggreation query result + User query
-    return { preprocessedQuery: query };
+    // Aggreation query result + User quer
+    const preprocessedQuery = await getStructuredQueryContext(query, false);
+    return { preprocessedQuery: preprocessedQuery };
 };
 const findContentWithRerank = withReranker({ findContentFunc: findContent, reranker: dummyRerank });
-const findContentWithRerankAndPreprocess = withQueryPreprocessor({
-    findContentFunc: findContentWithRerank,
+const findContentWithPreprocess = withQueryPreprocessor({
+    findContentFunc: findContent,
     queryPreprocessor: dummyPreprocess,
 });
 
 // Constructs the user message sent to the LLM from the initial user message
 // and the content found by the findContent function.
-console.log("structuredQueryContext :: ",structuredQueryContext);
 const makeUserMessage: MakeUserMessageFunc = async function ({
     content,
     originalUserMessage,
 }): Promise<OpenAiChatMessage & { role: 'user' }> {
     const chunkSeparator = '~~~~~~';
     const context = content.map((c) => c.text).join(`\n${chunkSeparator}\n`);
+    // Run the structured query to populate the alternate retrieval technique results as context
+    var structuredQueryContext = await getStructuredQueryContext(originalUserMessage, true);
+
     const contentForLlm = `Using the following information, answer the user query.
     the context is seperated by Chunk Separator: ${chunkSeparator}
 
-Information:
-${context}
+    Information:
+    ${context}    
+    ${chunkSeparator}
+    Operational Information:
+    ${structuredQueryContext}
 
-Operational Information:
-${structuredQueryContext}
-
-User query: ${originalUserMessage}`;
-    return { role: 'user', content: contentForLlm };
+    User query: ${originalUserMessage}`;
+        return { role: 'user', content: contentForLlm };
 };
 
 // Generates the user prompt for the chatbot using RAG
 const generateUserPrompt: GenerateUserPromptFunc = makeRagGenerateUserPrompt({
     // findContent: findContentWithRerankAndPreprocess,
-    findContent: findContent,
+    findContent: findContentWithPreprocess,
     makeUserMessage,
 });
 
@@ -177,3 +197,4 @@ try {
     logger.error(`Fatal error: ${e}`);
     process.exit(1);
 }
+

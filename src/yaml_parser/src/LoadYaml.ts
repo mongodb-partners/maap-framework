@@ -2,7 +2,9 @@
 import * as fs from 'fs';
 import * as yaml from 'js-yaml';
 import * as process from 'process';
-import { Anthropic, BaseLoader, CohereEmbeddings, ConfluenceLoader, DocxLoader, GeckoEmbedding, OpenAi, PdfLoader, SitemapLoader, VertexAI, WebLoader, YoutubeSearchLoader, YoutubeLoader, YoutubeChannelLoader, PptLoader, TextLoader } from '../../index.js';
+// import { z } from "zod";
+// import { jsonSchemaToZod } from "json-schema-to-zod";
+import { Anthropic, BaseLoader, CohereEmbeddings, ConfluenceLoader, DocxLoader, GeckoEmbedding, OpenAi, PdfLoader, SitemapLoader, VertexAI, WebLoader, YoutubeSearchLoader, YoutubeLoader, YoutubeChannelLoader, PptLoader, TextLoader, BaseModel } from '../../index.js';
 import { MongoDBAtlas } from '../../vectorDb/mongo-db-atlas.js';
 import { strict as assert } from 'assert';
 import { AnyscaleModel } from '../../models/anyscale-model.js';
@@ -55,16 +57,19 @@ export function getAggregateOperatorConfigs(){
 try {
     const parsedData = getDataFromYamlFile();
     const aggregateOperatorConfigs = [];
-    console.log("aggregate_operators", parsedData.aggregate_operators)
+    // console.log("aggregate_operators", parsedData.aggregate_operators)
     for (const aggregateConfig of parsedData.aggregate_operators) {
       try {
         const query = readFileSync(aggregateConfig.queryFilePath, 'utf8');
+        var jsonSchema = null;
+        if(aggregateConfig.variables) jsonSchema = aggregateConfig.variables;
         aggregateOperatorConfigs.push({
           connectionString: aggregateConfig.connectionString,
           dbName: aggregateConfig.dbName,
           collectionName: aggregateConfig.collectionName,
           aggregatePipelineName: aggregateConfig.aggregatePipelineName,
-          query: query
+          query: query,
+          jsonSchema: jsonSchema
         });
           
       } catch (error) {

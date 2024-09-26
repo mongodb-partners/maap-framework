@@ -70,4 +70,5 @@ export abstract class BaseModel {
         supportingContext: Chunk[],
         pastConversations: ConversationHistory[],
     ): Promise<any>;
+
 }
