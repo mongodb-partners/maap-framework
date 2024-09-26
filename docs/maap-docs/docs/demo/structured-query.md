@@ -1,100 +1,121 @@
 ---
 sidebar_position: 4
 ---
-
-#  Structured Query 
-MongoDB Atlas LLM powered Structured Query in-action!
+# Structured Query in MongoDB Atlas
 
 ## Introduction
 
-This document will guide you through the process of creating a Structured Query in MongoDB Atlas. where the you can create place holders in your template mql query to be replaced by the values of the variables in the query using the help of configured LLM.
+Unlock the power of MongoDB Atlas's LLM-powered Structured Query to create dynamic, intelligent data retrieval systems. This guide walks you through setting up and leveraging Structured Queries to enhance your data operations.
 
-## Steps
-1. Create a new MQL query template.
-2. Explain the variables in the MQL query template and configure with description as shown in the config below.
-3. Create a system prompt to LLM that help you achieve the right persona with the results your are expecting from the chatbot.
+## Key Steps
 
-## What is MQL Query Template
-MQL Query Template is a JSON file that contains a query template with placeholders for variables. The variables are replaced by the values provided by the user in the chatbot.
-example
-```
- [{"$match": {"$or": [{"fistName": "${firstName}"}, {"lastName": "${lastName}"}]}}, {"$project": {"_id": 0 , "message": 1}}]
-```
+1. **Create an MQL Query Template**: Design a query with placeholders for dynamic variables.
+2. **Define Variables with Descriptions**: Explain each variable in your template for clarity.
+3. **Craft a System Prompt for the LLM**: Guide the language model to produce desired results.
 
-## What is System Prompt
-System Prompt is a text file that contains a prompt for the LLM to generate the right persona with the results your are expecting from the chatbot.
-example
-```
-You are a helpful human like chat bot. Use relevant provided context and chat history to answer the query at the end. Answer in full.
-If you don't know the answer, just say that you don't know, don't try to make up an answer. 
-Do not use words like context or training data when responding. You can say you do not have all the information but do not indicate that you are not a reliable source.
+## What is an MQL Query Template?
+
+An MQL (MongoDB Query Language) Query Template is a JSON structure containing placeholders for variables. These placeholders (`${variableName}`) are replaced with user-provided values at runtime, enabling flexible and dynamic queries.
+
+**Example:**
+
+```json
+[ { "$match": { "$or": [ { "firstName": "${firstName}" }, { "lastName": "${lastName}" } ] } }, { "$project": { "_id": 0, "message": 1 } } ]
 ```
 
-## How does this module work?
-The module works by taking the MQL query template and the system prompt as input and generating the final query by replacing the placeholders in the MQL query template with the values provided by the user in the chatbot. The generated query is then executed on the MongoDB Atlas cluster and the results are returned to augment the vector search query and user prompt to the LLM. This chatbot behaviour can drive complex retrival capabilities which can also be termed as Alternate Retrieval Techiniques(ART)
-Some Example ART query behaviours:
-1. MongoDB find query + vector search
-2. MongoDB graphlookup + vector search
-3. MonogDB timeseries query + vector search
-4. MongoDB geospatial query + vector search
-5. MongoDB full text search + vector search
+## What is a System Prompt?
 
-The main focus of this operator is to retrieve information of another analytics or operational collection to suppelment the vector search context. This can enable the stateless LLM to have knowledge of stateful information to interpret and generate response to users queries.
+A System Prompt guides the Language Learning Model (LLM) to generate responses that align with your desired output.
 
-## Config file
-The config file is a JSON file that contains the configuration for the application. The configuration file contains the following sections:
+**Example:**
 
-- `ingest`: Configuration for the ingestion of the data into the vector search powered collection.
+```
+You are a helpful, human-like chatbot. Use the provided context and chat history to answer queries fully. If you don't know the answer, simply state that you don't know. Avoid mentioning words like "context" or "training data" in your responses.
+```
 
-### Config file example
+## How Does This Module Work?
 
-````
+The module combines your MQL query template and system prompt to generate a final query. It replaces placeholders with actual values provided by the user, executes the query on your MongoDB Atlas cluster, and returns results to augment your vector search and LLM responses.
+
+### Benefits:
+
+- **Advanced Retrieval Techniques (ART)**: Integrate complex retrieval methods like graph lookups, time series queries, geospatial queries, and full-text searches with vector search.
+- **Enhanced Context**: Supplement vector search results with additional data for more informed responses.
+- **Stateful Knowledge**: Equip the LLM with real-time data to generate accurate and relevant answers.
+
+## Example ART Query Behaviors:
+
+1. MongoDB _Find Query_ + Vector Search
+2. MongoDB _GraphLookup_ + Vector Search
+3. MongoDB _Time Series Query_ + Vector Search
+4. MongoDB _Geospatial Query_ + Vector Search
+5. MongoDB _Full Text Search_ + Vector Search
+
+## Configuration File
+
+The configuration file outlines how your application operates. It includes settings for data ingestion, embedding, vector storage, LLMs, and aggregate operators.
+
+### Sample Config File:
+
+```yaml
 ingest:
-    - source: 'web'
-      source_path: 'https://mongodb-partners.github.io/maap-chatbot-builder/docs/intro'
-      chunk_size: 1000
-      chunk_overlap: 100
-    
+  - source: 'web'
+    source_path: 'https://your-content-source.com/docs/intro'
+    chunk_size: 1000
+    chunk_overlap: 100
+
 embedding:
-    class_name: Nomic-v1.5
+  class_name: Nomic-v1.5
 
 vector_store:
-    connectionString: '<your_mdb_connection_string>'
-    dbName: '<db_name>'
-    collectionName: 'embedded_content'
-    embeddingKey: 'embedding'
-    textKey: 'text'
-    vectorSearchIndexName: 'vector_index'
-    numCandidates: 150
-    minScore: 0.6
-    limit: 5
-    similarityFunction: 'cosine'
-llms:
-    class_name: Fireworks
-    model_name: 'accounts/fireworks/models/llama-v3p1-405b-instruct'
-    temprature: 0.1
+  connectionString: '<your_mongodb_connection_string>'
+  dbName: '<your_database_name>'
+  collectionName: 'embedded_content'
+  embeddingKey: 'embedding'
+  textKey: 'text'
+  vectorSearchIndexName: 'vector_index'
+  numCandidates: 150
+  minScore: 0.6
+  limit: 5
+  similarityFunction: 'cosine'
 
-systemPromptPath: '<your_system_prompt_file_path>'
+llms:
+  class_name: Fireworks
+  model_name: 'accounts/fireworks/models/llama-v3p1-405b-instruct'
+  temperature: 0.1
+
+systemPromptPath: '<path_to_your_system_prompt_file>'
 
 stream_options:
-    stream: true
+  stream: true
 
 aggregate_operators:
-    - connectionString: "<your_mdb_connection_string>"
-      dbName: test
-      collectionName: test
-      aggregatePipelineName: testing
-      queryFilePath: '<your_mql_query_file_path>'
-      variables:
-        firstName: 'First name of the person, capitalize first letter'
-        lastName: 'Last Name of the person,, capitalize first letter'
-````
+  - connectionString: '<your_mongodb_connection_string>'
+    dbName: 'test'
+    collectionName: 'test'
+    aggregatePipelineName: 'testing'
+    queryFilePath: '<path_to_your_mql_query_file>'
+    variables:
+      firstName: 'First name of the person, capitalize first letter'
+      lastName: 'Last name of the person, capitalize first letter'
+```
 
-### Running the application
-To run the application you have to identify the relevant mongodb collection on which you want to run you structured query configured under `aggregate_operators`. The data to this collection is assumed that you load it your self or you are pointing to pre loaded collection.
-You can choose to register multiple such structured query operators
+## Running the Application
 
-The ingestion of vector search powered collection configured under `vector_store` can be ingested using the 
-`npm run ingest /path/to/your/config.yaml`
+1. **Prepare Your Data**: Ensure your target MongoDB collection is populated with the necessary data.
 
-The application can be run using the command `npm run start /path/to/your/config.yaml`
+2. **Ingest Data for Vector Search**: Use the following command to ingest data into your vector search-powered collection:
+
+   ```
+   npm run ingest /path/to/your/config.yaml
+   ```
+
+3. **Start the Application**: Run the application with your configuration file:
+
+   ```
+   npm run start /path/to/your/config.yaml
+   ```
+
+---
+
+By following this guide, you can effectively utilize MongoDB Atlas's Structured Query capabilities to build powerful, context-aware applications that meet your clients' needs.
