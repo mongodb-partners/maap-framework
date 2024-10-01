@@ -109,10 +109,13 @@ const dummyPreprocess: PreProcessQuery = async ({ query }) => {
     return { preprocessedQuery: preprocessedQuery };
 };
 const findContentWithRerank = withReranker({ findContentFunc: findContent, reranker: dummyRerank });
-const findContentWithPreprocess = withQueryPreprocessor({
+var findContentWithPreprocess = withQueryPreprocessor({
     findContentFunc: findContent,
     queryPreprocessor: dummyPreprocess,
 });
+if (aggregatorPipelines.length < 1) {
+    findContentWithPreprocess = findContent;
+}
 
 // Constructs the user message sent to the LLM from the initial user message
 // and the content found by the findContent function.
@@ -123,8 +126,11 @@ const makeUserMessage: MakeUserMessageFunc = async function ({
     const chunkSeparator = '~~~~~~';
     const context = content.map((c) => c.text).join(`\n${chunkSeparator}\n`);
     // Run the structured query to populate the alternate retrieval technique results as context
-    var structuredQueryContext = await getStructuredQueryContext(originalUserMessage, true);
-
+    var structuredQueryContext = "";
+    if(aggregatorPipelines.length > 0) {
+        var structuredQueryContext = await getStructuredQueryContext(originalUserMessage, true);
+    }
+    
     const contentForLlm = `Using the following information, answer the user query.
     the context is seperated by Chunk Separator: ${chunkSeparator}
 
