@@ -57,6 +57,9 @@ export function getAggregateOperatorConfigs(){
 try {
     const parsedData = getDataFromYamlFile();
     const aggregateOperatorConfigs = [];
+    if (!parsedData.aggregate_operators) {
+      return aggregateOperatorConfigs;
+    }
     // console.log("aggregate_operators", parsedData.aggregate_operators)
     for (const aggregateConfig of parsedData.aggregate_operators) {
       try {
