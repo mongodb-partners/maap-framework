@@ -10,6 +10,7 @@ export class MongoDBAtlas implements BaseDb {
     private static readonly INDEX_NAME = "vector_index";
     private static readonly EMBEDDING_KEY = "embedding";
     private static readonly TEXT_KEY = "text";
+    private static readonly TEXT_INDEX_NAME = "text_index";
     private readonly connectionString: string;
     private readonly dbName: string;
     private readonly collectionName: string;
@@ -17,6 +18,7 @@ export class MongoDBAtlas implements BaseDb {
     private readonly embeddingKey: string;
     private readonly textKey: string;
     private readonly indexName: string;
+    private readonly textIndexName?: string;
     private similarityFunction: string;
     private collection: any;
     private numCandidates: number;
@@ -32,7 +34,7 @@ export class MongoDBAtlas implements BaseDb {
      * @param numCandidates The number of candidates to consider during similarity search. Default is 100.
      * @param similarityFunction The similarity function to use during similarity search.
      */
-    constructor({ connectionString, dbName, collectionName, embeddingKey = MongoDBAtlas.EMBEDDING_KEY, textKey = MongoDBAtlas.TEXT_KEY, indexName = MongoDBAtlas.INDEX_NAME, numCandidates = 100, similarityFunction, minScore = 0.1 }: { connectionString: string; dbName: string; collectionName: string; embeddingKey?: string; textKey?: string; indexName?: string; numCandidates: number; similarityFunction: string; minScore: number; }
+    constructor({ connectionString, dbName, collectionName, embeddingKey = MongoDBAtlas.EMBEDDING_KEY, textKey = MongoDBAtlas.TEXT_KEY, indexName = MongoDBAtlas.INDEX_NAME, numCandidates = 100, similarityFunction, minScore = 0.1, textIndexName = MongoDBAtlas.TEXT_INDEX_NAME }: { connectionString: string; dbName: string; collectionName: string; embeddingKey?: string; textKey?: string; indexName?: string; numCandidates: number; similarityFunction: string; minScore: number; textIndexName?: string;}
     ) {
         this.connectionString = connectionString;
         this.dbName = dbName;
@@ -41,6 +43,7 @@ export class MongoDBAtlas implements BaseDb {
         this.embeddingKey = embeddingKey;
         this.textKey = textKey;
         this.indexName = indexName;
+        this.textIndexName = textIndexName;
         this.similarityFunction = similarityFunction;
         this.numCandidates = numCandidates;
         this.minScore = minScore;
@@ -85,12 +88,144 @@ export class MongoDBAtlas implements BaseDb {
         const query_object = [await this.getVectorSearchQuery(query, k), { "$project": { "_id": 0, "score": { "$meta": "vectorSearchScore" }, "text": 1, "metadata": 1 } }, {"$match": {"score": {"$gt": this.minScore}}}];
         const results = await this.collection.aggregate(query_object).toArray();
 
+        const result = await results.map((result) => {
+            const pageContent = (<any>result)[this.textKey];
+            delete (<any>result.metadata).pageContent;
+
+            return <ExtractChunkData>{
+                score: result.score,
+                pageContent,
+                metadata: result.metadata,
+            }
+        });
+
+        return result
+    }
+
+    /**
+     * Performs a hybrid search using reciprocal-rank-fusion for the given textQuery and vectorQuery.
+     * @see https://www.mongodb.com/docs/atlas/atlas-vector-search/tutorials/reciprocal-rank-fusion/
+     *
+     * @param textQuery The query text for hybrid search.
+     * @param query The query vector.
+     * @param k The number of results to return.
+     * @returns A Promise that resolves to an array of ExtractChunkData objects representing the search results.
+     */
+    async hybridSearch(textQuery: string, query: number[], k: number, vectorWeight = 0.1, fullTextWeight = 0.9): Promise<ExtractChunkData[]> {
+        const query_object = [
+            await this.getVectorSearchQuery(query, k),
+            {
+                "$group": {
+                  "_id": null,
+                  "docs": {"$push": "$$ROOT"}
+                }
+            },
+            {
+                "$unwind": {
+                  "path": "$docs",
+                  "includeArrayIndex": "rank"
+                }
+            },
+            {
+                "$addFields": {
+                  "_id": "$docs._id",
+                  "vs_score": {
+                    "$multiply": [
+                      vectorWeight, {
+                        "$divide": [
+                          1.0, {
+                            "$add": ["$rank", 60]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                }
+            },
+            {
+                "$unionWith": {
+                  "coll": this.collectionName,
+                  "pipeline": [
+                    {
+                      "$search": {
+                        "index": this.textIndexName,
+                        "text": {
+                          "query": textQuery,
+                          "path": this.textKey
+                        }
+                      }
+                    }, {
+                      "$limit": k
+                    }, {
+                      "$group": {
+                        "_id": null,
+                        "docs": {"$push": "$$ROOT"}
+                      }
+                    }, {
+                      "$unwind": {
+                        "path": "$docs",
+                        "includeArrayIndex": "rank"
+                      }
+                    }, {
+                      "$addFields": {
+                        "_id": "$docs._id",
+                        "fts_score": {
+                          "$multiply": [
+                            fullTextWeight, {
+                              "$divide": [
+                                1.0, {
+                                  "$add": ["$rank", 60]
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  ]
+                }
+            },
+            {
+                "$group": {
+                  "_id": "$_id",
+                  docs: {
+                    $first: "$docs",
+                  },
+                  "vs_score": {"$max": "$vs_score"},
+                  "fts_score": {"$max": "$fts_score"}
+                }
+            },
+            {
+                "$addFields": {
+                  "docs.vs_score": {"$ifNull": ["$vs_score", 0]},
+                  "docs.fts_score": {"$ifNull": ["$fts_score", 0]}
+                }
+            },
+            {
+                "$addFields": {
+                  "docs.score": {"$add": ["$docs.vs_score", "$docs.fts_score"]}
+                }
+            },
+            {
+              $replaceRoot: {newRoot: "$docs"}
+            },
+            {
+                "$sort": {"score": -1}
+            },
+            {
+                "$limit": k
+            }
+        ];
+        const results = await this.collection.aggregate(query_object).toArray();
+
         return results.map((result) => {
             const pageContent = (<any>result)[this.textKey];
             delete (<any>result.metadata).pageContent;
 
             return <ExtractChunkData>{
                 score: result.score,
+                vs_score: result.vs_score,
+                fts_score: result.fts_score,
                 pageContent,
                 metadata: result.metadata,
             }
@@ -153,7 +288,7 @@ export class MongoDBAtlas implements BaseDb {
      */
     async createVectorIndex(numDimensions: number, similarityFunction?: string): Promise<void> {
         try {
-            
+
             this.similarityFunction = similarityFunction ?? "cosine";
             const index = {
                 name: this.indexName,
@@ -171,6 +306,33 @@ export class MongoDBAtlas implements BaseDb {
             }
             await this.collection.createSearchIndex(index);
             console.log("\n-- Vector index created --")
+        } catch (e) {
+            return Promise.reject(e.codeName);
+        }
+    }
+
+    /**
+     * Creates a text search index in the collection.
+     * @returns A Promise that resolves when the text search index has been created.
+     */
+    async createTextIndex(): Promise<void> {
+        try {
+            const index = {
+                name: this.textIndexName,
+                type: "search",
+                definition: {
+                    "mappings": {
+                        "dynamic": false,
+                        "fields": {
+                            "text": [{
+                                "type": "string"
+                            }]
+                        }
+                    }
+                }
+            }
+            await this.collection.createSearchIndex(index);
+            console.log("\n-- Text search index created --")
         } catch (e) {
             return Promise.reject(e.codeName);
         }
