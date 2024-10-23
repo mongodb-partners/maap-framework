@@ -1,0 +1,17 @@
+.search-bar {
+    margin: 5%;
+    background-color: #001e2b;
+}
+
+.results {
+    height: 89vh;
+    overflow-y: auto;
+}
+
+.card-styles {
+    margin: 5%;
+    overflow: hidden; 
+    text-overflow: ellipsis; 
+    /* white-space: nowrap;  */
+    box-sizing: border-box;    
+}

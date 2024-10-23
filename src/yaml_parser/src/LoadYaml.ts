@@ -2,7 +2,9 @@
 import * as fs from 'fs';
 import * as yaml from 'js-yaml';
 import * as process from 'process';
-import { Anthropic, BaseLoader, CohereEmbeddings, ConfluenceLoader, DocxLoader, GeckoEmbedding, OpenAi, PdfLoader, SitemapLoader, VertexAI, WebLoader, YoutubeSearchLoader, YoutubeLoader, YoutubeChannelLoader, PptLoader, TextLoader } from '../../index.js';
+// import { z } from "zod";
+// import { jsonSchemaToZod } from "json-schema-to-zod";
+import { Anthropic, BaseLoader, CohereEmbeddings, ConfluenceLoader, DocxLoader, GeckoEmbedding, OpenAi, PdfLoader, SitemapLoader, VertexAI, WebLoader, YoutubeSearchLoader, YoutubeLoader, YoutubeChannelLoader, PptLoader, TextLoader, BaseModel } from '../../index.js';
 import { MongoDBAtlas } from '../../vectorDb/mongo-db-atlas.js';
 import { strict as assert } from 'assert';
 import { AnyscaleModel } from '../../models/anyscale-model.js';
@@ -25,9 +27,15 @@ function getDataFromYamlFile() {
   if (!args[0]) {
     throw new Error('Please provide the YAML file path as an argument.');
   }
-  const data = fs.readFileSync(args[0], 'utf8');
+  const data = readFileSync(args[0], 'utf8');
   const parsedData = yaml.load(data);
   return parsedData;
+}
+
+export function getSystemPrompt() {
+  const parsedData = getDataFromYamlFile();
+  const systemPrompt = readFileSync(parsedData.systemPromptPath, 'utf8'); 
+  return systemPrompt; 
 }
 
 export function getDatabaseConfig() {
@@ -45,10 +53,61 @@ export function getDatabaseConfig() {
   });
 }
 
+export function getAggregateOperatorConfigs(){
+try {
+    const parsedData = getDataFromYamlFile();
+    const aggregateOperatorConfigs = [];
+    if (!parsedData.aggregate_operators) {
+      return aggregateOperatorConfigs;
+    }
+    // console.log("aggregate_operators", parsedData.aggregate_operators)
+    for (const aggregateConfig of parsedData.aggregate_operators) {
+      try {
+        const query = readFileSync(aggregateConfig.queryFilePath, 'utf8');
+        var jsonSchema = null;
+        if(aggregateConfig.variables) jsonSchema = aggregateConfig.variables;
+        aggregateOperatorConfigs.push({
+          connectionString: aggregateConfig.connectionString,
+          dbName: aggregateConfig.dbName,
+          collectionName: aggregateConfig.collectionName,
+          aggregatePipelineName: aggregateConfig.aggregatePipelineName,
+          query: query,
+          jsonSchema: jsonSchema
+        });
+          
+      } catch (error) {
+        console.log('Error reading aggregate operator query file:', error);    
+      }
+    }
+    return aggregateOperatorConfigs;
+} catch (error) {
+  console.log('INFO reading aggregate operator query file or aggregate operator not configured:', error);
+  return null;
+}
+}
+
+export function getConditionOpConfigs(){
+  const parsedData = getDataFromYamlFile();
+  const conditionOpConfigs = [];
+  for (const conditionConfig of parsedData.conditional_operators) {
+    let prompt = '[]';
+    if(conditionConfig.promptFilePath){
+      prompt = readFileSync(conditionConfig.promptFilePath, 'utf8');
+    }
+    conditionOpConfigs.push({
+      name: conditionConfig.name,
+      description: conditionConfig.description,
+      prompt: prompt,
+      aggregatePipelineName: conditionConfig.aggregatePipelineName
+    });
+  }
+  return conditionOpConfigs;
+}
+
 /**
  Gets the DB info to use in the chatbot application
  */
-export function getDatabaseConfigInfo() {
+export function getVBDConfigInfo() {
   const parsedData = getDataFromYamlFile();
   const {
     vector_store: { connectionString, dbName, collectionName, vectorSearchIndexName, minScore, numCandidates },

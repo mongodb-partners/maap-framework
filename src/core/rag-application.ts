@@ -13,12 +13,14 @@ import { getUnique } from '../util/arrays.js';
 import { BaseReranker } from '../interfaces/base-reranker.js';
 import { NomicEmbeddingsv1_5 } from '../embeddings/nomic-v1-5-embeddings.js';
 
+
 export class RAGApplication {
     private readonly debug = createDebugMessages('maap:core');
     private readonly queryTemplate: string;
     private readonly searchResultCount: number;
     private readonly cache?: BaseCache;
     private readonly vectorDb: BaseDb;
+    private readonly dbLookup: Map<string, any> = new Map();
     private readonly reranker: BaseReranker;
     private readonly model: BaseModel;
     private readonly embeddingRelevanceCutOff: number;
@@ -36,13 +38,16 @@ export class RAGApplication {
 
         this.loaders = llmBuilder.getLoaders();
         this.vectorDb = llmBuilder.getVectorDb();
+        this.dbLookup = llmBuilder.getDbLookup();
         this.reranker = llmBuilder.getReranker();
         this.searchResultCount = llmBuilder.getSearchResultCount();
         this.embeddingRelevanceCutOff = llmBuilder.getEmbeddingRelevanceCutOff();
 
+        console.log("llmBuilder.getEmbeddingModel()", llmBuilder.getEmbeddingModel())
         RAGEmbedding.init(llmBuilder.getEmbeddingModel() ?? new NomicEmbeddingsv1_5());
         if (!this.model) throw new SyntaxError('Model not set');
-        if (!this.vectorDb) throw new SyntaxError('VectorDb not set');
+        if (!this.vectorDb && this.dbLookup.size<=0) throw new SyntaxError('VectorDB or MongoDB Aggregator not set');
+        // TODO: Make builder components conditional. If not set, work wihtout it. Add a warning message and move forward.
     }
 
     private async embedChunks(chunks: Pick<Chunk, 'pageContent'>[]) {
@@ -58,9 +63,15 @@ export class RAGApplication {
 
         await this.model.init();
         this.debug('Initialized LLM class');
-
-        await this.vectorDb.init({ dimensions: RAGEmbedding.getEmbedding().getDimensions() });
-        this.debug('Initialized vector database');
+        if(this.vectorDb){
+            await this.vectorDb.init({ dimensions: RAGEmbedding.getEmbedding().getDimensions() });
+            this.debug('Initialized vector database');
+        }
+        if(this.dbLookup.size > 0) {
+            this.dbLookup.forEach(async (db) => {
+                await db.database.init();
+            })
+        }
 
         if (this.cache) {
             await this.cache.init();
@@ -199,11 +210,36 @@ export class RAGApplication {
             .slice(0, this.searchResultCount);
     }
 
+    public async vectorQuery(query: string) {
+        const cleanQuery = cleanString(query);
+        const queryEmbedded = await RAGEmbedding.getEmbedding().embedQuery(cleanQuery);
+        return await this.vectorDb.similaritySearch(queryEmbedded, this.searchResultCount);
+    }
+
     public async getContext(query: string) {
         const cleanQuery = cleanString(query);
         const rawContext = await this.getEmbeddings(cleanQuery);
-
         return [...new Map(rawContext.map((item) => [item.pageContent, item])).values()];
+    }
+
+
+    public async getQueryContext(cleanQuery: string, aggregatePipelineName: string) {
+        //TODO: Method override. Create a MQL query with user prompts using LLM. 
+        // Generate output query with the user prompt and the context.
+        let mqlQuery = await this.dbLookup.get(aggregatePipelineName).aggregateQuery;
+        mqlQuery = JSON.stringify(mqlQuery);
+        const queryTemplate = this.queryTemplate.replace("${mqlQuery}", mqlQuery);
+        // const evalQueryTemplate = eval(this.queryTemplate);
+        const result = await this.model.query(queryTemplate, cleanQuery, [], "cond");
+        console.log('Result Query :: ', result);
+        try{
+            let resultJson = JSON.parse(result);
+            return this.dbLookup.get(aggregatePipelineName).database.aggregate(resultJson);
+
+        } catch(er){
+            console.log(`Error :${aggregatePipelineName} :: ${er}`);
+            return false;
+        }
     }
 
     public async query(
@@ -213,9 +249,21 @@ export class RAGApplication {
         result: string;
         sources: string[];
     }> {
-        const context = await this.getContext(userQuery);
-        const sources = [...new Set(context.map((chunk) => chunk.metadata.source))];
-
+        let sources;
+        let context;
+        if (this.vectorDb) {
+            // retrieval by vector search
+            context = await this.getContext(userQuery);
+            sources = [...new Set(context.map((chunk) => chunk.metadata.source))];
+        } else if (this.dbLookup.size>0){
+            // retrieval by aggregate pipeline
+            context = await this.getQueryContext(userQuery, "testing"); // TODO make it pluggable
+            sources = [...new Set(context.map((doc) => JSON.stringify(doc)))];
+        } else {
+            // If there is not context lookup provided
+            sources = [];
+        }
+        
         return {
             sources,
             result: await this.model.query(this.queryTemplate, userQuery, context, conversationId),
@@ -228,5 +276,9 @@ export class RAGApplication {
 
     public async docsCount() : Promise<number> {
         return await this.vectorDb.docsCount();
+    }
+
+    public getDb(key: string): Map<string, any> {
+        return this.dbLookup.get(key);
     }
 }

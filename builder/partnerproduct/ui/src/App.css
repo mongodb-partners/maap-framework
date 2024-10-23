@@ -1,12 +1,3 @@
-.App {
-  text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
@@ -35,4 +26,59 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+
+html {
+  font-family: "Euclid Circular A", "Akzidenz", Helvetica, Arial, sans-serif;
+}
+
+body {
+  margin: 0;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+}
+
+.App {
+  display: flex;
+  flex-direction: row;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #001e2b;
+}
+
+.layout {
+  height: 1v;
+  width: 0.2v;
+}
+
+.container {
+  height: 100%;
+  flex: 0 0 20%; 
+  max-width: 300px; 
+  box-sizing: border-box;
+}
+
+.toggle-style {
+  position: fixed;
+  top: 0;
+  right: 0;
+  margin: 32px;
+}
+
+.link {
+    text-decoration: none;
+}
+
+
+.main-content {
+  width: 100%;
+  background-color: #001e2b;
 }
