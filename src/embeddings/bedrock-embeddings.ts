@@ -1,4 +1,4 @@
-import { BedrockEmbeddings } from "@langchain/community/embeddings/bedrock";
+import { BedrockEmbeddings } from "@langchain/aws";
 import { BaseEmbeddings } from '../interfaces/base-embeddings.js';
 
 export class BedrockEmbedding implements BaseEmbeddings {

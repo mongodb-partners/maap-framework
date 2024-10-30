@@ -1,19 +1,20 @@
 import { RecursiveCharacterTextSplitter } from 'langchain/text_splitter';
 import createDebugMessages from 'debug';
-import { convert } from 'html-to-text';
 import axios from 'axios';
 import md5 from 'md5';
-
 import { BaseLoader } from '../interfaces/base-loader.js';
 import { cleanString, truncateCenterString } from '../util/strings.js';
+import { JSDOM } from 'jsdom';
+import { convert } from 'html-to-text';
+
 
 export class WebLoader extends BaseLoader<{ type: 'WebLoader' }> {
     private readonly debug = createDebugMessages('maap:loader:WebLoader');
     private readonly contentOrUrl: string;
     private readonly isUrl: boolean;
 
-    constructor({}: { url: string; chunkSize?: number; chunkOverlap?: number });
-    constructor({}: { content: string; chunkSize?: number; chunkOverlap?: number });
+    constructor({ }: { url: string; chunkSize?: number; chunkOverlap?: number });
+    constructor({ }: { content: string; chunkSize?: number; chunkOverlap?: number });
     constructor({
         content,
         url,
@@ -42,11 +43,15 @@ export class WebLoader extends BaseLoader<{ type: 'WebLoader' }> {
                 ? (await axios.get<string>(this.contentOrUrl, { responseType: 'document' })).data
                 : this.contentOrUrl;
 
-            const text = convert(data, {
+            let text = convert(data, {
                 wordwrap: false,
                 preserveNewlines: false,
             }).replace(/(?:https?|ftp):\/\/[\n\S]+/g, '');
 
+            if (!text) {
+                const dom = new JSDOM(data);
+                text = dom.window.document.body.textContent.replace(/(?:https?|ftp):\/\/[\n\S]+/g, '');
+            }
             const tuncatedObjectString = this.isUrl ? undefined : truncateCenterString(this.contentOrUrl, 50);
 
             const chunks = await chunker.splitText(cleanString(text));
