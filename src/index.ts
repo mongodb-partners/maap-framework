@@ -8,6 +8,7 @@ import { JsonLoader } from './loaders/json-loader.js';
 import { ExcelLoader } from './loaders/excel-loader.js';
 import { DocxLoader } from './loaders/docx-loader.js';
 import { PptLoader } from './loaders/ppt-loader.js';
+import { LlamaIndexLoader } from './loaders/llama-index-loader.js';
 import { BaseLoader } from './interfaces/base-loader.js';
 import { BaseDb } from './interfaces/base-db.js';
 import { BaseEmbeddings } from './interfaces/base-embeddings.js';
@@ -41,6 +42,7 @@ export {
     DocxLoader,
     ExcelLoader,
     PptLoader,
+    LlamaIndexLoader,
     BaseCache,
     BaseDb,
     BaseLoader,
