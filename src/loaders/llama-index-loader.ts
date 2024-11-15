@@ -50,7 +50,7 @@ export class LlamaIndexLoader extends BaseLoader<{ type: 'LlamaIndexLoader' }> {
 
         this.pathOrUrl = filePath ?? url;
         this.parsingInstructions = parsingInstructions;
-        this.folderProcessing = folderProcessing;
+        this.folderProcessing = folderProcessing ?? false;
     }
 
     override async *getUnfilteredChunks() {
