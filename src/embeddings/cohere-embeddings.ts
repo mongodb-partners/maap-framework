@@ -35,6 +35,7 @@ export class CohereEmbeddings implements BaseEmbeddings {
             this.dimensions = 4096;
         }
         this.model = new LangChainCohereEmbeddings({
+            apiKey: process.env.COHERE_API_KEY,
             model: this.modelName,
             inputType: "search_query",
             maxConcurrency: 3,

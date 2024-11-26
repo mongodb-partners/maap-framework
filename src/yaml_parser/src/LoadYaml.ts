@@ -18,6 +18,9 @@ import { BedrockEmbedding } from '../../embeddings/bedrock-embeddings.js';
 import { FireworksEmbedding } from '../../embeddings/fireworks-embeddings.js';
 import { AzureChatAI } from '../../models/azureopenai-model.js';
 import { readFileSync, readdirSync } from 'fs';
+import { TogetherAIEmbeddings } from '../../embeddings/togetherai-embeddings.js';
+import { Cohere } from '../../models/cohere-model.js'
+import { TogetherAI } from '../../models/togetherai-model.js'
 
 // src/loaders/confluence-loader.ts src/loaders/docx-loader.ts src/loaders/excel-loader.ts src/loaders/json-loader.ts src/loaders/pdf-loader.ts src/loaders/ppt-loader.ts src/loaders/sitemap-loader.ts src/loaders/text-loader.ts src/loaders/web-loader.ts src/loaders/youtube-channel-loader.ts src/loaders/youtube-loader.ts src/loaders/youtube-search-loader.ts
 function getDataFromYamlFile() {
@@ -164,6 +167,14 @@ export function getModelClass() {
       return new Bedrock(params);
     case 'AzureOpenAI':
       return new AzureChatAI(params);
+    case 'Cohere':
+      assert(typeof parsedData.llms.model_name === 'string', 'model_name of Cohere is required');
+      params["modelName"] = parsedData.llms.model_name;
+      return new Cohere(params);
+    case 'TogetherAI':
+      assert(typeof parsedData.llms.model_name === 'string', 'model_name of TogetherAI is required');
+      params["modelName"] = parsedData.llms.model_name;
+      return new TogetherAI(params);
     default:
       throw new Error('Unsupported model class name');
       // // Handle unsupported class name (optional)
@@ -199,6 +210,8 @@ export function getEmbeddingModel() {
       return new NomicEmbeddingsv1();
     case 'Nomic-v1.5':
       return new NomicEmbeddingsv1_5();
+    case 'TogetherAI':
+      return new TogetherAIEmbeddings({modelName: parsedData.embedding.model_name});
     default:
       // Handle unsupported class name (optional)
       return new NomicEmbeddingsv1_5(); // Or throw an error

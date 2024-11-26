@@ -30,6 +30,9 @@ import { VertexAI } from './models/vertexai-model.js';
 import { Ollama } from './models/ollama-model.js';
 import { AzureChatAI } from './models/azureopenai-model.js';
 import { AzureOpenAiEmbeddings } from './embeddings/azure-embeddings.js';
+import { TogetherAIEmbeddings } from './embeddings/togetherai-embeddings.js';
+import { Cohere } from './models/cohere-model.js'
+import { TogetherAI } from './models/togetherai-model.js'
 
 export {
     RAGApplication,
@@ -63,7 +66,10 @@ export {
     GeckoEmbedding,
     VertexAI,
     Ollama,
-    AzureChatAI
+    AzureChatAI,
+    TogetherAIEmbeddings,
+    Cohere,
+    TogetherAI
 };
 export * from './convertMaapToChatbotFramework.js';
 export * from './Rerank.js';
