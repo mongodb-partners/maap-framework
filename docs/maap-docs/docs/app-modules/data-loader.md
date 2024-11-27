@@ -171,3 +171,25 @@ ingest:
 ```
 
 ---
+
+### 11. LlamaIndex Loader
+
+Loads and processes content from either a single file or from all files within a specified folder.
+It uses LlamaParser for the loading, so it supports a wide array of document types.
+
+The 'parsingInstructions' parameter allows you to give it natural-language instructions about what it's loading and how to load.
+For instance, you can tell the loader to summarize or format the document(s) being processed.
+
+The 'folderProcessing' parameter is used to tell the loader if we're processing a folder or not. It defaults to false.
+
+**Usage:**
+```js
+ingest:
+    - source: 'llama-index-loader'
+      source_path: 'path/to/file' || 'path/to/folder'
+      chunk_size: 2000
+      chunk_overlap: 200
+      parsingInstructions: ""
+      folderProcessing: true || false
+
+```
