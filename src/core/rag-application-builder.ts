@@ -5,7 +5,7 @@ import { BaseCache } from '../interfaces/base-cache.js';
 import { BaseEmbeddings } from '../interfaces/base-embeddings.js';
 import { BaseModel } from '../interfaces/base-model.js';
 import { SIMPLE_MODELS, SIMPLE_RANKERS } from '../global/constants.js';
-import { OpenAi } from '../models/openai-model.js';
+import { OpenAi } from '../models/langChain/openai-model.js';
 import { BaseReranker } from '../interfaces/base-reranker.js';
 import { CohereReranker } from '../reranker/cohere-reranker.js';
 import { getModelClass } from '../yaml_parser/src/LoadYaml.js';

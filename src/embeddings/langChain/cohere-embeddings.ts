@@ -1,6 +1,6 @@
 import { CohereEmbeddings as LangChainCohereEmbeddings } from '@langchain/cohere';
 
-import { BaseEmbeddings } from '../interfaces/base-embeddings.js';
+import { BaseEmbeddings } from '../../interfaces/base-embeddings.js';
 
 export class CohereEmbeddings implements BaseEmbeddings {
     private model: LangChainCohereEmbeddings;

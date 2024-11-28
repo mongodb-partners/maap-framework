@@ -4,23 +4,42 @@ import * as yaml from 'js-yaml';
 import * as process from 'process';
 // import { z } from "zod";
 // import { jsonSchemaToZod } from "json-schema-to-zod";
-import { Anthropic, BaseLoader, CohereEmbeddings, ConfluenceLoader, DocxLoader, GeckoEmbedding, OpenAi, PdfLoader, SitemapLoader, VertexAI, WebLoader, YoutubeSearchLoader, YoutubeLoader, YoutubeChannelLoader, PptLoader, TextLoader, LlamaIndexLoader, BaseModel } from '../../index.js';
+import {
+  Anthropic,
+  BaseLoader,
+  CohereEmbeddings,
+  ConfluenceLoader,
+  DocxLoader,
+  GeckoEmbedding,
+  OpenAi,
+  PdfLoader,
+  SitemapLoader,
+  VertexAI,
+  WebLoader,
+  YoutubeSearchLoader,
+  YoutubeLoader,
+  YoutubeChannelLoader,
+  PptLoader,
+  TextLoader,
+  LlamaIndexLoader,
+  BaseModel,
+} from '../../index.js';
 import { MongoDBAtlas } from '../../vectorDb/mongo-db-atlas.js';
 import { strict as assert } from 'assert';
-import { AnyscaleModel } from '../../models/anyscale-model.js';
-import { Fireworks } from '../../models/fireworks-model.js';
-import { Bedrock } from '../../models/bedrock-model.js';
-import { TitanEmbeddings } from '../../embeddings/titan-embeddings.js';
-import { NomicEmbeddingsv1 } from '../../embeddings/nomic-v1-embeddings.js';
-import { NomicEmbeddingsv1_5 } from '../../embeddings/nomic-v1-5-embeddings.js';
-import { AzureOpenAiEmbeddings } from '../../embeddings/azure-embeddings.js';
-import { BedrockEmbedding } from '../../embeddings/bedrock-embeddings.js';
-import { FireworksEmbedding } from '../../embeddings/fireworks-embeddings.js';
-import { AzureChatAI } from '../../models/azureopenai-model.js';
+import { AnyscaleModel } from '../../models/langChain/anyscale-model.js';
+import { Fireworks } from '../../models/langChain/fireworks-model.js';
+import { Bedrock } from '../../models/langChain/bedrock-model.js';
+import { TitanEmbeddings } from '../../embeddings/langChain/titan-embeddings.js';
+import { NomicEmbeddingsv1 } from '../../embeddings/langChain/nomic-v1-embeddings.js';
+import { NomicEmbeddingsv1_5 } from '../../embeddings/langChain/nomic-v1-5-embeddings.js';
+import { AzureOpenAiEmbeddings } from '../../embeddings/langChain/azure-embeddings.js';
+import { BedrockEmbedding } from '../../embeddings/langChain/bedrock-embeddings.js';
+import { FireworksEmbedding } from '../../embeddings/langChain/fireworks-embeddings.js';
+import { AzureChatAI } from '../../models/langChain/azureopenai-model.js';
 import { readFileSync, readdirSync } from 'fs';
-import { TogetherAIEmbeddings } from '../../embeddings/togetherai-embeddings.js';
-import { Cohere } from '../../models/cohere-model.js'
-import { TogetherAI } from '../../models/togetherai-model.js'
+import { TogetherAIEmbeddings } from '../../embeddings/langChain/togetherai-embeddings.js';
+import { Cohere } from '../../models/langChain/cohere-model.js'
+import { TogetherAI } from '../../models/langChain/togetherai-model.js'
 
 // src/loaders/confluence-loader.ts src/loaders/docx-loader.ts src/loaders/excel-loader.ts src/loaders/json-loader.ts src/loaders/pdf-loader.ts src/loaders/ppt-loader.ts src/loaders/sitemap-loader.ts src/loaders/text-loader.ts src/loaders/web-loader.ts src/loaders/youtube-channel-loader.ts src/loaders/youtube-loader.ts src/loaders/youtube-search-loader.ts
 function getDataFromYamlFile() {

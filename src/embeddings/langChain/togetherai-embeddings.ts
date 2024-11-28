@@ -1,5 +1,5 @@
 import { TogetherAIEmbeddings as LangChainTogetherAIEmbeddings } from "@langchain/community/embeddings/togetherai";
-import { BaseEmbeddings } from '../interfaces/base-embeddings.js';
+import { BaseEmbeddings } from '../../interfaces/base-embeddings.js';
 
 export class TogetherAIEmbeddings implements BaseEmbeddings {
     private model: LangChainTogetherAIEmbeddings;

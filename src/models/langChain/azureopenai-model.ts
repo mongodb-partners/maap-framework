@@ -1,33 +1,46 @@
 import createDebugMessages from 'debug';
-import { BedrockChat } from "@langchain/community/chat_models/bedrock";
+// import { AzureOpenAI } from "@langchain/openai";
+// import { AzureChatOpenAI } from "@langchain/azure-openai";
+import { AzureChatOpenAI } from "@langchain/openai";
+// import { ChatOpenAI } from "@langchain/openai";
+
 import { HumanMessage, AIMessage, SystemMessage } from '@langchain/core/messages';
 
-import { BaseModel } from '../interfaces/base-model.js';
-import { Chunk, ConversationHistory } from '../global/types.js';
+import { BaseModel } from '../../interfaces/base-model.js';
+import { Chunk, ConversationHistory } from '../../global/types.js';
 import { StringOutputParser } from '@langchain/core/output_parsers';
 
-export class Bedrock extends BaseModel {
+export class AzureChatAI extends BaseModel {
 
-    private readonly debug = createDebugMessages('maap:model:Bedrock');
-    private readonly modelName: string;
+    private readonly debug = createDebugMessages('maap:model:AzureOpenAI');
+    private readonly azureOpenAIApiInstanceName: string;
+    private readonly azureOpenAIApiDeploymentName: string;
+    private model: AzureChatOpenAI;
+    private readonly azureOpenAIApiVersion: string;
     private readonly maxTokens: number;
-    private model: BedrockChat;
+    private readonly topP: number;
+    private readonly topK: number;
 
-    constructor(params?: { modelName?: string;  maxTokens?: number; temperature?: number }) {
+    constructor(params?: { azureOpenAIApiInstanceName?: string; azureOpenAIApiDeploymentName?: string; azureOpenAIApiVersion?: string; modelName?: string; temperature?: number; maxTokens?: number; topP?:number; topK?:number }) {
         super(params?.temperature ?? 0.1);
-        this.modelName = params?.modelName;
+        this.azureOpenAIApiInstanceName = params?.azureOpenAIApiInstanceName;
+        this.azureOpenAIApiDeploymentName = params?.azureOpenAIApiDeploymentName;
+        this.azureOpenAIApiVersion = params?.azureOpenAIApiVersion;
         this.maxTokens = params?.maxTokens ?? 2048;
+        this.topP = params?.topP ?? 0.9;
+        this.topK = params?.topK ?? 40;
+
     }
 
     override async init(): Promise<void> {
-        this.model = new BedrockChat({ model: this.modelName, 
+        this.model = new AzureChatOpenAI({
+            azureOpenAIApiInstanceName: this.azureOpenAIApiInstanceName,
+            azureOpenAIApiDeploymentName: this.azureOpenAIApiDeploymentName,
+            azureOpenAIApiVersion: this.azureOpenAIApiVersion,
+            temperature: this.temperature,
             maxTokens: this.maxTokens,
-            region: process.env.BEDROCK_AWS_REGION!,
-            credentials: {
-              accessKeyId: process.env.BEDROCK_AWS_ACCESS_KEY_ID!,
-              secretAccessKey: process.env.BEDROCK_AWS_SECRET_ACCESS_KEY!,
-            }
-        });
+            topP: this.topP
+          });
     }
 
     override async runQuery(
@@ -38,7 +51,7 @@ export class Bedrock extends BaseModel {
     ): Promise<string> {
         const pastMessages: (AIMessage | SystemMessage | HumanMessage)[] = this.generatePastMessages(system, supportingContext, pastConversations, userQuery);
         const result = await this.model.invoke(pastMessages);
-        this.debug('Bedrock response -', result);
+        this.debug('AzureOpenAI response -', result);
         return result.content.toString();
     }
 
@@ -65,7 +78,7 @@ export class Bedrock extends BaseModel {
         );
         pastMessages.push(new HumanMessage(`${userQuery}?`));
 
-        this.debug('Executing Bedrock model with prompt -', userQuery);
+        this.debug('Executing AzureOpenAI model with prompt -', userQuery);
         return pastMessages;
     }
 
