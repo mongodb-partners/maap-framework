@@ -1,4 +1,4 @@
-import { FireworksEmbedding, Settings } from 'llamaindex';
+import { FireworksEmbedding, Settings, MessageContentTextDetail } from 'llamaindex';
 import { BaseEmbeddings } from '../../interfaces/base-embeddings.js';
 
 export class LlamaFireworksEmbeddings implements BaseEmbeddings {
@@ -26,17 +26,22 @@ export class LlamaFireworksEmbeddings implements BaseEmbeddings {
     * */
 
     constructor(params?: { modelName?: string; dimension?: number }) {
+        Settings.embedModel = new FireworksEmbedding();
         this.modelName = params?.modelName ?? 'text-embedding-ada-002';
         this.dimension = params?.dimension ?? this.getDefaultDimension(this.modelName);
-        this.model = new FireworksEmbedding({ model: this.modelName, maxRetries: 5 });
+        this.model = new FireworksEmbedding({
+            model: this.modelName,
+            maxRetries: 5,
+            apiKey: process.env.FIREWORKS_API_KEY,
+        });
     }
 
     private getDefaultDimension(modelName: string): number {
         switch (modelName) {
-            case "text-embedding-ada-002":
-            case "text-embedding-3-small":
+            case 'text-embedding-ada-002':
+            case 'text-embedding-3-small':
                 return 1536;
-            case "text-embedding-3-large":
+            case 'text-embedding-3-large':
                 return 3072;
             default:
                 throw new Error(`Unknown model: ${modelName}`);
@@ -48,10 +53,14 @@ export class LlamaFireworksEmbeddings implements BaseEmbeddings {
     }
 
     embedDocuments(texts: string[]): Promise<number[][]> {
-        return this.model.embedDocuments(texts);
+        return this.model.getTextEmbeddings(texts);
     }
 
     embedQuery(text: string): Promise<number[]> {
-        return this.model.embedQuery(text);
+        const messageContent: MessageContentTextDetail = {
+            text: text,
+            type: 'text',
+        };
+        return this.model.getQueryEmbedding(messageContent);
     }
 }
