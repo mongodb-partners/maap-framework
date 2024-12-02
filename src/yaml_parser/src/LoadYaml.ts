@@ -41,6 +41,7 @@ import { TogetherAIEmbeddings } from '../../embeddings/langChain/togetherai-embe
 import { Cohere } from '../../models/langChain/cohere-model.js'
 import { TogetherAI } from '../../models/langChain/togetherai-model.js'
 import {LlamaFireworksEmbeddings} from '../../embeddings/llamaIndex/llama-fireworks-embeddings.js';
+import { LlamaCohereEmbeddings } from '../../embeddings/llamaIndex/llama-cohere-embeddings.js';
 
 // src/loaders/confluence-loader.ts src/loaders/docx-loader.ts src/loaders/excel-loader.ts src/loaders/json-loader.ts src/loaders/pdf-loader.ts src/loaders/ppt-loader.ts src/loaders/sitemap-loader.ts src/loaders/text-loader.ts src/loaders/web-loader.ts src/loaders/youtube-channel-loader.ts src/loaders/youtube-loader.ts src/loaders/youtube-search-loader.ts
 function getDataFromYamlFile() {
@@ -219,7 +220,12 @@ export function getEmbeddingModel() {
         azureOpenAIApiInstanceName: parsedData.embedding.azure_openai_api_instance_name
       });
     case 'Cohere':
-      return new CohereEmbeddings({ modelName: parsedData.embedding.model_name });
+      switch (parsedData.embedding.framework.toLowerCase()) {
+        case 'llamaindex':
+          return new LlamaCohereEmbeddings({ modelName: parsedData.embedding.model_name });
+        default:
+          return new CohereEmbeddings({ modelName: parsedData.embedding.model_name });
+      }
     case 'Titan':
       return new TitanEmbeddings();
     case 'Bedrock':
