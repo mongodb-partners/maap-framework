@@ -2,8 +2,8 @@ import createDebugMessages from 'debug';
 import { ChatVertexAI } from '@langchain/google-vertexai';
 import { AIMessage, HumanMessage, SystemMessage } from '@langchain/core/messages';
 
-import { Chunk, ConversationHistory } from '../global/types.js';
-import { BaseModel } from '../interfaces/base-model.js';
+import { Chunk, ConversationHistory } from '../../global/types.js';
+import { BaseModel } from '../../interfaces/base-model.js';
 import { StringOutputParser } from '@langchain/core/output_parsers';
 
 export class VertexAI extends BaseModel {

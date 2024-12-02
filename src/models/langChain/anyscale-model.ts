@@ -2,8 +2,8 @@ import createDebugMessages from 'debug';
 import { ChatOpenAI } from '@langchain/openai';
 import { HumanMessage, AIMessage, SystemMessage } from '@langchain/core/messages';
 
-import { BaseModel } from '../interfaces/base-model.js';
-import { Chunk, ConversationHistory } from '../global/types.js';
+import { BaseModel } from '../../interfaces/base-model.js';
+import { Chunk, ConversationHistory } from '../../global/types.js';
 import { StringOutputParser } from '@langchain/core/output_parsers';
 
 export class AnyscaleModel extends BaseModel {

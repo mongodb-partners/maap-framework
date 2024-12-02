@@ -1,5 +1,5 @@
 import { GoogleVertexAIEmbeddings } from "@langchain/community/embeddings/googlevertexai";
-import { BaseEmbeddings } from '../interfaces/base-embeddings.js';
+import { BaseEmbeddings } from '../../interfaces/base-embeddings.js';
 
 export class GeckoEmbedding implements BaseEmbeddings {
     private model: GoogleVertexAIEmbeddings;

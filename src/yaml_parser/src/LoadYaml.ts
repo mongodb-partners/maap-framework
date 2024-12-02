@@ -4,20 +4,43 @@ import * as yaml from 'js-yaml';
 import * as process from 'process';
 // import { z } from "zod";
 // import { jsonSchemaToZod } from "json-schema-to-zod";
-import { Anthropic, BaseLoader, CohereEmbeddings, ConfluenceLoader, DocxLoader, GeckoEmbedding, OpenAi, PdfLoader, SitemapLoader, VertexAI, WebLoader, YoutubeSearchLoader, YoutubeLoader, YoutubeChannelLoader, PptLoader, TextLoader, LlamaIndexLoader, BaseModel } from '../../index.js';
+import {
+  Anthropic,
+  BaseLoader,
+  CohereEmbeddings,
+  ConfluenceLoader,
+  DocxLoader,
+  GeckoEmbedding,
+  OpenAi,
+  PdfLoader,
+  SitemapLoader,
+  VertexAI,
+  WebLoader,
+  YoutubeSearchLoader,
+  YoutubeLoader,
+  YoutubeChannelLoader,
+  PptLoader,
+  TextLoader,
+  LlamaIndexLoader,
+  BaseModel,
+} from '../../index.js';
 import { MongoDBAtlas } from '../../vectorDb/mongo-db-atlas.js';
 import { strict as assert } from 'assert';
-import { AnyscaleModel } from '../../models/anyscale-model.js';
-import { Fireworks } from '../../models/fireworks-model.js';
-import { Bedrock } from '../../models/bedrock-model.js';
-import { TitanEmbeddings } from '../../embeddings/titan-embeddings.js';
-import { NomicEmbeddingsv1 } from '../../embeddings/nomic-v1-embeddings.js';
-import { NomicEmbeddingsv1_5 } from '../../embeddings/nomic-v1-5-embeddings.js';
-import { AzureOpenAiEmbeddings } from '../../embeddings/azure-embeddings.js';
-import { BedrockEmbedding } from '../../embeddings/bedrock-embeddings.js';
-import { FireworksEmbedding } from '../../embeddings/fireworks-embeddings.js';
-import { AzureChatAI } from '../../models/azureopenai-model.js';
+import { AnyscaleModel } from '../../models/langChain/anyscale-model.js';
+import { Fireworks } from '../../models/langChain/fireworks-model.js';
+import { Bedrock } from '../../models/langChain/bedrock-model.js';
+import { TitanEmbeddings } from '../../embeddings/langChain/titan-embeddings.js';
+import { NomicEmbeddingsv1 } from '../../embeddings/langChain/nomic-v1-embeddings.js';
+import { NomicEmbeddingsv1_5 } from '../../embeddings/langChain/nomic-v1-5-embeddings.js';
+import { AzureOpenAiEmbeddings } from '../../embeddings/langChain/azure-embeddings.js';
+import { BedrockEmbedding } from '../../embeddings/langChain/bedrock-embeddings.js';
+import { FireworksEmbedding } from '../../embeddings/langChain/fireworks-embeddings.js';
+import { AzureChatAI } from '../../models/langChain/azureopenai-model.js';
 import { readFileSync, readdirSync } from 'fs';
+import { TogetherAIEmbeddings } from '../../embeddings/langChain/togetherai-embeddings.js';
+import { Cohere } from '../../models/langChain/cohere-model.js'
+import { TogetherAI } from '../../models/langChain/togetherai-model.js'
+import {LlamaFireworksEmbeddings} from '../../embeddings/llamaIndex/llama-fireworks-embeddings.js';
 
 // src/loaders/confluence-loader.ts src/loaders/docx-loader.ts src/loaders/excel-loader.ts src/loaders/json-loader.ts src/loaders/pdf-loader.ts src/loaders/ppt-loader.ts src/loaders/sitemap-loader.ts src/loaders/text-loader.ts src/loaders/web-loader.ts src/loaders/youtube-channel-loader.ts src/loaders/youtube-loader.ts src/loaders/youtube-search-loader.ts
 function getDataFromYamlFile() {
@@ -164,6 +187,14 @@ export function getModelClass() {
       return new Bedrock(params);
     case 'AzureOpenAI':
       return new AzureChatAI(params);
+    case 'Cohere':
+      assert(typeof parsedData.llms.model_name === 'string', 'model_name of Cohere is required');
+      params["modelName"] = parsedData.llms.model_name;
+      return new Cohere(params);
+    case 'TogetherAI':
+      assert(typeof parsedData.llms.model_name === 'string', 'model_name of TogetherAI is required');
+      params["modelName"] = parsedData.llms.model_name;
+      return new TogetherAI(params);
     default:
       throw new Error('Unsupported model class name');
       // // Handle unsupported class name (optional)
@@ -194,11 +225,18 @@ export function getEmbeddingModel() {
     case 'Bedrock':
       return new BedrockEmbedding({ modelName: parsedData.embedding.model_name, dimension: parsedData.embedding.dimension});
     case 'Fireworks':
-      return new FireworksEmbedding({ modelName: parsedData.embedding.model_name, dimension: parsedData.embedding.dimension});  
+      switch (parsedData.embedding.framework.toLowerCase()) {
+        case 'llamaindex':
+          return new LlamaFireworksEmbeddings();
+        default:
+          return new FireworksEmbedding({ modelName: parsedData.embedding.model_name, dimension: parsedData.embedding.dimension});
+      }
     case 'Nomic-v1':
       return new NomicEmbeddingsv1();
     case 'Nomic-v1.5':
       return new NomicEmbeddingsv1_5();
+    case 'TogetherAI':
+      return new TogetherAIEmbeddings({modelName: parsedData.embedding.model_name});
     default:
       // Handle unsupported class name (optional)
       return new NomicEmbeddingsv1_5(); // Or throw an error

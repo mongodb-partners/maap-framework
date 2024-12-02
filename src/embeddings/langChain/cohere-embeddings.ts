@@ -1,6 +1,6 @@
 import { CohereEmbeddings as LangChainCohereEmbeddings } from '@langchain/cohere';
 
-import { BaseEmbeddings } from '../interfaces/base-embeddings.js';
+import { BaseEmbeddings } from '../../interfaces/base-embeddings.js';
 
 export class CohereEmbeddings implements BaseEmbeddings {
     private model: LangChainCohereEmbeddings;
@@ -35,6 +35,7 @@ export class CohereEmbeddings implements BaseEmbeddings {
             this.dimensions = 4096;
         }
         this.model = new LangChainCohereEmbeddings({
+            apiKey: process.env.COHERE_API_KEY,
             model: this.modelName,
             inputType: "search_query",
             maxConcurrency: 3,
