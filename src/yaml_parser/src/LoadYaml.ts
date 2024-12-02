@@ -40,6 +40,7 @@ import { readFileSync, readdirSync } from 'fs';
 import { TogetherAIEmbeddings } from '../../embeddings/langChain/togetherai-embeddings.js';
 import { Cohere } from '../../models/langChain/cohere-model.js'
 import { TogetherAI } from '../../models/langChain/togetherai-model.js'
+import {LlamaFireworksEmbeddings} from '../../embeddings/llamaIndex/llama-fireworks-embeddings.js';
 
 // src/loaders/confluence-loader.ts src/loaders/docx-loader.ts src/loaders/excel-loader.ts src/loaders/json-loader.ts src/loaders/pdf-loader.ts src/loaders/ppt-loader.ts src/loaders/sitemap-loader.ts src/loaders/text-loader.ts src/loaders/web-loader.ts src/loaders/youtube-channel-loader.ts src/loaders/youtube-loader.ts src/loaders/youtube-search-loader.ts
 function getDataFromYamlFile() {
@@ -224,7 +225,12 @@ export function getEmbeddingModel() {
     case 'Bedrock':
       return new BedrockEmbedding({ modelName: parsedData.embedding.model_name, dimension: parsedData.embedding.dimension});
     case 'Fireworks':
-      return new FireworksEmbedding({ modelName: parsedData.embedding.model_name, dimension: parsedData.embedding.dimension});  
+      switch (parsedData.embedding.framework.toLowerCase()) {
+        case 'llamaindex':
+          return new LlamaFireworksEmbeddings();
+        default:
+          return new FireworksEmbedding({ modelName: parsedData.embedding.model_name, dimension: parsedData.embedding.dimension});
+      }
     case 'Nomic-v1':
       return new NomicEmbeddingsv1();
     case 'Nomic-v1.5':

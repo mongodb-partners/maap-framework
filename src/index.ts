@@ -33,6 +33,7 @@ import { AzureOpenAiEmbeddings } from './embeddings/langChain/azure-embeddings.j
 import { TogetherAIEmbeddings } from './embeddings/langChain/togetherai-embeddings.js';
 import { Cohere } from './models/langChain/cohere-model.js';
 import { TogetherAI } from './models/langChain/togetherai-model.js';
+import { LlamaFireworksEmbeddings } from './embeddings/llamaIndex/llama-fireworks-embeddings.js';
 
 export {
     RAGApplication,
@@ -70,6 +71,7 @@ export {
     TogetherAIEmbeddings,
     Cohere,
     TogetherAI,
+    LlamaFireworksEmbeddings,
 };
 export * from './convertMaapToChatbotFramework.js';
 export * from './Rerank.js';
