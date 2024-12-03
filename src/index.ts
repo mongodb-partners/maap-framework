@@ -36,6 +36,8 @@ import { TogetherAI } from './models/langChain/togetherai-model.js';
 import { LlamaFireworksEmbeddings } from './embeddings/llamaIndex/llama-fireworks-embeddings.js';
 import { LlamaCohereEmbeddings } from './embeddings/llamaIndex/llama-cohere-embeddings.js';
 import { LlamaBedrockEmbeddings } from './embeddings/llamaIndex/llama-bedrock-embeddings.js';
+import { LlamaNomicEmbeddingsv1 } from './embeddings/llamaIndex/llama-nomic-v1-embeddings.js';
+import { LlamaNomicEmbeddingsv1_5 } from './embeddings/llamaIndex/llama-nomic-v1.5-embeddings.js';
 
 export {
     RAGApplication,
@@ -75,7 +77,9 @@ export {
     TogetherAI,
     LlamaFireworksEmbeddings,
     LlamaCohereEmbeddings,
-    LlamaBedrockEmbeddings
+    LlamaBedrockEmbeddings,
+    LlamaNomicEmbeddingsv1,
+    LlamaNomicEmbeddingsv1_5
 };
 export * from './convertMaapToChatbotFramework.js';
 export * from './Rerank.js';

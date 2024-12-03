@@ -23,6 +23,8 @@ import {
   TextLoader,
   LlamaIndexLoader,
   BaseModel,
+  LlamaNomicEmbeddingsv1,
+  LlamaNomicEmbeddingsv1_5,
 } from '../../index.js';
 import { MongoDBAtlas } from '../../vectorDb/mongo-db-atlas.js';
 import { strict as assert } from 'assert';
@@ -239,14 +241,24 @@ export function getEmbeddingModel() {
     case 'Fireworks':
       switch (parsedData.embedding.framework.toLowerCase()) {
         case 'llamaindex':
-          return new LlamaFireworksEmbeddings();
+          return new LlamaFireworksEmbeddings({ modelName: parsedData.embedding.model_name, dimension: parsedData.embedding.dimension});
         default:
           return new FireworksEmbedding({ modelName: parsedData.embedding.model_name, dimension: parsedData.embedding.dimension});
       }
     case 'Nomic-v1':
-      return new NomicEmbeddingsv1();
+      switch (parsedData.embedding.framework.toLowerCase()) {
+        case 'llamaindex':
+          return new LlamaNomicEmbeddingsv1();
+        default:
+          return new NomicEmbeddingsv1();
+      }
     case 'Nomic-v1.5':
-      return new NomicEmbeddingsv1_5();
+      switch (parsedData.embedding.framework.toLowerCase()) {
+        case 'llamaindex':
+          return new LlamaNomicEmbeddingsv1_5();
+        default:
+          return new NomicEmbeddingsv1_5();
+      }
     case 'TogetherAI':
       return new TogetherAIEmbeddings({modelName: parsedData.embedding.model_name});
     default:
