@@ -35,6 +35,7 @@ import { Cohere } from './models/langChain/cohere-model.js';
 import { TogetherAI } from './models/langChain/togetherai-model.js';
 import { LlamaFireworksEmbeddings } from './embeddings/llamaIndex/llama-fireworks-embeddings.js';
 import { LlamaCohereEmbeddings } from './embeddings/llamaIndex/llama-cohere-embeddings.js';
+import { LlamaBedrockEmbeddings } from './embeddings/llamaIndex/llama-bedrock-embeddings.js';
 
 export {
     RAGApplication,
@@ -73,7 +74,8 @@ export {
     Cohere,
     TogetherAI,
     LlamaFireworksEmbeddings,
-    LlamaCohereEmbeddings
+    LlamaCohereEmbeddings,
+    LlamaBedrockEmbeddings
 };
 export * from './convertMaapToChatbotFramework.js';
 export * from './Rerank.js';

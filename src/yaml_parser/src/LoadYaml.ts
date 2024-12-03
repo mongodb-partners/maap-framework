@@ -42,6 +42,7 @@ import { Cohere } from '../../models/langChain/cohere-model.js'
 import { TogetherAI } from '../../models/langChain/togetherai-model.js'
 import {LlamaFireworksEmbeddings} from '../../embeddings/llamaIndex/llama-fireworks-embeddings.js';
 import { LlamaCohereEmbeddings } from '../../embeddings/llamaIndex/llama-cohere-embeddings.js';
+import { LlamaBedrockEmbeddings } from '../../index.js';
 
 // src/loaders/confluence-loader.ts src/loaders/docx-loader.ts src/loaders/excel-loader.ts src/loaders/json-loader.ts src/loaders/pdf-loader.ts src/loaders/ppt-loader.ts src/loaders/sitemap-loader.ts src/loaders/text-loader.ts src/loaders/web-loader.ts src/loaders/youtube-channel-loader.ts src/loaders/youtube-loader.ts src/loaders/youtube-search-loader.ts
 function getDataFromYamlFile() {
@@ -229,7 +230,12 @@ export function getEmbeddingModel() {
     case 'Titan':
       return new TitanEmbeddings();
     case 'Bedrock':
-      return new BedrockEmbedding({ modelName: parsedData.embedding.model_name, dimension: parsedData.embedding.dimension});
+      switch (parsedData.embedding.framework.toLowerCase()) {
+        case 'llamaindex':
+          return new LlamaBedrockEmbeddings({ modelName: parsedData.embedding.model_name, dimension: parsedData.embedding.dimension});
+        default:
+          return new BedrockEmbedding({ modelName: parsedData.embedding.model_name, dimension: parsedData.embedding.dimension});
+      }
     case 'Fireworks':
       switch (parsedData.embedding.framework.toLowerCase()) {
         case 'llamaindex':
