@@ -25,6 +25,7 @@ import {
   BaseModel,
   LlamaNomicEmbeddingsv1,
   LlamaNomicEmbeddingsv1_5,
+  LlamaTitanEmbeddings,
 } from '../../index.js';
 import { MongoDBAtlas } from '../../vectorDb/mongo-db-atlas.js';
 import { strict as assert } from 'assert';
@@ -212,6 +213,7 @@ export function getModelClass() {
  */
 export function getEmbeddingModel() {
   const parsedData = getDataFromYamlFile();
+  const framework = parsedData.embedding.framework ? parsedData.embedding.framework.toLowerCase() : '';
   switch (parsedData.embedding.class_name) {
     case 'VertexAI':
       return new GeckoEmbedding({modelName: parsedData.embedding.model_name});
@@ -223,37 +225,43 @@ export function getEmbeddingModel() {
         azureOpenAIApiInstanceName: parsedData.embedding.azure_openai_api_instance_name
       });
     case 'Cohere':
-      switch (parsedData.embedding.framework.toLowerCase()) {
+      switch (framework) {
         case 'llamaindex':
           return new LlamaCohereEmbeddings({ modelName: parsedData.embedding.model_name });
         default:
           return new CohereEmbeddings({ modelName: parsedData.embedding.model_name });
       }
     case 'Titan':
-      return new TitanEmbeddings();
+      switch (framework) {
+        case 'llamaindex':
+          return new LlamaTitanEmbeddings();
+        default:
+          return new TitanEmbeddings();
+      }
+      
     case 'Bedrock':
-      switch (parsedData.embedding.framework.toLowerCase()) {
+      switch (framework) {
         case 'llamaindex':
           return new LlamaBedrockEmbeddings({ modelName: parsedData.embedding.model_name, dimension: parsedData.embedding.dimension});
         default:
           return new BedrockEmbedding({ modelName: parsedData.embedding.model_name, dimension: parsedData.embedding.dimension});
       }
     case 'Fireworks':
-      switch (parsedData.embedding.framework.toLowerCase()) {
+      switch (framework) {
         case 'llamaindex':
           return new LlamaFireworksEmbeddings({ modelName: parsedData.embedding.model_name, dimension: parsedData.embedding.dimension});
         default:
           return new FireworksEmbedding({ modelName: parsedData.embedding.model_name, dimension: parsedData.embedding.dimension});
       }
     case 'Nomic-v1':
-      switch (parsedData.embedding.framework.toLowerCase()) {
+      switch (framework) {
         case 'llamaindex':
           return new LlamaNomicEmbeddingsv1();
         default:
           return new NomicEmbeddingsv1();
       }
     case 'Nomic-v1.5':
-      switch (parsedData.embedding.framework.toLowerCase()) {
+      switch (framework) {
         case 'llamaindex':
           return new LlamaNomicEmbeddingsv1_5();
         default:

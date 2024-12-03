@@ -12,7 +12,7 @@ export class LlamaBedrockEmbeddings extends BaseEmbedding {
   constructor(params?: { modelName?: string; dimension?: number }) {
     super();
     this.modelName = params?.modelName ?? "amazon.titan-embed-text-v1";
-    this.dimension = params?.dimension ?? 1024;
+    this.dimension = params?.dimension ?? 1536;
 
     // Validate model name and dimension
     if (this.modelName === "amazon.titan-embed-text-v2:0") {
