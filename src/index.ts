@@ -30,6 +30,7 @@ import { VertexAI } from './models/vertexai-model.js';
 import { Ollama } from './models/ollama-model.js';
 import { AzureChatAI } from './models/azureopenai-model.js';
 import { AzureOpenAiEmbeddings } from './embeddings/azure-embeddings.js';
+import { RealTimeDataLoader } from './loaders/real-time-data-loader.js';
 
 export {
     RAGApplication,
@@ -63,7 +64,8 @@ export {
     GeckoEmbedding,
     VertexAI,
     Ollama,
-    AzureChatAI
+    AzureChatAI,
+    RealTimeDataLoader
 };
 export * from './convertMaapToChatbotFramework.js';
 export * from './Rerank.js';
