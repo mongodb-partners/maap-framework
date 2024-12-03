@@ -26,6 +26,7 @@ import {
   LlamaNomicEmbeddingsv1,
   LlamaNomicEmbeddingsv1_5,
   LlamaTitanEmbeddings,
+  LlamaTogetherAIEmbeddings,
 } from '../../index.js';
 import { MongoDBAtlas } from '../../vectorDb/mongo-db-atlas.js';
 import { strict as assert } from 'assert';
@@ -268,7 +269,12 @@ export function getEmbeddingModel() {
           return new NomicEmbeddingsv1_5();
       }
     case 'TogetherAI':
-      return new TogetherAIEmbeddings({modelName: parsedData.embedding.model_name});
+      switch (framework) {
+        case 'llamaindex':
+          return new LlamaTogetherAIEmbeddings({modelName: parsedData.embedding.model_name});
+        default:
+          return new TogetherAIEmbeddings({modelName: parsedData.embedding.model_name});
+      }
     default:
       // Handle unsupported class name (optional)
       return new NomicEmbeddingsv1_5(); // Or throw an error
