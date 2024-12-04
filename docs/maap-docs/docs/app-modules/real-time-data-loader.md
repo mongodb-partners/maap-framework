@@ -411,7 +411,7 @@ processed makes an entry into the configured database.
 ```js
 ingest:
     - source: 'realtime'
-      topic: 'maapData'
+      topic: 'source-connector-topic'
       brokers: ['localhost:9092']
       thumblingWindow: 6000
       chunk_size: 300
