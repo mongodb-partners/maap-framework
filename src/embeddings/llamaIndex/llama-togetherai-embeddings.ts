@@ -1,4 +1,4 @@
-import { TogetherEmbedding, Settings, MessageContentTextDetail } from "llamaindex";
+import { TogetherEmbedding, Settings } from "llamaindex";
 import { BaseEmbeddings } from "../../interfaces/base-embeddings.js";
 
 /*

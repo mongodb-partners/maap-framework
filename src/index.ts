@@ -40,6 +40,7 @@ import { LlamaNomicEmbeddingsv1 } from './embeddings/llamaIndex/llama-nomic-v1-e
 import { LlamaNomicEmbeddingsv1_5 } from './embeddings/llamaIndex/llama-nomic-v1.5-embeddings.js';
 import { LlamaTitanEmbeddings } from './embeddings/llamaIndex/llama-titan-embeddings.js';
 import { LlamaTogetherAIEmbeddings } from './embeddings/llamaIndex/llama-togetherai-embeddings.js';
+import { LlamaAzureEmbeddings } from './embeddings/llamaIndex/llama-azure-embeddings.js';
 
 export {
     RAGApplication,
@@ -83,7 +84,8 @@ export {
     LlamaNomicEmbeddingsv1,
     LlamaNomicEmbeddingsv1_5,
     LlamaTitanEmbeddings,
-    LlamaTogetherAIEmbeddings
+    LlamaTogetherAIEmbeddings,
+    LlamaAzureEmbeddings,
 };
 export * from './convertMaapToChatbotFramework.js';
 export * from './Rerank.js';

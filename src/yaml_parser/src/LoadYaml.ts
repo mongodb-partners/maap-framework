@@ -27,6 +27,7 @@ import {
   LlamaNomicEmbeddingsv1_5,
   LlamaTitanEmbeddings,
   LlamaTogetherAIEmbeddings,
+  LlamaAzureEmbeddings,
 } from '../../index.js';
 import { MongoDBAtlas } from '../../vectorDb/mongo-db-atlas.js';
 import { strict as assert } from 'assert';
@@ -219,12 +220,19 @@ export function getEmbeddingModel() {
     case 'VertexAI':
       return new GeckoEmbedding({modelName: parsedData.embedding.model_name});
     case 'Azure-OpenAI-Embeddings':
-      return new AzureOpenAiEmbeddings({
-        modelName: parsedData.embedding.model_name,
-        deploymentName: parsedData.embedding.deployment_name,
-        apiVersion: parsedData.embedding.api_version,
-        azureOpenAIApiInstanceName: parsedData.embedding.azure_openai_api_instance_name
-      });
+      switch (framework) {
+        case 'llamaindex':
+          return new LlamaAzureEmbeddings({ 
+            modelName: parsedData.embedding.model_name
+          });
+        default:
+          return new AzureOpenAiEmbeddings({
+            modelName: parsedData.embedding.model_name,
+            deploymentName: parsedData.embedding.deployment_name,
+            apiVersion: parsedData.embedding.api_version,
+            azureOpenAIApiInstanceName: parsedData.embedding.azure_openai_api_instance_name
+          });
+      }
     case 'Cohere':
       switch (framework) {
         case 'llamaindex':
