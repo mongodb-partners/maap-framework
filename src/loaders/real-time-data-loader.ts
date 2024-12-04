@@ -62,8 +62,9 @@ export class RealTimeDataLoader extends BaseLoader<{ type: 'RealTimeDataLoader' 
             eachMessage: async ({ topic, message }) => {
                 try {
                     console.log(`Received message from topic: ${topic}`);
-                    const data = JSON.parse(message.value?.toString() || '{}');
-                    messagesQueue.push(data);
+                    const raw_data = message.value.toString();
+                    const jsonData = this.extractJson(raw_data);
+                    messagesQueue.push(jsonData);
                 } catch (error) {
                     console.error('Error processing message:', error);
                 }
@@ -73,8 +74,9 @@ export class RealTimeDataLoader extends BaseLoader<{ type: 'RealTimeDataLoader' 
         // Generator that yields messages from the queue as chunks
         while (keepRunning) {
             if (messagesQueue.length > 0) {
-                const data = messagesQueue.shift();
-                const chunks = await chunker.splitText(cleanString(data?.content || ''));
+                let data = messagesQueue.shift();
+                data = data?.fullDocument?.content ? data?.fullDocument?.content : data?.content
+                const chunks = await chunker.splitText(cleanString(data || ''));
                 for (const chunk of chunks) {
                     yield {
                         pageContent: chunk,
@@ -90,6 +92,28 @@ export class RealTimeDataLoader extends BaseLoader<{ type: 'RealTimeDataLoader' 
             }
         }
     }
+
+    extractJson(rawMessage: string): object | null {
+        // Find the start of the JSON payload
+        const jsonStartIndex = rawMessage.indexOf("{");
+
+        if (jsonStartIndex !== -1) {
+            // Extract the JSON part
+            const cleanJson = rawMessage.slice(jsonStartIndex);
+
+            try {
+                // Parse and return the JSON object
+                return JSON.parse(cleanJson);
+            } catch (error) {
+                console.error("Error parsing JSON:", error);
+                return null;
+            }
+        } else {
+            console.error("No valid JSON found in the message!");
+            return null;
+        }
+    }
+
 
     async stopConsumer() {
         await this.consumer.disconnect();
