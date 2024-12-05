@@ -233,6 +233,7 @@ export function getIngestLoader() {
           topic: data.topic,
           brokers: data.brokers,
           tumblingWindow: data.tumblingWIndow,
+          fields: data.fields,
           chunkSize: data.chunk_size,
           chunkOverlap: data.chunk_overlap,
           isRealTime: true,

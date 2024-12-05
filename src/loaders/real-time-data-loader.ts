@@ -1,5 +1,5 @@
 import md5 from 'md5';
-import { Kafka, Consumer } from "kafkajs";
+import { Kafka, Consumer } from 'kafkajs';
 
 import { BaseLoader } from '../interfaces/base-loader.js';
 import { cleanString } from '../util/strings.js';
@@ -10,18 +10,21 @@ export class RealTimeDataLoader extends BaseLoader<{ type: 'RealTimeDataLoader' 
     private readonly kafka: Kafka;
     private readonly consumer: Consumer;
     private readonly tumblingWindow: number;
+    private readonly fields: string[];
 
     constructor({
-                    topic,
-                    brokers,
-                    tumblingWindow,
-                    chunkSize,
-                    chunkOverlap,
-                    isRealTime,
-                    canIncrementallyLoad
-                }: {
+        topic,
+        brokers,
+        fields,
+        tumblingWindow,
+        chunkSize,
+        chunkOverlap,
+        isRealTime,
+        canIncrementallyLoad,
+    }: {
         topic: string;
         brokers?: string[];
+        fields?: string[];
         tumblingWindow?: number;
         chunkSize?: number;
         chunkOverlap?: number;
@@ -33,7 +36,7 @@ export class RealTimeDataLoader extends BaseLoader<{ type: 'RealTimeDataLoader' 
             chunkSize ?? 300,
             chunkOverlap ?? 0,
             isRealTime ?? true,
-            canIncrementallyLoad ?? true
+            canIncrementallyLoad ?? true,
         );
         this.topic = topic;
         this.kafka = new Kafka({
@@ -42,7 +45,8 @@ export class RealTimeDataLoader extends BaseLoader<{ type: 'RealTimeDataLoader' 
         });
 
         this.consumer = this.kafka.consumer({ groupId: 'real-time-loader-group' });
-        this.tumblingWindow = tumblingWindow ?? 600
+        this.tumblingWindow = tumblingWindow ?? 600;
+        this.fields = fields ?? ['content'];
     }
 
     override async *getUnfilteredChunks() {
@@ -73,29 +77,45 @@ export class RealTimeDataLoader extends BaseLoader<{ type: 'RealTimeDataLoader' 
 
         // Generator that yields messages from the queue as chunks
         while (keepRunning) {
-            if (messagesQueue.length > 0) {
-                let data = messagesQueue.shift();
-                data = data?.fullDocument?.content ? data?.fullDocument?.content : data?.content
-                const chunks = await chunker.splitText(cleanString(data || ''));
-                for (const chunk of chunks) {
-                    yield {
-                        pageContent: chunk,
-                        metadata: {
-                            ...data,
-                            type: 'RealTimeDataLoader',
-                            source: this.topic,
-                        },
-                    };
+            try {
+                if (messagesQueue.length > 0) {
+                    let data = messagesQueue.shift();
+                    let content = '';
+                    for (let field of this.fields) {
+                        if (data?.fullDocument[field]) {
+                            content += data?.fullDocument[field] + ' ';
+                        } else if (data[field]) {
+                            content += data[field] + ' ';
+                        } else {
+                            console.warn(`Field with name "${field}" not found in document`);
+                        }
+                    }
+                    // data = data?.fullDocument?.content ? data?.fullDocument?.content : data?.content
+                    const chunks = await chunker.splitText(cleanString(content || ''));
+                    for (const chunk of chunks) {
+                        yield {
+                            pageContent: chunk,
+                            metadata: {
+                                ...data,
+                                type: 'RealTimeDataLoader',
+                                source: this.topic,
+                            },
+                        };
+                    }
+                } else {
+                    await new Promise((resolve) => setTimeout(resolve, this.tumblingWindow));
                 }
-            } else {
-                await new Promise((resolve) => setTimeout(resolve, this.tumblingWindow));
+            } catch (e) {
+                console.error(
+                    `An error occurred trying to parse fields ${this.fields} please check your configuration`,
+                );
             }
         }
     }
 
     extractJson(rawMessage: string): object | null {
         // Find the start of the JSON payload
-        const jsonStartIndex = rawMessage.indexOf("{");
+        const jsonStartIndex = rawMessage.indexOf('{');
 
         if (jsonStartIndex !== -1) {
             // Extract the JSON part
@@ -105,18 +125,17 @@ export class RealTimeDataLoader extends BaseLoader<{ type: 'RealTimeDataLoader' 
                 // Parse and return the JSON object
                 return JSON.parse(cleanJson);
             } catch (error) {
-                console.error("Error parsing JSON:", error);
+                console.error('Error parsing JSON:', error);
                 return null;
             }
         } else {
-            console.error("No valid JSON found in the message!");
+            console.error('No valid JSON found in the message!');
             return null;
         }
     }
 
-
     async stopConsumer() {
         await this.consumer.disconnect();
-        console.log("Kafka consumer disconnected.");
+        console.log('Kafka consumer disconnected.');
     }
 }
