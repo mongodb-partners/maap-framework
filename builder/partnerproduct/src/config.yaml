@@ -14,6 +14,7 @@ vector_store:
     numCandidates: 150
     minScore: 0.1 
     vectorSearchIndexName: 'vector_index'
+    textSearchIndexName: 'text_index'
 llms:
     class_name: Fireworks
     model_name: 'accounts/fireworks/models/mixtral-8x22b-instruct'

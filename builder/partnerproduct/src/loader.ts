@@ -26,10 +26,11 @@ try {
             chunksAdded += chunks.entriesAdded;
         });
     }
-    
+
     if (chunksAdded > 0) {
         console.log(`\n Total documents added : ${chunksAdded} `)
         await llmApplication.createVectorIndex();
+        await llmApplication.createTextIndex();
     }
     else {
         console.log("\n-- Data not inserted, please retry --")
