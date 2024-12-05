@@ -413,6 +413,7 @@ ingest:
     - source: 'realtime'
       topic: 'source-connector-topic'
       brokers: ['localhost:9092']
+      fields: ['field1', 'field2', 'fieldN']
       thumblingWindow: 6000
       chunk_size: 300
       chunk_overlap: 20
