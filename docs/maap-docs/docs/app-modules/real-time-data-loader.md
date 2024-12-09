@@ -2,8 +2,6 @@
 # Table of Contents
 - [Pre-requisites](#pre-requisites)
 - [Kafka Setup](#kafka-setup)
-  - [Linux Step by Step](#for-linux)
-  - [Windows Step by Step](#for-windows)
 - [Data Loader Usage](#data-loader)
 - [Test Example](#test)
 
@@ -14,222 +12,31 @@ mongo db connectors and all you need to run a real time data loader in your loca
 
 ## Pre-requisites
 
-- Docker installed.
+- Docker installed with docker-compose command enabled.
+- Clone [Mongo Kafka Connector Repository](https://github.com/mongodb/mongo-kafka).
 - Atlas Cluster running with the proper databases and collections.
-- A user with readWrite and changeStream roles.
+- A user with readWrite and changeStream roles for the Atlas Cluster.
+- In Windows you'll need a git bash or some other Linux-based shell to run the script.
 
 ## Kafka Setup
 
-To setup the kafka environment in your local if you don't have one already, you can clone the
-kafka mongo connector repository https://github.com/mongodb/mongo-kafka/tree/master.
-In this repository you'll find a docker compose https://github.com/mongodb/mongo-kafka/blob/master/docker/docker-compose.yml
-and a script https://github.com/mongodb/mongo-kafka/blob/master/docker/run.sh that you can run in linux.
-If you're using windows you can run the script using a git bash shell and then manually some of the scripts with slights modifications that we'll see later in this
-guide.
-
-NOTE: At the docker-compose in the first line of the document we have a version number: version: '3.6'.
-For some versions of docker this syntax might be deprecated so you can just remove this line and run it if an error shows
-up when trying to run the compose command.
-
-NOTE: This script and docker-compose create a mongodb environment to run a built-in example and creates some connectors that you can ignore.
+If you already have a kafka service running you can ignore this section.
 
 ### Step by step guide
 
+1. Find the docker-compose.yml file and run.sh script located in the [scripts](https://github.com/mongodb-partners/maap-framework/tree/main/scripts) folder of this repository. 
+2. Locate the docker folder in the [Mongo Kafka Connector Repository](https://github.com/mongodb/mongo-kafka).
+3. Replace the docker-compose.yaml and run.sh scripts inside the [Mongo Kafka Connector Repository](https://github.com/mongodb/mongo-kafka)
+with the ones located in [this](https://github.com/mongodb-partners/maap-framework/tree/main/scripts) repository folder.
+4. Run the run.sh script with the respective parameters in your shell
+```shell
+ ./run.sh --mongo-uri "mongodb+srv://<username:password>@<yourcluster>.mongodb.net/" --database "<your-database>" --collection "<your-collection>" --kafka-bootstrap-servers "localhost:9092" --sink_topic "<sink_topic_name>" --source_topic "<source_topic_name>"
+```
+
+5. **OPTIONAL**: Configure your own connectors. You can create additional connectors to monitor other collections (source)
+or send data to your database from other topics (sink).
+
 #### For Linux
-
-1. Run the ***run.sh*** script (for windows you can execute it using a git bash which will eventually crash).
-
-- Here is an explanation/crack down of the script in case you want to modify it.
-
-Checks if the mongo port is available, if yes, continue.
-
-```shell
-#!/bin/bash
-set -e
-(
- if lsof -Pi :27017 -sTCP:LISTEN -t >/dev/null ; then
-     echo "Please terminate the local mongod on 27017"
-     exit 1
- fi
-)
-```
-    
-Builds the kafka connector (this is why you need to run this compose inside this repository.)
-
-```shell   
-echo "Building the MongoDB Kafka Connector"
-(
-cd ..
-./gradlew clean createConfluentArchive
-echo -e "Unzipping the confluent archive plugin....\n"
-unzip -d ./build/confluent ./build/confluent/*.zip
-find ./build/confluent -maxdepth 1 -type d ! -wholename "./build/confluent" -exec mv {} ./build/confluent/kafka-connect-mongodb \;
-)
-```
-
-Starts docker-compose inside this folder.
-
-```shell   
-         echo "Starting docker ."
-         docker-compose up -d --build
-```
-
-Clean up function: cleans the connectors and database inside docker.
-
-```shell
- function clean_up {
-     echo -e "\n\nSHUTTING DOWN\n\n"
-     curl --output /dev/null -X DELETE http://localhost:8083/connectors/datagen-pageviews || true
-     curl --output /dev/null -X DELETE http://localhost:8083/connectors/mongo-sink || true
-     curl --output /dev/null -X DELETE http://localhost:8083/connectors/mongo-source || true
-     docker-compose exec mongo1 /usr/bin/mongo --eval "db.dropDatabase()"
-     docker-compose down
-     if [ -z "$1" ]
-     then
-         echo -e "Bye!\n"
-     else
-         echo -e $1
-     fi
- }
-```
- Waits for the dockers to connect:
-
-```shell        
-sleep 5
-echo -ne "\n\nWaiting for the systems to be ready.."
-function test_systems_available {
-COUNTER=0
-until $(curl --output /dev/null --silent --head --fail http://localhost:$1); do
-printf '.'
-sleep 2
-let COUNTER+=1
-if [[ $COUNTER -gt 30 ]]; then
-MSG="\nWARNING: Could not reach configured kafka system on http://localhost:$1 \nNote: This script requires curl.\n"
-
-       if [[ "$OSTYPE" == "darwin"* ]]; then
-         MSG+="\nIf using OSX please try reconfiguring Docker and increasing RAM and CPU.\
-             In Docker Desktop this can be done via the \"Resources\" tab in \"Preferences\". Then try again.\n\n"
-       fi
-
-     echo -e $MSG
-     clean_up "$MSG"
-     exit 1
-   fi
-done
-}
-
-test_systems_available 8082
-test_systems_available 8083
-``` 
-
-Execute clean up function
-
-```shell 
-trap clean_up EXIT
-```
-
-Configures mongodb for the demo of the repository.
-
-```shell
-echo -e "\nConfiguring the MongoDB ReplicaSet.\n"
-docker-compose exec mongo1 /usr/bin/mongo --eval '''if (rs.status()["ok"] == 0) {
- rsconf = {
-     _id : "rs0",
-     members: [
-         { _id : 0, host : "mongo1:27017", priority: 1.0 },
-         { _id : 1, host : "mongo2:27017", priority: 0.5 },
-         { _id : 2, host : "mongo3:27017", priority: 0.5 }
-     ]
- };
- rs.initiate(rsconf);
-}
-
-rs.conf();'''
-```
-        
-The rest of the script runs the commands to insert the kafka connectors for the demo.
-
-```shell
-echo -e "\nKafka Topics:"
-curl -X GET "http://localhost:8082/topics" -w "\n"
-
-echo -e "\nKafka Connectors:"
-curl -X GET "http://localhost:8083/connectors/" -w "\n"
-
-echo -e "\nAdding datagen pageviews:"
-curl -X POST -H "Content-Type: application/json" --data '
-{ "name": "datagen-pageviews",
-    "config": {
-    "connector.class": "io.confluent.kafka.connect.datagen.DatagenConnector",
-    "kafka.topic": "pageviews",
-    "quickstart": "pageviews",
-    "key.converter": "org.apache.kafka.connect.json.JsonConverter",
-    "value.converter": "org.apache.kafka.connect.json.JsonConverter",
-    "value.converter.schemas.enable": "false",
-    "producer.interceptor.classes": "io.confluent.monitoring.clients.interceptor.MonitoringProducerInterceptor",
-    "max.interval": 200,
-    "iterations": 10000000,
-    "tasks.max": "1"
-}}' http://localhost:8083/connectors -w "\n"
-
-sleep 5
-
-echo -e "\nAdding MongoDB Kafka Sink Connector for the 'pageviews' topic into the 'test.pageviews' collection:"
-curl -X POST -H "Content-Type: application/json" --data '
-{"name": "mongo-sink",
-    "config": {
-    "connector.class":"com.mongodb.kafka.connect.MongoSinkConnector",
-    "tasks.max":"1",
-    "topics":"pageviews",
-    "connection.uri":"mongodb://mongo1:27017,mongo2:27017,mongo3:27017",
-    "database":"test",
-    "collection":"pageviews",
-    "key.converter": "org.apache.kafka.connect.storage.StringConverter",
-    "value.converter": "org.apache.kafka.connect.json.JsonConverter",
-    "value.converter.schemas.enable": "false"
-}}' http://localhost:8083/connectors -w "\n"
-
-sleep 2
-echo -e "\nAdding MongoDB Kafka Source Connector for the 'test.pageviews' collection:"
-curl -X POST -H "Content-Type: application/json" --data '
-{"name": "mongo-source",
-    "config": {
-    "tasks.max":"1",
-    "connector.class":"com.mongodb.kafka.connect.MongoSourceConnector",
-    "connection.uri":"mongodb://mongo1:27017,mongo2:27017,mongo3:27017",
-    "key.converter": "org.apache.kafka.connect.json.JsonConverter",
-    "value.converter": "org.apache.kafka.connect.json.JsonConverter",
-    "topic.prefix":"mongo",
-    "database":"test",
-    "collection":"pageviews"
-}}' http://localhost:8083/connectors -w "\n"
-
-sleep 2
-echo -e "\nKafka Connectors: \n"
-curl -X GET "http://localhost:8083/connectors/" -w "\n"
-
-echo "Looking at data in 'db.pageviews':"
-docker-compose exec mongo1 /usr/bin/mongo --eval 'db.pageviews.find()'
-
-
-echo -e '''
-
-==============================================================================================================
-Examine the topics in the Kafka UI: http://localhost:9021 or http://localhost:8000/
-- The `pageviews` topic should have the generated page views.
-  - The `mongo.test.pageviews` topic should contain the change events.
-  - The `test.pageviews` collection in MongoDB should contain the sinked page views.
-
-Examine the collections:
-- In your shell run: docker-compose exec mongo1 /usr/bin/mongo
-  ==============================================================================================================
-
-Use <ctrl>-c to quit'''
-
-read -r -d '' _ </dev/tty
-```
-
-2. Configure your own connectors (you may replace the commands at the script to avoid having the connectors of the repo's demo)
 
 Note: The topics for those connector must be different. Example: userAvailable for sink connector
 and intermediateTopic for source connector. The topic used at the source connector is the one that the
@@ -288,55 +95,6 @@ curl -X POST -H "Content-Type: application/json" --data '
 ```
 
 #### For Windows
-
-1. Run the ***run.sh*** using a git bash console. This command will crash once it reaches an --eval flag in the script.
-The --eval flag tries to run commands inside docker without activating the console.
-
-```shell
-echo -e "\nConfiguring the MongoDB ReplicaSet.\n"
-docker-compose exec mongo1 /usr/bin/mongo --eval '''if (rs.status()["ok"] == 0) {
- rsconf = {
-     _id : "rs0",
-     members: [
-         { _id : 0, host : "mongo1:27017", priority: 1.0 },
-         { _id : 1, host : "mongo2:27017", priority: 0.5 },
-         { _id : 2, host : "mongo3:27017", priority: 0.5 }
-     ]
- };
- rs.initiate(rsconf);
-}
-
-rs.conf();'''
-```
-
-OPTIONAL: You can run this command manually (NOTE: it's not required since we're not running this for the demo but not doing it might
-fill the console with noise because of errors)
-
-Run this command to enter the console inside the mongo1 docker container.
-
-```shell
-docker-compose exec mongo1 bash
-```
-
-Inside the container shell run:
-
-```shell
-/usr/bin/mongo '''if (rs.status()["ok"] == 0) {
- rsconf = {
-     _id : "rs0",
-     members: [
-         { _id : 0, host : "mongo1:27017", priority: 1.0 },
-         { _id : 1, host : "mongo2:27017", priority: 0.5 },
-         { _id : 2, host : "mongo3:27017", priority: 0.5 }
-     ]
- };
- rs.initiate(rsconf);
-}
-
-rs.conf();'''
-```
-
-2. Configure your own connectors
 
 Create 1 json file for each connector anywhere in your computer:
 
@@ -400,7 +158,7 @@ Run the following command in powershell:
 Invoke-WebRequest -Uri "http://localhost:8083/connectors" -Method Post -Headers @{ "Content-Type" = "application/json" } -InFile "path\to\your\config_files.json"
 ```
 
-Note: the -Uri is pointing to your connectors endpoint, change it inf necessary.
+Note: the -Uri is pointing to your connectors endpoint, change it for the one pointing to your connectors endpoint.
 
 ## Data Loader
 This data loader is used to receive messages in real time from a Kafka topic. The ingest runs indefinitely until the process
@@ -415,8 +173,8 @@ ingest:
       brokers: ['localhost:9092']
       fields: ['field1', 'field2', 'fieldN']
       thumblingWindow: 6000
-      chunk_size: 300
-      chunk_overlap: 20
+      chunk_size: 600
+      chunk_overlap: 60
 ```
 
 **Architecture:**
