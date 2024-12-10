@@ -5,30 +5,30 @@ import * as process from 'process';
 // import { z } from "zod";
 // import { jsonSchemaToZod } from "json-schema-to-zod";
 import {
-  Anthropic,
-  BaseLoader,
-  CohereEmbeddings,
-  ConfluenceLoader,
-  DocxLoader,
-  GeckoEmbedding,
-  OpenAi,
-  PdfLoader,
-  SitemapLoader,
-  VertexAI,
-  WebLoader,
-  YoutubeSearchLoader,
-  YoutubeLoader,
-  YoutubeChannelLoader,
-  PptLoader,
-  TextLoader,
-  LlamaIndexLoader,
-  BaseModel,
-  LlamaNomicEmbeddingsv1,
-  LlamaNomicEmbeddingsv1_5,
-  LlamaTitanEmbeddings,
-  LlamaTogetherAIEmbeddings,
-  LlamaAzureEmbeddings,
-  LlamaGeckoEmbeddings,
+    Anthropic,
+    BaseLoader,
+    CohereEmbeddings,
+    ConfluenceLoader,
+    DocxLoader,
+    GeckoEmbedding,
+    OpenAi,
+    PdfLoader,
+    SitemapLoader,
+    VertexAI,
+    WebLoader,
+    YoutubeSearchLoader,
+    YoutubeLoader,
+    YoutubeChannelLoader,
+    PptLoader,
+    TextLoader,
+    LlamaIndexLoader,
+    BaseModel,
+    LlamaNomicEmbeddingsv1,
+    LlamaNomicEmbeddingsv1_5,
+    LlamaTitanEmbeddings,
+    LlamaTogetherAIEmbeddings,
+    LlamaAzureEmbeddings,
+    LlamaGeckoEmbeddings,
 } from '../../index.js';
 import { MongoDBAtlas } from '../../vectorDb/mongo-db-atlas.js';
 import { strict as assert } from 'assert';
@@ -46,11 +46,8 @@ import { readFileSync, readdirSync } from 'fs';
 import { TogetherAIEmbeddings } from '../../embeddings/langChain/togetherai-embeddings.js';
 import { Cohere } from '../../models/langChain/cohere-model.js';
 import { TogetherAI } from '../../models/langChain/togetherai-model.js';
-import { LlamaFireworksEmbeddings } from '../../embeddings/llamaIndex/llama-fireworks-embeddings.js';
 import { LlamaFireworksModel } from '../../models/llamaIndex/llama-fireworks-model.js';
-import { Cohere } from '../../models/langChain/cohere-model.js'
-import { TogetherAI } from '../../models/langChain/togetherai-model.js'
-import {LlamaFireworksEmbeddings} from '../../embeddings/llamaIndex/llama-fireworks-embeddings.js';
+import { LlamaFireworksEmbeddings } from '../../embeddings/llamaIndex/llama-fireworks-embeddings.js';
 import { LlamaCohereEmbeddings } from '../../embeddings/llamaIndex/llama-cohere-embeddings.js';
 import { LlamaBedrockEmbeddings } from '../../index.js';
 
@@ -168,6 +165,7 @@ export function getVBDConfigInfo() {
  */
 export function getModelClass() {
     const parsedData = getDataFromYamlFile();
+    const framework = parsedData.llms.framework ? parsedData.llms.framework.toLowerCase() : '';
     const params = {};
     if (parsedData.llms.temperature) params['temperature'] = parsedData.llms.temperature;
     if (parsedData.llms.maxTokens) params['maxTokens'] = parsedData.llms.max_tokens;
@@ -185,7 +183,7 @@ export function getModelClass() {
             params['modelName'] = parsedData.llms.model_name;
             return new AnyscaleModel(params);
         case 'Fireworks':
-            switch (parsedData.llms.framework) {
+            switch (framework) {
                 case 'llamaindex':
                     assert(typeof parsedData.llms.model_name === 'string', 'model_name of Fireworks is required');
                     params['modelName'] = parsedData.llms.model_name;
@@ -225,87 +223,99 @@ export function getModelClass() {
  * @returns The embedding model based on the parsed data.
  */
 export function getEmbeddingModel() {
-  const parsedData = getDataFromYamlFile();
-  const framework = parsedData.embedding.framework ? parsedData.embedding.framework.toLowerCase() : '';
-  switch (parsedData.embedding.class_name) {
-    case 'VertexAI':
-      switch (framework) {
-        case 'llamaindex':
-          return new LlamaGeckoEmbeddings({ modelName: parsedData.embedding.model_name });
-        default:
-          return new GeckoEmbedding({modelName: parsedData.embedding.model_name});
-      }
-    case 'Azure-OpenAI-Embeddings':
-      switch (framework) {
-        case 'llamaindex':
-          return new LlamaAzureEmbeddings({
-            modelName: parsedData.embedding.model_name,
-            deploymentName: parsedData.embedding.deployment_name,
-            apiVersion: parsedData.embedding.api_version,
-            azureOpenAIApiInstanceName: parsedData.embedding.azure_openai_api_instance_name
-          });
-        default:
-          return new AzureOpenAiEmbeddings({
-            modelName: parsedData.embedding.model_name,
-            deploymentName: parsedData.embedding.deployment_name,
-            apiVersion: parsedData.embedding.api_version,
-            azureOpenAIApiInstanceName: parsedData.embedding.azure_openai_api_instance_name
-          });
-      }
-    case 'Cohere':
-      switch (framework) {
-        case 'llamaindex':
-          return new LlamaCohereEmbeddings({ modelName: parsedData.embedding.model_name });
-        default:
-          return new CohereEmbeddings({ modelName: parsedData.embedding.model_name });
-      }
-    case 'Titan':
-      switch (framework) {
-        case 'llamaindex':
-          return new LlamaTitanEmbeddings();
-        default:
-          return new TitanEmbeddings();
-      }
+    const parsedData = getDataFromYamlFile();
+    const framework = parsedData.embedding.framework ? parsedData.embedding.framework.toLowerCase() : '';
+    switch (parsedData.embedding.class_name) {
+        case 'VertexAI':
+            switch (framework) {
+                case 'llamaindex':
+                    return new LlamaGeckoEmbeddings({ modelName: parsedData.embedding.model_name });
+                default:
+                    return new GeckoEmbedding({ modelName: parsedData.embedding.model_name });
+            }
+        case 'Azure-OpenAI-Embeddings':
+            switch (framework) {
+                case 'llamaindex':
+                    return new LlamaAzureEmbeddings({
+                        modelName: parsedData.embedding.model_name,
+                        deploymentName: parsedData.embedding.deployment_name,
+                        apiVersion: parsedData.embedding.api_version,
+                        azureOpenAIApiInstanceName: parsedData.embedding.azure_openai_api_instance_name,
+                    });
+                default:
+                    return new AzureOpenAiEmbeddings({
+                        modelName: parsedData.embedding.model_name,
+                        deploymentName: parsedData.embedding.deployment_name,
+                        apiVersion: parsedData.embedding.api_version,
+                        azureOpenAIApiInstanceName: parsedData.embedding.azure_openai_api_instance_name,
+                    });
+            }
+        case 'Cohere':
+            switch (framework) {
+                case 'llamaindex':
+                    return new LlamaCohereEmbeddings({ modelName: parsedData.embedding.model_name });
+                default:
+                    return new CohereEmbeddings({ modelName: parsedData.embedding.model_name });
+            }
+        case 'Titan':
+            switch (framework) {
+                case 'llamaindex':
+                    return new LlamaTitanEmbeddings();
+                default:
+                    return new TitanEmbeddings();
+            }
 
-    case 'Bedrock':
-      switch (framework) {
-        case 'llamaindex':
-          return new LlamaBedrockEmbeddings({ modelName: parsedData.embedding.model_name, dimension: parsedData.embedding.dimension});
+        case 'Bedrock':
+            switch (framework) {
+                case 'llamaindex':
+                    return new LlamaBedrockEmbeddings({
+                        modelName: parsedData.embedding.model_name,
+                        dimension: parsedData.embedding.dimension,
+                    });
+                default:
+                    return new BedrockEmbedding({
+                        modelName: parsedData.embedding.model_name,
+                        dimension: parsedData.embedding.dimension,
+                    });
+            }
+        case 'Fireworks':
+            switch (framework) {
+                case 'llamaindex':
+                    return new LlamaFireworksEmbeddings({
+                        modelName: parsedData.embedding.model_name,
+                        dimension: parsedData.embedding.dimension,
+                    });
+                default:
+                    return new FireworksEmbedding({
+                        modelName: parsedData.embedding.model_name,
+                        dimension: parsedData.embedding.dimension,
+                    });
+            }
+        case 'Nomic-v1':
+            switch (framework) {
+                case 'llamaindex':
+                    return new LlamaNomicEmbeddingsv1();
+                default:
+                    return new NomicEmbeddingsv1();
+            }
+        case 'Nomic-v1.5':
+            switch (framework) {
+                case 'llamaindex':
+                    return new LlamaNomicEmbeddingsv1_5();
+                default:
+                    return new NomicEmbeddingsv1_5();
+            }
+        case 'TogetherAI':
+            switch (framework) {
+                case 'llamaindex':
+                    return new LlamaTogetherAIEmbeddings({ modelName: parsedData.embedding.model_name });
+                default:
+                    return new TogetherAIEmbeddings({ modelName: parsedData.embedding.model_name });
+            }
         default:
-          return new BedrockEmbedding({ modelName: parsedData.embedding.model_name, dimension: parsedData.embedding.dimension});
-      }
-    case 'Fireworks':
-      switch (framework) {
-        case 'llamaindex':
-          return new LlamaFireworksEmbeddings({ modelName: parsedData.embedding.model_name, dimension: parsedData.embedding.dimension});
-        default:
-          return new FireworksEmbedding({ modelName: parsedData.embedding.model_name, dimension: parsedData.embedding.dimension});
-      }
-    case 'Nomic-v1':
-      switch (framework) {
-        case 'llamaindex':
-          return new LlamaNomicEmbeddingsv1();
-        default:
-          return new NomicEmbeddingsv1();
-      }
-    case 'Nomic-v1.5':
-      switch (framework) {
-        case 'llamaindex':
-          return new LlamaNomicEmbeddingsv1_5();
-        default:
-          return new NomicEmbeddingsv1_5();
-      }
-    case 'TogetherAI':
-      switch (framework) {
-        case 'llamaindex':
-          return new LlamaTogetherAIEmbeddings({modelName: parsedData.embedding.model_name});
-        default:
-          return new TogetherAIEmbeddings({modelName: parsedData.embedding.model_name});
-      }
-    default:
-      // Handle unsupported class name (optional)
-      return new NomicEmbeddingsv1_5(); // Or throw an error
-  }
+            // Handle unsupported class name (optional)
+            return new NomicEmbeddingsv1_5(); // Or throw an error
+    }
 }
 
 /**
