@@ -1,5 +1,5 @@
 import { OpenAIEmbeddings, AzureOpenAIEmbeddings } from '@langchain/openai';
-import { BaseEmbeddings } from '../interfaces/base-embeddings.js';
+import { BaseEmbeddings } from '../../interfaces/base-embeddings.js';
 
 export class AzureOpenAiEmbeddings implements BaseEmbeddings {
     private model: OpenAIEmbeddings;

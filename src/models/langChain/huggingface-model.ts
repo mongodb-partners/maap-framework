@@ -1,8 +1,8 @@
 import createDebugMessages from 'debug';
 import { HuggingFaceInference } from '@langchain/community/llms/hf';
 
-import { BaseModel } from '../interfaces/base-model.js';
-import { Chunk, ConversationHistory } from '../global/types.js';
+import { BaseModel } from '../../interfaces/base-model.js';
+import { Chunk, ConversationHistory } from '../../global/types.js';
 
 export class HuggingFace extends BaseModel {
     protected runStreamQuery(system: string, userQuery: string, supportingContext: Chunk[], pastConversations: ConversationHistory[]): Promise<any> {

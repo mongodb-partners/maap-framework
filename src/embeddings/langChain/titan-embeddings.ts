@@ -1,5 +1,5 @@
 import { BedrockEmbeddings } from "@langchain/community/embeddings/bedrock";
-import { BaseEmbeddings } from '../interfaces/base-embeddings.js';
+import { BaseEmbeddings } from '../../interfaces/base-embeddings.js';
 
 export class TitanEmbeddings implements BaseEmbeddings {
     private model: BedrockEmbeddings;

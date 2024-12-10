@@ -61,7 +61,21 @@ To use Azure OpenAI embedding with MAAP framework, you would need to feed below 
   ```
   FIREWORKS_API_KEY = <check_references_below>
   ```
+## Deploying your model using the LlamaIndex framework
 
+  MAAP now provides the option to choose if you want to use LlamaIndex as your main framework to deploy your embeddings.
+  
+  This can be done by adding the 'framework' configuration to the config.yaml file
+- #### Config File
+  ```
+  embedding:
+    class_name: Fireworks
+    framework: 'LlamaIndex'
+  ```
+  Another important consideration to have is that because of the way that LlamaIndex implements its
+  embedding models, the environment variables that you are using cannot contain any
+  parameters related to AzureOpenAI. This is because LlamaIndex automatically detects if
+  you have any Azure environment variables and uses their endpoints if they are set.
 
 ### References
 
