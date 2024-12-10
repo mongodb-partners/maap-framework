@@ -9,7 +9,7 @@ export class TogetherAIEmbeddings implements BaseEmbeddings {
     constructor(params?: {modelName?: string}) {
         this.modelName = params?.modelName ?? "togethercomputer/m2-bert-80M-8k-retrieval";
         this.dimension = this.getDefaultDimension(this.modelName);
-        this.model = new LangChainTogetherAIEmbeddings({apiKey: process.env.TOGETHERAI_API_KEY, modelName: this.modelName});
+        this.model = new LangChainTogetherAIEmbeddings({apiKey: process.env.TOGETHER_AI_API_KEY, modelName: this.modelName});
     }
 
     private getDefaultDimension(modelName: string): number {

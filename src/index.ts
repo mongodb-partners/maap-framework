@@ -34,6 +34,14 @@ import { TogetherAIEmbeddings } from './embeddings/langChain/togetherai-embeddin
 import { Cohere } from './models/langChain/cohere-model.js';
 import { TogetherAI } from './models/langChain/togetherai-model.js';
 import { LlamaFireworksEmbeddings } from './embeddings/llamaIndex/llama-fireworks-embeddings.js';
+import { LlamaCohereEmbeddings } from './embeddings/llamaIndex/llama-cohere-embeddings.js';
+import { LlamaBedrockEmbeddings } from './embeddings/llamaIndex/llama-bedrock-embeddings.js';
+import { LlamaNomicEmbeddingsv1 } from './embeddings/llamaIndex/llama-nomic-v1-embeddings.js';
+import { LlamaNomicEmbeddingsv1_5 } from './embeddings/llamaIndex/llama-nomic-v1.5-embeddings.js';
+import { LlamaTitanEmbeddings } from './embeddings/llamaIndex/llama-titan-embeddings.js';
+import { LlamaTogetherAIEmbeddings } from './embeddings/llamaIndex/llama-togetherai-embeddings.js';
+import { LlamaAzureEmbeddings } from './embeddings/llamaIndex/llama-azure-embeddings.js';
+import { LlamaGeckoEmbeddings } from './embeddings/llamaIndex/llama-gecko-embeddings.js';
 import { LlamaFireworksModel } from './models/llamaIndex/llama-fireworks-model.js';
 import { Fireworks } from './models/langChain/fireworks-model.js';
 
@@ -74,6 +82,14 @@ export {
     Cohere,
     TogetherAI,
     LlamaFireworksEmbeddings,
+    LlamaCohereEmbeddings,
+    LlamaBedrockEmbeddings,
+    LlamaNomicEmbeddingsv1,
+    LlamaNomicEmbeddingsv1_5,
+    LlamaTitanEmbeddings,
+    LlamaTogetherAIEmbeddings,
+    LlamaAzureEmbeddings,
+    LlamaGeckoEmbeddings,
     LlamaFireworksModel,
     Fireworks,
 };
