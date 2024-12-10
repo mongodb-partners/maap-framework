@@ -56,6 +56,19 @@ To use the TogetherAI embedding model with the MAAP framework, you would need to
   TOGETHER_AI_API_KEY = <check_references_below>
   ```
 
+## Deploying your model using the LlamaIndex framework
+
+MAAP now provides the option to choose if you want to use LlamaIndex as your main framework to deploy your embeddings.
+
+This can be done by adding the 'framework' configuration to the config.yaml file
+- #### Config File
+  ```
+  embedding:
+    class_name: TogetherAI
+    model_name: <check_references_below>
+    framework: 'LlamaIndex'
+  ```
+
 ### References
 
 Provided below are the instructions on how to procure the right values for building your MAAP framework.

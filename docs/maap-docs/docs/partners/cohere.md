@@ -56,6 +56,21 @@ To use the Cohere embedding model with the MAAP framework, you would need to fee
   COHERE_API_KEY = <check_references_below>
   ```
 
+## Deploying your model using the LlamaIndex framework
+
+MAAP now provides the option to choose if you want to use LlamaIndex as your main framework to deploy your embeddings.
+
+This can be done by adding the 'framework' configuration to the config.yaml file
+- #### Config File
+  ```
+  embedding:
+    class_name: Cohere
+    model_name: <check_references_below>
+    framework: 'LlamaIndex'
+  ```
+
+For optimal quality the recommended length of each chunk should be under 512 tokens.
+
 ### References
 
 Provided below are the instructions on how to procure the right values for building your MAAP framework.
@@ -66,3 +81,6 @@ Provided below are the instructions on how to procure the right values for build
 - ##### API Key 
 
   You will need to [sign up](https://dashboard.cohere.com/api-keys) and retrieve a Cohere API Key.
+
+- ##### API Documentation
+ For more information about how it was implemented for LlamaIndex [click here](https://docs.cohere.com/v2/reference/embed).

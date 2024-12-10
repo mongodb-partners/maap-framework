@@ -92,7 +92,18 @@ To use VetexAI embedding with MAAP framework, you would need to feed below value
       class_name: VertexAI
   ```
 
+## Deploying your model using the LlamaIndex framework
 
+MAAP now provides the option to choose if you want to use LlamaIndex as your main framework to deploy your embeddings.
+
+This can be done by adding the 'framework' configuration to the config.yaml file
+- #### Config File
+  ```
+  embedding:
+    class_name: VertexAI
+    model_name: <check_references_below>
+    framework: 'LlamaIndex'
+  ```
 
 ### References
 
