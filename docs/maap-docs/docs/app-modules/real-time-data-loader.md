@@ -13,7 +13,6 @@ mongo db connectors and all you need to run a real time data loader in your loca
 ## Pre-requisites
 
 - Docker installed with docker-compose command enabled.
-- Clone [Mongo Kafka Connector Repository](https://github.com/mongodb/mongo-kafka).
 - Atlas Cluster running with the proper databases and collections.
 - A user with readWrite and changeStream roles for the Atlas Cluster.
 - In Windows you'll need a git bash or some other Linux-based shell to run the script.
@@ -24,16 +23,13 @@ If you already have a kafka service running you can ignore this section.
 
 ### Step by step guide
 
-1. Find the docker-compose.yml file and run.sh script located in the [scripts](https://github.com/mongodb-partners/maap-framework/tree/main/scripts) folder of this repository. 
-2. Locate the docker folder in the [Mongo Kafka Connector Repository](https://github.com/mongodb/mongo-kafka).
-3. Replace the docker-compose.yaml and run.sh scripts inside the [Mongo Kafka Connector Repository](https://github.com/mongodb/mongo-kafka)
-with the ones located in [this](https://github.com/mongodb-partners/maap-framework/tree/main/scripts) repository folder.
-4. Run the run.sh script with the respective parameters in your shell
+1. Locate the start-kafka.sh script at the scripts folder in this repo.
+2. Run the run.sh script with the respective parameters in your shell
 ```shell
- ./run.sh --mongo-uri "mongodb+srv://<username:password>@<yourcluster>.mongodb.net/" --database "<your-database>" --collection "<your-collection>" --kafka-bootstrap-servers "localhost:9092" --sink_topic "<sink_topic_name>" --source_topic "<source_topic_name>"
+ ./start-kafka.sh --mongo-uri "mongodb+srv://<username:password>@<yourcluster>.mongodb.net/" --database "<your-database>" --collection "<your-collection>" --kafka-bootstrap-servers "localhost:9092" --sink_topic "<sink_topic_name>" --source_topic "<source_topic_name>"
 ```
 
-5. **OPTIONAL**: Configure your own connectors. You can create additional connectors to monitor other collections (source)
+3. **OPTIONAL**: Configure your own connectors. You can create additional connectors to monitor other collections (source)
 or send data to your database from other topics (sink).
 
 #### For Linux

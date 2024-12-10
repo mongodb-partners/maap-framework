@@ -42,7 +42,7 @@ while [[ "$#" -gt 0 ]]; do
         --kafka-bootstrap-servers) KAFKA_BOOTSTRAP_SERVERS="$2"; shift ;;
         --sink_topic) SINK_TOPIC="$2"; shift ;;
         --source_topic) SOURCE_TOPIC="$2"; shift;;
-        --help) show_help ;;
+        --help) show_help; exit 0 ;;
         *) echo "Unknown parameter: $1"; show_help ;;
     esac
     shift
