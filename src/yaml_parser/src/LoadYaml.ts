@@ -4,7 +4,7 @@ import * as yaml from 'js-yaml';
 import * as process from 'process';
 // import { z } from "zod";
 // import { jsonSchemaToZod } from "json-schema-to-zod";
-import { Anthropic, BaseLoader, CohereEmbeddings, ConfluenceLoader, DocxLoader, GeckoEmbedding, OpenAi, PdfLoader, SitemapLoader, VertexAI, WebLoader, YoutubeSearchLoader, YoutubeLoader, YoutubeChannelLoader, PptLoader, TextLoader, LlamaIndexLoader, BaseModel } from '../../index.js';
+import { Anthropic, BaseLoader, CohereEmbeddings, ConfluenceLoader, DocxLoader, GeckoEmbedding, OpenAi, PdfLoader, SitemapLoader, VertexAI, WebLoader, YoutubeSearchLoader, YoutubeLoader, YoutubeChannelLoader, PptLoader, TextLoader, LlamaIndexLoader, BaseModel, LlamaAzureChatAI, LlamaBedrock, LlamaOpenAi } from '../../index.js';
 import { MongoDBAtlas } from '../../vectorDb/mongo-db-atlas.js';
 import { strict as assert } from 'assert';
 import { AnyscaleModel } from '../../models/anyscale-model.js';
@@ -134,9 +134,10 @@ export function getVBDConfigInfo() {
  */
 export function getModelClass() {
   const parsedData = getDataFromYamlFile();
+  const framework = parsedData.llms.framework ? parsedData.llms.framework.toLowerCase() : '';
   const params = {};
   if(parsedData.llms.temperature) params["temperature"] = parsedData.llms.temperature;
-  if(parsedData.llms.maxTokens) params["maxTokens"] = parsedData.llms.max_tokens;
+  if(parsedData.llms.max_tokens) params["maxTokens"] = parsedData.llms.max_tokens;
   switch (parsedData.llms.class_name) {
     case 'VertexAI':
       assert(typeof parsedData.llms.model_name === 'string', 'model_name of VertexAI is required');
@@ -145,7 +146,12 @@ export function getModelClass() {
     case 'OpenAI':
       assert(typeof parsedData.llms.model_name === 'string', 'model_name of OpenAI is required');
       params["modelName"] = parsedData.llms.model_name;
-      return new OpenAi(params);
+      switch (framework) {
+        case 'llamaindex':
+          return new LlamaOpenAi(params);
+        default:
+          return new OpenAi(params);
+      }
     case 'Anyscale':
       assert(typeof parsedData.llms.model_name === 'string', 'model_name of Anyscale is required');
       params["modelName"] = parsedData.llms.model_name;
@@ -161,9 +167,19 @@ export function getModelClass() {
     case 'Bedrock':
       assert(typeof parsedData.llms.model_name === 'string', 'model_name of Bedrock is required');
       params["modelName"] = parsedData.llms.model_name;
-      return new Bedrock(params);
+      switch (framework) {
+        case 'llamaindex':
+          return new LlamaBedrock(params);
+        default:
+          return new Bedrock(params);
+      }
     case 'AzureOpenAI':
-      return new AzureChatAI(params);
+      switch (framework) {
+        case 'llamaindex':
+          return new LlamaAzureChatAI(params);
+        default:
+          return new AzureChatAI(params);
+      }
     default:
       throw new Error('Unsupported model class name');
       // // Handle unsupported class name (optional)

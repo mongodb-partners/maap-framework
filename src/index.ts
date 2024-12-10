@@ -30,6 +30,9 @@ import { VertexAI } from './models/vertexai-model.js';
 import { Ollama } from './models/ollama-model.js';
 import { AzureChatAI } from './models/azureopenai-model.js';
 import { AzureOpenAiEmbeddings } from './embeddings/azure-embeddings.js';
+import { LlamaAzureChatAI } from './models/llamaindex/llama-azureopenai-model.js';
+import { LlamaOpenAi } from './models/llamaindex/llama-openai-model.js';
+import { LlamaBedrock } from './models/llamaindex/llama-bedrock-model.js';
 
 export {
     RAGApplication,
@@ -63,7 +66,10 @@ export {
     GeckoEmbedding,
     VertexAI,
     Ollama,
-    AzureChatAI
+    AzureChatAI,
+    LlamaAzureChatAI,
+    LlamaOpenAi,
+    LlamaBedrock
 };
 export * from './convertMaapToChatbotFramework.js';
 export * from './Rerank.js';
