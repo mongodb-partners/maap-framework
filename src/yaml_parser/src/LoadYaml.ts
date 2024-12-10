@@ -229,7 +229,10 @@ export function getEmbeddingModel() {
       switch (framework) {
         case 'llamaindex':
           return new LlamaAzureEmbeddings({ 
-            modelName: parsedData.embedding.model_name
+            modelName: parsedData.embedding.model_name,
+            deploymentName: parsedData.embedding.deployment_name,
+            apiVersion: parsedData.embedding.api_version,
+            azureOpenAIApiInstanceName: parsedData.embedding.azure_openai_api_instance_name
           });
         default:
           return new AzureOpenAiEmbeddings({
