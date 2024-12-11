@@ -89,7 +89,7 @@ export async function convertBaseModelToChatLlm(baseModel: BaseModel): Promise<C
                                 delta: {
                                     role: "assistant",
                                     content:
-                                        typeof chunk === "string" ? chunk : "",
+                                        typeof chunk === "string" ? chunk : (chunk.delta?.toString() || ""),
                                     toolCalls: [],
                                 },
                             },

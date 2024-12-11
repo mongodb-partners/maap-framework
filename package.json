@@ -66,6 +66,7 @@
         "@langchain/google-vertexai": "^0.0.16",
         "@langchain/mistralai": "^0.0.22",
         "@langchain/openai": "^0.0.33",
+        "@llamaindex/community": "^0.0.75",
         "@mhoc/axios-digest-auth": "^0.8.0",
         "@types/kafkajs": "^1.8.2",
         "axios": "^1.7.2",
