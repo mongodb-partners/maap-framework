@@ -1,5 +1,5 @@
 import { BedrockEmbeddings } from "@langchain/aws";
-import { BaseEmbeddings } from '../interfaces/base-embeddings.js';
+import { BaseEmbeddings } from '../../interfaces/base-embeddings.js';
 
 export class BedrockEmbedding implements BaseEmbeddings {
     private model: BedrockEmbeddings;

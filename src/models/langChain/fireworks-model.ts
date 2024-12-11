@@ -3,8 +3,8 @@ import { ChatFireworks } from "@langchain/community/chat_models/fireworks";
 import { HumanMessage, AIMessage, SystemMessage } from '@langchain/core/messages';
 import { StringOutputParser } from "@langchain/core/output_parsers";
 
-import { BaseModel } from '../interfaces/base-model.js';
-import { Chunk, ConversationHistory } from '../global/types.js';
+import { BaseModel } from '../../interfaces/base-model.js';
+import { Chunk, ConversationHistory } from '../../global/types.js';
 
 export class Fireworks extends BaseModel {
 

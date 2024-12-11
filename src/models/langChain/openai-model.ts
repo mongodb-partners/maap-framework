@@ -1,23 +1,25 @@
 import createDebugMessages from 'debug';
-import { Ollama as ChatOllamaAI } from '@langchain/community/llms/ollama';
-import { AIMessage, HumanMessage, SystemMessage } from '@langchain/core/messages';
+import { ChatOpenAI } from '@langchain/openai';
+import { HumanMessage, AIMessage, SystemMessage } from '@langchain/core/messages';
 
-import { Chunk, ConversationHistory } from '../global/types.js';
-import { BaseModel } from '../interfaces/base-model.js';
+import { BaseModel } from '../../interfaces/base-model.js';
+import { Chunk, ConversationHistory } from '../../global/types.js';
 
-export class Ollama extends BaseModel {
+export class OpenAi extends BaseModel {
     protected runStreamQuery(system: string, userQuery: string, supportingContext: Chunk[], pastConversations: ConversationHistory[]): Promise<any> {
         throw new Error('Method not implemented.');
     }
-    private readonly debug = createDebugMessages('maap:model:Ollama');
-    private model: ChatOllamaAI;
+    private readonly debug = createDebugMessages('maap:model:OpenAi');
+    private readonly modelName: string;
+    private model: ChatOpenAI;
 
-    constructor({ baseUrl, temperature, modelName }: { baseUrl?: string; temperature?: number; modelName?: string }) {
-        super(temperature);
-        this.model = new ChatOllamaAI({
-            model: modelName ?? 'llama2',
-            baseUrl: baseUrl ?? 'http://localhost:11434',
-        });
+    constructor(params?: { temperature?: number; modelName?: string; }) {
+        super(params?.temperature ?? 0.1);
+        this.modelName = params?.modelName ?? 'gpt-3.5-turbo';
+    }
+
+    override async init(): Promise<void> {
+        this.model = new ChatOpenAI({ temperature: this.temperature, model: this.modelName });
     }
 
     override async runQuery(
@@ -41,9 +43,9 @@ export class Ollama extends BaseModel {
         );
         pastMessages.push(new HumanMessage(`${userQuery}?`));
 
-        this.debug(`Executing ollama model ${this.model} with prompt -`, userQuery);
+        this.debug('Executing openai model with prompt -', userQuery);
         const result = await this.model.invoke(pastMessages);
-        this.debug('Ollama response -', result);
-        return result.toString();
+        this.debug('OpenAI response -', result);
+        return result.content.toString();
     }
 }
