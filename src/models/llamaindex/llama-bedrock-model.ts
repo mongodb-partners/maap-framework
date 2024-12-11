@@ -28,41 +28,8 @@ export class LlamaBedrock extends BaseModel {
         });
     }
 
-    private generatePastMessages(
-        system: string,
-        supportingContext: Chunk[],
-        pastConversations: ConversationHistory[],
-        userQuery: string,
-    ) {
-        const pastMessages: ChatMessage[] = [
-            {
-                content: `${system}. Supporting context: ${supportingContext.map((s) => s.pageContent).join('; ')}`,
-                role: 'system',
-            },
-        ];
-
-        pastMessages.push(
-            ...pastConversations.map((c) => {
-                if (c.sender === 'AI') {
-                    return { content: c.message, role: 'assistant' } as ChatMessage;
-                } else if (c.sender === 'SYSTEM') {
-                    return { content: c.message, role: 'system' } as ChatMessage;
-                } else {
-                    return { content: c.message, role: 'user' } as ChatMessage;
-                }
-            }),
-        );
-        pastMessages.push({
-            content: `${userQuery}?`,
-            role: 'user',
-        });
-
-        this.debug('Executing Bedrock model with prompt -', userQuery);
-        return pastMessages;
-    }
-
     protected async runQuery(system: string, userQuery: string, supportingContext: Chunk[], pastConversations: ConversationHistory[]): Promise<string> {
-        const pastMessages: ChatMessage[] = this.generatePastMessages(
+        const pastMessages: ChatMessage[] = this.generatePastMessagesLlama(
             system,
             supportingContext,
             pastConversations,
@@ -74,7 +41,7 @@ export class LlamaBedrock extends BaseModel {
     }
 
     protected async runStreamQuery(system: string, userQuery: string, supportingContext: Chunk[], pastConversations: ConversationHistory[]): Promise<any> {
-        const pastMessages: ChatMessage[] = this.generatePastMessages(
+        const pastMessages: ChatMessage[] = this.generatePastMessagesLlama(
             system,
             supportingContext,
             pastConversations,
