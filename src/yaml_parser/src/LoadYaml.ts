@@ -28,7 +28,11 @@ import {
     LlamaTogetherAIEmbeddings,
     LlamaAzureEmbeddings,
     LlamaGeckoEmbeddings,
+    LlamaAzureChatAI, 
+    LlamaBedrock, 
+    LlamaOpenAi,
 } from '../../index.js';
+
 import { MongoDBAtlas } from '../../vectorDb/mongo-db-atlas.js';
 import { strict as assert } from 'assert';
 import { AnyscaleModel } from '../../models/langChain/anyscale-model.js';
@@ -164,6 +168,7 @@ export function getVBDConfigInfo() {
  * @returns An instance of the model class.
  */
 export function getModelClass() {
+<<<<<<< HEAD
     const parsedData = getDataFromYamlFile();
     const framework = parsedData.llms.framework ? parsedData.llms.framework.toLowerCase() : '';
     const params = {};
@@ -211,11 +216,67 @@ export function getModelClass() {
             assert(typeof parsedData.llms.model_name === 'string', 'model_name of TogetherAI is required');
             params['modelName'] = parsedData.llms.model_name;
             return new TogetherAI(params);
+=======
+  const parsedData = getDataFromYamlFile();
+  const framework = parsedData.llms.framework ? parsedData.llms.framework.toLowerCase() : '';
+  const params = {};
+  if(parsedData.llms.temperature) params["temperature"] = parsedData.llms.temperature;
+  if(parsedData.llms.max_tokens) params["maxTokens"] = parsedData.llms.max_tokens;
+  switch (parsedData.llms.class_name) {
+    case 'VertexAI':
+      assert(typeof parsedData.llms.model_name === 'string', 'model_name of VertexAI is required');
+      params["modelName"] = parsedData.llms.model_name;
+      return new VertexAI(params);
+    case 'OpenAI':
+      assert(typeof parsedData.llms.model_name === 'string', 'model_name of OpenAI is required');
+      params["modelName"] = parsedData.llms.model_name;
+      switch (framework) {
+        case 'llamaindex':
+          return new LlamaOpenAi(params);
+>>>>>>> 863fe966d15da3f66353b488c8a25c449f471182
         default:
-            throw new Error('Unsupported model class name');
-        // // Handle unsupported class name (optional)
-        // return new Anthropic({ modelName: parsedData.llms.model_name }); // Or throw an error
-    }
+          return new OpenAi(params);
+      }
+    case 'Anyscale':
+      assert(typeof parsedData.llms.model_name === 'string', 'model_name of Anyscale is required');
+      params["modelName"] = parsedData.llms.model_name;
+      return new AnyscaleModel(params);
+    case 'Fireworks':
+      switch (framework) {
+        case 'llamaindex':
+          assert(typeof parsedData.llms.model_name === 'string', 'model_name of Fireworks is required');
+          params['modelName'] = parsedData.llms.model_name;
+          return new LlamaFireworksModel(params);
+      default:
+          assert(typeof parsedData.llms.model_name === 'string', 'model_name of Fireworks is required');
+          params['modelName'] = parsedData.llms.model_name;
+          return new Fireworks(params);
+      }
+    case 'Anthropic':
+      assert(typeof parsedData.llms.model_name === 'string', 'model_name of Anthropic is required');
+      params["modelName"] = parsedData.llms.model_name;
+      return new Anthropic(params);
+    case 'Bedrock':
+      assert(typeof parsedData.llms.model_name === 'string', 'model_name of Bedrock is required');
+      params["modelName"] = parsedData.llms.model_name;
+      switch (framework) {
+        case 'llamaindex':
+          return new LlamaBedrock(params);
+        default:
+          return new Bedrock(params);
+      }
+    case 'AzureOpenAI':
+      switch (framework) {
+        case 'llamaindex':
+          return new LlamaAzureChatAI(params);
+        default:
+          return new AzureChatAI(params);
+      }
+    default:
+      throw new Error('Unsupported model class name');
+      // // Handle unsupported class name (optional)
+      // return new Anthropic({ modelName: parsedData.llms.model_name }); // Or throw an error
+  } 
 }
 
 /**

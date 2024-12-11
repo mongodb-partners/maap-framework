@@ -45,6 +45,9 @@ import { LlamaAzureEmbeddings } from './embeddings/llamaIndex/llama-azure-embedd
 import { LlamaGeckoEmbeddings } from './embeddings/llamaIndex/llama-gecko-embeddings.js';
 import { LlamaFireworksModel } from './models/llamaIndex/llama-fireworks-model.js';
 import { Fireworks } from './models/langChain/fireworks-model.js';
+import { LlamaAzureChatAI } from './models/llamaindex/llama-azureopenai-model.js';
+import { LlamaOpenAi } from './models/llamaindex/llama-openai-model.js';
+import { LlamaBedrock } from './models/llamaindex/llama-bedrock-model.js';
 
 export {
     RAGApplication,
@@ -79,6 +82,9 @@ export {
     VertexAI,
     Ollama,
     AzureChatAI,
+    LlamaAzureChatAI,
+    LlamaOpenAi,
+    LlamaBedrock,
     RealTimeDataLoader,
     TogetherAIEmbeddings,
     Cohere,
