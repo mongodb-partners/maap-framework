@@ -2,8 +2,8 @@ import createDebugMessages from 'debug';
 import { ChatMistralAI } from '@langchain/mistralai';
 import { AIMessage, HumanMessage, SystemMessage } from '@langchain/core/messages';
 
-import { Chunk, ConversationHistory } from '../global/types.js';
-import { BaseModel } from '../interfaces/base-model.js';
+import { Chunk, ConversationHistory } from '../../global/types.js';
+import { BaseModel } from '../../interfaces/base-model.js';
 
 export class Mistral extends BaseModel {
     protected runStreamQuery(system: string, userQuery: string, supportingContext: Chunk[], pastConversations: ConversationHistory[]): Promise<any> {
