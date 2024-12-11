@@ -182,16 +182,10 @@ export function getModelClass() {
             params['modelName'] = parsedData.llms.model_name;
             switch (framework) {
                 case 'llamaindex':
-                    assert(typeof parsedData.llms.model_name === 'string', 'model_name of OpenAi is required');
-                    params['modelName'] = parsedData.llms.model_name;
                     return new LlamaOpenAi(params);
                 default:
-                    assert(typeof parsedData.llms.model_name === 'string', 'model_name of OpenAi is required');
-                    params['modelName'] = parsedData.llms.model_name;
                     return new OpenAi(params);
             }
-        case 'llamaindex':
-            return new LlamaOpenAi(params);
         case 'Anyscale':
             assert(typeof parsedData.llms.model_name === 'string', 'model_name of Anyscale is required');
             params['modelName'] = parsedData.llms.model_name;
