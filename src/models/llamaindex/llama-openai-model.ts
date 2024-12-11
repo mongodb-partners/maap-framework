@@ -4,9 +4,6 @@ import { BaseModel } from '../../interfaces/base-model.js';
 import { Chunk, ConversationHistory } from '../../global/types.js';
 
 export class LlamaOpenAi extends BaseModel {
-    protected runStreamQuery(system: string, userQuery: string, supportingContext: Chunk[], pastConversations: ConversationHistory[]): Promise<any> {
-        throw new Error('Method not implemented.');
-    }
     private readonly debug = createDebugMessages('maap:model:OpenAi');
     private readonly modelName: string;
     private model: OpenAI;
@@ -33,7 +30,7 @@ export class LlamaOpenAi extends BaseModel {
         this.model = new OpenAI({ 
             temperature: this.temperature, 
             model: this.modelName, 
-            maxTokens: this.dimensions * 0.75, // CHANGE MAX TOKENS
+            maxTokens: this.dimensions * 0.75,
             apiKey: process.env.OPENAI_API_KEY,
         });
     }
@@ -58,5 +55,15 @@ export class LlamaOpenAi extends BaseModel {
         } else {
             throw new Error('Invalid response format from model');
         }
+    }
+
+    protected async runStreamQuery(system: string, userQuery: string, supportingContext: Chunk[], pastConversations: ConversationHistory[]): Promise<any> {
+        const pastMessages: ChatMessage[] = this.generatePastMessagesLlama(
+            system,
+            supportingContext,
+            pastConversations,
+            userQuery,
+        );
+        return await this.model.chat({ messages: pastMessages, stream: true });
     }
 }
