@@ -20,16 +20,17 @@ import { BaseModel } from './interfaces/base-model.js';
 import { SIMPLE_MODELS } from './global/constants.js';
 import { OpenAi } from './models/langChain/openai-model.js';
 import { ConfluenceLoader } from './loaders/confluence-loader.js';
-import { AdaEmbeddings } from './embeddings/langChain/ada-embeddings.js';
-import { CohereEmbeddings } from './embeddings/langChain/cohere-embeddings.js';
-import { Mistral } from './models/langChain/mistral-model.js';
-import { HuggingFace } from './models/langChain/huggingface-model.js';
-import { Anthropic } from './models/langChain/anthropic-model.js';
-import { GeckoEmbedding } from './embeddings/langChain/gecko-embedding.js';
-import { VertexAI } from './models/langChain/vertexai-model.js';
-import { Ollama } from './models/langChain/ollama-model.js';
-import { AzureChatAI } from './models/langChain/azureopenai-model.js';
-import { AzureOpenAiEmbeddings } from './embeddings/langChain/azure-embeddings.js';
+import { AdaEmbeddings } from './embeddings/ada-embeddings.js';
+import { CohereEmbeddings } from './embeddings/cohere-embeddings.js';
+import { Mistral } from './models/mistral-model.js';
+import { HuggingFace } from './models/huggingface-model.js';
+import { Anthropic } from './models/anthropic-model.js';
+import { GeckoEmbedding } from './embeddings/gecko-embedding.js';
+import { VertexAI } from './models/vertexai-model.js';
+import { Ollama } from './models/ollama-model.js';
+import { AzureChatAI } from './models/azureopenai-model.js';
+import { AzureOpenAiEmbeddings } from './embeddings/azure-embeddings.js';
+import { RealTimeDataLoader } from './loaders/real-time-data-loader.js';
 import { TogetherAIEmbeddings } from './embeddings/langChain/togetherai-embeddings.js';
 import { Cohere } from './models/langChain/cohere-model.js';
 import { TogetherAI } from './models/langChain/togetherai-model.js';
@@ -78,6 +79,7 @@ export {
     VertexAI,
     Ollama,
     AzureChatAI,
+    RealTimeDataLoader,
     TogetherAIEmbeddings,
     Cohere,
     TogetherAI,
@@ -91,7 +93,7 @@ export {
     LlamaAzureEmbeddings,
     LlamaGeckoEmbeddings,
     LlamaFireworksModel,
-    Fireworks,
+    Fireworks
 };
 export * from './convertMaapToChatbotFramework.js';
 export * from './Rerank.js';

@@ -13,7 +13,6 @@ import { getUnique } from '../util/arrays.js';
 import { BaseReranker } from '../interfaces/base-reranker.js';
 import { NomicEmbeddingsv1_5 } from '../embeddings/langChain/nomic-v1-5-embeddings.js';
 
-
 export class RAGApplication {
     private readonly debug = createDebugMessages('maap:core');
     private readonly queryTemplate: string;
@@ -43,10 +42,10 @@ export class RAGApplication {
         this.searchResultCount = llmBuilder.getSearchResultCount();
         this.embeddingRelevanceCutOff = llmBuilder.getEmbeddingRelevanceCutOff();
 
-        console.log("llmBuilder.getEmbeddingModel()", llmBuilder.getEmbeddingModel())
+        console.log('llmBuilder.getEmbeddingModel()', llmBuilder.getEmbeddingModel());
         RAGEmbedding.init(llmBuilder.getEmbeddingModel() ?? new NomicEmbeddingsv1_5());
         if (!this.model) throw new SyntaxError('Model not set');
-        if (!this.vectorDb && this.dbLookup.size<=0) throw new SyntaxError('VectorDB or MongoDB Aggregator not set');
+        if (!this.vectorDb && this.dbLookup.size <= 0) throw new SyntaxError('VectorDB or MongoDB Aggregator not set');
         // TODO: Make builder components conditional. If not set, work wihtout it. Add a warning message and move forward.
     }
 
@@ -60,17 +59,16 @@ export class RAGApplication {
     }
 
     public async init() {
-
         await this.model.init();
         this.debug('Initialized LLM class');
-        if(this.vectorDb){
+        if (this.vectorDb) {
             await this.vectorDb.init({ dimensions: RAGEmbedding.getEmbedding().getDimensions() });
             this.debug('Initialized vector database');
         }
-        if(this.dbLookup.size > 0) {
+        if (this.dbLookup.size > 0) {
             this.dbLookup.forEach(async (db) => {
                 await db.database.init();
-            })
+            });
         }
 
         if (this.cache) {
@@ -102,7 +100,11 @@ export class RAGApplication {
         return this.vectorDb.insertChunks(embedChunks);
     }
 
-    private async batchLoadChunks(uniqueId: string, incrementalGenerator: AsyncGenerator<LoaderChunk, void, void>) {
+    private async batchLoadChunks(
+        uniqueId: string,
+        incrementalGenerator: AsyncGenerator<LoaderChunk, void, void>,
+        insertBatchSize = DEFAULT_INSERT_BATCH_SIZE,
+    ) {
         let i = 0,
             batchSize = 0,
             newInserts = 0,
@@ -121,7 +123,7 @@ export class RAGApplication {
             };
             formattedChunks.push(formattedChunk);
 
-            if (batchSize % DEFAULT_INSERT_BATCH_SIZE === 0) {
+            if (batchSize % insertBatchSize === 0) {
                 newInserts += await this.batchLoadEmbeddings(uniqueId, formattedChunks);
                 formattedChunks = [];
                 batchSize = 0;
@@ -154,7 +156,11 @@ export class RAGApplication {
             }
         }
 
-        const { newInserts, formattedChunks } = await this.batchLoadChunks(uniqueId, chunks);
+        // If it is real time data loader, then loads every entry into the database as it comes, if not load by batches.
+        const { newInserts, formattedChunks } = loader.isRealTimeLoader
+            ? await this.batchLoadChunks(uniqueId, chunks, 1)
+            : await this.batchLoadChunks(uniqueId, chunks);
+
         if (this.cache) await this.cache.addLoader(uniqueId, formattedChunks.length);
         this.debug(`Add loader completed with ${newInserts} new entries for`, uniqueId);
 
@@ -222,21 +228,19 @@ export class RAGApplication {
         return [...new Map(rawContext.map((item) => [item.pageContent, item])).values()];
     }
 
-
     public async getQueryContext(cleanQuery: string, aggregatePipelineName: string) {
-        //TODO: Method override. Create a MQL query with user prompts using LLM. 
+        //TODO: Method override. Create a MQL query with user prompts using LLM.
         // Generate output query with the user prompt and the context.
         let mqlQuery = await this.dbLookup.get(aggregatePipelineName).aggregateQuery;
         mqlQuery = JSON.stringify(mqlQuery);
-        const queryTemplate = this.queryTemplate.replace("${mqlQuery}", mqlQuery);
+        const queryTemplate = this.queryTemplate.replace('${mqlQuery}', mqlQuery);
         // const evalQueryTemplate = eval(this.queryTemplate);
-        const result = await this.model.query(queryTemplate, cleanQuery, [], "cond");
+        const result = await this.model.query(queryTemplate, cleanQuery, [], 'cond');
         console.log('Result Query :: ', result);
-        try{
+        try {
             let resultJson = JSON.parse(result);
             return this.dbLookup.get(aggregatePipelineName).database.aggregate(resultJson);
-
-        } catch(er){
+        } catch (er) {
             console.log(`Error :${aggregatePipelineName} :: ${er}`);
             return false;
         }
@@ -255,15 +259,15 @@ export class RAGApplication {
             // retrieval by vector search
             context = await this.getContext(userQuery);
             sources = [...new Set(context.map((chunk) => chunk.metadata.source))];
-        } else if (this.dbLookup.size>0){
+        } else if (this.dbLookup.size > 0) {
             // retrieval by aggregate pipeline
-            context = await this.getQueryContext(userQuery, "testing"); // TODO make it pluggable
+            context = await this.getQueryContext(userQuery, 'testing'); // TODO make it pluggable
             sources = [...new Set(context.map((doc) => JSON.stringify(doc)))];
         } else {
             // If there is not context lookup provided
             sources = [];
         }
-        
+
         return {
             sources,
             result: await this.model.query(this.queryTemplate, userQuery, context, conversationId),
@@ -274,7 +278,7 @@ export class RAGApplication {
         await this.vectorDb.createVectorIndex(RAGEmbedding.getEmbedding().getDimensions());
     }
 
-    public async docsCount() : Promise<number> {
+    public async docsCount(): Promise<number> {
         return await this.vectorDb.docsCount();
     }
 

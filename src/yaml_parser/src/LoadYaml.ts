@@ -1,5 +1,4 @@
 // Import required modules
-import * as fs from 'fs';
 import * as yaml from 'js-yaml';
 import * as process from 'process';
 // import { z } from "zod";
@@ -43,6 +42,7 @@ import { BedrockEmbedding } from '../../embeddings/langChain/bedrock-embeddings.
 import { FireworksEmbedding } from '../../embeddings/langChain/fireworks-embeddings.js';
 import { AzureChatAI } from '../../models/langChain/azureopenai-model.js';
 import { readFileSync, readdirSync } from 'fs';
+import { RealTimeDataLoader } from '../../loaders/real-time-data-loader.js';
 import { TogetherAIEmbeddings } from '../../embeddings/langChain/togetherai-embeddings.js';
 import { Cohere } from '../../models/langChain/cohere-model.js';
 import { TogetherAI } from '../../models/langChain/togetherai-model.js';
@@ -344,6 +344,18 @@ export function getIngestLoader() {
                         chunkOverlap: data.chunk_overlap,
                     }),
                 );
+                break;
+            case 'realtime':
+                dataloaders.push(new RealTimeDataLoader({
+                  topic: data.topic,
+                  brokers: data.brokers,
+                  tumblingWindow: data.tumblingWIndow,
+                  fields: data.fields,
+                  chunkSize: data.chunk_size,
+                  chunkOverlap: data.chunk_overlap,
+                  isRealTime: true,
+                  canIncrementallyLoad: true
+                }));
                 break;
             case 'sitemap':
                 dataloaders.push(
