@@ -28,8 +28,8 @@ import {
     LlamaTogetherAIEmbeddings,
     LlamaAzureEmbeddings,
     LlamaGeckoEmbeddings,
-    LlamaAzureChatAI, 
-    LlamaBedrock, 
+    LlamaAzureChatAI,
+    LlamaBedrock,
     LlamaOpenAi,
 } from '../../index.js';
 
@@ -168,65 +168,80 @@ export function getVBDConfigInfo() {
  * @returns An instance of the model class.
  */
 export function getModelClass() {
-  const parsedData = getDataFromYamlFile();
-  const framework = parsedData.llms.framework ? parsedData.llms.framework.toLowerCase() : '';
-  const params = {};
-  if(parsedData.llms.temperature) params["temperature"] = parsedData.llms.temperature;
-  if(parsedData.llms.max_tokens) params["maxTokens"] = parsedData.llms.max_tokens;
-  switch (parsedData.llms.class_name) {
-    case 'VertexAI':
-      assert(typeof parsedData.llms.model_name === 'string', 'model_name of VertexAI is required');
-      params["modelName"] = parsedData.llms.model_name;
-      return new VertexAI(params);
-    case 'OpenAI':
-      assert(typeof parsedData.llms.model_name === 'string', 'model_name of OpenAI is required');
-      params["modelName"] = parsedData.llms.model_name;
-      switch (framework) {
-        case 'llamaindex':
-          return new LlamaOpenAi(params);
+    const parsedData = getDataFromYamlFile();
+    const framework = parsedData.llms.framework ? parsedData.llms.framework.toLowerCase() : '';
+    const params = {};
+    if (parsedData.llms.temperature) params['temperature'] = parsedData.llms.temperature;
+    if (parsedData.llms.max_tokens) params['maxTokens'] = parsedData.llms.max_tokens;
+    switch (parsedData.llms.class_name) {
+        case 'VertexAI':
+            assert(typeof parsedData.llms.model_name === 'string', 'model_name of VertexAI is required');
+            params['modelName'] = parsedData.llms.model_name;
+            return new VertexAI(params);
+        case 'OpenAI':
+            assert(typeof parsedData.llms.model_name === 'string', 'model_name of OpenAI is required');
+            params['modelName'] = parsedData.llms.model_name;
+            switch (framework) {
+                case 'llamaindex':
+                    return new LlamaOpenAi(params);
+                case 'Anyscale':
+                    assert(typeof parsedData.llms.model_name === 'string', 'model_name of Anyscale is required');
+                    params['modelName'] = parsedData.llms.model_name;
+                    return new AnyscaleModel(params);
+
+                case 'Fireworks':
+                    switch (framework) {
+                        case 'llamaindex':
+                            assert(
+                                typeof parsedData.llms.model_name === 'string',
+                                'model_name of Fireworks is required',
+                            );
+                            params['modelName'] = parsedData.llms.model_name;
+                            return new LlamaFireworksModel(params);
+                        default:
+                            assert(
+                                typeof parsedData.llms.model_name === 'string',
+                                'model_name of Fireworks is required',
+                            );
+                            params['modelName'] = parsedData.llms.model_name;
+                            return new Fireworks(params);
+                    }
+                case 'Anthropic':
+                    assert(typeof parsedData.llms.model_name === 'string', 'model_name of Anthropic is required');
+                    params['modelName'] = parsedData.llms.model_name;
+                    return new Anthropic(params);
+                case 'Bedrock':
+                    assert(typeof parsedData.llms.model_name === 'string', 'model_name of Bedrock is required');
+                    params['modelName'] = parsedData.llms.model_name;
+                    switch (framework) {
+                        case 'llamaindex':
+                            return new LlamaBedrock(params);
+                        default:
+                            return new Bedrock(params);
+                    }
+                case 'AzureOpenAI':
+                    switch (framework) {
+                        case 'llamaindex':
+                            return new LlamaAzureChatAI(params);
+                        default:
+                            return new AzureChatAI(params);
+                    }
+                case 'Cohere':
+                    assert(typeof parsedData.llms.model_name === 'string', 'model_name of Cohere is required');
+                    params['modelName'] = parsedData.llms.model_name;
+                    return new Cohere(params);
+                case 'TogetherAI':
+                    assert(typeof parsedData.llms.model_name === 'string', 'model_name of TogetherAI is required');
+                    params['modelName'] = parsedData.llms.model_name;
+                    return new TogetherAI(params);
+                default:
+                    return new OpenAi(params);
+            }
         default:
-          return new OpenAi(params);
-      }
-    case 'Anyscale':
-      assert(typeof parsedData.llms.model_name === 'string', 'model_name of Anyscale is required');
-      params["modelName"] = parsedData.llms.model_name;
-      return new AnyscaleModel(params);
-    case 'Fireworks':
-      switch (framework) {
-        case 'llamaindex':
-          assert(typeof parsedData.llms.model_name === 'string', 'model_name of Fireworks is required');
-          params['modelName'] = parsedData.llms.model_name;
-          return new LlamaFireworksModel(params);
-      default:
-          assert(typeof parsedData.llms.model_name === 'string', 'model_name of Fireworks is required');
-          params['modelName'] = parsedData.llms.model_name;
-          return new Fireworks(params);
-      }
-    case 'Anthropic':
-      assert(typeof parsedData.llms.model_name === 'string', 'model_name of Anthropic is required');
-      params["modelName"] = parsedData.llms.model_name;
-      return new Anthropic(params);
-    case 'Bedrock':
-      assert(typeof parsedData.llms.model_name === 'string', 'model_name of Bedrock is required');
-      params["modelName"] = parsedData.llms.model_name;
-      switch (framework) {
-        case 'llamaindex':
-          return new LlamaBedrock(params);
-        default:
-          return new Bedrock(params);
-      }
-    case 'AzureOpenAI':
-      switch (framework) {
-        case 'llamaindex':
-          return new LlamaAzureChatAI(params);
-        default:
-          return new AzureChatAI(params);
-      }
-    default:
-      throw new Error('Unsupported model class name');
-      // // Handle unsupported class name (optional)
-      // return new Anthropic({ modelName: parsedData.llms.model_name }); // Or throw an error
-  } 
+            throw new Error('Unsupported model class name');
+        // // Handle unsupported class name (optional)
+        // return new Anthropic({ modelName: parsedData.llms.model_name }); // Or throw an error
+    }
 }
 
 /**
@@ -357,16 +372,18 @@ export function getIngestLoader() {
                 );
                 break;
             case 'realtime':
-                dataloaders.push(new RealTimeDataLoader({
-                  topic: data.topic,
-                  brokers: data.brokers,
-                  tumblingWindow: data.tumblingWIndow,
-                  fields: data.fields,
-                  chunkSize: data.chunk_size,
-                  chunkOverlap: data.chunk_overlap,
-                  isRealTime: true,
-                  canIncrementallyLoad: true
-                }));
+                dataloaders.push(
+                    new RealTimeDataLoader({
+                        topic: data.topic,
+                        brokers: data.brokers,
+                        tumblingWindow: data.tumblingWIndow,
+                        fields: data.fields,
+                        chunkSize: data.chunk_size,
+                        chunkOverlap: data.chunk_overlap,
+                        isRealTime: true,
+                        canIncrementallyLoad: true,
+                    }),
+                );
                 break;
             case 'sitemap':
                 dataloaders.push(
