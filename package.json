@@ -79,6 +79,7 @@
         "jsdom": "^25.0.1",
         "kafkajs": "^2.2.4",
         "langchain": "^0.2.0",
+        "llamaindex": "^0.8.26",
         "md5": "^2.3.0",
         "mongodb-chatbot-server": "^0.9.1",
         "mongodb-rag-core": "^0.3.1",

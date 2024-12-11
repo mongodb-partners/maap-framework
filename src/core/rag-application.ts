@@ -11,7 +11,7 @@ import { RAGEmbedding } from './rag-embedding.js';
 import { cleanString } from '../util/strings.js';
 import { getUnique } from '../util/arrays.js';
 import { BaseReranker } from '../interfaces/base-reranker.js';
-import { NomicEmbeddingsv1_5 } from '../embeddings/nomic-v1-5-embeddings.js';
+import { NomicEmbeddingsv1_5 } from '../embeddings/langChain/nomic-v1-5-embeddings.js';
 
 export class RAGApplication {
     private readonly debug = createDebugMessages('maap:core');
