@@ -54,6 +54,7 @@ import { LlamaFireworksModel } from '../../models/llamaIndex/llama-fireworks-mod
 import { LlamaFireworksEmbeddings } from '../../embeddings/llamaIndex/llama-fireworks-embeddings.js';
 import { LlamaCohereEmbeddings } from '../../embeddings/llamaIndex/llama-cohere-embeddings.js';
 import { LlamaBedrockEmbeddings } from '../../index.js';
+import { LlamaAnthropic } from '../../models/llamaIndex/llama-anthropic.js';
 
 // src/loaders/confluence-loader.ts src/loaders/docx-loader.ts src/loaders/excel-loader.ts src/loaders/json-loader.ts src/loaders/pdf-loader.ts src/loaders/ppt-loader.ts src/loaders/sitemap-loader.ts src/loaders/text-loader.ts src/loaders/web-loader.ts src/loaders/youtube-channel-loader.ts src/loaders/youtube-loader.ts src/loaders/youtube-search-loader.ts
 function getDataFromYamlFile() {
@@ -203,9 +204,16 @@ export function getModelClass() {
                     return new Fireworks(params);
             }
         case 'Anthropic':
-            assert(typeof parsedData.llms.model_name === 'string', 'model_name of Anthropic is required');
-            params['modelName'] = parsedData.llms.model_name;
-            return new Anthropic(params);
+            switch (framework) {
+                case 'llamaindex':
+                    assert(typeof parsedData.llms.model_name === 'string', 'model_name of Anthropic is required');
+                    params['modelName'] = parsedData.llms.model_name;
+                    return new LlamaAnthropic(params);
+                default:
+                    assert(typeof parsedData.llms.model_name === 'string', 'model_name of Anthropic is required');
+                    params['modelName'] = parsedData.llms.model_name;
+                    return new Anthropic(params);
+            }
         case 'Bedrock':
             assert(typeof parsedData.llms.model_name === 'string', 'model_name of Bedrock is required');
             params['modelName'] = parsedData.llms.model_name;

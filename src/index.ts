@@ -49,6 +49,7 @@ import { LlamaAzureChatAI } from './models/llamaIndex/llama-azureopenai-model.js
 import { LlamaOpenAi } from './models/llamaIndex/llama-openai-model.js';
 import { LlamaBedrock } from './models/llamaIndex/llama-bedrock-model.js';
 import { LlamaTogetherAI } from './models/llamaIndex/llama-together-model.js';
+import { LlamaAnthropic } from './models/llamaIndex/llama-anthropic.js';
 
 export {
     RAGApplication,
@@ -100,8 +101,9 @@ export {
     LlamaAzureEmbeddings,
     LlamaGeckoEmbeddings,
     LlamaFireworksModel,
+    LlamaAnthropic,
+    LlamaTogetherAI,
     Fireworks,
-    LlamaTogetherAI
 };
 export * from './convertMaapToChatbotFramework.js';
 export * from './Rerank.js';
