@@ -48,6 +48,7 @@ import { Fireworks } from './models/langChain/fireworks-model.js';
 import { LlamaAzureChatAI } from './models/llamaIndex/llama-azureopenai-model.js';
 import { LlamaOpenAi } from './models/llamaIndex/llama-openai-model.js';
 import { LlamaBedrock } from './models/llamaIndex/llama-bedrock-model.js';
+import { LlamaTogetherAI } from './models/llamaIndex/llama-together-model.js';
 
 export {
     RAGApplication,
@@ -99,7 +100,8 @@ export {
     LlamaAzureEmbeddings,
     LlamaGeckoEmbeddings,
     LlamaFireworksModel,
-    Fireworks
+    Fireworks,
+    LlamaTogetherAI
 };
 export * from './convertMaapToChatbotFramework.js';
 export * from './Rerank.js';

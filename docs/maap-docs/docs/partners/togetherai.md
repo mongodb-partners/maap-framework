@@ -58,6 +58,21 @@ To use the TogetherAI embedding model with the MAAP framework, you would need to
 
 ## Deploying your model using the LlamaIndex framework
 
+### Chat Model
+
+MAAP now provides the option to choose if you want to use LlamaIndex as your main framework to deploy your LLM models.
+
+This can be done by adding the 'framework' configuration to the config.yaml file
+- #### Config File
+  ```
+  llms:
+    class_name: TogetherAI
+    model_name: <check_references_below>
+    framework: 'llamaindex'
+  ```
+
+### Embedding Model
+
 MAAP now provides the option to choose if you want to use LlamaIndex as your main framework to deploy your embeddings.
 
 This can be done by adding the 'framework' configuration to the config.yaml file
@@ -69,7 +84,7 @@ This can be done by adding the 'framework' configuration to the config.yaml file
     framework: 'LlamaIndex'
   ```
 
-### References
+## References
 
 Provided below are the instructions on how to procure the right values for building your MAAP framework.
 

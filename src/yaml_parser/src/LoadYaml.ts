@@ -30,6 +30,7 @@ import {
     LlamaAzureChatAI,
     LlamaBedrock,
     LlamaOpenAi,
+    LlamaTogetherAI,
 } from '../../index.js';
 
 import { MongoDBAtlas } from '../../vectorDb/mongo-db-atlas.js';
@@ -230,7 +231,12 @@ export function getModelClass() {
         case 'TogetherAI':
             assert(typeof parsedData.llms.model_name === 'string', 'model_name of TogetherAI is required');
             params['modelName'] = parsedData.llms.model_name;
-            return new TogetherAI(params);
+            switch (framework) {
+                case 'llamaindex':
+                    return new LlamaTogetherAI(params);
+                default:
+                    return new TogetherAI(params);
+            }
         default:
             throw new Error('Unsupported model class name');
         // // Handle unsupported class name (optional)
