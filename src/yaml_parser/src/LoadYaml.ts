@@ -4,7 +4,7 @@ import * as yaml from 'js-yaml';
 import * as process from 'process';
 // import { z } from "zod";
 // import { jsonSchemaToZod } from "json-schema-to-zod";
-import { Anthropic, BaseLoader, CohereEmbeddings, ConfluenceLoader, DocxLoader, GeckoEmbedding, OpenAi, PdfLoader, SitemapLoader, VertexAI, WebLoader, YoutubeSearchLoader, YoutubeLoader, YoutubeChannelLoader, PptLoader, TextLoader, LlamaIndexLoader, BaseModel } from '../../index.js';
+import { Anthropic, BaseLoader, CohereEmbeddings, ConfluenceLoader, DocxLoader, GeckoEmbedding, OpenAi, PdfLoader, SitemapLoader, VertexAI, WebLoader, YoutubeSearchLoader, YoutubeLoader, YoutubeChannelLoader, PptLoader, TextLoader, LlamaIndexLoader, BaseModel, JsonLoader } from '../../index.js';
 import { MongoDBAtlas } from '../../vectorDb/mongo-db-atlas.js';
 import { strict as assert } from 'assert';
 import { AnyscaleModel } from '../../models/anyscale-model.js';
@@ -18,6 +18,7 @@ import { BedrockEmbedding } from '../../embeddings/bedrock-embeddings.js';
 import { FireworksEmbedding } from '../../embeddings/fireworks-embeddings.js';
 import { AzureChatAI } from '../../models/azureopenai-model.js';
 import { readFileSync, readdirSync } from 'fs';
+import { SageMaker } from '../../models/sagemaker-model.js';
 
 // src/loaders/confluence-loader.ts src/loaders/docx-loader.ts src/loaders/excel-loader.ts src/loaders/json-loader.ts src/loaders/pdf-loader.ts src/loaders/ppt-loader.ts src/loaders/sitemap-loader.ts src/loaders/text-loader.ts src/loaders/web-loader.ts src/loaders/youtube-channel-loader.ts src/loaders/youtube-loader.ts src/loaders/youtube-search-loader.ts
 function getDataFromYamlFile() {
@@ -164,6 +165,11 @@ export function getModelClass() {
       return new Bedrock(params);
     case 'AzureOpenAI':
       return new AzureChatAI(params);
+    case 'Sagemaker':
+      params["sagemakerEndpoint"] = parsedData.llms.sagemaker_endpoint;
+      params["maxTokens"] = parsedData.llms.max_tokens;
+      params["temperature"] = parsedData.llms.temperature;
+      return new SageMaker(params);
     default:
       throw new Error('Unsupported model class name');
       // // Handle unsupported class name (optional)
@@ -303,6 +309,12 @@ export function getIngestLoader() {
           chunkOverlap: data.chunk_overlap,
           parsingInstructions: data.parsingInstructions ?? undefined,
           folderProcessing: data.folderProcessing
+        }));
+        break;
+      case 'json':
+        dataloaders.push(new JsonLoader({
+          object: JSON.parse(readFileSync(data.source_path, 'utf-8')),
+          pickKeysForEmbedding: data.pickKeysForEmbedding,
         }));
         break;
       case 'folder':
