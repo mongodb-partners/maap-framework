@@ -18,7 +18,7 @@ function ChatModule() {
     <div className="chat-app">
       <header className="chat-header">
       <H1>RAG Chatbot</H1>
-      <Chatbot darkMode={true} serverBaseUrl="http://localhost:9000/api/v1" shouldStream={false} isExperimental={false}>
+      <Chatbot darkMode={true} serverBaseUrl="http://localhost:9000/api/v1" shouldStream={true} isExperimental={false}>
         <>
           {/* <InputBarTrigger suggestedPrompts={suggestedPrompts}  /> */}
           <FloatingActionButtonTrigger text="My MongoDB AI" />

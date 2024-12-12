@@ -1,48 +1,43 @@
-import { OpenAI, Settings, ChatSummaryMemoryBuffer, ChatMessage, ALL_AVAILABLE_OPENAI_MODELS } from 'llamaindex'
+import { OpenAI, ChatMessage } from 'llamaindex'
 import createDebugMessages from 'debug';
 import { BaseModel } from '../../interfaces/base-model.js';
 import { Chunk, ConversationHistory } from '../../global/types.js';
 
 export class LlamaAzureChatAI extends BaseModel {
-    protected runStreamQuery(system: string, userQuery: string, supportingContext: Chunk[], pastConversations: ConversationHistory[]): Promise<any> {
-        throw new Error('Method not implemented.');
-    }
     private readonly debug = createDebugMessages('maap:model:AzureOpenAI');
-    private readonly modelName: string;
     private model: OpenAI;
-    private dimensions: number;
-    private chatHistory: ChatSummaryMemoryBuffer;
+    private readonly azureOpenAIApiInstanceName: string;
+    private readonly azureOpenAIApiDeploymentName: string;
+    private readonly azureOpenAIApiVersion: string;
+    private readonly modelName: string;
+    private readonly maxTokens: number;
+    private readonly topP: number;
+    private readonly topK: number;
 
-    constructor(params?: { temperature?: number; modelName?: string; }) {
+    constructor(params?: { azureOpenAIApiInstanceName?: string; azureOpenAIApiDeploymentName?: string; azureOpenAIApiVersion?: string; modelName?: string; temperature?: number; maxTokens?: number; topP?:number; topK?:number }) {
         super(params?.temperature ?? 0.1);
-        this.modelName = params?.modelName ?? 'gpt-3.5-turbo'; //process.env.AZURE_OPENAI_API_DEPLOYMENT_NAME
-        this.dimensions = this.getDefaultDimension(this.modelName);
-    }
-
-    private getDefaultDimension(modelName: string): number {
-        switch (modelName) {
-            case "gpt-3.5-turbo":
-                return 4096;
-            case "gpt-4o":
-                return 16384;
-            default:
-                throw new Error(`Unknown model: ${modelName}`);
-        }
+        this.azureOpenAIApiInstanceName = params?.azureOpenAIApiInstanceName ?? process.env.AZURE_OPENAI_API_INSTANCE_NAME;
+        this.azureOpenAIApiDeploymentName = params?.azureOpenAIApiDeploymentName ?? process.env.AZURE_OPENAI_API_DEPLOYMENT_NAME;
+        this.azureOpenAIApiVersion = params?.azureOpenAIApiVersion ?? process.env.AZURE_OPENAI_API_VERSION;
+        this.maxTokens = params?.maxTokens ?? 2048;
+        this.topP = params?.topP ?? 0.9;
+        this.topK = params?.topK ?? 40;
+        this.modelName = params?.modelName ?? 'gpt-3.5-turbo';
     }
 
     override async init(): Promise<void> {
-        this.model = new OpenAI({ 
-            temperature: this.temperature, 
-            model: this.modelName, 
-            maxTokens: this.dimensions,
+        this.model = new OpenAI({
+            maxTokens: this.maxTokens,
+            temperature: this.temperature,
+            topP: this.topP,
+            model: this.modelName,
             azure: {
                 apiKey: process.env.AZURE_OPENAI_API_KEY,
-                apiVersion: process.env.AZURE_OPENAI_API_VERSION,
-                endpoint: `https://${process.env.AZURE_OPENAI_API_INSTANCE_NAME}.openai.azure.com`
+                apiVersion: this.azureOpenAIApiVersion,
+                endpoint: `https://${this.azureOpenAIApiInstanceName}.openai.azure.com`,
+                deployment: this.azureOpenAIApiDeploymentName,
             }
-        }); 
-        this.chatHistory = new ChatSummaryMemoryBuffer({ llm: this.model });
-        Settings.llm = this.model;
+        });
     }
 
     protected async runQuery(
@@ -51,39 +46,25 @@ export class LlamaAzureChatAI extends BaseModel {
         supportingContext: Chunk[],
         pastConversations: ConversationHistory[]
     ): Promise<string> {
-        const contextSummary = supportingContext.map((chunk) => chunk.pageContent).join('; ');
+        const pastMessages: ChatMessage[] = this.generatePastMessagesLlama(
+            system,
+            supportingContext,
+            pastConversations,
+            userQuery,
+        );
+        const result = await this.model.chat({messages: pastMessages});
+        this.debug('AzureOpenAI response -', result);
+        return result.message.content.toString();
+    }
 
-        this.chatHistory.put({ role: 'system', content: system });
-        this.chatHistory.put({ role: 'system', content: `Supporting context: ${contextSummary}` });
+    protected async runStreamQuery(system: string, userQuery: string, supportingContext: Chunk[], pastConversations: ConversationHistory[]): Promise<any> {
+        const pastMessages: ChatMessage[] = this.generatePastMessagesLlama(
+            system,
+            supportingContext,
+            pastConversations,
+            userQuery,
+        );
+        return await this.model.chat({ messages: pastMessages, stream: true });
 
-        pastConversations.forEach((conversation) => {
-            if (conversation.sender === 'AI') {
-                this.chatHistory.put({ role: 'assistant', content: conversation.message });
-            } else if (conversation.sender === 'SYSTEM') {
-                this.chatHistory.put({ role: 'system', content: conversation.message });
-            } else {
-                this.chatHistory.put({ role: 'user', content: conversation.message });
-            }
-        });
-
-        // User's query
-        this.chatHistory.put({ role: 'user', content: userQuery });
-
-        this.debug('Executing query with prompt:', userQuery);
-        this.debug('Chat history:', this.chatHistory.getAllMessages());
-
-        const messages: ChatMessage[] = await this.chatHistory.getAllMessages();
-
-        const response = await this.model.chat({ messages }); 
-        // max tokens??? window_size - tokens of messages = max amount of tokens for completion
-        // 8192 - token_m (5445) = 2747
-
-        this.debug('Model response:', response);
-
-        if (response.message && typeof response.message.content === 'string') {
-            return response.message.content;
-        } else {
-            throw new Error('Invalid response format from model');
-        }
     }
 }
