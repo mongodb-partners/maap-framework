@@ -21,7 +21,6 @@ import {
     PptLoader,
     TextLoader,
     LlamaIndexLoader,
-    BaseModel,
     LlamaNomicEmbeddingsv1,
     LlamaNomicEmbeddingsv1_5,
     LlamaTitanEmbeddings,
@@ -194,17 +193,11 @@ export function getModelClass() {
         case 'Fireworks':
             switch (framework) {
                 case 'llamaindex':
-                    assert(
-                        typeof parsedData.llms.model_name === 'string',
-                        'model_name of Fireworks is required',
-                    );
+                    assert(typeof parsedData.llms.model_name === 'string', 'model_name of Fireworks is required');
                     params['modelName'] = parsedData.llms.model_name;
                     return new LlamaFireworksModel(params);
                 default:
-                    assert(
-                        typeof parsedData.llms.model_name === 'string',
-                        'model_name of Fireworks is required',
-                    );
+                    assert(typeof parsedData.llms.model_name === 'string', 'model_name of Fireworks is required');
                     params['modelName'] = parsedData.llms.model_name;
                     return new Fireworks(params);
             }
