@@ -1,14 +1,15 @@
-import { OpenAI, Settings, ChatMessage, ALL_AVAILABLE_OPENAI_MODELS } from 'llamaindex'
+import { OpenAI, ChatMessage } from 'llamaindex'
 import createDebugMessages from 'debug';
 import { BaseModel } from '../../interfaces/base-model.js';
 import { Chunk, ConversationHistory } from '../../global/types.js';
 
 export class LlamaAzureChatAI extends BaseModel {
     private readonly debug = createDebugMessages('maap:model:AzureOpenAI');
+    private model: OpenAI;
     private readonly azureOpenAIApiInstanceName: string;
     private readonly azureOpenAIApiDeploymentName: string;
-    private model: OpenAI;
     private readonly azureOpenAIApiVersion: string;
+    private readonly modelName: string;
     private readonly maxTokens: number;
     private readonly topP: number;
     private readonly topK: number;
@@ -21,6 +22,7 @@ export class LlamaAzureChatAI extends BaseModel {
         this.maxTokens = params?.maxTokens ?? 2048;
         this.topP = params?.topP ?? 0.9;
         this.topK = params?.topK ?? 40;
+        this.modelName = params?.modelName ?? 'gpt-3.5-turbo';
     }
 
     override async init(): Promise<void> {
@@ -28,6 +30,7 @@ export class LlamaAzureChatAI extends BaseModel {
             maxTokens: this.maxTokens,
             temperature: this.temperature,
             topP: this.topP,
+            model: this.modelName,
             azure: {
                 apiKey: process.env.AZURE_OPENAI_API_KEY,
                 apiVersion: this.azureOpenAIApiVersion,
@@ -50,7 +53,7 @@ export class LlamaAzureChatAI extends BaseModel {
             userQuery,
         );
         const result = await this.model.chat({messages: pastMessages});
-        this.debug('Bedrock response -', result);
+        this.debug('AzureOpenAI response -', result);
         return result.message.content.toString();
     }
 

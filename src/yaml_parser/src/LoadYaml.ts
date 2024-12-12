@@ -224,6 +224,8 @@ export function getModelClass() {
         case 'AzureOpenAI':
             switch (framework) {
                 case 'llamaindex':
+                    assert(typeof parsedData.llms.model_name === 'string', 'model_name of AzureOpenAI is required');
+                    params['modelName'] = parsedData.llms.model_name;
                     return new LlamaAzureChatAI(params);
                 default:
                     return new AzureChatAI(params);
