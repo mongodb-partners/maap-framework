@@ -54,7 +54,7 @@ import { LlamaFireworksModel } from '../../models/llamaIndex/llama-fireworks-mod
 import { LlamaFireworksEmbeddings } from '../../embeddings/llamaIndex/llama-fireworks-embeddings.js';
 import { LlamaCohereEmbeddings } from '../../embeddings/llamaIndex/llama-cohere-embeddings.js';
 import { LlamaBedrockEmbeddings } from '../../index.js';
-import { LlamaAnthropic } from '../../models/llamaIndex/llama-anthropic.js';
+import { LlamaAnthropic } from '../../models/llamaIndex/llama-anthropic-model.js';
 
 // src/loaders/confluence-loader.ts src/loaders/docx-loader.ts src/loaders/excel-loader.ts src/loaders/json-loader.ts src/loaders/pdf-loader.ts src/loaders/ppt-loader.ts src/loaders/sitemap-loader.ts src/loaders/text-loader.ts src/loaders/web-loader.ts src/loaders/youtube-channel-loader.ts src/loaders/youtube-loader.ts src/loaders/youtube-search-loader.ts
 function getDataFromYamlFile() {
