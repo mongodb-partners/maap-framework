@@ -48,7 +48,7 @@ import { Fireworks } from './models/langChain/fireworks-model.js';
 import { LlamaAzureChatAI } from './models/llamaIndex/llama-azureopenai-model.js';
 import { LlamaOpenAi } from './models/llamaIndex/llama-openai-model.js';
 import { LlamaBedrock } from './models/llamaIndex/llama-bedrock-model.js';
-import { LlamaAnthropic } from './models/llamaIndex/llama-anthropic.js';
+import { LlamaAnthropic } from './models/llamaIndex/llama-anthropic-model.js';
 
 export {
     RAGApplication,
