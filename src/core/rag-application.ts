@@ -216,6 +216,12 @@ export class RAGApplication {
         return await this.vectorDb.similaritySearch(queryEmbedded, this.searchResultCount);
     }
 
+    public async hybridQuery(query: string, vectorWeight = 0.1, fullTextWeight = 0.9) {
+        const cleanQuery = cleanString(query);
+        const queryEmbedded = await RAGEmbedding.getEmbedding().embedQuery(cleanQuery);
+        return await this.vectorDb.hybridSearch(query, queryEmbedded, this.searchResultCount, vectorWeight, fullTextWeight);
+    }
+
     public async getContext(query: string) {
         const cleanQuery = cleanString(query);
         const rawContext = await this.getEmbeddings(cleanQuery);
@@ -224,7 +230,7 @@ export class RAGApplication {
 
 
     public async getQueryContext(cleanQuery: string, aggregatePipelineName: string) {
-        //TODO: Method override. Create a MQL query with user prompts using LLM. 
+        //TODO: Method override. Create a MQL query with user prompts using LLM.
         // Generate output query with the user prompt and the context.
         let mqlQuery = await this.dbLookup.get(aggregatePipelineName).aggregateQuery;
         mqlQuery = JSON.stringify(mqlQuery);
@@ -263,7 +269,7 @@ export class RAGApplication {
             // If there is not context lookup provided
             sources = [];
         }
-        
+
         return {
             sources,
             result: await this.model.query(this.queryTemplate, userQuery, context, conversationId),
@@ -272,6 +278,10 @@ export class RAGApplication {
 
     public async createVectorIndex() {
         await this.vectorDb.createVectorIndex(RAGEmbedding.getEmbedding().getDimensions());
+    }
+
+    public async createTextIndex() {
+        await this.vectorDb.createTextIndex();
     }
 
     public async docsCount() : Promise<number> {

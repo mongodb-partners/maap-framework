@@ -49,6 +49,11 @@ function App() {
                   Vector Search
                 </SideNavItem>
               </Link>
+              <Link onClick={handleTabClick(3)} className="link" to="/hybrid-search">
+                <SideNavItem active={activeTab === 3} glyph={<Icon glyph="Wizard" />} >
+                  Hybrid Search
+                </SideNavItem>
+              </Link>
             </SideNavGroup>
           </SideNav>
           <div className="main-content">
@@ -56,6 +61,7 @@ function App() {
               <Route path="/" element={<Hero />} />
               <Route path="/rag-chatbot" element={<ChatModule />} />
               <Route path="/search" element={<Search />} />
+              <Route path="/hybrid-search" element={<Search hybrid="true" />} />
             </Routes>
           </div>
         </div>
