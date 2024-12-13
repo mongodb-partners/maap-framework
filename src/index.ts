@@ -49,7 +49,7 @@ import { LlamaAzureChatAI } from './models/llamaIndex/llama-azureopenai-model.js
 import { LlamaOpenAi } from './models/llamaIndex/llama-openai-model.js';
 import { LlamaBedrock } from './models/llamaIndex/llama-bedrock-model.js';
 import { LlamaTogetherAI } from './models/llamaIndex/llama-together-model.js';
-import { LlamaAnthropic } from './models/llamaIndex/llama-anthropic.js';
+import { LlamaAnthropic } from './models/llamaIndex/llama-anthropic-model.js';
 import { LlamaOllama } from './models/llamaIndex/llama-ollama-model.js';
 
 export {
