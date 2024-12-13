@@ -31,6 +31,8 @@ import {
     LlamaBedrock,
     LlamaOpenAi,
     LlamaTogetherAI,
+    Ollama,
+    LlamaOllama
 } from '../../index.js';
 
 import { MongoDBAtlas } from '../../vectorDb/mongo-db-atlas.js';
@@ -244,6 +246,16 @@ export function getModelClass() {
                     return new LlamaTogetherAI(params);
                 default:
                     return new TogetherAI(params);
+            }
+        case 'Ollama':
+            assert(typeof parsedData.llms.model_name === 'string', 'model_name of TogetherAI is required');
+            params['modelName'] = parsedData.llms.model_name;
+            if (parsedData.llms.base_url) params['baseUrl'] = parsedData.llms.base_url;
+            switch (framework) {
+                case 'llamaindex':
+                    return new LlamaOllama(params);
+                default:
+                    return new Ollama(params);
             }
         default:
             throw new Error('Unsupported model class name');
