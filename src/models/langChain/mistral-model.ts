@@ -22,7 +22,7 @@ export class Mistral extends BaseModel {
         modelName?: string;
     }) {
         super(temperature);
-        this.model = new ChatMistralAI({ apiKey: accessToken, model: modelName ?? 'mistral-medium' });
+        this.model = new ChatMistralAI({ apiKey: accessToken ?? process.env.MISTRAL_API_KEY, model: modelName ?? 'mistral-medium' });
     }
 
     override async runQuery(

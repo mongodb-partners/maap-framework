@@ -50,6 +50,7 @@ import { LlamaOpenAi } from './models/llamaIndex/llama-openai-model.js';
 import { LlamaBedrock } from './models/llamaIndex/llama-bedrock-model.js';
 import { LlamaTogetherAI } from './models/llamaIndex/llama-together-model.js';
 import { LlamaAnthropic } from './models/llamaIndex/llama-anthropic-model.js';
+import { LlamaMistral } from './models/llamaIndex/llama-mistral-model.js';
 
 export {
     RAGApplication,
@@ -103,6 +104,7 @@ export {
     LlamaFireworksModel,
     LlamaAnthropic,
     LlamaTogetherAI,
+    LlamaMistral,
     Fireworks,
 };
 export * from './convertMaapToChatbotFramework.js';

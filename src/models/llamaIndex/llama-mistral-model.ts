@@ -1,34 +1,37 @@
-import { Anthropic, ChatMessage } from 'llamaindex';
+import { MistralAI, ChatMessage, Settings, ALL_AVAILABLE_MISTRAL_MODELS, MistralAISession } from 'llamaindex';
 import createDebugMessages from 'debug';
 import { BaseModel } from '../../interfaces/base-model.js';
 import { Chunk, ConversationHistory } from '../../global/types.js';
 
-export class LlamaAnthropic extends BaseModel {
-    private readonly debug = createDebugMessages('maap:model:Anthropic');
+export class LlamaMistral extends BaseModel {
+    private readonly debug = createDebugMessages('maap:model:MistralAI');
     private readonly modelName: string;
     private apiKey: string;
+    private model: MistralAI;
     private maxTokens: number;
-    private model: Anthropic;
 
     constructor(params?: {
         temperature?: number;
         modelName?: string;
-        apiKey?: string;
+        accessToken?: string;
         maxTokens?: number;
-        topP?: number;
-        topK?: number;
     }) {
         super(params?.temperature ?? 0.1);
-        this.modelName = params?.modelName ?? 'claude-3-sonnet-20240229';
-        this.apiKey = params?.apiKey ?? process.env.ANTHROPIC_API_KEY;
+        this.modelName = params?.modelName ?? 'mistral-medium';
+        this.apiKey = params?.accessToken ?? process.env.MISTRAL_API_KEY;
         this.maxTokens = params?.maxTokens ?? 2048;
     }
 
     override async init(): Promise<void> {
-        this.model = new Anthropic({
+        type MistralModelKeys = keyof typeof ALL_AVAILABLE_MISTRAL_MODELS;
+        let model = (this.modelName in ALL_AVAILABLE_MISTRAL_MODELS
+            ? this.modelName as MistralModelKeys
+            : 'mistral-medium' as MistralModelKeys);
+        Settings.llm = new MistralAI({model: model, apiKey: this.apiKey})
+        this.model = new MistralAI({
             temperature: this.temperature,
+            model: model,
             apiKey: this.apiKey,
-            model: this.modelName,
             maxTokens: this.maxTokens,
         });
     }
@@ -46,7 +49,7 @@ export class LlamaAnthropic extends BaseModel {
             userQuery,
         );
         const result = await this.model.chat({ messages: pastMessages });
-        this.debug('Anthropic response -', result);
+        this.debug('MistralAI response -', result);
         if (result.message && typeof result.message.content[0]['text'] === 'string') {
             return result.message.content[0]['text'];
         } else {
