@@ -51,6 +51,7 @@ import { LlamaBedrock } from './models/llamaIndex/llama-bedrock-model.js';
 import { LlamaTogetherAI } from './models/llamaIndex/llama-together-model.js';
 import { LlamaAnthropic } from './models/llamaIndex/llama-anthropic-model.js';
 import { LlamaOllama } from './models/llamaIndex/llama-ollama-model.js';
+import { LlamaCohere } from './models/llamaIndex/llama-cohere-model.js';
 
 export {
     RAGApplication,
@@ -106,6 +107,7 @@ export {
     LlamaTogetherAI,
     Fireworks,
     LlamaOllama,
+    LlamaCohere,
 };
 export * from './convertMaapToChatbotFramework.js';
 export * from './Rerank.js';
