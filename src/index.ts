@@ -52,6 +52,7 @@ import { LlamaTogetherAI } from './models/llamaIndex/llama-together-model.js';
 import { LlamaAnthropic } from './models/llamaIndex/llama-anthropic-model.js';
 import { LlamaOllama } from './models/llamaIndex/llama-ollama-model.js';
 import { LlamaCohere } from './models/llamaIndex/llama-cohere-model.js';
+import { LlamaHuggingFace } from './models/llamaIndex/llama-huggingface-model.js';
 
 export {
     RAGApplication,
@@ -89,6 +90,7 @@ export {
     LlamaAzureChatAI,
     LlamaOpenAi,
     LlamaBedrock,
+    LlamaHuggingFace,
     RealTimeDataLoader,
     TogetherAIEmbeddings,
     Cohere,

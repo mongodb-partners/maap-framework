@@ -34,6 +34,7 @@ import {
     Ollama,
     LlamaOllama,
     LlamaCohere,
+    LlamaHuggingFace,
 } from '../../index.js';
 
 import { MongoDBAtlas } from '../../vectorDb/mongo-db-atlas.js';
@@ -262,6 +263,16 @@ export function getModelClass() {
                     return new LlamaOllama(params);
                 default:
                     return new Ollama(params);
+            }
+        case 'HuggingFace':
+            assert(typeof parsedData.llms.model_name === 'string', 'model_name of HuggingFace is required');
+            params['modelName'] = parsedData.llms.model_name;
+
+            switch (framework) {
+                case 'llamaindex':
+                    return new LlamaHuggingFace(params);
+                default:
+                    throw new Error('Unsupported model class name');
             }
         default:
             throw new Error('Unsupported model class name');
