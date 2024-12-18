@@ -7,13 +7,11 @@ import { CohereLLM } from './cohere-llm.js';
 export class LlamaCohere extends BaseModel {
     private readonly debug = createDebugMessages('maap:model:Cohere');
     private readonly modelName: string;
-    private readonly baseUrl: string;
     private model: CohereLLM;
 
     constructor(params?: { temperature?: number; modelName?: string; maxTokens?: number; baseUrl?: string }) {
         super(params?.temperature ?? 0.1);
         this.modelName = params?.modelName ?? 'command-r-plus';
-        this.baseUrl = params?.baseUrl ?? 'https://api.cohere.ai/v1';
     }
 
     override async init(): Promise<void> {
@@ -21,7 +19,6 @@ export class LlamaCohere extends BaseModel {
             temperature: this.temperature,
             model: this.modelName,
             apiKey: process.env.COHERE_API_KEY,
-            //additionalSessionOptions: { baseURL: this.baseUrl },
         });
     }
 

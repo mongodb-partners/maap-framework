@@ -1,9 +1,7 @@
-
-import { CohereClient } from 'cohere-ai';
+import { Cohere, CohereClient } from 'cohere-ai';
 import type { ChatRequest } from 'cohere-ai/api';
 import {
     BaseLLM,
-    type ChatMessage,
     type ChatResponse,
     type ChatResponseChunk,
     type LLMChatParamsNonStreaming,
@@ -40,7 +38,6 @@ export class CohereSession {
  * Cohere LLM implementation
  */
 export class CohereLLM extends BaseLLM {
-    // Per completion MistralAI params
     model: string; //keyof typeof ALL_AVAILABLE_COHERE_MODELS;
     temperature: number;
     topP: number;
@@ -73,18 +70,20 @@ export class CohereLLM extends BaseLLM {
         };
     }
 
-    chat(
-        params: LLMChatParamsStreaming
-    ): Promise<AsyncIterable<ChatResponseChunk>>;
+    chat(params: LLMChatParamsStreaming): Promise<AsyncIterable<ChatResponseChunk>>;
     chat(params: LLMChatParamsNonStreaming): Promise<ChatResponse>;
 
     async chat(
-        params: LLMChatParamsStreaming | LLMChatParamsNonStreaming
+        params: LLMChatParamsStreaming | LLMChatParamsNonStreaming,
     ): Promise<AsyncIterable<ChatResponseChunk> | ChatResponse> {
         const client = await this.session.getClient();
 
         const requestPayload: any = {
-            message: this.formatMessages(params.messages),
+            message: params.messages[params.messages.length - 1].content.toString(),
+            chatHistory: params.messages.slice(0, -1).map(({ content, role }) => ({
+                message: content,
+                role: role === 'assistant' ? 'chatbot' : role,
+            })),
             model: this.model,
             temperature: this.temperature,
             p: this.topP,
@@ -94,34 +93,14 @@ export class CohereLLM extends BaseLLM {
             seed: this.randomSeed,
         };
 
-        //if (params.stream) {
-        //    return this.streamChatResponse(client, requestPayload);
-        //} else {
-            return this.nonStreamingChatResponse(client, requestPayload);
-        //}
+        if (params.stream) {
+            return this.streamChatResponse(client, requestPayload);
+        }
+
+        return this.nonStreamingChatResponse(client, requestPayload);
     }
 
-    private formatMessages(messages: ChatMessage[]): string {
-        // Convert messages into a single prompt since Cohere works with strings
-        return messages
-            .map((msg) => {
-                if (msg.role === 'system') {
-                    return `[System]: ${msg.content}`;
-                } else if (msg.role === 'user') {
-                    return `[User]: ${msg.content}`;
-                } else if (msg.role === 'assistant') {
-                    return `[Assistant]: ${msg.content}`;
-                } else {
-                    return `[Unknown]: ${msg.content}`;
-                }
-            })
-            .join('\n');
-    }
-
-    private async nonStreamingChatResponse(
-        client: CohereClient,
-        payload: ChatRequest
-    ): Promise<ChatResponse> {
+    private async nonStreamingChatResponse(client: CohereClient, payload: ChatRequest): Promise<ChatResponse> {
         const response = await client.chat(payload);
         return {
             message: {
@@ -129,31 +108,33 @@ export class CohereLLM extends BaseLLM {
                 content: response.text,
             },
             raw: {
-                response
-            }
+                response,
+            },
         };
     }
 
-    /*private async streamChatResponse(
+    private async streamChatResponse(
         client: CohereClient,
-        payload: ChatRequest
+        payload: ChatRequest,
     ): Promise<AsyncIterable<ChatResponseChunk>> {
-        const stream = await client.chat(payload, { stream: true });
+        const stream = await client.chatStream(payload);
 
-        const asyncIterable = {
+        return {
             async *[Symbol.asyncIterator]() {
                 for await (const chunk of stream) {
-                    yield {
-                        message: {
-                            role: 'assistant',
-                            content: chunk.text,
-                        },
-                    };
+                    if (chunk.eventType === 'text-generation') {
+                        yield {
+                            raw: chunk,
+                            delta: (chunk as Cohere.StreamedChatResponse.TextGeneration).text,
+                        };
+                    } else if (chunk.eventType === 'stream-end') {
+                        yield {
+                            raw: chunk,
+                            delta: '',
+                        };
+                    }
                 }
             },
         };
-
-        return asyncIterable;
-    }*/
-
+    }
 }
