@@ -52,6 +52,7 @@ import { LlamaTogetherAI } from './models/llamaIndex/llama-together-model.js';
 import { LlamaAnthropic } from './models/llamaIndex/llama-anthropic-model.js';
 import { LlamaMistral } from './models/llamaIndex/llama-mistral-model.js';
 import { LlamaOllama } from './models/llamaIndex/llama-ollama-model.js';
+import { LlamaVertexAI } from './models/llamaIndex/llama-vertexai-model.js';
 
 export {
     RAGApplication,
@@ -108,6 +109,7 @@ export {
     LlamaMistral,
     Fireworks,
     LlamaOllama,
+    LlamaVertexAI
 };
 export * from './convertMaapToChatbotFramework.js';
 export * from './Rerank.js';

@@ -32,7 +32,7 @@ import {
     LlamaOpenAi,
     LlamaTogetherAI,
     Ollama,
-    LlamaOllama
+    LlamaOllama, LlamaVertexAI,
 } from '../../index.js';
 
 import { MongoDBAtlas } from '../../vectorDb/mongo-db-atlas.js';
@@ -180,7 +180,12 @@ export function getModelClass() {
         case 'VertexAI':
             assert(typeof parsedData.llms.model_name === 'string', 'model_name of VertexAI is required');
             params['modelName'] = parsedData.llms.model_name;
-            return new VertexAI(params);
+            switch (framework) {
+                case 'llamaindex':
+                    return new LlamaVertexAI(params)
+                default:
+                    return new VertexAI(params);
+            }
         case 'OpenAI':
             assert(typeof parsedData.llms.model_name === 'string', 'model_name of OpenAI is required');
             params['modelName'] = parsedData.llms.model_name;
