@@ -58,9 +58,22 @@ To use the Cohere embedding model with the MAAP framework, you would need to fee
 
 ## Deploying your model using the LlamaIndex framework
 
-MAAP now provides the option to choose if you want to use LlamaIndex as your main framework to deploy your embeddings.
+MAAP now provides the option to choose if you want to use LlamaIndex as your main framework to deploy your LLM models and embeddings.
 
 This can be done by adding the 'framework' configuration to the config.yaml file
+
+### Chat Model
+
+- #### Config File
+  ```
+  llms:
+    class_name: Cohere
+    model_name: <check_references_below>
+    framework: 'LlamaIndex'
+  ```
+
+### Embedding Model
+
 - #### Config File
   ```
   embedding:

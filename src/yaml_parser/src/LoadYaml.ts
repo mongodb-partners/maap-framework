@@ -32,7 +32,10 @@ import {
     LlamaOpenAi,
     LlamaTogetherAI,
     Ollama,
-    LlamaOllama, LlamaVertexAI,
+    LlamaOllama,
+    LlamaCohere,
+    LlamaHuggingFace,
+    LlamaVertexAI,
 } from '../../index.js';
 
 import { MongoDBAtlas } from '../../vectorDb/mongo-db-atlas.js';
@@ -253,7 +256,12 @@ export function getModelClass() {
         case 'Cohere':
             assert(typeof parsedData.llms.model_name === 'string', 'model_name of Cohere is required');
             params['modelName'] = parsedData.llms.model_name;
-            return new Cohere(params);
+            switch (framework) {
+                case 'llamaindex':
+                    return new LlamaCohere(params);
+                default:
+                    return new Cohere(params);
+            }
         case 'TogetherAI':
             assert(typeof parsedData.llms.model_name === 'string', 'model_name of TogetherAI is required');
             params['modelName'] = parsedData.llms.model_name;
@@ -272,6 +280,16 @@ export function getModelClass() {
                     return new LlamaOllama(params);
                 default:
                     return new Ollama(params);
+            }
+        case 'HuggingFace':
+            assert(typeof parsedData.llms.model_name === 'string', 'model_name of HuggingFace is required');
+            params['modelName'] = parsedData.llms.model_name;
+
+            switch (framework) {
+                case 'llamaindex':
+                    return new LlamaHuggingFace(params);
+                default:
+                    throw new Error('Unsupported model class name');
             }
         default:
             throw new Error('Unsupported model class name');

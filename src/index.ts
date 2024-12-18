@@ -53,6 +53,8 @@ import { LlamaAnthropic } from './models/llamaIndex/llama-anthropic-model.js';
 import { LlamaMistral } from './models/llamaIndex/llama-mistral-model.js';
 import { LlamaOllama } from './models/llamaIndex/llama-ollama-model.js';
 import { LlamaVertexAI } from './models/llamaIndex/llama-vertexai-model.js';
+import { LlamaCohere } from './models/llamaIndex/llama-cohere-model.js';
+import { LlamaHuggingFace } from './models/llamaIndex/llama-huggingface-model.js';
 
 export {
     RAGApplication,
@@ -90,6 +92,7 @@ export {
     LlamaAzureChatAI,
     LlamaOpenAi,
     LlamaBedrock,
+    LlamaHuggingFace,
     RealTimeDataLoader,
     TogetherAIEmbeddings,
     Cohere,
@@ -109,7 +112,8 @@ export {
     LlamaMistral,
     Fireworks,
     LlamaOllama,
-    LlamaVertexAI
+    LlamaVertexAI,
+    LlamaCohere
 };
 export * from './convertMaapToChatbotFramework.js';
 export * from './Rerank.js';
