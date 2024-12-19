@@ -7,28 +7,14 @@ import {
     type GeminiChatParamsStreaming,
     type GeminiChatStreamResponse,
     type GeminiMessageRole,
-    type GeminiModelInfo,
-    type IGeminiSession,
 } from 'llamaindex/llm/gemini/types';
 import { GeminiHelper, getChatContext, mapBaseToolToGeminiFunctionDeclaration } from 'llamaindex/llm/gemini/utils';
 import { Gemini } from 'llamaindex';
 import { Tokenizers } from '@llamaindex/env/tokenizers';
 import { Content, Part, SafetySetting } from '@google-cloud/vertexai';
+import { GEMINI_MODEL_INFO_MAP } from 'llamaindex/llm/gemini/base';
+import { CustomGeminiVertexSession } from './custom-gemini-vertex-session.js';
 
-export const GEMINI_MODEL_INFO_MAP: Record<GEMINI_MODEL, GeminiModelInfo> = {
-    [GEMINI_MODEL.GEMINI_PRO]: { contextWindow: 30720 },
-    [GEMINI_MODEL.GEMINI_PRO_VISION]: { contextWindow: 12288 },
-    // multi-modal/multi turn
-    [GEMINI_MODEL.GEMINI_PRO_LATEST]: { contextWindow: 10 ** 6 },
-    [GEMINI_MODEL.GEMINI_PRO_FLASH_LATEST]: { contextWindow: 10 ** 6 },
-    [GEMINI_MODEL.GEMINI_PRO_1_5_PRO_PREVIEW]: { contextWindow: 10 ** 6 },
-    [GEMINI_MODEL.GEMINI_PRO_1_5_FLASH_PREVIEW]: { contextWindow: 10 ** 6 },
-    [GEMINI_MODEL.GEMINI_PRO_1_5]: { contextWindow: 2 * 10 ** 6 },
-    [GEMINI_MODEL.GEMINI_PRO_1_5_FLASH]: { contextWindow: 10 ** 6 },
-    [GEMINI_MODEL.GEMINI_PRO_1_5_LATEST]: { contextWindow: 2 * 10 ** 6 },
-    [GEMINI_MODEL.GEMINI_PRO_1_5_FLASH_LATEST]: { contextWindow: 10 ** 6 },
-    [GEMINI_MODEL.GEMINI_2_0_FLASH_EXPERIMENTAL]: { contextWindow: 10 ** 6 },
-};
 
 const DEFAULT_GEMINI_PARAMS = {
     model: GEMINI_MODEL.GEMINI_PRO,
@@ -48,7 +34,7 @@ type CustomLLMMetadata = {
 };
 
 export type GeminiConfig = Partial<typeof DEFAULT_GEMINI_PARAMS> & {
-    session?: IGeminiSession;
+    session?: CustomGeminiVertexSession;
 };
 
 export class CustomGemini extends Gemini {
@@ -131,16 +117,5 @@ export class CustomGemini extends Gemini {
         );
         const result = await chat.sendMessageStream(context.message as Part[]);
         yield* this.session.getChatStream(result);
-    }
-
-    chat(params: GeminiChatParamsStreaming): Promise<GeminiChatStreamResponse>;
-    chat(
-        params: GeminiChatParamsNonStreaming,
-    ): Promise<GeminiChatNonStreamResponse>;
-    async chat(
-        params: GeminiChatParamsStreaming | GeminiChatParamsNonStreaming,
-    ): Promise<GeminiChatStreamResponse | GeminiChatNonStreamResponse> {
-        if (params.stream) return this.streamChat(params);
-        return this.nonStreamChat(params as GeminiChatParamsNonStreaming);
     }
 }
