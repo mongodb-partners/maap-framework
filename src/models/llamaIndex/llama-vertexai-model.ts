@@ -95,14 +95,15 @@ export class LlamaVertexAI extends BaseModel {
         supportingContext: Chunk[],
         pastConversations: ConversationHistory[],
     ): Promise<any> {
-        const pastMessages: ChatMessage[] = this.generatePastMessagesLlama(
-            system,
-            supportingContext,
-            pastConversations,
-            userQuery,
-        );
-        const stream = await this.model.chat({ messages: pastMessages, stream: true });
-        return stream;
+        throw new Error('Method not implemented.');
+        // const pastMessages: ChatMessage[] = this.generatePastMessagesLlama(
+        //     system,
+        //     supportingContext,
+        //     pastConversations,
+        //     userQuery,
+        // );
+        // const stream = await this.model.chat({ messages: pastMessages, stream: true });
+        // return stream;
     }
 
     public getModel() {
