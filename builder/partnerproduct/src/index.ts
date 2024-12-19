@@ -29,26 +29,26 @@ import {
     AppConfig,
     makeApp,
 } from 'mongodb-chatbot-server';
-import { makeMongoDbEmbeddedContentStore, logger } from 'mongodb-rag-core';
+import { makeMongoDbEmbeddedContentStore, logger, EmbeddedContent, EmbeddedContentStore, WithScore } from 'mongodb-rag-core';
 import { MongoDBCrud } from '../../../src/db/mongodb-crud.js';
 import { AggMqlOperator } from '../../../src/db/dynamic-agg-operator.js';
-import { readFileSync } from 'fs';
+
 
 // Load MAAP base classes
 const model = getModelClass();
 const embedding_model = getEmbeddingModel();
 const { dbName, connectionString, vectorSearchIndexName, minScore, numCandidates } = getVBDConfigInfo();
-
+const mongodb = new MongoClient(connectionString);
 
 // Load crud operator with query and name of the operator
 const crudOperatorConfigs = getAggregateOperatorConfigs();
 var aggregatorPipelines = [];
-if(crudOperatorConfigs) {    
-    for(const crudConfig of crudOperatorConfigs) {
-        const crud = new MongoDBCrud({connectionString:crudConfig.connectionString, dbName:crudConfig.dbName, collectionName: crudConfig.collectionName});
+if (crudOperatorConfigs) {
+    for (const crudConfig of crudOperatorConfigs) {
+        const crud = new MongoDBCrud({ connectionString: crudConfig.connectionString, dbName: crudConfig.dbName, collectionName: crudConfig.collectionName });
         crud.init();
         const aggQueryTemplate = JSON.parse(crudConfig.query);
-        aggregatorPipelines.push({crudOperator: crud, aggregator: new AggMqlOperator({model: model, queryTemplate: aggQueryTemplate, jsonSchema: crudConfig.jsonSchema})});
+        aggregatorPipelines.push({ crudOperator: crud, aggregator: new AggMqlOperator({ model: model, queryTemplate: aggQueryTemplate, jsonSchema: crudConfig.jsonSchema }) });
     }
 }
 
@@ -68,6 +68,21 @@ async function getStructuredQueryContext(originalUserMessage: string, recall?: b
     return structuredQueryContext;
 }
 
+// Asynchronously fetches the conversation history from the MongoDB database.
+const getConversationHistory = async () => {
+    var conversationHistory = "";
+    try {
+        const latestMessage = await mongodb.db(dbName).collection('conversations').findOne({}, { sort: { _id: -1 }, projection: { _id: 0, messages: 1 } });
+        if (latestMessage) {
+            latestMessage.messages.forEach((message: { role: string; content: string }) => {
+                conversationHistory += `${message.role} : ${message.content} ~~~ `;
+            });
+        }
+    } catch (error) {
+        logger.error(`Error fetching conversation history: ${error}`);
+    }
+    return conversationHistory;
+}
 
 // MongoDB data source for the content used in RAG.
 // Generated with the Ingest CLI.
@@ -95,7 +110,7 @@ const findContent = makeDefaultFindContent({
         indexName: vectorSearchIndexName,
         numCandidates: numCandidates,
         minScore: minScore,
-    },
+    }
 });
 
 // For MAAP team: this shows how to use the withReranker and withQueryPreprocessor
@@ -104,7 +119,7 @@ const dummyRerank: Rerank = async ({ query, results }) => {
     return { results };
 };
 const dummyPreprocess: PreProcessQuery = async ({ query }) => {
-    // Aggreation query result + User quer
+    // Aggreation query result + User query
     const preprocessedQuery = await getStructuredQueryContext(query, false);
     return { preprocessedQuery: preprocessedQuery };
 };
@@ -127,21 +142,24 @@ const makeUserMessage: MakeUserMessageFunc = async function ({
     const context = content.map((c) => c.text).join(`\n${chunkSeparator}\n`);
     // Run the structured query to populate the alternate retrieval technique results as context
     var structuredQueryContext = "";
-    if(aggregatorPipelines.length > 0) {
+    if (aggregatorPipelines.length > 0) {
         var structuredQueryContext = await getStructuredQueryContext(originalUserMessage, true);
     }
-    
+    const conversationHistory = await getConversationHistory();
+
     const contentForLlm = `Using the following information, answer the user query.
-    the context is seperated by Chunk Separator: ${chunkSeparator}
+    the context is separated by Chunk Separator: ${chunkSeparator}
 
     Information:
     ${context}    
     ${chunkSeparator}
+    Conversation History:
+    ${conversationHistory}
     Operational Information:
     ${structuredQueryContext}
 
     User query: ${originalUserMessage}`;
-        return { role: 'user', content: contentForLlm };
+    return { role: 'user', content: contentForLlm };
 };
 
 // Generates the user prompt for the chatbot using RAG
@@ -160,7 +178,6 @@ const systemPrompt: SystemPrompt = {
 // Create MongoDB collection and service for storing user conversations
 // with the chatbot.
 
-const mongodb = new MongoClient(connectionString);
 const conversations = makeMongoDbConversationsService(mongodb.db(dbName));
 
 // Create the MongoDB Chatbot Server Express.js app configuration

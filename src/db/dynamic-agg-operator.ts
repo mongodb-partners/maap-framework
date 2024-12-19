@@ -52,7 +52,7 @@ export class AggMqlOperator {
         const chain = RunnableSequence.from([
             PromptTemplate.fromTemplate(
               "You are an expert in paring structure information from user queries \n"+
-              "Extract structured data from the question as per fromat instructions.\nFormat instructions: {format_instructions}\nUser Question : {question}"
+              "Extract structured data from the question as per format instructions.\nFormat instructions: {format_instructions}\nUser Question : {question}"
             ),
             this.llm,
             parser

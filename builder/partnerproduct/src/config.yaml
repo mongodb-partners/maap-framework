@@ -1,22 +1,22 @@
 ingest:
-  - source: 'pdf'
+  - source: 'pdf' 
     source_path: '<file_path>'
     chunk_size: 2000
     chunk_overlap: 200
 embedding:
-    class_name: Nomic-v1.5
+    class_name: <embedding_class_name>
 vector_store:
     connectionString: '<your_mdb_connection_string>'
     dbName: '<db_name>'
-    collectionName: 'embedded_content'
-    embeddingKey: 'embedding'
-    textKey: 'text'
+    collectionName: 'embedded_content' # Do not change this
+    embeddingKey: 'embedding' # Do not change this
+    textKey: 'text' # Do not change this
     numCandidates: 150
     minScore: 0.1 
-    vectorSearchIndexName: 'vector_index'
+    vectorSearchIndexName: 'vector_index' 
 llms:
-    class_name: Fireworks
-    model_name: 'accounts/fireworks/models/mixtral-8x22b-instruct'
+    class_name: <llm_class_name>
+    model_name: <llm_model_name>
 aggregate_operators:
     - connectionString: "<your_mdb_connection_string>"
       dbName: '<db_name>'
@@ -24,7 +24,7 @@ aggregate_operators:
       aggregatePipelineName: '<pipeline_name>'
       queryFilePath: '<your_mql_query_file_path>' # must contain ${fieldName} for variables or can be just a static query
       variables:
-        <fieldName>: '<Field description>'
-        <fieldName2>: '<Field description2>'
+        <fieldName>: '<field_description>'
+        <fieldName2>: '<field_description2>'
 
 systemPromptPath: '<your_system_prompt_file_path>'
