@@ -97,7 +97,6 @@ export class LlamaVertexAI extends BaseModel {
         pastConversations: ConversationHistory[],
     ): Promise<any> {
         // TODO: This should work once LlamaIndex provides support to configurable safety_settings https://github.com/run-llama/LlamaIndexTS/issues/1573
-        console.log("\n\n TEST \n\n")
         const pastMessages: ChatMessage[] = this.generatePastMessagesLlama(
              system,
              supportingContext,
