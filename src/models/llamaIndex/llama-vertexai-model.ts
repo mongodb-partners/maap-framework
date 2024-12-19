@@ -1,9 +1,8 @@
-import { ChatMessage, Gemini, GEMINI_MODEL } from 'llamaindex';
+import { ChatMessage, Gemini, GEMINI_MODEL, GeminiVertexSession } from 'llamaindex';
 import createDebugMessages from 'debug';
 import { BaseModel } from '../../interfaces/base-model.js';
 import { Chunk, ConversationHistory } from '../../global/types.js';
 import { HarmBlockThreshold, HarmCategory, SafetySetting } from '@google-cloud/vertexai';
-import { CustomGeminiVertexSession } from '../../util/custom-gemini-vertex-session.js';
 import { CustomGemini } from '../../util/custom-gemini-vertex-model.js';
 
 export class LlamaVertexAI extends BaseModel {
@@ -51,19 +50,21 @@ export class LlamaVertexAI extends BaseModel {
                 threshold: HarmBlockThreshold.BLOCK_ONLY_HIGH,
             },
         ];
+        // TODO: Once llamaindex support configurable safety_settings (https://github.com/run-llama/LlamaIndexTS/issues/1573) or with a full paid account
+        // change this CustomGemini implementation for the Gemini implementation of llama index.
         this.model = new CustomGemini({
             temperature: this.temperature,
             topP: this.topP,
             model: model,
-            session: new CustomGeminiVertexSession({
+            session: new GeminiVertexSession({
                 location: process.env.GOOGLE_VERTEX_LOCATION,
                 project: process.env.GOOGLE_VERTEX_PROJECT,
                 googleAuthOptions: {
                     keyFilename: process.env.GOOGLE_APPLICATION_CREDENTIALS,
                     scopes: ['https://www.googleapis.com/auth/cloud-platform'],
                 }
-            }, safety_settings),
-        }, safety_settings);
+            })
+        }, safety_settings); //Safety settings for custom model implementation.
         console.log(this.model.metadata)
     }
 
@@ -96,6 +97,7 @@ export class LlamaVertexAI extends BaseModel {
         pastConversations: ConversationHistory[],
     ): Promise<any> {
         throw new Error('Method not implemented.');
+        // TODO: This should work once LlamaIndex provides support to configurable safety_settings https://github.com/run-llama/LlamaIndexTS/issues/1573
         // const pastMessages: ChatMessage[] = this.generatePastMessagesLlama(
         //     system,
         //     supportingContext,

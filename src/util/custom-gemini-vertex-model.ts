@@ -6,14 +6,13 @@ import {
     type GeminiChatParamsNonStreaming,
     type GeminiChatParamsStreaming,
     type GeminiChatStreamResponse,
-    type GeminiMessageRole,
+    type GeminiMessageRole, IGeminiSession,
 } from 'llamaindex/llm/gemini/types';
 import { GeminiHelper, getChatContext, mapBaseToolToGeminiFunctionDeclaration } from 'llamaindex/llm/gemini/utils';
 import { Gemini } from 'llamaindex';
 import { Tokenizers } from '@llamaindex/env/tokenizers';
 import { Content, Part, SafetySetting } from '@google-cloud/vertexai';
 import { GEMINI_MODEL_INFO_MAP } from 'llamaindex/llm/gemini/base';
-import { CustomGeminiVertexSession } from './custom-gemini-vertex-session.js';
 
 
 const DEFAULT_GEMINI_PARAMS = {
@@ -34,7 +33,7 @@ type CustomLLMMetadata = {
 };
 
 export type GeminiConfig = Partial<typeof DEFAULT_GEMINI_PARAMS> & {
-    session?: CustomGeminiVertexSession;
+    session?: IGeminiSession;
 };
 
 export class CustomGemini extends Gemini {
