@@ -65,7 +65,7 @@ export class LlamaVertexAI extends BaseModel {
                 }
             })
         }, safety_settings); //Safety settings for custom model implementation.
-        console.log(this.model.metadata)
+        //console.log(this.model.metadata)
     }
 
     override async runQuery(
