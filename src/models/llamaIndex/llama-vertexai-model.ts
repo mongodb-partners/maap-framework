@@ -96,16 +96,16 @@ export class LlamaVertexAI extends BaseModel {
         supportingContext: Chunk[],
         pastConversations: ConversationHistory[],
     ): Promise<any> {
-        throw new Error('Method not implemented.');
         // TODO: This should work once LlamaIndex provides support to configurable safety_settings https://github.com/run-llama/LlamaIndexTS/issues/1573
-        // const pastMessages: ChatMessage[] = this.generatePastMessagesLlama(
-        //     system,
-        //     supportingContext,
-        //     pastConversations,
-        //     userQuery,
-        // );
-        // const stream = await this.model.chat({ messages: pastMessages, stream: true });
-        // return stream;
+        console.log("\n\n TEST \n\n")
+        const pastMessages: ChatMessage[] = this.generatePastMessagesLlama(
+             system,
+             supportingContext,
+             pastConversations,
+             userQuery,
+         );
+        const stream = await this.model.chat({ messages: pastMessages, stream: true });
+        return stream;
     }
 
     public getModel() {
