@@ -52,7 +52,7 @@ The system architecture consists of the following components:
 
 The system uses Docker for containerization and deployment.
 
-![MAAP Application Architecture](AnthropicAWSArchitecture.png)
+![MAAP Application Architecture](assets/anthropic/AnthropicAWSArchitecture.png)
 
 **Data flow within the system:**
 
