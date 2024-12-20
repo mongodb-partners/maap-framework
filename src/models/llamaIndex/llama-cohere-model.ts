@@ -2,7 +2,7 @@ import { BaseModel } from '../../interfaces/base-model.js';
 import createDebugMessages from 'debug';
 import { Chunk, ConversationHistory } from '../../global/types.js';
 import { ChatMessage } from 'llamaindex';
-import { CohereLLM } from './cohere-llm.js';
+import { CohereLLM } from './miscelaneous/cohere-llm.js';
 
 export class LlamaCohere extends BaseModel {
     private readonly debug = createDebugMessages('maap:model:Cohere');

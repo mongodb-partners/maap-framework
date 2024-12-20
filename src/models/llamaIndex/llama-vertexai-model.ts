@@ -3,7 +3,7 @@ import createDebugMessages from 'debug';
 import { BaseModel } from '../../interfaces/base-model.js';
 import { Chunk, ConversationHistory } from '../../global/types.js';
 import { HarmBlockThreshold, HarmCategory, SafetySetting } from '@google-cloud/vertexai';
-import { CustomGemini } from '../../util/custom-gemini-vertex-model.js';
+import { CustomGemini } from './miscelaneous/custom-gemini-vertex-model.js';
 
 export class LlamaVertexAI extends BaseModel {
     private readonly debug = createDebugMessages('maap:model:VertexAi');
