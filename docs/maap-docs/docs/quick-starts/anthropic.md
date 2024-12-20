@@ -1,6 +1,6 @@
 # MongoDB - Anthropic Quickstart
 
-MongoDB - Anthropic Quickstart is an integrated end-to-end technology stack that combines MongoDB Atlas capabilities with Anthropic's Claude AI models to create an intelligent conversational interface. It allows users to interact with MongoDB data sources through natural language queries, leveraging vector search, full-text search, hybrid search and other advanced querying techniques.
+MongoDB - Anthropic Quickstart is an integrated end-to-end technology stack that combines MongoDB Atlas capabilities with Anthropic's Claude AI models to create an intelligent Agentic conversational interface. It allows users to interact with MongoDB data sources through natural language queries, leveraging vector search, full-text search, hybrid search and other advanced querying techniques.
 
 ## Table of Contents
 1. [Overview](#1-overview)
@@ -18,7 +18,7 @@ MongoDB - Anthropic Quickstart is an integrated end-to-end technology stack that
 
 ## 1. Overview
 
-The MongoDB - Anthropic Quickstart is a comprehensive, integrated end-to-end technology stack meticulously designed to facilitate the rapid development and seamless deployment of AI-powered applications. This innovative framework combines the robust capabilities of MongoDB Atlas for scalable data storage and advanced vector search functionalities with Anthropic's Claude AI state-of-the-art language models for powerful natural language processing and generation.
+The MongoDB - Anthropic Quickstart is a comprehensive, integrated end-to-end technology stack meticulously designed to facilitate the rapid development and seamless deployment of AI-powered Agentic applications. This innovative framework combines the robust capabilities of MongoDB Atlas for scalable data storage and advanced vector search functionalities with Anthropic's Claude AI state-of-the-art language models for powerful natural language processing and generation.
 
 Key features include:
 - Advanced vector search capabilities for nuanced, contextual information retrieval
@@ -53,6 +53,20 @@ The system architecture consists of the following components:
 The system uses Docker for containerization and deployment.
 
 ![MAAP Application Architecture](AnthropicAWSArchitecture.png)
+
+**Data flow within the system:**
+
+Users interact with the Gradio-based frontend UI, which acts as the entry point for all inputs. 
+
+- Text queries or file uploads from users are forwarded to the **UI Service**.  
+- For file uploads, the **Loader Service** handles data ingestion and processes content using **AWS Titan Embeddings**, generating vector representations of the input data.  
+- These vector embeddings are stored in **MongoDB Atlas**, enabling efficient vector or full-text similarity searches.  
+- For text query processing, the **Main Service** coordinates multiple actions:
+  - Retrieves relevant information from **MongoDB Atlas** using vector or full-text search.  
+  - Handles AI-specific queries by interacting with **AWS Bedrock**, specifically leveraging **Claude AI** for language understanding and generation.  
+  - Utilizes **AWS Titan Embeddings** for embedding generation when necessary.  
+
+This system ensures a seamless user experience and leverages advanced AI models for robust query handling and content processing.
 
 This architecture ensures high scalability, allowing the system to handle increasing loads by scaling individual components as needed. It also provides flexibility, enabling easy updates or replacements of specific services without affecting the entire system.
 
