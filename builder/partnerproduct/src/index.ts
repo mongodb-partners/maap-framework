@@ -131,8 +131,8 @@ const makeUserMessage: MakeUserMessageFunc = async function ({
         var structuredQueryContext = await getStructuredQueryContext(originalUserMessage, true);
     }
     
-    const contentForLlm = `Using the following information, answer the user query.
-    the context is seperated by Chunk Separator: ${chunkSeparator}
+    const contentForLlm = `Using the following Information and Conversation History, answer the user query.
+    The context is seperated by Chunk Separator: ${chunkSeparator}
 
     Information:
     ${context}    
@@ -161,10 +161,10 @@ const systemPrompt: SystemPrompt = {
 // with the chatbot.
 
 const mongodb = new MongoClient(connectionString);
-const conversations = makeMongoDbConversationsService(mongodb.db(dbName));
+export const conversations = makeMongoDbConversationsService(mongodb.db(dbName));
 
 // Create the MongoDB Chatbot Server Express.js app configuration
-const config: AppConfig = {
+export const config: AppConfig = {
     conversationsRouterConfig: {
         llm,
         conversations,
