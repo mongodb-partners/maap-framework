@@ -1,21 +1,33 @@
 import createDebugMessages from 'debug';
 import { Chunk, ConversationHistory } from '../global/types.js';
-import {ChatMessage} from "llamaindex";
+import { ChatMessage } from 'llamaindex';
+import { MongoClient } from 'mongodb';
+import { getVBDConfigInfo } from '../yaml_parser/src/LoadYaml.js';
+import { conversations, config } from '../../builder/partnerproduct/src/index.js';
+
+// load the connection string to be used to get conversation data
+const { dbName, connectionString } = getVBDConfigInfo();
 
 export abstract class BaseModel {
     private readonly baseDebug = createDebugMessages('maap:model:BaseModel');
     private static defaultTemperature: number;
+    private mongoClient: MongoClient;
+    private mongoDB;
 
     public static setDefaultTemperature(temperature?: number) {
         BaseModel.defaultTemperature = temperature;
     }
 
     private readonly conversationMap: Map<string, ConversationHistory[]>;
+    //private readonly conversationArray: ConversationHistory[];
     private readonly _temperature?: number;
 
     constructor(temperature?: number) {
         this._temperature = temperature;
         this.conversationMap = new Map();
+        //this.conversationArray = [];
+        this.mongoClient = new MongoClient(connectionString)
+        this.mongoDB = this.mongoClient.db(dbName);
     }
 
     public get temperature() {
@@ -30,11 +42,18 @@ export abstract class BaseModel {
         supportingContext: Chunk[],
         conversationId: string = 'default',
     ): Promise<string> {
-        if (!this.conversationMap.has(conversationId)) this.conversationMap.set(conversationId, []);
+        const conversationHistory = this.mongoDB.collection("conversations");
 
-        const conversationHistory = this.conversationMap.get(conversationId);
+        //update the user query to include context from the conversation history
+        const conversationHistoryContext = `
+        Conversation History:
+        {${conversationHistory.map((s) => s.sender != 'SYSTEM' ? `[Role:${s.sender}\nContent:${s.message}]` : '').filter(Boolean).join('\n')}}
+        `;
+        const [before, after] = userQuery.split("Operational Information:");
+        const updatedUserQuery = `${before}\n${conversationHistoryContext.trim()}\nOperational Information:${after}`;
+
         this.baseDebug(`${conversationHistory.length} history entries found for conversationId '${conversationId}'`);
-        const result = await this.runQuery(system, userQuery, supportingContext, conversationHistory);
+        const result = await this.runQuery(system, updatedUserQuery, supportingContext, conversationHistory);
 
         conversationHistory.push({ message: userQuery, sender: 'HUMAN' });
         conversationHistory.push({
@@ -103,5 +122,4 @@ export abstract class BaseModel {
         supportingContext: Chunk[],
         pastConversations: ConversationHistory[],
     ): Promise<any>;
-
 }
