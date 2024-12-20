@@ -1,4 +1,4 @@
-#  MongoDB <> Arcee Quickstart
+#  MongoDB - Arcee Quickstart
 
 MongoDB - Arcee Quickstart is a project aimed at facilitating the rapid and straightforward deployment of AI-driven applications utilizing MongoDB Atlas and Arcee models. It offers scripts and configurations to streamline and automate the setup process, integrating MongoDB Atlas for data storage and Arcee models for AI functionalities.
 
@@ -44,13 +44,7 @@ The MAAP Framework is built on a robust and flexible microservices architecture,
 
 These microservices interact seamlessly with MongoDB Atlas, which serves as the primary data store and provides powerful vector search capabilities. The architecture also integrates with AWS SageMaker, leveraging its scalable infrastructure for AI model hosting and inference.
 
-
-<center>
-
 ![MAAP Application Architecture](ArceeAWSArchitecture.png)
-
-MAAP Application Architecture</center>
-
 
 Data flow within the system:
 1. User inputs (text queries or file uploads) are initially received by the UI Service.
