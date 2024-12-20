@@ -7,12 +7,14 @@ export class LlamaHuggingFace extends BaseModel {
     private readonly debug = createDebugMessages('maap:model:HuggingFace');
     private readonly modelName: string;
     private readonly maxTokens: number;
+    private topP: number;
     private model: HuggingFaceInferenceAPI;
 
-    constructor(params?: { modelName?: string; temperature?: number; maxTokens?: number }) {
+    constructor(params?: { modelName?: string; temperature?: number; maxTokens?: number; topP?: number }) {
         super(params?.temperature ?? 0.1);
         this.modelName = params?.modelName ?? 'mistralai/Mixtral-8x7B-Instruct-v0.1';
         this.maxTokens = params?.maxTokens ?? 300;
+        this.topP = params.topP;
     }
 
     override async init(): Promise<void> {
@@ -22,7 +24,8 @@ export class LlamaHuggingFace extends BaseModel {
             maxTokens: this.maxTokens,
             temperature: this.temperature,
             verbose: false,
-            maxRetries: 1
+            maxRetries: 1,
+            topP: this.topP
         });
     }
 

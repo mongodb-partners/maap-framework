@@ -179,6 +179,8 @@ export function getModelClass() {
     const params = {};
     if (parsedData.llms.temperature) params['temperature'] = parsedData.llms.temperature;
     if (parsedData.llms.max_tokens) params['maxTokens'] = parsedData.llms.max_tokens;
+    if (parsedData.llms.top_p) params['topP'] = parsedData.llms.top_p;
+
     switch (parsedData.llms.class_name) {
         case 'VertexAI':
             assert(typeof parsedData.llms.model_name === 'string', 'model_name of VertexAI is required');
@@ -277,6 +279,7 @@ export function getModelClass() {
             if (parsedData.llms.base_url) params['baseUrl'] = parsedData.llms.base_url;
             switch (framework) {
                 case 'llamaindex':
+                    // This model does not support topP and maxTokens parameters
                     return new LlamaOllama(params);
                 default:
                     return new Ollama(params);

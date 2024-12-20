@@ -8,13 +8,15 @@ export class LlamaTogetherAI extends BaseModel {
     private readonly modelName: string;
     private readonly apiKey: string;
     private readonly maxTokens: number;
+    private topP: number;
     private model: TogetherLLM;
 
-    constructor(params?: { temperature?: number; modelName?: string; apiKey?: string; maxTokens?: number }) {
+    constructor(params?: { temperature?: number; modelName?: string; apiKey?: string; maxTokens?: number; topP?: number }) {
         super(params?.temperature ?? 0.1);
         this.modelName = params?.modelName ?? 'mistralai/Mixtral-8x7B-Instruct-v0.1';
         this.apiKey = params?.apiKey ?? process.env.TOGETHER_AI_API_KEY;
         this.maxTokens = params?.maxTokens ?? 2048;
+        this.topP = params.topP;
     }
 
     override async init(): Promise<void> {
@@ -23,6 +25,7 @@ export class LlamaTogetherAI extends BaseModel {
             model: this.modelName,
             apiKey: this.apiKey,
             maxTokens: this.maxTokens,
+            topP: this.topP,
         });
     }
 

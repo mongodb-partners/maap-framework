@@ -9,7 +9,7 @@ export class LlamaOllama extends BaseModel{
     private readonly baseUrl: string;
     private model: Ollama;
 
-    constructor(params?: { modelName?: string; baseUrl?: string; temperature?: number }) {
+    constructor(params?: { modelName?: string; baseUrl?: string; temperature?: number; }) {
         super(params?.temperature ?? 0.1);
         this.modelName = params.modelName ?? "llama2";
         this.baseUrl = params.baseUrl ?? "http://localhost:11434";
