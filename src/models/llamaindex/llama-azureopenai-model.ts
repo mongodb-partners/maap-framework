@@ -12,7 +12,6 @@ export class LlamaAzureChatAI extends BaseModel {
     private readonly modelName: string;
     private readonly maxTokens: number;
     private readonly topP: number;
-    private readonly topK: number;
 
     constructor(params?: { azureOpenAIApiInstanceName?: string; azureOpenAIApiDeploymentName?: string; azureOpenAIApiVersion?: string; modelName?: string; temperature?: number; maxTokens?: number; topP?:number; topK?:number }) {
         super(params?.temperature ?? 0.1);
@@ -21,7 +20,6 @@ export class LlamaAzureChatAI extends BaseModel {
         this.azureOpenAIApiVersion = params?.azureOpenAIApiVersion ?? process.env.AZURE_OPENAI_API_VERSION;
         this.maxTokens = params?.maxTokens ?? 2048;
         this.topP = params?.topP ?? 0.9;
-        this.topK = params?.topK ?? 40;
         this.modelName = params?.modelName ?? 'gpt-3.5-turbo';
     }
 

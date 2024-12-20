@@ -3,15 +3,20 @@ import createDebugMessages from 'debug';
 import { Chunk, ConversationHistory } from '../../global/types.js';
 import { ChatMessage } from 'llamaindex';
 import { CohereLLM } from './miscelaneous/cohere-llm.js';
+import { BEDROCK_MODEL_MAX_TOKENS } from '@llamaindex/community';
 
 export class LlamaCohere extends BaseModel {
     private readonly debug = createDebugMessages('maap:model:Cohere');
     private readonly modelName: string;
     private model: CohereLLM;
+    private maxTokens: number;
+    private topP: number
 
-    constructor(params?: { temperature?: number; modelName?: string; maxTokens?: number; baseUrl?: string }) {
+    constructor(params?: { temperature?: number; modelName?: string; maxTokens?: number; baseUrl?: string; topP?: number }) {
         super(params?.temperature ?? 0.1);
         this.modelName = params?.modelName ?? 'command-r-plus';
+        this.maxTokens = params?.maxTokens ?? (BEDROCK_MODEL_MAX_TOKENS[this.modelName] * 0.75);
+        this.topP = params?.topP ?? 0.5;
     }
 
     override async init(): Promise<void> {
@@ -19,6 +24,8 @@ export class LlamaCohere extends BaseModel {
             temperature: this.temperature,
             model: this.modelName,
             apiKey: process.env.COHERE_API_KEY,
+            maxTokens: this.maxTokens,
+            topP: this.topP
         });
     }
 

@@ -9,6 +9,7 @@ export class LlamaAnthropic extends BaseModel {
     private apiKey: string;
     private maxTokens: number;
     private model: Anthropic;
+    private topP: number;
 
     constructor(params?: {
         temperature?: number;
@@ -22,6 +23,7 @@ export class LlamaAnthropic extends BaseModel {
         this.modelName = params?.modelName ?? 'claude-3-sonnet-20240229';
         this.apiKey = params?.apiKey ?? process.env.ANTHROPIC_API_KEY;
         this.maxTokens = params?.maxTokens ?? 2048;
+        this.topP = params?.topP ?? 0.5;
     }
 
     override async init(): Promise<void> {
@@ -30,6 +32,7 @@ export class LlamaAnthropic extends BaseModel {
             apiKey: this.apiKey,
             model: this.modelName,
             maxTokens: this.maxTokens,
+            topP: this.topP,
         });
     }
 

@@ -9,17 +9,21 @@ export class LlamaBedrock extends BaseModel {
     private modelName: string;
     private maxTokens: number;
     private model: Bedrock;
+    private topP: number;
 
-    constructor(params?: { modelName?: string; maxTokens?: number; temperature?: number }) {
+    constructor(params?: { modelName?: string; maxTokens?: number; temperature?: number; topP?: number }) {
         super(params?.temperature ?? 0.1);
-        this.modelName = params.modelName ?? "meta.llama3-8b-instruct-v1:0";
-        this.maxTokens = params.maxTokens ?? (BEDROCK_MODEL_MAX_TOKENS[this.modelName] * 0.75 ?? 2048);
+        this.modelName = params?.modelName ?? "meta.llama3-8b-instruct-v1:0";
+        this.maxTokens = params?.maxTokens ?? (BEDROCK_MODEL_MAX_TOKENS[this.modelName] * 0.75);
+        this.topP = params?.topP ?? 0.1
     }
 
     override async init(): Promise<void> {
         this.model = new Bedrock({
             model: this.modelName,
             maxTokens: this.maxTokens,
+            temperature: this.temperature,
+            topP: this.topP,
             region: process.env.BEDROCK_AWS_REGION!,
             credentials: {
                 accessKeyId: process.env.BEDROCK_AWS_ACCESS_KEY_ID!,

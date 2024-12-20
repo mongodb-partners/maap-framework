@@ -9,12 +9,14 @@ export class LlamaFireworksModel extends BaseModel {
     private readonly modelName: string;
     private maxTokens: number;
     private model: FireworksLLM;
+    private topP: number;
 
-    constructor(params?: { temperature?: number; apiKey?: string; modelName?: string; maxTokens?: number }) {
+    constructor(params?: { temperature?: number; apiKey?: string; modelName?: string; maxTokens?: number; topP?: number }) {
         super(params?.temperature ?? 0.1);
         this.modelName = params?.modelName ?? 'accounts/fireworks/models/mixtral-8x7b-instruct';
         this.apiKey = params?.apiKey ?? process.env.FIREWORKS_API_KEY;
         this.maxTokens = params?.maxTokens ?? 2048;
+        this.topP = params?.topP ?? 0.5;
     }
 
     override async init(): Promise<void> {
@@ -23,6 +25,7 @@ export class LlamaFireworksModel extends BaseModel {
             apiKey: this.apiKey,
             model: this.modelName,
             maxTokens: this.maxTokens,
+            topP: this.topP,
         });
     }
 
