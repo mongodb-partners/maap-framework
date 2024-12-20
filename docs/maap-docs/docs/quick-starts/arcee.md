@@ -30,13 +30,13 @@ Key features include:
 - Real-time AI interactions for immediate insights and responses
 - Stringent security measures to ensure the integrity and confidentiality of all data handled within the system
 
-MAAP empowers developers to create sophisticated AI applications that can understand context, process natural language queries, and provide intelligent responses based on ingested data. This makes it an ideal solution for a wide range of applications, from advanced customer support systems and intelligent document analysis tools to complex research assistants and innovative educational platforms.
+This system empowers developers to create sophisticated AI applications that can understand context, process natural language queries, and provide intelligent responses based on ingested data. This makes it an ideal solution for a wide range of applications, from advanced customer support systems and intelligent document analysis tools to complex research assistants and innovative educational platforms.
 
 ## 2. System Architecture
 
-The MAAP Framework is built on a robust and flexible microservices architecture, comprising three primary services that work in concert to deliver a seamless AI-powered application experience:
+This system is built on a robust and flexible microservices architecture, comprising three primary services that work in concert to deliver a seamless AI-powered application experience:
 
-1. **UI Service (Port 7860)**: This service forms the front-end of the MAAP framework, providing an intuitive and responsive user interface for interaction. It serves as the primary point of contact for end-users, allowing them to input queries, upload files, and view AI-generated responses.
+1. **UI Service (Port 7860)**: This service forms the front-end of the MAAP application, providing an intuitive and responsive user interface for interaction. It serves as the primary point of contact for end-users, allowing them to input queries, upload files, and view AI-generated responses.
 
 2. **Main Service (Port 8000)**: Acting as the brain of the system, the Main Service handles the core application logic, manages database queries, and orchestrates AI model interactions. It processes user inputs received from the UI Service, retrieves relevant information from the database, and coordinates with AWS SageMaker for AI model inferences.
 
@@ -57,7 +57,7 @@ This architecture ensures high scalability, allowing the system to handle increa
 
 ## 3. Components
 
-The MAAP Framework is composed of several key components:
+This system is composed of several key components:
 
 ### UI Service
 - **Purpose**: Provides a web-based interface for user interactions
@@ -157,7 +157,7 @@ chmod +x one-click.ksh
 ./one-click.ksh
 ```
 
-This script will create the necessary AWS resources, deploy the SageMaker endpoint, set up and configure the EC2 instance, and install and start the MAAP services.
+This script will create the necessary AWS resources, deploy the SageMaker endpoint, set up and configure the EC2 instance, and install and start the application services.
 
 ### Post-Deployment Verification
 1. Access the UI service by navigating to `http://<ec2-instance-ip>:7860` in your web browser.
