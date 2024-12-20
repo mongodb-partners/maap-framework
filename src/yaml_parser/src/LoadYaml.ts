@@ -19,6 +19,7 @@ import { FireworksEmbedding } from '../../embeddings/fireworks-embeddings.js';
 import { AzureChatAI } from '../../models/azureopenai-model.js';
 import { readFileSync, readdirSync } from 'fs';
 import { SageMaker } from '../../models/sagemaker-model.js';
+import { EnterpriseLoader } from '../../loaders/enterprise-loader.js';
 
 // src/loaders/confluence-loader.ts src/loaders/docx-loader.ts src/loaders/excel-loader.ts src/loaders/json-loader.ts src/loaders/pdf-loader.ts src/loaders/ppt-loader.ts src/loaders/sitemap-loader.ts src/loaders/text-loader.ts src/loaders/web-loader.ts src/loaders/youtube-channel-loader.ts src/loaders/youtube-loader.ts src/loaders/youtube-search-loader.ts
 function getDataFromYamlFile() {
@@ -332,6 +333,14 @@ export function getIngestLoader() {
           console.log(`No files found in the folder: ${data.source_path}`);
         }
         break;
+        case 'enterprise':
+          dataloaders.push(new EnterpriseLoader({
+            connectorName: data.connectorName,
+            connectorConfig: JSON.parse(readFileSync(data.connectorConfigPath, 'utf8')),
+            filterStream: data.filterStream,
+            pickKeysForEmbedding: data.pickKeysForEmbedding,
+          }));
+          break;
       default:
         // Handle unsupported source type (optional)
         console.log(`Unsupported source type: ${data.source}`);
