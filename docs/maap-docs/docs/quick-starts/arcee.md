@@ -1,4 +1,6 @@
-# MongoDB AI Applications Program (MAAP) Documentation
+#  MongoDB <> Arcee Quickstart
+
+MongoDB - Arcee Quickstart is a project aimed at facilitating the rapid and straightforward deployment of AI-driven applications utilizing MongoDB Atlas and Arcee models. It offers scripts and configurations to streamline and automate the setup process, integrating MongoDB Atlas for data storage and Arcee models for AI functionalities.
 
 ## Table of Contents
 1. [Overview](#1-overview)
@@ -16,7 +18,7 @@
 
 ## 1. Overview
 
-The MongoDB AI Applications Program (MAAP) Quickstart is a comprehensive, integrated end-to-end technology stack meticulously designed to facilitate the rapid development and seamless deployment of AI-powered applications. This innovative framework combines the robust capabilities of MongoDB Atlas for scalable data storage and advanced vector search functionalities with the powerful machine learning capabilities of AWS SageMaker and Arcee.ai's state-of-the-art language models. The entire system is encapsulated within a user-friendly interface, enabling effortless interaction and management.
+The MongoDB - Arcee Quickstart is a comprehensive, integrated end-to-end technology stack meticulously designed to facilitate the rapid development and seamless deployment of AI-powered applications. This innovative framework combines the robust capabilities of MongoDB Atlas for scalable data storage and advanced vector search functionalities with the powerful machine learning capabilities of AWS SageMaker and Arcee.ai's state-of-the-art language models. The entire system is encapsulated within a user-friendly interface, enabling effortless interaction and management.
 
 Key features include:
 - Advanced vector search capabilities for nuanced, contextual information retrieval
@@ -34,13 +36,21 @@ MAAP empowers developers to create sophisticated AI applications that can unders
 
 The MAAP Framework is built on a robust and flexible microservices architecture, comprising three primary services that work in concert to deliver a seamless AI-powered application experience:
 
-1. UI Service (Port 7860): This service forms the front-end of the MAAP framework, providing an intuitive and responsive user interface for interaction. It serves as the primary point of contact for end-users, allowing them to input queries, upload files, and view AI-generated responses.
+1. **UI Service (Port 7860)**: This service forms the front-end of the MAAP framework, providing an intuitive and responsive user interface for interaction. It serves as the primary point of contact for end-users, allowing them to input queries, upload files, and view AI-generated responses.
 
-2. Main Service (Port 8000): Acting as the brain of the system, the Main Service handles the core application logic, manages database queries, and orchestrates AI model interactions. It processes user inputs received from the UI Service, retrieves relevant information from the database, and coordinates with AWS SageMaker for AI model inferences.
+2. **Main Service (Port 8000)**: Acting as the brain of the system, the Main Service handles the core application logic, manages database queries, and orchestrates AI model interactions. It processes user inputs received from the UI Service, retrieves relevant information from the database, and coordinates with AWS SageMaker for AI model inferences.
 
-3. Loader Service (Port 8001): This service is responsible for managing file uploads and orchestrating the data ingestion process. It handles the complex task of processing various file formats, extracting relevant information, and preparing the data for storage in MongoDB Atlas.
+3. **Loader Service (Port 8001)**: This service is responsible for managing file uploads and orchestrating the data ingestion process. It handles the complex task of processing various file formats, extracting relevant information, and preparing the data for storage in MongoDB Atlas.
 
 These microservices interact seamlessly with MongoDB Atlas, which serves as the primary data store and provides powerful vector search capabilities. The architecture also integrates with AWS SageMaker, leveraging its scalable infrastructure for AI model hosting and inference.
+
+
+<center>
+
+![MAAP Application Architecture](ArceeAWSArchitecture.png)
+
+MAAP Application Architecture</center>
+
 
 Data flow within the system:
 1. User inputs (text queries or file uploads) are initially received by the UI Service.
@@ -56,53 +66,53 @@ This architecture ensures high scalability, allowing the system to handle increa
 The MAAP Framework is composed of several key components:
 
 ### UI Service
-- Purpose: Provides a web-based interface for user interactions
-- Technologies: Gradio, Python
-- Interactions: Communicates with Main Service for query processing and Loader Service for file uploads
+- **Purpose**: Provides a web-based interface for user interactions
+- **Technologies**: Gradio, Python
+- **Interactions**: Communicates with Main Service for query processing and Loader Service for file uploads
 
 ### Main Service
-- Purpose: Handles core application logic, database queries, and AI model interactions
-- Technologies: FastAPI, LangChain, Python
-- Interactions: Communicates with MongoDB Atlas for data retrieval and AWS SageMaker for model inference
+- **Purpose**: Handles core application logic, database queries, and AI model interactions
+- **Technologies**: FastAPI, LangChain, Python
+- **Interactions**: Communicates with MongoDB Atlas for data retrieval and AWS SageMaker for model inference
 
 ### Loader Service
-- Purpose: Manages file uploads and data ingestion into MongoDB Atlas
-- Technologies: FastAPI, Unstructured, Python
-- Interactions: Communicates with MongoDB Atlas for data storage
+- **Purpose**: Manages file uploads and data ingestion into MongoDB Atlas
+- **Technologies**: FastAPI, Unstructured, Python
+- **Interactions**: Communicates with MongoDB Atlas for data storage
 
 ### MongoDB Atlas
-- Purpose: Provides scalable data storage and vector search capabilities
-- Features: Vector indexing, multi-collection search
+- **Purpose**: Provides scalable data storage and vector search capabilities
+- **Features**: Vector indexing, multi-collection search
 
 ### AWS SageMaker
-- Purpose: Hosts and serves AI models for inference
-- Features: Scalable model deployment, API endpoints for prediction
+- **Purpose**: Hosts and serves AI models for inference
+- **Features**: Scalable model deployment, API endpoints for prediction
 
 ### Core Components
-1. CloudFormation Templates:
+1. **CloudFormation Templates**:
    - `deploy-infra.yaml`: Infrastructure setup
    - `deploy-sagemaker.yaml`: SageMaker deployment
    - `deploy-ec2.yaml`: EC2 instance configuration
 
-2. Python Services:
+2. **Python Services**:
    - MongoDB Atlas integration
    - Vector search implementation
    - Document processing
    - API endpoints
 
-3. Docker Containers:
+3. **Docker Containers**:
    - Isolated service environments
    - Dependency management
    - Resource allocation
 
 ### Technology Stack
-- Backend: Python 3.10+
-- Database: MongoDB Atlas
-- ML Platform: AWS SageMaker
-- API Framework: FastAPI
-- Frontend: Gradio
-- Containerization: Docker
-- Infrastructure: AWS CloudFormation
+- **Backend**: Python 3.10+
+- **Database**: MongoDB Atlas
+- **ML Platform**: AWS SageMaker
+- **API Framework**: FastAPI
+- **Frontend**: Gradio
+- **Containerization**: Docker
+- **Infrastructure**: AWS CloudFormation
 
 ## 4. Installation & Deployment
 
@@ -121,12 +131,13 @@ The MAAP Framework is composed of several key components:
 
 ### Deployment Steps
 
-1. Configure AWS CLI:
+1. **Configure AWS CLI**:
 ```bash
 aws configure
 ```
 
-2. Obtain the deployment files:
+2. **Obtain the deployment files**:
+
    a. Clone the repository:
    ```bash
    git clone <repository-url>
@@ -139,10 +150,14 @@ aws configure
    - `deploy-ec2.yaml`
    - `one-click.ksh`
 
-3. Configure environment variables:
-   Open the `one-click.ksh` script in a text editor and fill in the required values for various environment variables.
+3. **Configure environment variables**:
+   Open the `one-click.ksh` script in a text editor and fill in the required values for various environment variables:
+   - AWS Auth: Specify the `AWS_REGION`, `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY` for deployment.
+   - EC2 & SageMaker Instance Types: Choose suitable instance types for your workload.
+   - Network Configuration: Update key names, subnet IDs, security group IDs, etc.
+   - Authentication Keys: Fetch Project ID, API public and private keys for MongoDB Atlas Cluster setup. Update the script file with the keys for `APIPUBLICKEY`, `APIPRIVATEKEY`, `GROUPID` suitably.
 
-4. Deploy the application:
+4. **Deploy the application**:
 ```bash
 chmod +x one-click.ksh
 ./one-click.ksh
@@ -154,6 +169,7 @@ This script will create the necessary AWS resources, deploy the SageMaker endpoi
 1. Access the UI service by navigating to `http://<ec2-instance-ip>:7860` in your web browser.
 2. Test the system by entering a query and verifying that you receive an appropriate AI-generated response.
 3. Try uploading a file to ensure the Loader Service is functioning correctly.
+4. Verify that the sample dataset bundled with the script is loaded into your MongoDB Cluster name `MongoDBArceeV1` under the database `travel_agency` and collection `trip_recommendation` by visiting the [MongoDB Atlas Console](https://cloud.mongodb.com).
 
 ## 5. Configuration
 
@@ -184,15 +200,15 @@ GROUP_ID=your_project_id
 
 ### Service-Specific Configuration
 
-1. Main Service:
+1. **Main Service**:
    - Model parameters can be adjusted in the `SageMakerLLM.py` file.
    - Vector search settings are configured in `MongoDBAtlasCustomRetriever.py`.
 
-2. Loader Service:
+2. **Loader Service**:
    - File processing settings are defined in `loader.py`.
    - Upload configurations are set in `main.py`.
 
-3. UI Service:
+3. **UI Service**:
    - The interface layout and components are configured in `main.py` using Gradio's UI building functions.
 
 ### MongoDB Vector Indexes
@@ -300,7 +316,8 @@ curl -X POST "http://localhost:8000/rag" -H "Content-Type: application/json" -d 
 
 ### Log Locations
 - Application logs: `/home/ubuntu/deployment.log`
-- One-click script logs: `./logs/`
+- One-click script logs: `./logs/one-click-deployment.log`
+- EC2 live logs: `./logs/ec2-live-logs.log`
 - Docker logs: Accessible via `docker logs`
 
 ### Monitoring Metrics
