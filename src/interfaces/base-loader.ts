@@ -17,6 +17,7 @@ export abstract class BaseLoader<
 
     protected readonly uniqueId: string;
     private readonly _canIncrementallyLoad: boolean;
+    private readonly _isRealTime: boolean;
     protected readonly chunkOverlap: number;
     protected readonly chunkSize: number;
 
@@ -25,11 +26,13 @@ export abstract class BaseLoader<
         chunkSize: number = 5,
         chunkOverlap: number = 0,
         canIncrementallyLoad: boolean = false,
+        isRealTime: boolean = false,
     ) {
         super();
 
         this.uniqueId = uniqueId;
         this._canIncrementallyLoad = canIncrementallyLoad;
+        this._isRealTime = isRealTime
         this.chunkOverlap = chunkOverlap;
         this.chunkSize = chunkSize;
         createDebugMessages('maap:loader:BaseLoader')(`New loader class initalized with key ${uniqueId}`);
@@ -39,6 +42,10 @@ export abstract class BaseLoader<
 
     public get canIncrementallyLoad() {
         return this._canIncrementallyLoad;
+    }
+
+    public get isRealTimeLoader(){
+        return this._isRealTime
     }
 
     getUniqueId(): string {
@@ -75,7 +82,6 @@ export abstract class BaseLoader<
 
     public async *getChunks(): AsyncGenerator<LoaderChunk<T>, void, void> {
         const chunks = await this.getUnfilteredChunks();
-
         for await (const chunk of chunks) {
             chunk.pageContent = chunk.pageContent
                 .replace(/(\r\n|\n|\r)/gm, ' ')
