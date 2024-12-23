@@ -19,6 +19,8 @@ import { FireworksEmbedding } from '../../embeddings/fireworks-embeddings.js';
 import { AzureChatAI } from '../../models/azureopenai-model.js';
 import { readFileSync, readdirSync } from 'fs';
 import { SageMaker } from '../../models/sagemaker-model.js';
+import { EnterpriseLoader } from '../../loaders/enterprise-loader.js';
+import { CredalModel } from '../../models/credal-model.js';
 
 // src/loaders/confluence-loader.ts src/loaders/docx-loader.ts src/loaders/excel-loader.ts src/loaders/json-loader.ts src/loaders/pdf-loader.ts src/loaders/ppt-loader.ts src/loaders/sitemap-loader.ts src/loaders/text-loader.ts src/loaders/web-loader.ts src/loaders/youtube-channel-loader.ts src/loaders/youtube-loader.ts src/loaders/youtube-search-loader.ts
 function getDataFromYamlFile() {
@@ -136,8 +138,8 @@ export function getVBDConfigInfo() {
 export function getModelClass() {
   const parsedData = getDataFromYamlFile();
   const params = {};
-  if(parsedData.llms.temperature) params["temperature"] = parsedData.llms.temperature;
-  if(parsedData.llms.maxTokens) params["maxTokens"] = parsedData.llms.max_tokens;
+  if(parsedData.llms.temperature) params["temperature"] = parsedData.llms.temperature ?? 0.2;
+  if(parsedData.llms.maxTokens) params["maxTokens"] = parsedData.llms.max_tokens ?? 2048;
   switch (parsedData.llms.class_name) {
     case 'VertexAI':
       assert(typeof parsedData.llms.model_name === 'string', 'model_name of VertexAI is required');
@@ -151,6 +153,12 @@ export function getModelClass() {
       assert(typeof parsedData.llms.model_name === 'string', 'model_name of Anyscale is required');
       params["modelName"] = parsedData.llms.model_name;
       return new AnyscaleModel(params);
+    case 'Credal':
+      assert(typeof parsedData.llms.modelSource === 'string', 'Model source i.e. openai or anthropic of Credal is required');
+      assert(typeof parsedData.llms.model_name === 'string', 'model_name of Credal is required');
+      params["modelSource"] = parsedData.llms.modelSource;
+      params["modelName"] = parsedData.llms.model_name;
+      return new CredalModel(params);
     case 'Fireworks':
       assert(typeof parsedData.llms.model_name === 'string', 'model_name of Fireworks is required');
       params["modelName"] = parsedData.llms.model_name;
@@ -331,6 +339,14 @@ export function getIngestLoader() {
         } else {
           console.log(`No files found in the folder: ${data.source_path}`);
         }
+        break;
+      case 'enterprise':
+        dataloaders.push(new EnterpriseLoader({
+          connectorName: data.connectorName,
+          connectorConfig: JSON.parse(readFileSync(data.connectorConfigPath, 'utf8')),
+          filterStream: data.filterStream,
+          pickKeysForEmbedding: data.pickKeysForEmbedding,
+        }));
         break;
       default:
         // Handle unsupported source type (optional)
