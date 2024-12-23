@@ -15,7 +15,6 @@ export class EnterpriseLoader extends BaseLoader<{ type: 'EnterpriseLoader' }> {
     private readonly filterStream: string;
     private readonly requestBody: object;
 
-
     constructor({ 
         connectorName,
         connectorConfig,
