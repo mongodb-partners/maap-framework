@@ -26,39 +26,13 @@ export class TogetherAI extends BaseModel {
         });
     }
 
-    private generatePastMessages(
-        system: string,
-        supportingContext: Chunk[],
-        pastConversations: ConversationHistory[],
-        userQuery: string,
-    ) {
-        const pastMessages: (AIMessage | SystemMessage | HumanMessage)[] = [
-            new SystemMessage(
-                `${system}. Supporting context: ${supportingContext.map((s) => s.pageContent).join('; ')}`,
-            ),
-        ];
-
-        pastMessages.push.apply(
-            pastMessages,
-            pastConversations.map((c) => {
-                if (c.sender === 'AI') return new AIMessage({ content: c.message });
-                else if (c.sender === 'SYSTEM') return new SystemMessage({ content: c.message });
-                else return new HumanMessage({ content: c.message });
-            }),
-        );
-        pastMessages.push(new HumanMessage(`${userQuery}?`));
-
-        this.debug('Executing TogetherAI model with prompt -', userQuery);
-        return pastMessages;
-    }
-
     override async runQuery(
         system: string,
         userQuery: string,
         supportingContext: Chunk[],
         pastConversations: ConversationHistory[],
     ): Promise<string> {
-        const pastMessages: (AIMessage | SystemMessage | HumanMessage)[] = this.generatePastMessages(
+        const pastMessages: (AIMessage | SystemMessage | HumanMessage)[] = this.generatePastMessagesLangchain(
             system,
             supportingContext,
             pastConversations,
@@ -75,7 +49,7 @@ export class TogetherAI extends BaseModel {
         supportingContext: Chunk[],
         pastConversations: ConversationHistory[],
     ): Promise<any> {
-        const pastMessages: (AIMessage | SystemMessage | HumanMessage)[] = this.generatePastMessages(
+        const pastMessages: (AIMessage | SystemMessage | HumanMessage)[] = this.generatePastMessagesLangchain(
             system,
             supportingContext,
             pastConversations,
