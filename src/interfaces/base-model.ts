@@ -12,14 +12,12 @@ export abstract class BaseModel {
         BaseModel.defaultTemperature = temperature;
     }
 
-    private readonly conversationMap: Map<string, ConversationHistory[]>;
     private readonly _temperature?: number;
     private readonly maxTokenLimit: number;
     private readonly charsPerToken: number;
 
     constructor(temperature?: number) {
         this._temperature = temperature;
-        this.conversationMap = new Map();
         this.maxTokenLimit = 4000;
         this.charsPerToken = 4;
     }
@@ -80,11 +78,40 @@ export abstract class BaseModel {
         supportingContext: Chunk[],
         conversationId: string = 'default',
     ): Promise<any> {
-        if (!this.conversationMap.has(conversationId)) this.conversationMap.set(conversationId, []);
+        //obtain the conversation history from the conversationService from MongoDB chatbot server
+        let currentConversationFromConversationService = await conversations.findById({ _id: currentConversationId });
+        let conversationArray: ConversationHistory[] = [];
 
-        const conversationHistory = this.conversationMap.get(conversationId);
+        //parse the messages types so it matches MAAP's ConversationHistory type
+        for (let newMessage of currentConversationFromConversationService.messages) {
+            //this variable helps to see if there already is a system message in the conversation history
+            const roleExists = conversationArray.some(
+                (oldMessage) => oldMessage.sender === 'SYSTEM' && newMessage.role === 'system',
+            );
+            if (newMessage.role === 'assistant') {
+                conversationArray.push({ message: newMessage.content, sender: 'AI' });
+                //only add a system message if there is none in the conversation history
+            } else if (newMessage.role === 'system' && !roleExists) {
+                conversationArray.push({ message: newMessage.content, sender: 'SYSTEM' });
+            } else if (newMessage.role === 'user') {
+                conversationArray.push({ message: newMessage.content, sender: 'HUMAN' });
+            }
+        }
+        const conversationHistory = this.limitMessagesBasedOnTokenCount(conversationArray);
+
+        //update the user query to include context from the conversation history
+        const conversationHistoryContext = `
+        Conversation History:
+        {${conversationHistory
+            .map((s) => (s.sender != 'SYSTEM' ? `[Role:${s.sender}\nContent:${s.message}]` : ''))
+            .filter(Boolean)
+            .join('\n')}}
+        `;
+        const [before, after] = userQuery.split('Operational Information:');
+        const updatedUserQuery = `${before}\n${conversationHistoryContext.trim()}\nOperational Information:${after}`;
+
         this.baseDebug(`${conversationHistory.length} history entries found for conversationId '${conversationId}'`);
-        return this.runStreamQuery(system, userQuery, supportingContext, conversationHistory);
+        return this.runStreamQuery(system, updatedUserQuery, supportingContext, conversationHistory);
     }
 
     private limitMessagesBasedOnTokenCount(messages: ConversationHistory[]): ConversationHistory[] {
