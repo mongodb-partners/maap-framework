@@ -4,6 +4,9 @@ sidebar_position: 1
 
 # MAAP Framework 
 
+[![ReadMe Card](https://github-readme-stats.vercel.app/api/pin/?username=mongodb-partners&repo=maap-framework)](https://github.com/mongodb-partners/maap-framework)
+
+
 ### Introduction 
 The [MongoDB AI Applications Program (MAAP)](https://www.mongodb.com/services/consulting/ai-applications-program) framework is a set of libraries that you can use to build your RAG Application
 using MongoDB and [Atlas Vector Search](https://www.mongodb.com/docs/atlas/atlas-vector-search/vector-search-overview/) and associated MAAP partners

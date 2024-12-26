@@ -37,7 +37,7 @@ export class JsonLoader extends BaseLoader<{ type: 'JsonLoader' }> {
                 entry.preEmbedId = entry.id;
                 delete entry.id;
             }
-
+            console.log('Loading JSON:', tuncatedObjectString, 'entry:', i, 'subset:', s);
             yield {
                 pageContent: s,
                 metadata: {

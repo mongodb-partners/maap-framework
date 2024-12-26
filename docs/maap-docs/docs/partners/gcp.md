@@ -111,4 +111,5 @@ Provided below are the instructions on how to procure the right values for build
 
 - ##### Model Name
   A list of models that Vertex AI facilitates can be found [here](https://cloud.google.com/vertex-ai/generative-ai/docs/learn/models).
-
+- ##### Models supported by llama
+  The models supported by llama can be found [here](https://legacy.ts.llamaindex.ai/api/enumerations/GEMINI_MODEL).

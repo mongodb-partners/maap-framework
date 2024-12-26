@@ -30,6 +30,13 @@ import {
     LlamaAzureChatAI,
     LlamaBedrock,
     LlamaOpenAi,
+    LlamaTogetherAI,
+    Ollama,
+    LlamaOllama,
+    LlamaCohere,
+    LlamaHuggingFace,
+    LlamaVertexAI,
+    JsonLoader,
 } from '../../index.js';
 
 import { MongoDBAtlas } from '../../vectorDb/mongo-db-atlas.js';
@@ -53,6 +60,10 @@ import { LlamaFireworksModel } from '../../models/llamaIndex/llama-fireworks-mod
 import { LlamaFireworksEmbeddings } from '../../embeddings/llamaIndex/llama-fireworks-embeddings.js';
 import { LlamaCohereEmbeddings } from '../../embeddings/llamaIndex/llama-cohere-embeddings.js';
 import { LlamaBedrockEmbeddings } from '../../index.js';
+import { LlamaAnthropic } from '../../models/llamaIndex/llama-anthropic-model.js';
+import { SageMaker } from '../../models/sagemaker-model.js';
+import { EnterpriseLoader } from '../../loaders/enterprise-loader.js';
+import { CredalModel } from '../../models/credal-model.js';
 
 // src/loaders/confluence-loader.ts src/loaders/docx-loader.ts src/loaders/excel-loader.ts src/loaders/json-loader.ts src/loaders/pdf-loader.ts src/loaders/ppt-loader.ts src/loaders/sitemap-loader.ts src/loaders/text-loader.ts src/loaders/web-loader.ts src/loaders/youtube-channel-loader.ts src/loaders/youtube-loader.ts src/loaders/youtube-search-loader.ts
 function getDataFromYamlFile() {
@@ -170,13 +181,20 @@ export function getModelClass() {
     const parsedData = getDataFromYamlFile();
     const framework = parsedData.llms.framework ? parsedData.llms.framework.toLowerCase() : '';
     const params = {};
-    if (parsedData.llms.temperature) params['temperature'] = parsedData.llms.temperature;
-    if (parsedData.llms.max_tokens) params['maxTokens'] = parsedData.llms.max_tokens;
+    if (parsedData.llms.temperature) params['temperature'] = parsedData.llms.temperature ?? 0.2;
+    if (parsedData.llms.max_tokens) params['maxTokens'] = parsedData.llms.max_tokens ?? 2048;
+    if (parsedData.llms.top_p) params['topP'] = parsedData.llms.top_p ?? 0.2;
+
     switch (parsedData.llms.class_name) {
         case 'VertexAI':
             assert(typeof parsedData.llms.model_name === 'string', 'model_name of VertexAI is required');
             params['modelName'] = parsedData.llms.model_name;
-            return new VertexAI(params);
+            switch (framework) {
+                case 'llamaindex':
+                    return new LlamaVertexAI(params)
+                default:
+                    return new VertexAI(params);
+            }
         case 'OpenAI':
             assert(typeof parsedData.llms.model_name === 'string', 'model_name of OpenAI is required');
             params['modelName'] = parsedData.llms.model_name;
@@ -190,6 +208,12 @@ export function getModelClass() {
             assert(typeof parsedData.llms.model_name === 'string', 'model_name of Anyscale is required');
             params['modelName'] = parsedData.llms.model_name;
             return new AnyscaleModel(params);
+        case 'Credal':
+            assert(typeof parsedData.llms.modelSource === 'string', 'Model source i.e. openai or anthropic of Credal is required');
+            assert(typeof parsedData.llms.model_name === 'string', 'model_name of Credal is required');
+            params["modelSource"] = parsedData.llms.modelSource;
+            params["modelName"] = parsedData.llms.model_name;
+          return new CredalModel(params);
         case 'Fireworks':
             switch (framework) {
                 case 'llamaindex':
@@ -202,9 +226,27 @@ export function getModelClass() {
                     return new Fireworks(params);
             }
         case 'Anthropic':
-            assert(typeof parsedData.llms.model_name === 'string', 'model_name of Anthropic is required');
-            params['modelName'] = parsedData.llms.model_name;
-            return new Anthropic(params);
+            switch (framework) {
+                case 'llamaindex':
+                    assert(typeof parsedData.llms.model_name === 'string', 'model_name of Anthropic is required');
+                    params['modelName'] = parsedData.llms.model_name;
+                    return new LlamaAnthropic(params);
+                default:
+                    assert(typeof parsedData.llms.model_name === 'string', 'model_name of Anthropic is required');
+                    params['modelName'] = parsedData.llms.model_name;
+                    return new Anthropic(params);
+            }
+        // case 'MistralAI':
+        //     switch (framework) {
+        //         case 'llamaindex':
+        //             assert(typeof parsedData.llms.model_name === 'string', 'model_name of MistralAI is required');
+        //             params['modelName'] = parsedData.llms.model_name;
+        //             return new LlamaMistral(params);
+        //         default:
+        //             assert(typeof parsedData.llms.model_name === 'string', 'model_name of MistralAI is required');
+        //             params['modelName'] = parsedData.llms.model_name;
+        //             return new Anthropic(params);
+        //     }
         case 'Bedrock':
             assert(typeof parsedData.llms.model_name === 'string', 'model_name of Bedrock is required');
             params['modelName'] = parsedData.llms.model_name;
@@ -217,18 +259,56 @@ export function getModelClass() {
         case 'AzureOpenAI':
             switch (framework) {
                 case 'llamaindex':
+                    assert(typeof parsedData.llms.model_name === 'string', 'model_name of AzureOpenAI is required');
+                    params['modelName'] = parsedData.llms.model_name;
                     return new LlamaAzureChatAI(params);
                 default:
                     return new AzureChatAI(params);
             }
+        case 'Sagemaker':
+            params["sagemakerEndpoint"] = parsedData.llms.sagemaker_endpoint;
+            params["maxTokens"] = parsedData.llms.max_tokens;
+            params["temperature"] = parsedData.llms.temperature;
+            return new SageMaker(params);
         case 'Cohere':
             assert(typeof parsedData.llms.model_name === 'string', 'model_name of Cohere is required');
             params['modelName'] = parsedData.llms.model_name;
-            return new Cohere(params);
+            switch (framework) {
+                case 'llamaindex':
+                    return new LlamaCohere(params);
+                default:
+                    return new Cohere(params);
+            }
         case 'TogetherAI':
             assert(typeof parsedData.llms.model_name === 'string', 'model_name of TogetherAI is required');
             params['modelName'] = parsedData.llms.model_name;
-            return new TogetherAI(params);
+            switch (framework) {
+                case 'llamaindex':
+                    return new LlamaTogetherAI(params);
+                default:
+                    return new TogetherAI(params);
+            }
+        case 'Ollama':
+            assert(typeof parsedData.llms.model_name === 'string', 'model_name of TogetherAI is required');
+            params['modelName'] = parsedData.llms.model_name;
+            if (parsedData.llms.base_url) params['baseUrl'] = parsedData.llms.base_url;
+            switch (framework) {
+                case 'llamaindex':
+                    // This model does not support topP and maxTokens parameters
+                    return new LlamaOllama(params);
+                default:
+                    return new Ollama(params);
+            }
+        case 'HuggingFace':
+            assert(typeof parsedData.llms.model_name === 'string', 'model_name of HuggingFace is required');
+            params['modelName'] = parsedData.llms.model_name;
+
+            switch (framework) {
+                case 'llamaindex':
+                    return new LlamaHuggingFace(params);
+                default:
+                    throw new Error('Unsupported model class name');
+            }
         default:
             throw new Error('Unsupported model class name');
         // // Handle unsupported class name (optional)
@@ -474,6 +554,12 @@ export function getIngestLoader() {
                     }),
                 );
                 break;
+            case 'json':
+                dataloaders.push(new JsonLoader({
+                  object: JSON.parse(readFileSync(data.source_path, 'utf-8')),
+                  pickKeysForEmbedding: data.pickKeysForEmbedding,
+                }));
+                break;
             case 'folder':
                 let files = [];
                 if (data.file_type) {
@@ -488,6 +574,14 @@ export function getIngestLoader() {
                 } else {
                     console.log(`No files found in the folder: ${data.source_path}`);
                 }
+                break;
+            case 'enterprise':
+                dataloaders.push(new EnterpriseLoader({
+                  connectorName: data.connectorName,
+                  connectorConfig: JSON.parse(readFileSync(data.connectorConfigPath, 'utf8')),
+                  filterStream: data.filterStream,
+                  pickKeysForEmbedding: data.pickKeysForEmbedding,
+                }));
                 break;
             default:
                 // Handle unsupported source type (optional)
