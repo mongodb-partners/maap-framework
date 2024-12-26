@@ -28,6 +28,8 @@ import {
     makeMongoDbConversationsService,
     AppConfig,
     makeApp,
+    ObjectId,
+    CreateConversationParams
 } from 'mongodb-chatbot-server';
 import { makeMongoDbEmbeddedContentStore, logger } from 'mongodb-rag-core';
 import { MongoDBCrud } from '../../../src/db/mongodb-crud.js';
@@ -160,8 +162,25 @@ const systemPrompt: SystemPrompt = {
 // Create MongoDB collection and service for storing user conversations
 // with the chatbot.
 
+export let currentConversationId: ObjectId | null = null;
+
+function makeWrappedMongoDbConversationsService(dbName: string) {
+    const baseService = makeMongoDbConversationsService(
+        mongodb.db(dbName)
+    );
+    // Wrap the base service methods with your own custom implementations
+    return {
+        ...baseService,
+        create: async (params?: CreateConversationParams) => {
+            const newConversation = await baseService.create(params);
+            currentConversationId = newConversation._id;
+            return newConversation;
+        },
+    };
+}
+
 const mongodb = new MongoClient(connectionString);
-export const conversations = makeMongoDbConversationsService(mongodb.db(dbName));
+export const conversations = makeWrappedMongoDbConversationsService(dbName);
 
 // Create the MongoDB Chatbot Server Express.js app configuration
 export const config: AppConfig = {
