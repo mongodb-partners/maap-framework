@@ -1,33 +1,27 @@
 import createDebugMessages from 'debug';
 import { Chunk, ConversationHistory } from '../global/types.js';
 import { ChatMessage } from 'llamaindex';
-import { MongoClient } from 'mongodb';
-import { getVBDConfigInfo } from '../yaml_parser/src/LoadYaml.js';
-import { conversations, config } from '../../builder/partnerproduct/src/index.js';
-
-// load the connection string to be used to get conversation data
-const { dbName, connectionString } = getVBDConfigInfo();
+import { currentConversationId, conversations } from '../../builder/partnerproduct/src/index.js';
+import { AIMessage, HumanMessage, SystemMessage } from '@langchain/core/messages';
 
 export abstract class BaseModel {
     private readonly baseDebug = createDebugMessages('maap:model:BaseModel');
     private static defaultTemperature: number;
-    private mongoClient: MongoClient;
-    private mongoDB;
 
     public static setDefaultTemperature(temperature?: number) {
         BaseModel.defaultTemperature = temperature;
     }
 
     private readonly conversationMap: Map<string, ConversationHistory[]>;
-    //private readonly conversationArray: ConversationHistory[];
     private readonly _temperature?: number;
+    private readonly maxTokenLimit: number;
+    private readonly charsPerToken: number;
 
     constructor(temperature?: number) {
         this._temperature = temperature;
         this.conversationMap = new Map();
-        //this.conversationArray = [];
-        this.mongoClient = new MongoClient(connectionString)
-        this.mongoDB = this.mongoClient.db(dbName);
+        this.maxTokenLimit = 4000;
+        this.charsPerToken = 4;
     }
 
     public get temperature() {
@@ -42,25 +36,41 @@ export abstract class BaseModel {
         supportingContext: Chunk[],
         conversationId: string = 'default',
     ): Promise<string> {
-        const conversationHistory = this.mongoDB.collection("conversations");
+        //obtain the conversation history from the conversationService from MongoDB chatbot server
+        let currentConversationFromConversationService = await conversations.findById({ _id: currentConversationId });
+        let conversationArray: ConversationHistory[] = [];
+
+        //parse the messages types so it matches MAAP's ConversationHistory type
+        for (let newMessage of currentConversationFromConversationService.messages) {
+            //this variable helps to see if there already is a system message in the conversation history
+            const roleExists = conversationArray.some(
+                (oldMessage) => oldMessage.sender === 'SYSTEM' && newMessage.role === 'system',
+            );
+            if (newMessage.role === 'assistant') {
+                conversationArray.push({ message: newMessage.content, sender: 'AI' });
+                //only add a system message if there is none in the conversation history
+            } else if (newMessage.role === 'system' && !roleExists) {
+                conversationArray.push({ message: newMessage.content, sender: 'SYSTEM' });
+            } else if (newMessage.role === 'user') {
+                conversationArray.push({ message: newMessage.content, sender: 'HUMAN' });
+            }
+        }
+        const conversationHistory = this.limitMessagesBasedOnTokenCount(conversationArray);
 
         //update the user query to include context from the conversation history
         const conversationHistoryContext = `
         Conversation History:
-        {${conversationHistory.map((s) => s.sender != 'SYSTEM' ? `[Role:${s.sender}\nContent:${s.message}]` : '').filter(Boolean).join('\n')}}
+        {${conversationHistory
+            .map((s) => (s.sender != 'SYSTEM' ? `[Role:${s.sender}\nContent:${s.message}]` : ''))
+            .filter(Boolean)
+            .join('\n')}}
         `;
-        const [before, after] = userQuery.split("Operational Information:");
+        const [before, after] = userQuery.split('Operational Information:');
         const updatedUserQuery = `${before}\n${conversationHistoryContext.trim()}\nOperational Information:${after}`;
 
         this.baseDebug(`${conversationHistory.length} history entries found for conversationId '${conversationId}'`);
         const result = await this.runQuery(system, updatedUserQuery, supportingContext, conversationHistory);
 
-        conversationHistory.push({ message: userQuery, sender: 'HUMAN' });
-        conversationHistory.push({
-            message: `Old context: ${supportingContext.map((s) => s.pageContent).join('; ')}`,
-            sender: 'SYSTEM',
-        });
-        conversationHistory.push({ message: result, sender: 'AI' });
         return result;
     }
 
@@ -77,30 +87,68 @@ export abstract class BaseModel {
         return this.runStreamQuery(system, userQuery, supportingContext, conversationHistory);
     }
 
+    private limitMessagesBasedOnTokenCount(messages: ConversationHistory[]): ConversationHistory[] {
+        let trimmedMessages = messages;
+        let totalTokens = this.getApproximatedTokenCount(trimmedMessages);
+
+        while (totalTokens > this.maxTokenLimit && trimmedMessages.length > 1) {
+            trimmedMessages.splice(1, 2); // remove the second message, preserving the system prompt
+            totalTokens = this.getApproximatedTokenCount(trimmedMessages);
+        }
+        return trimmedMessages;
+    }
+
+    private getApproximatedTokenCount(messages: ConversationHistory[]): number {
+        const totalChars = messages.reduce((count, message) => count + message.message.length, 0);
+        return Math.ceil(totalChars / this.charsPerToken);
+    }
+
+    public generatePastMessagesLangchain(
+        system: string,
+        supportingContext: Chunk[],
+        pastConversations: ConversationHistory[],
+        userQuery: string,
+    ) {
+        const pastMessages: (AIMessage | SystemMessage | HumanMessage)[] = [];
+
+        for (let message of pastConversations) {
+            const roleExists = pastMessages.some(
+                (oldMessage) => oldMessage._getType() === 'system' && message.sender === 'SYSTEM',
+            );
+            if (message.sender === 'AI') {
+                pastMessages.push(new AIMessage({ content: message.message }));
+            } else if (message.sender === 'SYSTEM' && !roleExists) {
+                pastMessages.push(new SystemMessage({ content: message.message }));
+            } else if (message.sender === 'HUMAN') {
+                pastMessages.push(new HumanMessage({ content: message.message }));
+            }
+        }
+
+        pastMessages.push(new HumanMessage(`${userQuery}?`));
+
+        return pastMessages;
+    }
+
     public generatePastMessagesLlama(
         system: string,
         supportingContext: Chunk[],
         pastConversations: ConversationHistory[],
         userQuery: string,
     ) {
-        const pastMessages: ChatMessage[] = [
-            {
-                content: `${system}. Supporting context: ${supportingContext.map((s) => s.pageContent).join('; ')}`,
-                role: 'system',
-            },
-        ];
+        const pastMessages: ChatMessage[] = [];
 
-        pastMessages.push(
-            ...pastConversations.map((c) => {
-                if (c.sender === 'AI') {
-                    return { content: c.message, role: 'assistant' } as ChatMessage;
-                } else if (c.sender === 'SYSTEM') {
-                    return { content: c.message, role: 'system' } as ChatMessage;
-                } else {
-                    return { content: c.message, role: 'user' } as ChatMessage;
-                }
-            }),
-        );
+        for (let message of pastConversations) {
+            const roleExists = pastMessages.some(
+                (oldMessage) => oldMessage.role === 'system' && message.sender === 'SYSTEM',
+            );
+            if (message.sender === 'AI') {
+                pastMessages.push({ content: message.message, role: 'assistant' });
+            } else if (message.sender === 'SYSTEM' && !roleExists) {
+                pastMessages.push({ content: message.message, role: 'system' });
+            } else if (message.sender === 'HUMAN') {
+                pastMessages.push({ content: message.message, role: 'user' });
+            }
+        }
         pastMessages.push({
             content: `${userQuery}?`,
             role: 'user',
