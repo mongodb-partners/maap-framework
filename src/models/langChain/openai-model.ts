@@ -28,20 +28,7 @@ export class OpenAi extends BaseModel {
         supportingContext: Chunk[],
         pastConversations: ConversationHistory[],
     ): Promise<string> {
-        const pastMessages: (AIMessage | SystemMessage | HumanMessage)[] = [new SystemMessage(system)];
-        pastMessages.push(
-            new SystemMessage(`Supporting context: ${supportingContext.map((s) => s.pageContent).join('; ')}`),
-        );
-
-        pastMessages.push.apply(
-            pastMessages,
-            pastConversations.map((c) => {
-                if (c.sender === 'AI') return new AIMessage({ content: c.message });
-                else if (c.sender === 'SYSTEM') return new SystemMessage({ content: c.message });
-                else return new HumanMessage({ content: c.message });
-            }),
-        );
-        pastMessages.push(new HumanMessage(`${userQuery}?`));
+        const pastMessages: (AIMessage | SystemMessage | HumanMessage)[] = this.generatePastMessagesLangchain(system, supportingContext, pastConversations, userQuery);
 
         this.debug('Executing openai model with prompt -', userQuery);
         const result = await this.model.invoke(pastMessages);
