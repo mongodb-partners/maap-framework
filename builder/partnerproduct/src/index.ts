@@ -29,7 +29,7 @@ import {
     AppConfig,
     makeApp,
     ObjectId,
-    CreateConversationParams
+    CreateConversationParams, ConversationsService,
 } from 'mongodb-chatbot-server';
 import { makeMongoDbEmbeddedContentStore, logger } from 'mongodb-rag-core';
 import { MongoDBCrud } from '../../../src/db/mongodb-crud.js';
@@ -45,7 +45,7 @@ const { dbName, connectionString, vectorSearchIndexName, minScore, numCandidates
 // Load crud operator with query and name of the operator
 const crudOperatorConfigs = getAggregateOperatorConfigs();
 var aggregatorPipelines = [];
-if(crudOperatorConfigs) {    
+if(crudOperatorConfigs) {
     for(const crudConfig of crudOperatorConfigs) {
         const crud = new MongoDBCrud({connectionString:crudConfig.connectionString, dbName:crudConfig.dbName, collectionName: crudConfig.collectionName});
         crud.init();
@@ -132,7 +132,7 @@ const makeUserMessage: MakeUserMessageFunc = async function ({
     if(aggregatorPipelines.length > 0) {
         var structuredQueryContext = await getStructuredQueryContext(originalUserMessage, true);
     }
-    
+
     const contentForLlm = `Using the following Information and Conversation History, answer the user query.
     The context is seperated by Chunk Separator: ${chunkSeparator}
 
@@ -163,6 +163,7 @@ const systemPrompt: SystemPrompt = {
 // with the chatbot.
 
 export let currentConversationId: ObjectId | null = null;
+const sessionStore = new Map<ObjectId, any>();
 
 function makeWrappedMongoDbConversationsService(dbName: string) {
     const baseService = makeMongoDbConversationsService(
@@ -172,9 +173,14 @@ function makeWrappedMongoDbConversationsService(dbName: string) {
     return {
         ...baseService,
         create: async (params?: CreateConversationParams) => {
-            const newConversation = await baseService.create(params);
-            currentConversationId = newConversation._id;
-            return newConversation;
+            if (sessionStore.size === 0) {
+                const newConversation = await baseService.create(params);
+                currentConversationId = newConversation._id;
+                sessionStore.set(currentConversationId, newConversation);
+                return newConversation;
+            } else {
+                return sessionStore.get(currentConversationId);
+            }
         },
     };
 }
