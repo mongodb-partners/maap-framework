@@ -393,7 +393,7 @@ To enhance the security of your AWS EC2 instances and MongoDB Atlas integration,
 
 
 
-### **1. Network and Firewall Configuration**
+### Network and Firewall Configuration
 
 #### **MongoDB Atlas:**
 - **IP Access List:**
@@ -414,7 +414,7 @@ To enhance the security of your AWS EC2 instances and MongoDB Atlas integration,
 
 ---
 
-### **2. Authentication and Authorization**
+### Authentication and Authorization
 
 - **Database Users:**
   - Atlas mandates client authentication to access clusters.
@@ -432,7 +432,7 @@ To enhance the security of your AWS EC2 instances and MongoDB Atlas integration,
 
 ---
 
-### **3. Data Encryption**
+### Data Encryption
 
 - **Encryption at Rest:**
   - Atlas encrypts all data stored on your clusters by default.
@@ -446,7 +446,7 @@ To enhance the security of your AWS EC2 instances and MongoDB Atlas integration,
 
 ---
 
-### **4. Network Peering and Private Endpoints**
+### Network Peering and Private Endpoints
 
 - **VPC Peering:**
   - Establish VPC peering between your AWS VPC and MongoDB Atlas's VPC to eliminate public internet exposure.
@@ -463,7 +463,7 @@ To enhance the security of your AWS EC2 instances and MongoDB Atlas integration,
   - AWS services like Bedrock use dynamic IPs. Filter these from [AWS IP Ranges](https://ip-ranges.amazonaws.com/ip-ranges.json) for egress traffic.  
 ---
 
-### **5. Compliance and Monitoring**
+### Compliance and Monitoring
 
 - **Audit Logging:**
   - Enable audit logging to monitor database activities and ensure compliance with data protection regulations.
