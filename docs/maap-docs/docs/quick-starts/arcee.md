@@ -117,11 +117,69 @@ This system is composed of several key components:
 - AWS CLI installed and configured
 - SageMaker quota for `ml.g5.12xlarge`
 - EC2 quota for `t3.xlarge`
+- Programmatic access to your MongoDB Atlas project
+
+### MongoDB Atlas Programmatic Access
+To enable programmatic access to your MongoDB Atlas project, follow these steps to create and manage API keys securely:
+
+
+#### **1. Create an API Key**
+
+1. **Navigate to Project Access Manager:**
+   - In the Atlas UI, select your organization and project.
+   - Go to **Project Access** under the **Access Manager** menu.
+
+2. **Create API Key:**
+   - Click on the **Applications** tab.
+   - Select **API Keys**.
+   - Click **Create API Key**.
+   - Provide a description for the key.
+   - Assign appropriate project permissions by selecting roles that align with the principle of least privilege.
+   - Click **Next**.
+
+3. **Save API Key Credentials:**
+   - Copy and securely store the **Public Key** (username) and **Private Key** (password).
+   - **Important:** The private key is displayed only once; ensure it's stored securely.
+
+
+
+#### **2. Configure API Access List**
+
+1. **Add Access List Entry:**
+   - After creating the API key, add an IP address or CIDR block to the API access list to specify allowed sources for API requests.
+   - Click **Add Access List Entry**.
+   - Enter the IP address or click **Use Current IP Address** if accessing from the current host.
+   - Click **Save**.
+
+2. **Manage Access List:**
+   - To modify the access list, navigate to the **API Keys** section.
+   - Click the ellipsis (**...**) next to the API key and select **Edit Permissions**.
+   - Update the access list as needed.
+
+
+
+#### **3. Secure API Key Usage**
+
+- **Environment Variables:** Store API keys in environment variables to prevent hardcoding them in your application's source code.
+
+- **Access Controls:** Limit API key permissions to the minimum required for your application's functionality.
+
+- **Regular Rotation:** Periodically rotate API keys and update your applications to use the new keys to enhance security.
+
+- **Audit Logging:** Monitor API key usage through Atlas's auditing features to detect any unauthorized access.
+
+
+By following these steps, you can securely grant programmatic access to your MongoDB Atlas project, ensuring that your API keys are managed and utilized in accordance with best practices.
+
+For more detailed information, refer to [Guide](https://www.mongodb.com/docs/atlas/configure-api-access/#grant-programmatic-access-to-a-project).
+
+---
 
 ### Minimum System Requirements
 - For SageMaker: At least one `ml.g5.12xlarge` instance (or equivalent GPU instance)
 - For EC2: At least a `t3.medium` instance (or higher, depending on workload)
 - Sufficient EBS storage for EC2 instance (at least 100 GB recommended)
+- MongoDB Atlas M10 Cluster (auto-deployed by the `one-click` script)
 
 ### Deployment Steps
 
@@ -279,80 +337,92 @@ curl -X POST "http://localhost:8000/rag" -H "Content-Type: application/json" -d 
 
 ## 8. Security Considerations
 
-To establish secure and efficient connectivity between your AWS EC2 instances and MongoDB Atlas or AWS services like Bedrock and SageMaker, consider the following configurations and security practices:
+To enhance the security of your AWS EC2 instances and MongoDB Atlas integration, consider the following configurations and best practices:
 
----
 
-### **1. Security Group and NACL Configuration**
+
+### **1. Network and Firewall Configuration**
 
 #### **MongoDB Atlas:**
-- **Port 27017 (TCP):**  
-  - **Security Groups:**  
-    - **Inbound:** Allow traffic from EC2 instance IPs or associated security groups.  
-    - **Outbound:** Permit traffic to MongoDB Atlas cluster IPs.  
-  - **NACLs:** Allow both inbound and outbound traffic on port 27017.  
+- **IP Access List:**
+  - Restrict client connections to your Atlas clusters by configuring IP access lists.
+  - Add the public IP addresses of your application environments to the IP access list to permit access.
+  - For enhanced security, consider using VPC peering or private endpoints to allow private IP addresses.
+  - [Configure IP Access List Entries](https://www.mongodb.com/docs/atlas/security/ip-access-list/).
+
+- **Ports 27015 to 27017 (TCP):**
+  - Ensure that your firewall allows outbound connections from your application environment to Atlas on ports **27015 to 27017** for TCP traffic.
+  - This configuration enables your applications to access databases hosted on Atlas.
+
 
 #### **AWS Bedrock and SageMaker:**
 - **Port 443 (HTTPS):** Required for API calls and interactions.  
 - **Port 2049 (TCP):** Needed for SageMaker EFS usage.  
   - **Security Groups:** Allow outbound traffic on ports 443 and 2049.  
   - **NACLs:** Permit inbound and outbound traffic on these ports.  
+---
+
+### **2. Authentication and Authorization**
+
+- **Database Users:**
+  - Atlas mandates client authentication to access clusters.
+  - Create database users with appropriate roles to control access.
+  - [Configure Database Users](https://www.mongodb.com/docs/atlas/security/config-db-auth/).
+
+- **Custom Roles:**
+  - If default roles don't meet your requirements, define custom roles with specific privileges.
+  - [Create Custom Roles](https://www.mongodb.com/docs/atlas/security/config-db-auth/#custom-database-roles).
+
+- **AWS IAM Integration:**
+  - Authenticate applications running on AWS services to Atlas clusters using AWS IAM roles.
+  - Set up database users to use AWS IAM role ARNs for authentication.
+  - [AWS IAM Authentication](https://www.mongodb.com/docs/atlas/security/config-db-auth/#authentication-with-aws-iam).
 
 ---
 
-### **2. Additional Considerations**
+### **3. Data Encryption**
 
-#### **VPC Peering:**
-- Establish VPC peering between your AWS VPC and MongoDB Atlas's VPC or other AWS services to eliminate public internet exposure.  
-  - **Steps for MongoDB Atlas:**  
-    - Initiate and accept peering requests.  
-    - Update route tables and security configurations.  
-    - [Guide](https://www.mongodb.com/docs/atlas/security-vpc-peering/).  
+- **Encryption at Rest:**
+  - Atlas encrypts all data stored on your clusters by default.
+  - For enhanced security, consider using your own key management system.
+  - [Encryption at Rest](https://www.mongodb.com/docs/atlas/security/encryption-at-rest/).
 
-#### **Private Endpoints:**
-- Use **AWS PrivateLink (VPC Endpoint)** for private communication within AWS networks.  
-  - **Steps for MongoDB Atlas:**  
-    - Configure private endpoints in MongoDB Atlas.  
-    - Create corresponding VPC endpoints in AWS.  
-    - Adjust connection strings and security settings.  
-    - [Guide](https://www.mongodb.com/docs/atlas/data-federation/tutorial/config-private-endpoint/).  
-
-#### **NAT Gateway:**
-- Use NAT Gateways to route traffic from private subnets while preventing direct internet access to EC2 instances.  
-
-#### **Specific IP Ranges:**
-- AWS services like Bedrock and SageMaker use dynamic IPs. Filter these from [AWS IP Ranges](https://ip-ranges.amazonaws.com/ip-ranges.json) for egress traffic.  
+- **TLS/SSL Encryption:**
+  - Atlas requires TLS encryption for client connections and intra-cluster communications.
+  - Ensure your applications support TLS 1.2 or higher.
+  - [TLS/SSL Configuration](https://www.mongodb.com/docs/atlas/security/tls-ssl/).
 
 ---
 
-### **3. Best Practices**
+### **4. Network Peering and Private Endpoints**
 
-#### **MongoDB Atlas:**
-- Use private IPs with VPC peering or private endpoints.  
-- Configure IP access lists to restrict connections to trusted sources.  
-  - [IP Access List Guide](https://www.mongodb.com/docs/atlas/security/ip-access-list/).  
+- **VPC Peering:**
+  - Establish VPC peering between your AWS VPC and MongoDB Atlas's VPC to eliminate public internet exposure.
+  - [Set Up a Network Peering Connection](https://www.mongodb.com/docs/atlas/security/vpc-peering/).
 
-#### **AWS Services:**
-- Regularly review and update security groups and NACL rules for least privilege.  
+- **Private Endpoints:**
+  - Use AWS PrivateLink to create private endpoints for secure communication within AWS networks.
+  - [Configure Private Endpoints](https://www.mongodb.com/docs/atlas/security-cluster-private-endpoint/).
 
-#### **Secure Communication:**
-- Use HTTPS for all services in production deployments.
+- **NAT Gateway:**
+  - Use NAT Gateways to route traffic from private subnets while preventing direct internet access to EC2 instances.  
 
-#### **Authentication & Authorization:**
-- **MongoDB Atlas:** Use proper authentication mechanisms.  
-- **AWS IAM Roles:** Assign least privilege roles to instances and services.  
-- **API Key Management:** Regularly rotate and secure API keys.  
+- **Specific IP Ranges:**
+  - AWS services like Bedrock and SageMaker use dynamic IPs. Filter these from [AWS IP Ranges](https://ip-ranges.amazonaws.com/ip-ranges.json) for egress traffic.  
 
-#### **Data Security:**
-- Encrypt sensitive data both at rest and in transit.  
-- Follow secure file handling practices.  
 
-#### **Compliance:**
-- Adhere to data privacy regulations (e.g., GDPR, HIPAA).  
-- Implement robust access control policies.  
-- Enable audit logging for traceability.  
+---
 
-By combining these configurations and practices, you can ensure secure, efficient, and compliant connectivity between your AWS resources and MongoDB Atlas or other AWS services like Bedrock and SageMaker.
+### **5. Compliance and Monitoring**
+
+- **Audit Logging:**
+  - Enable audit logging to monitor database activities and ensure compliance with data protection regulations.
+  - [Enable Audit Logging](https://www.mongodb.com/docs/atlas/security/audit-logging/).
+
+- **Regular Updates:**
+  - Keep your dependencies and Docker images up to date to address security vulnerabilities.
+
+By implementing these configurations and best practices, you can enhance the security, efficiency, and compliance of your integration between AWS resources and MongoDB Atlas. 
 
 ## 9. Monitoring & Logging
 

@@ -136,12 +136,70 @@ This system is composed of several key components:
 - Docker and Docker Compose installed
 - AWS CLI installed and configured
 - EC2 quota for `t3.xlarge`
+- Programmatic access to your MongoDB Atlas project
+
+### MongoDB Atlas Programmatic Access
+To enable programmatic access to your MongoDB Atlas project, follow these steps to create and manage API keys securely:
+
+
+#### **1. Create an API Key**
+
+1. **Navigate to Project Access Manager:**
+   - In the Atlas UI, select your organization and project.
+   - Go to **Project Access** under the **Access Manager** menu.
+
+2. **Create API Key:**
+   - Click on the **Applications** tab.
+   - Select **API Keys**.
+   - Click **Create API Key**.
+   - Provide a description for the key.
+   - Assign appropriate project permissions by selecting roles that align with the principle of least privilege.
+   - Click **Next**.
+
+3. **Save API Key Credentials:**
+   - Copy and securely store the **Public Key** (username) and **Private Key** (password).
+   - **Important:** The private key is displayed only once; ensure it's stored securely.
+
+
+
+#### **2. Configure API Access List**
+
+1. **Add Access List Entry:**
+   - After creating the API key, add an IP address or CIDR block to the API access list to specify allowed sources for API requests.
+   - Click **Add Access List Entry**.
+   - Enter the IP address or click **Use Current IP Address** if accessing from the current host.
+   - Click **Save**.
+
+2. **Manage Access List:**
+   - To modify the access list, navigate to the **API Keys** section.
+   - Click the ellipsis (**...**) next to the API key and select **Edit Permissions**.
+   - Update the access list as needed.
+
+
+
+#### **3. Secure API Key Usage**
+
+- **Environment Variables:** Store API keys in environment variables to prevent hardcoding them in your application's source code.
+
+- **Access Controls:** Limit API key permissions to the minimum required for your application's functionality.
+
+- **Regular Rotation:** Periodically rotate API keys and update your applications to use the new keys to enhance security.
+
+- **Audit Logging:** Monitor API key usage through Atlas's auditing features to detect any unauthorized access.
+
+
+By following these steps, you can securely grant programmatic access to your MongoDB Atlas project, ensuring that your API keys are managed and utilized in accordance with best practices.
+
+For more detailed information, refer to [Guide](https://www.mongodb.com/docs/atlas/configure-api-access/#grant-programmatic-access-to-a-project).
+
+---
 
 ### Minimum System Requirements
 - Sufficient CPU and memory for running Docker containers
 - Adequate network bandwidth for data transfer and API calls
 - For EC2: At least a `t3.medium` instance (or higher, depending on workload)
 - Sufficient EBS storage for EC2 instance (at least 100 GB recommended)
+- MongoDB Atlas M10 Cluster (auto-deployed by the `one-click` script)
 
 ### Deployment Steps
 
@@ -328,34 +386,95 @@ Example usage:
 curl -X POST "http://localhost:8000/rag" -H "Content-Type: application/json" -d '{"query": "Tell me about India", "userId": "user123"}'
 ```
 
+
 ## 8. Security Considerations
 
-1. **Authentication**:
-   - Use secure authentication mechanisms for MongoDB Atlas and AWS.
-   - Protect sensitive environment variables and API keys with restricted access.
+To enhance the security of your AWS EC2 instances and MongoDB Atlas integration, consider the following configurations and best practices:
 
-2. **Data Privacy**:
-   - Ensure uploaded files and user queries are processed in compliance with data protection regulations.
 
-3. **Network Security**:
-   - Use TLS/SSL for securing communications between services and external APIs.
-   - Restrict access to the Docker containers using firewalls or network policies.
 
-4. **Access Control**:
-   - Implement role-based access control for users interacting with the application.
+### **1. Network and Firewall Configuration**
 
-5. **Vulnerability Management**:
-   - Regularly update dependencies and Docker images to address security vulnerabilities.
+#### **MongoDB Atlas:**
+- **IP Access List:**
+  - Restrict client connections to your Atlas clusters by configuring IP access lists.
+  - Add the public IP addresses of your application environments to the IP access list to permit access.
+  - For enhanced security, consider using VPC peering or private endpoints to allow private IP addresses.
+  - [Configure IP Access List Entries](https://www.mongodb.com/docs/atlas/security/ip-access-list/).
 
-6. **Compliance**:
-   - Adhere to data privacy regulations
-   - Implement access control policies
-   - Set up audit logging
+- **Ports 27015 to 27017 (TCP):**
+  - Ensure that your firewall allows outbound connections from your application environment to Atlas on ports **27015 to 27017** for TCP traffic.
+  - This configuration enables your applications to access databases hosted on Atlas.
 
-7. **Data Security**:
-   - Encrypt sensitive data at rest and in transit
-   - Implement secure file handling procedures
-   - Configure network security groups
+#### **AWS Services (e.g., Bedrock):**
+- **Port 443 (HTTPS):**
+  - Required for API calls and interactions.
+  - Configure security groups to allow outbound traffic on port 443.
+  - Ensure Network ACLs permit inbound and outbound traffic on this port.
+
+---
+
+### **2. Authentication and Authorization**
+
+- **Database Users:**
+  - Atlas mandates client authentication to access clusters.
+  - Create database users with appropriate roles to control access.
+  - [Configure Database Users](https://www.mongodb.com/docs/atlas/security/config-db-auth/).
+
+- **Custom Roles:**
+  - If default roles don't meet your requirements, define custom roles with specific privileges.
+  - [Create Custom Roles](https://www.mongodb.com/docs/atlas/security/config-db-auth/#custom-database-roles).
+
+- **AWS IAM Integration:**
+  - Authenticate applications running on AWS services to Atlas clusters using AWS IAM roles.
+  - Set up database users to use AWS IAM role ARNs for authentication.
+  - [AWS IAM Authentication](https://www.mongodb.com/docs/atlas/security/config-db-auth/#authentication-with-aws-iam).
+
+---
+
+### **3. Data Encryption**
+
+- **Encryption at Rest:**
+  - Atlas encrypts all data stored on your clusters by default.
+  - For enhanced security, consider using your own key management system.
+  - [Encryption at Rest](https://www.mongodb.com/docs/atlas/security/encryption-at-rest/).
+
+- **TLS/SSL Encryption:**
+  - Atlas requires TLS encryption for client connections and intra-cluster communications.
+  - Ensure your applications support TLS 1.2 or higher.
+  - [TLS/SSL Configuration](https://www.mongodb.com/docs/atlas/security/tls-ssl/).
+
+---
+
+### **4. Network Peering and Private Endpoints**
+
+- **VPC Peering:**
+  - Establish VPC peering between your AWS VPC and MongoDB Atlas's VPC to eliminate public internet exposure.
+  - [Set Up a Network Peering Connection](https://www.mongodb.com/docs/atlas/security/vpc-peering/).
+
+- **Private Endpoints:**
+  - Use AWS PrivateLink to create private endpoints for secure communication within AWS networks.
+  - [Configure Private Endpoints](https://www.mongodb.com/docs/atlas/security-cluster-private-endpoint/).
+
+- **NAT Gateway:**
+  - Use NAT Gateways to route traffic from private subnets while preventing direct internet access to EC2 instances.  
+
+- **Specific IP Ranges:**
+  - AWS services like Bedrock use dynamic IPs. Filter these from [AWS IP Ranges](https://ip-ranges.amazonaws.com/ip-ranges.json) for egress traffic.  
+---
+
+### **5. Compliance and Monitoring**
+
+- **Audit Logging:**
+  - Enable audit logging to monitor database activities and ensure compliance with data protection regulations.
+  - [Enable Audit Logging](https://www.mongodb.com/docs/atlas/security/audit-logging/).
+
+- **Regular Updates:**
+  - Keep your dependencies and Docker images up to date to address security vulnerabilities.
+
+By implementing these configurations and best practices, you can enhance the security, efficiency, and compliance of your integration between AWS resources and MongoDB Atlas. 
+
+
 
 ## 9. Monitoring & Logging
 
