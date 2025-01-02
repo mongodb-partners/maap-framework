@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="generator" content="Docusaurus v3.4.0">
 <title data-rh="true">MongoDB - Anthropic Quickstart | MAAP</title><meta data-rh="true" name="viewport" content="width=device-width,initial-scale=1"><meta data-rh="true" name="twitter:card" content="summary_large_image"><meta data-rh="true" property="og:image" content="https://maap-framework.github.io/maap-framework/img/docusaurus-social-card.jpg"><meta data-rh="true" name="twitter:image" content="https://maap-framework.github.io/maap-framework/img/docusaurus-social-card.jpg"><meta data-rh="true" property="og:url" content="https://maap-framework.github.io/maap-framework/docs/quick-starts/anthropic"><meta data-rh="true" property="og:locale" content="en"><meta data-rh="true" name="docusaurus_locale" content="en"><meta data-rh="true" name="docsearch:language" content="en"><meta data-rh="true" name="docusaurus_version" content="current"><meta data-rh="true" name="docusaurus_tag" content="docs-default-current"><meta data-rh="true" name="docsearch:version" content="current"><meta data-rh="true" name="docsearch:docusaurus_tag" content="docs-default-current"><meta data-rh="true" property="og:title" content="MongoDB - Anthropic Quickstart | MAAP"><meta data-rh="true" name="description" content="MongoDB - Anthropic Quickstart is an integrated end-to-end technology stack that combines MongoDB Atlas capabilities with Anthropic&#x27;s Claude AI models to create an intelligent Agentic conversational interface. It allows users to interact with MongoDB data sources through natural language queries, leveraging vector search, full-text search, hybrid search and other advanced querying techniques."><meta data-rh="true" property="og:description" content="MongoDB - Anthropic Quickstart is an integrated end-to-end technology stack that combines MongoDB Atlas capabilities with Anthropic&#x27;s Claude AI models to create an intelligent Agentic conversational interface. It allows users to interact with MongoDB data sources through natural language queries, leveraging vector search, full-text search, hybrid search and other advanced querying techniques."><link data-rh="true" rel="icon" href="/maap-framework/img/favicon.ico"><link data-rh="true" rel="canonical" href="https://maap-framework.github.io/maap-framework/docs/quick-starts/anthropic"><link data-rh="true" rel="alternate" href="https://maap-framework.github.io/maap-framework/docs/quick-starts/anthropic" hreflang="en"><link data-rh="true" rel="alternate" href="https://maap-framework.github.io/maap-framework/docs/quick-starts/anthropic" hreflang="x-default"><link rel="stylesheet" href="/maap-framework/assets/css/styles.672a8b88.css">
-<script src="/maap-framework/assets/js/runtime~main.0c9619ad.js" defer="defer"></script>
+<script src="/maap-framework/assets/js/runtime~main.1bd601e0.js" defer="defer"></script>
 <script src="/maap-framework/assets/js/main.306f129f.js" defer="defer"></script>
 </head>
 <body class="navigation-with-keyboard">
@@ -66,7 +66,7 @@
 </li>
 </ol>
 <p>The system uses Docker for containerization and deployment.</p>
-<p><img decoding="async" loading="lazy" alt="MAAP Application Architecture" src="/maap-framework/assets/images/AnthropicAWSArchitecture-1979dc0e8dc4bf95a91ed37368991dc3.png" width="1111" height="651" class="img_ev3q"></p>
+<p><img decoding="async" loading="lazy" alt="MAAP Application Architecture" src="/maap-framework/assets/images/AnthropicAWSArchitecture-31eddbc1003e5a6fa3ff2ac88715eb3a.png" width="1111" height="651" class="img_ev3q"></p>
 <p><strong>Data flow within the system:</strong></p>
 <p>Users interact with the Gradio-based frontend UI, which acts as the entry point for all inputs.</p>
 <ul>
@@ -173,13 +173,83 @@
 <li>Docker and Docker Compose installed</li>
 <li>AWS CLI installed and configured</li>
 <li>EC2 quota for <code>t3.xlarge</code></li>
+<li>Programmatic access to your MongoDB Atlas project</li>
 </ul>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="mongodb-atlas-programmatic-access">MongoDB Atlas Programmatic Access<a class="hash-link" aria-label="Direct link to MongoDB Atlas Programmatic Access" title="Direct link to MongoDB Atlas Programmatic Access" href="/maap-framework/docs/quick-starts/anthropic#mongodb-atlas-programmatic-access">​</a></h3>
+<p>To enable programmatic access to your MongoDB Atlas project, follow these steps to create and manage API keys securely:</p>
+<h4 class="anchor anchorWithStickyNavbar_LWe7" id="1-create-an-api-key"><strong>1. Create an API Key</strong><a class="hash-link" aria-label="Direct link to 1-create-an-api-key" title="Direct link to 1-create-an-api-key" href="/maap-framework/docs/quick-starts/anthropic#1-create-an-api-key">​</a></h4>
+<ol>
+<li>
+<p><strong>Navigate to Project Access Manager:</strong></p>
+<ul>
+<li>In the Atlas UI, select your organization and project.</li>
+<li>Go to <strong>Project Access</strong> under the <strong>Access Manager</strong> menu.</li>
+</ul>
+</li>
+<li>
+<p><strong>Create API Key:</strong></p>
+<ul>
+<li>Click on the <strong>Applications</strong> tab.</li>
+<li>Select <strong>API Keys</strong>.</li>
+<li>Click <strong>Create API Key</strong>.</li>
+<li>Provide a description for the key.</li>
+<li>Assign appropriate project permissions by selecting roles that align with the principle of least privilege.</li>
+<li>Click <strong>Next</strong>.</li>
+</ul>
+</li>
+<li>
+<p><strong>Save API Key Credentials:</strong></p>
+<ul>
+<li>Copy and securely store the <strong>Public Key</strong> (username) and <strong>Private Key</strong> (password).</li>
+<li><strong>Important:</strong> The private key is displayed only once; ensure it&#x27;s stored securely.</li>
+</ul>
+</li>
+</ol>
+<h4 class="anchor anchorWithStickyNavbar_LWe7" id="2-configure-api-access-list"><strong>2. Configure API Access List</strong><a class="hash-link" aria-label="Direct link to 2-configure-api-access-list" title="Direct link to 2-configure-api-access-list" href="/maap-framework/docs/quick-starts/anthropic#2-configure-api-access-list">​</a></h4>
+<ol>
+<li>
+<p><strong>Add Access List Entry:</strong></p>
+<ul>
+<li>After creating the API key, add an IP address or CIDR block to the API access list to specify allowed sources for API requests.</li>
+<li>Click <strong>Add Access List Entry</strong>.</li>
+<li>Enter the IP address or click <strong>Use Current IP Address</strong> if accessing from the current host.</li>
+<li>Click <strong>Save</strong>.</li>
+</ul>
+</li>
+<li>
+<p><strong>Manage Access List:</strong></p>
+<ul>
+<li>To modify the access list, navigate to the <strong>API Keys</strong> section.</li>
+<li>Click the ellipsis (<strong>...</strong>) next to the API key and select <strong>Edit Permissions</strong>.</li>
+<li>Update the access list as needed.</li>
+</ul>
+</li>
+</ol>
+<h4 class="anchor anchorWithStickyNavbar_LWe7" id="3-secure-api-key-usage"><strong>3. Secure API Key Usage</strong><a class="hash-link" aria-label="Direct link to 3-secure-api-key-usage" title="Direct link to 3-secure-api-key-usage" href="/maap-framework/docs/quick-starts/anthropic#3-secure-api-key-usage">​</a></h4>
+<ul>
+<li>
+<p><strong>Environment Variables:</strong> Store API keys in environment variables to prevent hardcoding them in your application&#x27;s source code.</p>
+</li>
+<li>
+<p><strong>Access Controls:</strong> Limit API key permissions to the minimum required for your application&#x27;s functionality.</p>
+</li>
+<li>
+<p><strong>Regular Rotation:</strong> Periodically rotate API keys and update your applications to use the new keys to enhance security.</p>
+</li>
+<li>
+<p><strong>Audit Logging:</strong> Monitor API key usage through Atlas&#x27;s auditing features to detect any unauthorized access.</p>
+</li>
+</ul>
+<p>By following these steps, you can securely grant programmatic access to your MongoDB Atlas project, ensuring that your API keys are managed and utilized in accordance with best practices.</p>
+<p>For more detailed information, refer to <a href="https://www.mongodb.com/docs/atlas/configure-api-access/#grant-programmatic-access-to-a-project" target="_blank" rel="noopener noreferrer">Guide</a>.</p>
+<hr>
 <h3 class="anchor anchorWithStickyNavbar_LWe7" id="minimum-system-requirements">Minimum System Requirements<a class="hash-link" aria-label="Direct link to Minimum System Requirements" title="Direct link to Minimum System Requirements" href="/maap-framework/docs/quick-starts/anthropic#minimum-system-requirements">​</a></h3>
 <ul>
 <li>Sufficient CPU and memory for running Docker containers</li>
 <li>Adequate network bandwidth for data transfer and API calls</li>
 <li>For EC2: At least a <code>t3.medium</code> instance (or higher, depending on workload)</li>
 <li>Sufficient EBS storage for EC2 instance (at least 100 GB recommended)</li>
+<li>MongoDB Atlas M10 Cluster (auto-deployed by the <code>one-click</code> script)</li>
 </ul>
 <h3 class="anchor anchorWithStickyNavbar_LWe7" id="deployment-steps">Deployment Steps<a class="hash-link" aria-label="Direct link to Deployment Steps" title="Direct link to Deployment Steps" href="/maap-framework/docs/quick-starts/anthropic#deployment-steps">​</a></h3>
 <ol>
@@ -321,56 +391,132 @@ Open the script in a text editor and fill in the required values for various env
 <p>Example usage:</p>
 <div class="language-python codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_biex"><pre tabindex="0" class="prism-code language-python codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token comment" style="color:#999988;font-style:italic"># Query example</span><span class="token plain"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">curl </span><span class="token operator" style="color:#393A34">-</span><span class="token plain">X POST </span><span class="token string" style="color:#e3116c">&quot;http://localhost:8000/rag&quot;</span><span class="token plain"> </span><span class="token operator" style="color:#393A34">-</span><span class="token plain">H </span><span class="token string" style="color:#e3116c">&quot;Content-Type: application/json&quot;</span><span class="token plain"> </span><span class="token operator" style="color:#393A34">-</span><span class="token plain">d </span><span class="token string" style="color:#e3116c">&#x27;{&quot;query&quot;: &quot;Tell me about India&quot;, &quot;userId&quot;: &quot;user123&quot;}&#x27;</span><br></span></code></pre><div class="buttonGroup__atx"><button type="button" aria-label="Copy code to clipboard" title="Copy" class="clean-btn"><span class="copyButtonIcons_eSgA" aria-hidden="true"><svg viewBox="0 0 24 24" class="copyButtonIcon_y97N"><path fill="currentColor" d="M19,21H8V7H19M19,5H8A2,2 0 0,0 6,7V21A2,2 0 0,0 8,23H19A2,2 0 0,0 21,21V7A2,2 0 0,0 19,5M16,1H4A2,2 0 0,0 2,3V17H4V3H16V1Z"></path></svg><svg viewBox="0 0 24 24" class="copyButtonSuccessIcon_LjdS"><path fill="currentColor" d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"></path></svg></span></button></div></div></div>
 <h2 class="anchor anchorWithStickyNavbar_LWe7" id="8-security-considerations">8. Security Considerations<a class="hash-link" aria-label="Direct link to 8. Security Considerations" title="Direct link to 8. Security Considerations" href="/maap-framework/docs/quick-starts/anthropic#8-security-considerations">​</a></h2>
-<ol>
-<li>
-<p><strong>Authentication</strong>:</p>
+<p>To enhance the security of your AWS EC2 instances and MongoDB Atlas integration, consider the following configurations and best practices:</p>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="1-network-and-firewall-configuration"><strong>1. Network and Firewall Configuration</strong><a class="hash-link" aria-label="Direct link to 1-network-and-firewall-configuration" title="Direct link to 1-network-and-firewall-configuration" href="/maap-framework/docs/quick-starts/anthropic#1-network-and-firewall-configuration">​</a></h3>
+<h4 class="anchor anchorWithStickyNavbar_LWe7" id="mongodb-atlas-1"><strong>MongoDB Atlas:</strong><a class="hash-link" aria-label="Direct link to mongodb-atlas-1" title="Direct link to mongodb-atlas-1" href="/maap-framework/docs/quick-starts/anthropic#mongodb-atlas-1">​</a></h4>
 <ul>
-<li>Use secure authentication mechanisms for MongoDB Atlas and AWS.</li>
-<li>Protect sensitive environment variables and API keys with restricted access.</li>
+<li>
+<p><strong>IP Access List:</strong></p>
+<ul>
+<li>Restrict client connections to your Atlas clusters by configuring IP access lists.</li>
+<li>Add the public IP addresses of your application environments to the IP access list to permit access.</li>
+<li>For enhanced security, consider using VPC peering or private endpoints to allow private IP addresses.</li>
+<li><a href="https://www.mongodb.com/docs/atlas/security/ip-access-list/" target="_blank" rel="noopener noreferrer">Configure IP Access List Entries</a>.</li>
 </ul>
 </li>
 <li>
-<p><strong>Data Privacy</strong>:</p>
+<p><strong>Ports 27015 to 27017 (TCP):</strong></p>
 <ul>
-<li>Ensure uploaded files and user queries are processed in compliance with data protection regulations.</li>
+<li>Ensure that your firewall allows outbound connections from your application environment to Atlas on ports <strong>27015 to 27017</strong> for TCP traffic.</li>
+<li>This configuration enables your applications to access databases hosted on Atlas.</li>
+</ul>
+</li>
+</ul>
+<h4 class="anchor anchorWithStickyNavbar_LWe7" id="aws-services-eg-bedrock"><strong>AWS Services (e.g., Bedrock):</strong><a class="hash-link" aria-label="Direct link to aws-services-eg-bedrock" title="Direct link to aws-services-eg-bedrock" href="/maap-framework/docs/quick-starts/anthropic#aws-services-eg-bedrock">​</a></h4>
+<ul>
+<li><strong>Port 443 (HTTPS):</strong>
+<ul>
+<li>Required for API calls and interactions.</li>
+<li>Configure security groups to allow outbound traffic on port 443.</li>
+<li>Ensure Network ACLs permit inbound and outbound traffic on this port.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="2-authentication-and-authorization"><strong>2. Authentication and Authorization</strong><a class="hash-link" aria-label="Direct link to 2-authentication-and-authorization" title="Direct link to 2-authentication-and-authorization" href="/maap-framework/docs/quick-starts/anthropic#2-authentication-and-authorization">​</a></h3>
+<ul>
+<li>
+<p><strong>Database Users:</strong></p>
+<ul>
+<li>Atlas mandates client authentication to access clusters.</li>
+<li>Create database users with appropriate roles to control access.</li>
+<li><a href="https://www.mongodb.com/docs/atlas/security/config-db-auth/" target="_blank" rel="noopener noreferrer">Configure Database Users</a>.</li>
 </ul>
 </li>
 <li>
-<p><strong>Network Security</strong>:</p>
+<p><strong>Custom Roles:</strong></p>
 <ul>
-<li>Use TLS/SSL for securing communications between services and external APIs.</li>
-<li>Restrict access to the Docker containers using firewalls or network policies.</li>
+<li>If default roles don&#x27;t meet your requirements, define custom roles with specific privileges.</li>
+<li><a href="https://www.mongodb.com/docs/atlas/security/config-db-auth/#custom-database-roles" target="_blank" rel="noopener noreferrer">Create Custom Roles</a>.</li>
 </ul>
 </li>
 <li>
-<p><strong>Access Control</strong>:</p>
+<p><strong>AWS IAM Integration:</strong></p>
 <ul>
-<li>Implement role-based access control for users interacting with the application.</li>
+<li>Authenticate applications running on AWS services to Atlas clusters using AWS IAM roles.</li>
+<li>Set up database users to use AWS IAM role ARNs for authentication.</li>
+<li><a href="https://www.mongodb.com/docs/atlas/security/config-db-auth/#authentication-with-aws-iam" target="_blank" rel="noopener noreferrer">AWS IAM Authentication</a>.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="3-data-encryption"><strong>3. Data Encryption</strong><a class="hash-link" aria-label="Direct link to 3-data-encryption" title="Direct link to 3-data-encryption" href="/maap-framework/docs/quick-starts/anthropic#3-data-encryption">​</a></h3>
+<ul>
+<li>
+<p><strong>Encryption at Rest:</strong></p>
+<ul>
+<li>Atlas encrypts all data stored on your clusters by default.</li>
+<li>For enhanced security, consider using your own key management system.</li>
+<li><a href="https://www.mongodb.com/docs/atlas/security/encryption-at-rest/" target="_blank" rel="noopener noreferrer">Encryption at Rest</a>.</li>
 </ul>
 </li>
 <li>
-<p><strong>Vulnerability Management</strong>:</p>
+<p><strong>TLS/SSL Encryption:</strong></p>
 <ul>
-<li>Regularly update dependencies and Docker images to address security vulnerabilities.</li>
+<li>Atlas requires TLS encryption for client connections and intra-cluster communications.</li>
+<li>Ensure your applications support TLS 1.2 or higher.</li>
+<li><a href="https://www.mongodb.com/docs/atlas/security/tls-ssl/" target="_blank" rel="noopener noreferrer">TLS/SSL Configuration</a>.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="4-network-peering-and-private-endpoints"><strong>4. Network Peering and Private Endpoints</strong><a class="hash-link" aria-label="Direct link to 4-network-peering-and-private-endpoints" title="Direct link to 4-network-peering-and-private-endpoints" href="/maap-framework/docs/quick-starts/anthropic#4-network-peering-and-private-endpoints">​</a></h3>
+<ul>
+<li>
+<p><strong>VPC Peering:</strong></p>
+<ul>
+<li>Establish VPC peering between your AWS VPC and MongoDB Atlas&#x27;s VPC to eliminate public internet exposure.</li>
+<li><a href="https://www.mongodb.com/docs/atlas/security/vpc-peering/" target="_blank" rel="noopener noreferrer">Set Up a Network Peering Connection</a>.</li>
 </ul>
 </li>
 <li>
-<p><strong>Compliance</strong>:</p>
+<p><strong>Private Endpoints:</strong></p>
 <ul>
-<li>Adhere to data privacy regulations</li>
-<li>Implement access control policies</li>
-<li>Set up audit logging</li>
+<li>Use AWS PrivateLink to create private endpoints for secure communication within AWS networks.</li>
+<li><a href="https://www.mongodb.com/docs/atlas/security-cluster-private-endpoint/" target="_blank" rel="noopener noreferrer">Configure Private Endpoints</a>.</li>
 </ul>
 </li>
 <li>
-<p><strong>Data Security</strong>:</p>
+<p><strong>NAT Gateway:</strong></p>
 <ul>
-<li>Encrypt sensitive data at rest and in transit</li>
-<li>Implement secure file handling procedures</li>
-<li>Configure network security groups</li>
+<li>Use NAT Gateways to route traffic from private subnets while preventing direct internet access to EC2 instances.</li>
 </ul>
 </li>
-</ol>
+<li>
+<p><strong>Specific IP Ranges:</strong></p>
+<ul>
+<li>AWS services like Bedrock use dynamic IPs. Filter these from <a href="https://ip-ranges.amazonaws.com/ip-ranges.json" target="_blank" rel="noopener noreferrer">AWS IP Ranges</a> for egress traffic.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="5-compliance-and-monitoring"><strong>5. Compliance and Monitoring</strong><a class="hash-link" aria-label="Direct link to 5-compliance-and-monitoring" title="Direct link to 5-compliance-and-monitoring" href="/maap-framework/docs/quick-starts/anthropic#5-compliance-and-monitoring">​</a></h3>
+<ul>
+<li>
+<p><strong>Audit Logging:</strong></p>
+<ul>
+<li>Enable audit logging to monitor database activities and ensure compliance with data protection regulations.</li>
+<li><a href="https://www.mongodb.com/docs/atlas/security/audit-logging/" target="_blank" rel="noopener noreferrer">Enable Audit Logging</a>.</li>
+</ul>
+</li>
+<li>
+<p><strong>Regular Updates:</strong></p>
+<ul>
+<li>Keep your dependencies and Docker images up to date to address security vulnerabilities.</li>
+</ul>
+</li>
+</ul>
+<p>By implementing these configurations and best practices, you can enhance the security, efficiency, and compliance of your integration between AWS resources and MongoDB Atlas.</p>
 <h2 class="anchor anchorWithStickyNavbar_LWe7" id="9-monitoring--logging">9. Monitoring &amp; Logging<a class="hash-link" aria-label="Direct link to 9. Monitoring &amp; Logging" title="Direct link to 9. Monitoring &amp; Logging" href="/maap-framework/docs/quick-starts/anthropic#9-monitoring--logging">​</a></h2>
 <h3 class="anchor anchorWithStickyNavbar_LWe7" id="logging">Logging<a class="hash-link" aria-label="Direct link to Logging" title="Direct link to Logging" href="/maap-framework/docs/quick-starts/anthropic#logging">​</a></h3>
 <ul>
@@ -455,6 +601,6 @@ Open the script in a text editor and fill in the required values for various env
 <p>For support:</p>
 <ul>
 <li>Slack @ #ask-maap</li>
-</ul></div></article><nav class="pagination-nav docusaurus-mt-lg" aria-label="Docs pages"><a class="pagination-nav__link pagination-nav__link--prev" href="/maap-framework/docs/category/quick-starts"><div class="pagination-nav__sublabel">Previous</div><div class="pagination-nav__label">Quick Starts</div></a><a class="pagination-nav__link pagination-nav__link--next" href="/maap-framework/docs/quick-starts/arcee"><div class="pagination-nav__sublabel">Next</div><div class="pagination-nav__label">MongoDB - Arcee Quickstart</div></a></nav></div></div><div class="col col--3"><div class="tableOfContents_bqdL thin-scrollbar theme-doc-toc-desktop"><ul class="table-of-contents table-of-contents__left-border"><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/anthropic#table-of-contents">Table of Contents</a></li><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/anthropic#1-overview">1. Overview</a></li><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/anthropic#2-system-architecture">2. System Architecture</a></li><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/anthropic#3-components">3. Components</a><ul><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/anthropic#ui-service">UI Service</a></li><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/anthropic#main-service">Main Service</a></li><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/anthropic#loader-service">Loader Service</a></li><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/anthropic#mongodb-atlas">MongoDB Atlas</a></li><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/anthropic#aws-bedrock">AWS Bedrock</a></li><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/anthropic#core-components">Core Components</a></li><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/anthropic#technology-stack">Technology Stack</a></li></ul></li><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/anthropic#4-installation--deployment">4. Installation &amp; Deployment</a><ul><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/anthropic#prerequisites">Prerequisites</a></li><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/anthropic#minimum-system-requirements">Minimum System Requirements</a></li><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/anthropic#deployment-steps">Deployment Steps</a></li><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/anthropic#post-deployment-verification">Post-Deployment Verification</a></li></ul></li><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/anthropic#5-configuration">5. Configuration</a><ul><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/anthropic#environment-variables">Environment Variables</a></li><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/anthropic#ai-model-configuration">AI Model Configuration</a></li><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/anthropic#mongodb-indexes">MongoDB Indexes</a></li><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/anthropic#service-specific-configuration">Service-Specific Configuration</a></li></ul></li><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/anthropic#6-usage">6. Usage</a></li><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/anthropic#7-api-reference">7. API Reference</a><ul><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/anthropic#ui-service-api">UI Service API</a></li><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/anthropic#loader-service-api">Loader Service API</a></li><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/anthropic#main-service-api">Main Service API</a></li></ul></li><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/anthropic#8-security-considerations">8. Security Considerations</a></li><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/anthropic#9-monitoring--logging">9. Monitoring &amp; Logging</a><ul><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/anthropic#logging">Logging</a></li><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/anthropic#monitoring">Monitoring</a></li><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/anthropic#alerts">Alerts</a></li></ul></li><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/anthropic#10-troubleshooting">10. Troubleshooting</a><ul><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/anthropic#common-issues">Common Issues</a></li><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/anthropic#debugging">Debugging</a></li><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/anthropic#debug-steps">Debug Steps</a></li></ul></li><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/anthropic#11-development-guide">11. Development Guide</a><ul><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/anthropic#code-organization">Code Organization</a></li><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/anthropic#development-environment">Development Environment</a></li><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/anthropic#testing-procedures">Testing Procedures</a></li></ul></li><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/anthropic#12-maintenance--operations">12. Maintenance &amp; Operations</a><ul><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/anthropic#monitoring-1">Monitoring</a></li><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/anthropic#backup-procedures">Backup Procedures</a></li><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/anthropic#support-and-maintenance">Support and Maintenance</a></li></ul></li></ul></div></div></div></div></main></div></div></div><footer class="footer footer--dark"><div class="container container-fluid"><div class="footer__bottom text--center"><div class="footer__copyright">© 2025 MongoDB, Inc.</div></div></div></footer></div>
+</ul></div></article><nav class="pagination-nav docusaurus-mt-lg" aria-label="Docs pages"><a class="pagination-nav__link pagination-nav__link--prev" href="/maap-framework/docs/category/quick-starts"><div class="pagination-nav__sublabel">Previous</div><div class="pagination-nav__label">Quick Starts</div></a><a class="pagination-nav__link pagination-nav__link--next" href="/maap-framework/docs/quick-starts/arcee"><div class="pagination-nav__sublabel">Next</div><div class="pagination-nav__label">MongoDB - Arcee Quickstart</div></a></nav></div></div><div class="col col--3"><div class="tableOfContents_bqdL thin-scrollbar theme-doc-toc-desktop"><ul class="table-of-contents table-of-contents__left-border"><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/anthropic#table-of-contents">Table of Contents</a></li><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/anthropic#1-overview">1. Overview</a></li><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/anthropic#2-system-architecture">2. System Architecture</a></li><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/anthropic#3-components">3. Components</a><ul><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/anthropic#ui-service">UI Service</a></li><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/anthropic#main-service">Main Service</a></li><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/anthropic#loader-service">Loader Service</a></li><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/anthropic#mongodb-atlas">MongoDB Atlas</a></li><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/anthropic#aws-bedrock">AWS Bedrock</a></li><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/anthropic#core-components">Core Components</a></li><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/anthropic#technology-stack">Technology Stack</a></li></ul></li><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/anthropic#4-installation--deployment">4. Installation &amp; Deployment</a><ul><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/anthropic#prerequisites">Prerequisites</a></li><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/anthropic#mongodb-atlas-programmatic-access">MongoDB Atlas Programmatic Access</a></li><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/anthropic#minimum-system-requirements">Minimum System Requirements</a></li><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/anthropic#deployment-steps">Deployment Steps</a></li><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/anthropic#post-deployment-verification">Post-Deployment Verification</a></li></ul></li><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/anthropic#5-configuration">5. Configuration</a><ul><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/anthropic#environment-variables">Environment Variables</a></li><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/anthropic#ai-model-configuration">AI Model Configuration</a></li><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/anthropic#mongodb-indexes">MongoDB Indexes</a></li><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/anthropic#service-specific-configuration">Service-Specific Configuration</a></li></ul></li><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/anthropic#6-usage">6. Usage</a></li><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/anthropic#7-api-reference">7. API Reference</a><ul><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/anthropic#ui-service-api">UI Service API</a></li><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/anthropic#loader-service-api">Loader Service API</a></li><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/anthropic#main-service-api">Main Service API</a></li></ul></li><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/anthropic#8-security-considerations">8. Security Considerations</a><ul><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/anthropic#1-network-and-firewall-configuration"><strong>1. Network and Firewall Configuration</strong></a></li><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/anthropic#2-authentication-and-authorization"><strong>2. Authentication and Authorization</strong></a></li><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/anthropic#3-data-encryption"><strong>3. Data Encryption</strong></a></li><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/anthropic#4-network-peering-and-private-endpoints"><strong>4. Network Peering and Private Endpoints</strong></a></li><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/anthropic#5-compliance-and-monitoring"><strong>5. Compliance and Monitoring</strong></a></li></ul></li><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/anthropic#9-monitoring--logging">9. Monitoring &amp; Logging</a><ul><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/anthropic#logging">Logging</a></li><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/anthropic#monitoring">Monitoring</a></li><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/anthropic#alerts">Alerts</a></li></ul></li><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/anthropic#10-troubleshooting">10. Troubleshooting</a><ul><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/anthropic#common-issues">Common Issues</a></li><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/anthropic#debugging">Debugging</a></li><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/anthropic#debug-steps">Debug Steps</a></li></ul></li><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/anthropic#11-development-guide">11. Development Guide</a><ul><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/anthropic#code-organization">Code Organization</a></li><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/anthropic#development-environment">Development Environment</a></li><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/anthropic#testing-procedures">Testing Procedures</a></li></ul></li><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/anthropic#12-maintenance--operations">12. Maintenance &amp; Operations</a><ul><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/anthropic#monitoring-1">Monitoring</a></li><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/anthropic#backup-procedures">Backup Procedures</a></li><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/anthropic#support-and-maintenance">Support and Maintenance</a></li></ul></li></ul></div></div></div></div></main></div></div></div><footer class="footer footer--dark"><div class="container container-fluid"><div class="footer__bottom text--center"><div class="footer__copyright">© 2025 MongoDB, Inc.</div></div></div></footer></div>
 </body>
 </html>
