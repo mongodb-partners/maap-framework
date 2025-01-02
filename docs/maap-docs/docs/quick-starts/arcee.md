@@ -279,25 +279,80 @@ curl -X POST "http://localhost:8000/rag" -H "Content-Type: application/json" -d 
 
 ## 8. Security Considerations
 
-- Use secure communication (HTTPS) for all services in production deployments
-- Implement proper authentication and authorization
-- Follow AWS and MongoDB Atlas security best practices
-- Encrypt sensitive data at rest and in transit
+To establish secure and efficient connectivity between your AWS EC2 instances and MongoDB Atlas or AWS services like Bedrock and SageMaker, consider the following configurations and security practices:
 
-### Authentication & Authorization
-- MongoDB Atlas authentication
-- AWS IAM roles
-- API key management
+---
 
-### Data Security
-- Encryption at rest
-- Secure file handling
-- Network security groups
+### **1. Security Group and NACL Configuration**
 
-### Compliance
-- Data privacy regulations
-- Access control policies
-- Audit logging
+#### **MongoDB Atlas:**
+- **Port 27017 (TCP):**  
+  - **Security Groups:**  
+    - **Inbound:** Allow traffic from EC2 instance IPs or associated security groups.  
+    - **Outbound:** Permit traffic to MongoDB Atlas cluster IPs.  
+  - **NACLs:** Allow both inbound and outbound traffic on port 27017.  
+
+#### **AWS Bedrock and SageMaker:**
+- **Port 443 (HTTPS):** Required for API calls and interactions.  
+- **Port 2049 (TCP):** Needed for SageMaker EFS usage.  
+  - **Security Groups:** Allow outbound traffic on ports 443 and 2049.  
+  - **NACLs:** Permit inbound and outbound traffic on these ports.  
+
+---
+
+### **2. Additional Considerations**
+
+#### **VPC Peering:**
+- Establish VPC peering between your AWS VPC and MongoDB Atlas's VPC or other AWS services to eliminate public internet exposure.  
+  - **Steps for MongoDB Atlas:**  
+    - Initiate and accept peering requests.  
+    - Update route tables and security configurations.  
+    - [Guide](https://www.mongodb.com/docs/atlas/security-vpc-peering/).  
+
+#### **Private Endpoints:**
+- Use **AWS PrivateLink (VPC Endpoint)** for private communication within AWS networks.  
+  - **Steps for MongoDB Atlas:**  
+    - Configure private endpoints in MongoDB Atlas.  
+    - Create corresponding VPC endpoints in AWS.  
+    - Adjust connection strings and security settings.  
+    - [Guide](https://www.mongodb.com/docs/atlas/data-federation/tutorial/config-private-endpoint/).  
+
+#### **NAT Gateway:**
+- Use NAT Gateways to route traffic from private subnets while preventing direct internet access to EC2 instances.  
+
+#### **Specific IP Ranges:**
+- AWS services like Bedrock and SageMaker use dynamic IPs. Filter these from [AWS IP Ranges](https://ip-ranges.amazonaws.com/ip-ranges.json) for egress traffic.  
+
+---
+
+### **3. Best Practices**
+
+#### **MongoDB Atlas:**
+- Use private IPs with VPC peering or private endpoints.  
+- Configure IP access lists to restrict connections to trusted sources.  
+  - [IP Access List Guide](https://www.mongodb.com/docs/atlas/security/ip-access-list/).  
+
+#### **AWS Services:**
+- Regularly review and update security groups and NACL rules for least privilege.  
+
+#### **Secure Communication:**
+- Use HTTPS for all services in production deployments.
+
+#### **Authentication & Authorization:**
+- **MongoDB Atlas:** Use proper authentication mechanisms.  
+- **AWS IAM Roles:** Assign least privilege roles to instances and services.  
+- **API Key Management:** Regularly rotate and secure API keys.  
+
+#### **Data Security:**
+- Encrypt sensitive data both at rest and in transit.  
+- Follow secure file handling practices.  
+
+#### **Compliance:**
+- Adhere to data privacy regulations (e.g., GDPR, HIPAA).  
+- Implement robust access control policies.  
+- Enable audit logging for traceability.  
+
+By combining these configurations and practices, you can ensure secure, efficient, and compliant connectivity between your AWS resources and MongoDB Atlas or other AWS services like Bedrock and SageMaker.
 
 ## 9. Monitoring & Logging
 
