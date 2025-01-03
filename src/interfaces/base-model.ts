@@ -1,5 +1,6 @@
 import createDebugMessages from 'debug';
 import { Chunk, ConversationHistory } from '../global/types.js';
+import {ChatMessage} from "llamaindex";
 
 export abstract class BaseModel {
     private readonly baseDebug = createDebugMessages('maap:model:BaseModel');
@@ -55,6 +56,38 @@ export abstract class BaseModel {
         const conversationHistory = this.conversationMap.get(conversationId);
         this.baseDebug(`${conversationHistory.length} history entries found for conversationId '${conversationId}'`);
         return this.runStreamQuery(system, userQuery, supportingContext, conversationHistory);
+    }
+
+    public generatePastMessagesLlama(
+        system: string,
+        supportingContext: Chunk[],
+        pastConversations: ConversationHistory[],
+        userQuery: string,
+    ) {
+        const pastMessages: ChatMessage[] = [
+            {
+                content: `${system}. Supporting context: ${supportingContext.map((s) => s.pageContent).join('; ')}`,
+                role: 'system',
+            },
+        ];
+
+        pastMessages.push(
+            ...pastConversations.map((c) => {
+                if (c.sender === 'AI') {
+                    return { content: c.message, role: 'assistant' } as ChatMessage;
+                } else if (c.sender === 'SYSTEM') {
+                    return { content: c.message, role: 'system' } as ChatMessage;
+                } else {
+                    return { content: c.message, role: 'user' } as ChatMessage;
+                }
+            }),
+        );
+        pastMessages.push({
+            content: `${userQuery}?`,
+            role: 'user',
+        });
+
+        return pastMessages;
     }
 
     protected abstract runQuery(

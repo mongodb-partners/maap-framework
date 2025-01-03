@@ -29,6 +29,21 @@ To use Azure OpenAI model with MAAP framework, you would need to feed below valu
   llms:
       class_name: AzureOpenAI
   ```
+  
+  - ##### Llamaindex Framework:
+
+  MAAP now provides the option to choose if you want to use LlamaIndex as your main framework to deploy your LLM models.
+
+  This can be done by adding the 'framework' configuration to the config.yaml file
+
+  ```
+  llms:
+      class_name: AzureOpenAI
+      model_name: <check_references_below>
+      framework: llamaindex
+  ```
+  
+  > Llamaindex requires a provided model name.
 
 - #### Environment Variable :
   Below value(s) are to be added in `.env` file, present at `builder/partnerproduct/`.
@@ -88,6 +103,8 @@ Provided below are the instructions on how to procure the right values for build
   You can pick the deployment name for AZURE_OPENAI_API_EMBEDDINGS_DEPLOYMENT_NAME and AZURE_OPENAI_API_DEPLOYMENT_NAME as shown below from your [console](https://oai.azure.com/portal).
 
   ![Console Image](./img/image_azure_llm.png)
+
+  For Llamaindex you can pick the model name from the column of the same name.
 
 
 - ##### API Key and Instance Name 

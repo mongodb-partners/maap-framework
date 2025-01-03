@@ -136,6 +136,9 @@ other/
 build/
 dist/
 
+#cloned repo
+scripts/mongo-kafka/
+
 #databases
 local.db
 data/
@@ -151,3 +154,4 @@ zookeeper/
 acme.json
 temp/
 storage/
+package-lock.json
