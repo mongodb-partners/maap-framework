@@ -1,7 +1,6 @@
 import createDebugMessages from 'debug';
 import { Chunk, ConversationHistory } from '../global/types.js';
 import { ChatMessage } from 'llamaindex';
-import { currentConversationId, conversations } from '../../builder/partnerproduct/src/index.js';
 import { AIMessage, HumanMessage, SystemMessage } from '@langchain/core/messages';
 
 export abstract class BaseModel {
@@ -35,7 +34,7 @@ export abstract class BaseModel {
         conversationId: string = 'default',
     ): Promise<string> {
         //obtain the conversation history from the conversationService from MongoDB chatbot server
-        let currentConversationFromConversationService = await conversations.findById({ _id: currentConversationId });
+        let currentConversationFromConversationService = await (global as any).conversations.findById({ _id: (global as any).currentConversationId });
         let conversationArray: ConversationHistory[] = [];
 
         //parse the messages types so it matches MAAP's ConversationHistory type
@@ -79,7 +78,7 @@ export abstract class BaseModel {
         conversationId: string = 'default',
     ): Promise<any> {
         //obtain the conversation history from the conversationService from MongoDB chatbot server
-        let currentConversationFromConversationService = await conversations.findById({ _id: currentConversationId });
+        let currentConversationFromConversationService = await (global as any).conversations.findById({ _id: (global as any).currentConversationId });
         let conversationArray: ConversationHistory[] = [];
 
         //parse the messages types so it matches MAAP's ConversationHistory type

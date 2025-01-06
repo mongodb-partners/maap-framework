@@ -162,7 +162,7 @@ const systemPrompt: SystemPrompt = {
 // Create MongoDB collection and service for storing user conversations
 // with the chatbot.
 
-export let currentConversationId: ObjectId | null = null;
+let currentConversationId: ObjectId | null = null;
 const sessionStore = new Map<ObjectId, any>();
 
 function makeWrappedMongoDbConversationsService(dbName: string) {
@@ -186,10 +186,12 @@ function makeWrappedMongoDbConversationsService(dbName: string) {
 }
 
 const mongodb = new MongoClient(connectionString);
-export const conversations = makeWrappedMongoDbConversationsService(dbName);
+(global as any).currentConversationId = currentConversationId;
+const conversations = makeWrappedMongoDbConversationsService(dbName);
+(global as any).conversations = conversations;
 
 // Create the MongoDB Chatbot Server Express.js app configuration
-export const config: AppConfig = {
+const config: AppConfig = {
     conversationsRouterConfig: {
         llm,
         conversations,
