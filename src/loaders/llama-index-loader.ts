@@ -8,10 +8,15 @@ import { cleanString } from '../util/strings.js';
 import { LlamaParseReader } from 'llamaindex';
 import 'dotenv/config';
 
+type ParserLanguages = "af" | "az" | "bs" | "cs" | "cy" | "da" | "de" | "en" | "es" | "et" | "fr" | "ga" | "hr" | "hu" | "id" | "is" | "it" | "ku" | "la" | "lt" | "lv" | "mi" | "ms" | "mt" | "nl" | "no" | "oc" | "pi" | "pl" | "pt" | "ro" | "rs_latin" | "sk" | "sl" | "sq" | "sv" | "sw" | "tl" | "tr" | "uz" | "vi" | "ar" | "fa" | "ug" | "ur" | "bn" | "as" | "mni" | "ru" | "rs_cyrillic" | "be" | "bg" | "uk" | "mn" | "abq" | "ady" | "kbd" | "ava" | "dar" | "inh" | "che" | "lbe" | "lez" | "tab" | "tjk" | "hi" | "mr" | "ne" | "bh" | "mai" | "ang" | "bho" | "mah" | "sck" | "new" | "gom" | "sa" | "bgc" | "th" | "ch_sim" | "ch_tra" | "ja" | "ko" | "ta" | "te" | "kn";
+type ResultType = "text" | "markdown" ;
+
 export class LlamaIndexLoader extends BaseLoader<{ type: 'LlamaIndexLoader' }> {
     private readonly pathOrUrl: string;
     private readonly parsingInstructions: string;
     private readonly folderProcessing: boolean;
+    private readonly language: ParserLanguages;
+    private readonly resultType: ResultType;
 
     constructor({}: {
         url: string;
@@ -19,6 +24,8 @@ export class LlamaIndexLoader extends BaseLoader<{ type: 'LlamaIndexLoader' }> {
         chunkOverlap?: number;
         parsingInstructions: string;
         folderProcessing: boolean;
+        language?: ParserLanguages;
+        resultType?: ResultType;
     });
     constructor({}: {
         filePath: string;
@@ -26,6 +33,8 @@ export class LlamaIndexLoader extends BaseLoader<{ type: 'LlamaIndexLoader' }> {
         chunkOverlap?: number;
         parsingInstructions: string;
         folderProcessing: boolean;
+        language?: ParserLanguages;
+        resultType?: ResultType;
     });
     constructor({
         filePath,
@@ -34,6 +43,8 @@ export class LlamaIndexLoader extends BaseLoader<{ type: 'LlamaIndexLoader' }> {
         chunkOverlap,
         parsingInstructions,
         folderProcessing,
+        language,
+        resultType
     }: {
         filePath?: string;
         url?: string;
@@ -41,6 +52,9 @@ export class LlamaIndexLoader extends BaseLoader<{ type: 'LlamaIndexLoader' }> {
         chunkOverlap?: number;
         parsingInstructions?: string;
         folderProcessing?: boolean;
+        language?: ParserLanguages;
+        resultType?: ResultType;
+
     }) {
         super(
             `LlamaIndexLoader_${md5(filePath ? `FILE_${filePath}` : `URL_${url}`)}`,
@@ -51,6 +65,8 @@ export class LlamaIndexLoader extends BaseLoader<{ type: 'LlamaIndexLoader' }> {
         this.pathOrUrl = filePath ?? url;
         this.parsingInstructions = parsingInstructions;
         this.folderProcessing = folderProcessing ?? false;
+        this.language = language ?? "en";
+        this.resultType = resultType ?? "markdown";
     }
 
     override async *getUnfilteredChunks() {
@@ -65,8 +81,8 @@ export class LlamaIndexLoader extends BaseLoader<{ type: 'LlamaIndexLoader' }> {
                 directoryPath: this.pathOrUrl,
                 numWorkers: 2,
                 overrideReader: new LlamaParseReader({
-                    language: "en",
-                    resultType: "markdown",
+                    language: this.language,
+                    resultType: this.resultType,
                     parsingInstruction: this.parsingInstructions as string | undefined,
                     splitByPage: false,
                     isFormattingInstruction: true,

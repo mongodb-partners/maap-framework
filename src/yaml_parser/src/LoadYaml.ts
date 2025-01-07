@@ -551,6 +551,8 @@ export function getIngestLoader() {
                         chunkOverlap: data.chunk_overlap,
                         parsingInstructions: data.parsingInstructions ?? undefined,
                         folderProcessing: data.folderProcessing,
+                        language: data.language,
+                        resultType: data.resultType,
                     }),
                 );
                 break;
