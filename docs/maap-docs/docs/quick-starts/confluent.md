@@ -1,10 +1,10 @@
 # MongoDB - Confluent Quickstart
 
-[![ReadMe Card](https://github-readme-stats.vercel.app/api/pin/?username=confluentinc&repo=mongodb-cflt-genai-quickstart)](https://github.com/confluentinc/mongodb-cflt-genai-quickstart)
-
 Welcome to the MongoDB - Confluent Quickstart for Small Business Loan Agent Chatbot! This repository provides a comprehensive guide to quickly deploy a fully functional chatbot for small business loan assistance. The solution leverages **MongoDB**, **Confluent Cloud**, **AWS**, **Anthropic** and **Flink** to deliver a scalable, intelligent, and real-time conversational experience.
 
 This quick start is designed to help businesses streamline their loan application process by providing a chatbot that understands and answers customer queries, retrieves relevant loan documents, and provides actionable insights. The system also includes structured document indexing into MongoDB's vector database, enabling efficient retrieval-augmented generation (RAG) to enhance the chatbot's response accuracy.
+
+[![ReadMe Card](https://github-readme-stats.vercel.app/api/pin/?username=confluentinc&repo=mongodb-cflt-genai-quickstart)](https://github.com/confluentinc/mongodb-cflt-genai-quickstart)
 
 ## Key Features
 
