@@ -94,6 +94,50 @@ To use Azure OpenAI embedding with MAAP framework, you would need to feed below 
   AZURE_OPENAI_API_VERSION=<check_references_below>
   ```
 
+## Deploying your model using the LlamaIndex framework
+
+### Chat Model
+
+MAAP now provides the option to choose if you want to use LlamaIndex as your main framework to deploy your LLM models.
+
+This can be done by adding the 'framework' configuration to the config.yaml file
+- #### Config File
+  ```
+  llms:
+    class_name: AzureOpenAI
+    model_name: <check_references_below>
+    framework: 'llamaindex'
+  ```
+
+### Embedding Model
+
+MAAP now provides the option to choose if you want to use LlamaIndex as your main framework to deploy your embeddings.
+
+This can be done by adding the 'framework' configuration to the config.yaml file
+- #### Config File
+  ```
+  embedding:
+    class_name: Azure-OpenAI-Embeddings
+    model_name: <model_selected>
+    max_tokens: <integer_value>
+    temperature: <integer_value>
+    framework: 'llamaindex'
+  ```
+
+      Model name specified should be one of the below listed:
+      - text-embedding-ada-002
+      - text-embedding-3-small
+      - text-embedding-3-large
+
+- #### Environment Variable :
+  Below value(s) are to be added in `.env` file, present at `builder/partnerproduct/`.
+
+  ```
+  AZURE_OPENAI_API_KEY=<check_references_below>
+  AZURE_OPENAI_API_INSTANCE_NAME=<check_references_below>
+  AZURE_OPENAI_API_EMBEDDINGS_DEPLOYMENT_NAME=<check_references_below>
+  AZURE_OPENAI_API_VERSION=<check_references_below>
+  ```
 
 ### References
 
