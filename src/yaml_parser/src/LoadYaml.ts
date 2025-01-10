@@ -37,8 +37,8 @@ function getDataFromYamlFile() {
 
 export function getSystemPrompt() {
   const parsedData = getDataFromYamlFile();
-  const systemPrompt = readFileSync(parsedData.systemPromptPath, 'utf8'); 
-  return systemPrompt; 
+  const systemPrompt = readFileSync(parsedData.systemPromptPath, 'utf8');
+  return systemPrompt;
 }
 
 export function getDatabaseConfig() {
@@ -77,9 +77,9 @@ try {
           query: query,
           jsonSchema: jsonSchema
         });
-          
+
       } catch (error) {
-        console.log('Error reading aggregate operator query file:', error);    
+        console.log('Error reading aggregate operator query file:', error);
       }
     }
     return aggregateOperatorConfigs;
@@ -113,19 +113,21 @@ export function getConditionOpConfigs(){
 export function getVBDConfigInfo() {
   const parsedData = getDataFromYamlFile();
   const {
-    vector_store: { connectionString, dbName, collectionName, vectorSearchIndexName, minScore, numCandidates },
+    vector_store: { connectionString, dbName, collectionName, vectorSearchIndexName, textSearchIndexName, minScore, numCandidates },
   } = parsedData;
 
   assert(typeof connectionString === 'string', 'connectionString is required');
   assert(typeof dbName === 'string', 'dbName is required');
   assert(typeof collectionName === 'string', 'collectionName is required');
   assert(typeof vectorSearchIndexName === 'string', 'vectorSearchIndexName is required');
+  assert(typeof textSearchIndexName === 'string', 'textSearchIndexName is required');
 
   return {
     connectionString,
     dbName,
     collectionName,
     vectorSearchIndexName,
+    textSearchIndexName,
     minScore,
     numCandidates
   };
@@ -208,7 +210,7 @@ export function getEmbeddingModel() {
     case 'Bedrock':
       return new BedrockEmbedding({ modelName: parsedData.embedding.model_name, dimension: parsedData.embedding.dimension});
     case 'Fireworks':
-      return new FireworksEmbedding({ modelName: parsedData.embedding.model_name, dimension: parsedData.embedding.dimension});  
+      return new FireworksEmbedding({ modelName: parsedData.embedding.model_name, dimension: parsedData.embedding.dimension});
     case 'Nomic-v1':
       return new NomicEmbeddingsv1();
     case 'Nomic-v1.5':
