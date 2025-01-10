@@ -31,6 +31,7 @@ export class LlamaAzureEmbeddings implements BaseEmbeddings {
                 apiKey: process.env.AZURE_OPENAI_API_KEY,
                 endpoint: `https://${this.azureOpenAIApiInstanceName}.openai.azure.com`,
                 apiVersion: this.apiVersion,
+                deployment: process.env.AZURE_OPENAI_API_EMBEDDINGS_DEPLOYMENT_NAME
             }
         });
         Settings.embedModel = this.model;
