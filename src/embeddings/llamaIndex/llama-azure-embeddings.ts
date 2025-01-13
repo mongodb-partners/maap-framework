@@ -23,18 +23,35 @@ export class LlamaAzureEmbeddings implements BaseEmbeddings {
         } else {
             this.dimensions = 1536;
         }
-        this.model = new OpenAIEmbedding({
-            dimensions: this.dimensions,
-            model: this.modelName,
-            maxRetries: 5,
-            azure: {
-                apiKey: process.env.AZURE_OPENAI_API_KEY,
-                endpoint: `https://${this.azureOpenAIApiInstanceName}.openai.azure.com`,
-                apiVersion: this.apiVersion,
-                deployment: process.env.AZURE_OPENAI_API_EMBEDDINGS_DEPLOYMENT_NAME
-            }
-        });
+        this.model = this.getEmbedModel();
         Settings.embedModel = this.model;
+    }
+
+    private getEmbedModel(): OpenAIEmbedding {
+        if (this.modelName === 'text-embedding-ada-002') {
+            return new OpenAIEmbedding({
+                model: this.modelName,
+                maxRetries: 5,
+                azure: {
+                    apiKey: process.env.AZURE_OPENAI_API_KEY,
+                    endpoint: `https://${this.azureOpenAIApiInstanceName}.openai.azure.com`,
+                    apiVersion: this.apiVersion,
+                    deployment: process.env.AZURE_OPENAI_API_EMBEDDINGS_DEPLOYMENT_NAME
+                }
+            });
+        } else {
+            return new OpenAIEmbedding({
+                dimensions: this.dimensions,
+                model: this.modelName,
+                maxRetries: 5,
+                azure: {
+                    apiKey: process.env.AZURE_OPENAI_API_KEY,
+                    endpoint: `https://${this.azureOpenAIApiInstanceName}.openai.azure.com`,
+                    apiVersion: this.apiVersion,
+                    deployment: process.env.AZURE_OPENAI_API_EMBEDDINGS_DEPLOYMENT_NAME
+                }
+            });
+        }
     }
 
     getDimensions(): number {
