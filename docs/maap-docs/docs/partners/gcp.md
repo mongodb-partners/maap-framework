@@ -47,6 +47,17 @@ _You can use role [Vertex AI User](https://cloud.google.com/vertex-ai/docs/gener
 
     ```
     GOOGLE_APPLICATION_CREDENTIALS=/path/to/credentials.json
+    GOOGLE_VERTEX_LOCATION=<optional, defaults to 'us-central1'>
+    ```
+
+    For embeddings the following variable is needed:
+    ```
+    GOOGLE_CLOUD_PROJECT_NUMBER=<project_number>
+    ```
+
+    For the LLM Model the following variable is needed:
+    ```
+    GOOGLE_VERTEX_PROJECT=<project_name>
     ```
 
     _NOTE: Using service account with JSON key can impose security risk if not stored correctly. Make sure you are following the [best practices](https://cloud.google.com/iam/docs/best-practices-for-managing-service-account-keys)._
