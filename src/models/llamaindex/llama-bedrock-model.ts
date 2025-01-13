@@ -14,8 +14,18 @@ export class LlamaBedrock extends BaseModel {
     constructor(params?: { modelName?: string; maxTokens?: number; temperature?: number; topP?: number }) {
         super(params?.temperature ?? 0.1);
         this.modelName = params?.modelName ?? "meta.llama3-8b-instruct-v1:0";
-        this.maxTokens = params?.maxTokens ?? (BEDROCK_MODEL_MAX_TOKENS[this.modelName] * 0.75);
+        this.maxTokens = this.getMaxTokens(params);
         this.topP = params?.topP ?? 0.1
+    }
+
+    private getMaxTokens(params?: { modelName?: string; maxTokens?: number}): number {
+        if (params?.maxTokens !== undefined) {
+            return params?.maxTokens;
+        } else if (BEDROCK_MODEL_MAX_TOKENS[params?.modelName] !== undefined) {
+            return BEDROCK_MODEL_MAX_TOKENS[this.modelName] * 0.75;
+        } else {
+            return 2048;
+        }
     }
 
     override async init(): Promise<void> {
