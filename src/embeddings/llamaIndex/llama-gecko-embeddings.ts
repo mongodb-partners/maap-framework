@@ -3,15 +3,16 @@ import axios from "axios";
 import { BaseEmbeddings } from "../../interfaces/base-embeddings.js";
 
 export class LlamaGeckoEmbeddings implements BaseEmbeddings {
-    private auth: any;
+    private auth: GoogleAuth;
     private client: any;
     private token: any;
     private apiUrl: any;
+    private isInitialized: boolean = false;
 
     constructor(params?: { modelName: string }) {
         const PROJECT_ID = process.env.GOOGLE_CLOUD_PROJECT_NUMBER;
         const CREDENTIALS_PATH = process.env.GOOGLE_APPLICATION_CREDENTIALS;
-        const LOCATION = "us-central1";
+        const LOCATION = process.env.GOOGLE_VERTEX_LOCATION ??"us-central1";
         const MODEL = params?.modelName ?? "textembedding-gecko@003"; //textembedding-gecko-multilingual@001
 
         this.apiUrl = `https://${LOCATION}-aiplatform.googleapis.com/v1/projects/${PROJECT_ID}/locations/${LOCATION}/publishers/google/models/${MODEL}:predict`;
@@ -20,22 +21,22 @@ export class LlamaGeckoEmbeddings implements BaseEmbeddings {
             keyFilename: CREDENTIALS_PATH,
             scopes: ["https://www.googleapis.com/auth/cloud-platform"],
         });
-
-        this.getClient();
-
     }
 
-    async getClient(): Promise<void> {
-        this.client = await this.auth.getClient();
-        this.token = await this.client.getAccessToken();
+    private async initialize(): Promise<void> {
+        if (!this.isInitialized) {
+            this.client = await this.auth.getClient();
+            this.token = await this.client.getAccessToken();
+            this.isInitialized = true;
+        }
     }
-
 
     getDimensions(): number {
         return 768;
     }
 
     async embedDocuments(texts: string[]): Promise<number[][]> {
+        await this.initialize();
         const allEmbeddings: number[][] = [];
 
         try {
@@ -67,7 +68,9 @@ export class LlamaGeckoEmbeddings implements BaseEmbeddings {
         return allEmbeddings;
     }
 
-    embedQuery(text: string): Promise<number[]> {
-        throw new Error("Method not implemented.");
+    async embedQuery(text: string): Promise<number[]> {
+        await this.initialize();
+        const embeddings = await this.embedDocuments([text]);
+        return embeddings[0];
     }
 }

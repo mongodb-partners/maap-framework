@@ -95,10 +95,21 @@ export class LlamaCohereEmbeddings extends BaseEmbedding {
   }
 
   async getTextEmbedding(text: string): Promise<number[]> {
-    throw new Error('Method not implemented.');
+    try {
+      const embeddings = await this.embedDocuments([text]);
+      return embeddings[0];
+    } catch (error) {
+      console.error("Error getting text embedding:", error);
+      throw error;
+    }
   }
   
   async embedQuery(query: string): Promise<number[]> {
-    throw new Error('Method not implemented.');
+    try {
+      return await this.getTextEmbedding(query);
+    } catch (error) {
+      console.error("Error embedding query:", error);
+      throw error;
+    }
   }
 }
