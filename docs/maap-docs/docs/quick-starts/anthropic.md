@@ -2,6 +2,8 @@
 
 MongoDB - Anthropic Quickstart is an integrated end-to-end technology stack that combines MongoDB Atlas capabilities with Anthropic's Claude AI models to create an intelligent Agentic conversational interface. It allows users to interact with MongoDB data sources through natural language queries, leveraging vector search, full-text search, hybrid search and other advanced querying techniques.
 
+[![ReadMe Card](https://github.com/mongodb-partners/maap-anthropic)]
+
 ## Table of Contents
 1. [Overview](#1-overview)
 2. [System Architecture](#2-system-architecture)
@@ -42,15 +44,16 @@ The system architecture consists of the following components:
 1. **Frontend**: A Gradio-based web interface for user interactions.
 2. **Backend Services**:
    - UI Service (Port 7860): Handles user interface and initial request processing.
+   - Main Service (Port 8000): Orchestrates AI interactions and database queries.
    - Loader Service (Port 8001): Manages file uploads and data ingestion.
-   - Main Service (Port 8000/8002): Orchestrates AI interactions and database queries.
+   - Logger Service (Port 8181): Centralized logging service for all components.
 3. **Databases**:
    - MongoDB Atlas: Stores document data, embeddings, and chat history.
 4. **External Services**:
-   - AWS Bedrock: Hosts the Anthropic Claude 3.5 Sonnet AI model.
+   - AWS Bedrock: Hosts the Anthropic Claude AI models.
    - AWS Titan Embeddings: Generates embeddings for vector search.
 
-The system uses Docker for containerization and deployment.
+The system uses Docker for containerization and deployment, with Nginx as a reverse proxy for load balancing.
 
 ![MAAP Application Architecture](assets/anthropic/AnthropicAWSArchitecture.png)
 
@@ -65,6 +68,7 @@ Users interact with the Gradio-based frontend UI, which acts as the entry point 
   - Retrieves relevant information from **MongoDB Atlas** using vector or full-text search.  
   - Handles AI-specific queries by interacting with **AWS Bedrock**, specifically leveraging **Claude AI** for language understanding and generation.  
   - Utilizes **AWS Titan Embeddings** for embedding generation when necessary.  
+  - The **Logger Service** provides centralized logging for all components, ensuring comprehensive system monitoring and troubleshooting capabilities.
 
 This system ensures a seamless user experience and leverages advanced AI models for robust query handling and content processing.
 
@@ -86,7 +90,7 @@ This system is composed of several key components:
 - **Technologies**: FastAPI, LangChain, Python
 - **Key Files**:
   - `main/app/server.py`: FastAPI application implementing the main service logic
-  - `main/MongoDBAtlasRetrieverTools.py`: Custom tools for querying MongoDB
+  - `main/mongodb_atlas_retriever_tools.py`: Custom tools for querying MongoDB
   - `main/Dockerfile`: Defines the container for the main service
 
 ### Loader Service
@@ -96,6 +100,19 @@ This system is composed of several key components:
   - `loader/main.py`: FastAPI application for handling uploads
   - `loader/loader.py`: Functions for processing different types of data
   - `loader/Dockerfile`: Defines the container for the loader service
+
+#### Logger Service
+- **Purpose**: Centralized logging service for all components
+- **Technologies**: FastAPI, MongoDB, Python
+- **Key Files**:
+  - `logger/main.py`: FastAPI application for handling log messages
+  - `logger/Dockerfile`: Defines the container for the logger service
+
+#### Nginx Service
+- **Purpose**: Load balancer for the application services
+- **Technologies**: Nginx
+- **Key Files**:
+  - `nginx/Dockerfile`: Defines the container for the Nginx service
 
 ### MongoDB Atlas
 - **Purpose**: Provides scalable data storage and vector search capabilities
@@ -310,6 +327,13 @@ Example vector index configuration:
 3. **UI Service**:
    - The interface layout and components are configured in `main.py` using Gradio's UI building functions.
 
+4. **Logger Service**:
+   - Log retention and flush intervals can be configured in `logger/main.py`.
+   - MongoDB connection details for log storage are set in the environment variables.
+
+5. **Nginx Service**:
+   - Load balancing configuration can be adjusted in the `nginx/nginx.conf` file.
+
 ## 6. Usage
 
 1. Open the application in a web browser at `http://<ec2-instance-ip>:7860`.
@@ -385,6 +409,17 @@ Example usage:
 # Query example
 curl -X POST "http://localhost:8000/rag" -H "Content-Type: application/json" -d '{"query": "Tell me about India", "userId": "user123"}'
 ```
+
+### Logger Service API
+- Endpoint: `/log`
+- Method: POST
+- Request Body:
+  ```json
+  {
+    "level": "INFO",
+    "message": "Log message here",
+    "app_name": "ServiceName"
+  }
 
 
 ## 8. Security Considerations
@@ -485,7 +520,10 @@ By implementing these configurations and best practices, you can enhance the sec
 - One-click script logs: `./logs/one-click-deployment.log`
 - EC2 live logs: `./logs/ec2-live-logs.log`
 - Docker logs: Accessible via `docker logs`
-- The loader service has logs in the `applogs` folder
+- The services have logs in the `logs` folder
+- Centralized logging is implemented using the Logger Service
+- Application logs are stored in MongoDB for easy querying and analysis
+- Log rotation and retention policies are configurable in the Logger Service
 
 ### Monitoring
 - Use MongoDB Atlas monitoring tools to track database performance.
@@ -507,7 +545,7 @@ By implementing these configurations and best practices, you can enhance the sec
 3. Database Connection Errors
 4. File Uploads Fail
 5. Slow Responses
-
+ 
 ### Debugging
 - Use `docker logs <container_id>` to inspect logs for any specific container.
 
@@ -525,14 +563,27 @@ MAAP-Python/
 ├── main/
 │   ├── app/
 │   │   ├── server.py
-│   │   └── requirements.txt
+│   │   ├── mongodb_atlas_retriever_tools.py
+│   │   ├── models.py
+│   │   └── logger.py
 │   └── Dockerfile
 ├── loader/
 │   ├── main.py
+│   ├── loader.py
+│   ├── utils.py
+│   ├── logger.py
 │   └── Dockerfile
 ├── ui/
 │   ├── main.py
+│   ├── images.py
+│   ├── logger.py
 │   └── Dockerfile
+├── logger/
+│   ├── main.py
+│   └── Dockerfile
+├── nginx/
+│   ├── Dockerfile
+│   └── nginx.conf
 └── docker-compose.yml
 ```
 

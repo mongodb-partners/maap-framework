@@ -2,6 +2,8 @@
 
 The MongoDB - Arcee Quickstart is a project aimed at facilitating the rapid and straightforward deployment of AI-driven applications utilizing MongoDB Atlas and the Arcee models. It offers scripts and configurations to streamline and automate the setup process, integrating MongoDB Atlas for data storage and Arcee models for AI functionalities.
 
+[![ReadMe Card](https://github.com/mongodb-partners/maap-arcee)]
+
 ## Table of Contents
 1. [Overview](#1-overview)
 2. [System Architecture](#2-system-architecture)
