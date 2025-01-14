@@ -2,7 +2,7 @@
 
 The MongoDB - Arcee Quickstart is a project aimed at facilitating the rapid and straightforward deployment of AI-driven applications utilizing MongoDB Atlas and the Arcee models. It offers scripts and configurations to streamline and automate the setup process, integrating MongoDB Atlas for data storage and Arcee models for AI functionalities.
 
-[![ReadMe Card](https://github-readme-stats.vercel.app/api/pin/?username=mongodb-partners&repo=maap-arcee)](https://github.com/mongodb-partners/maap-arcee)
+[![ReadMe Card](https://github-readme-stats.vercel.app/api/pin/?username=mongodb-partners&repo=maap-arcee-qs)](https://github.com/mongodb-partners/maap-arcee-qs)
 
 ## Table of Contents
 1. [Overview](#1-overview)  
@@ -108,7 +108,7 @@ Each document uploaded by a user is stored in MongoDB with the following fields:
    - The vector embeddings are indexed by MongoDB Atlas Vector Search Index.
    - This indexing allows for efficient similarity searches when querying documents.
 
----
+
 
 ## 3. Components
 
@@ -308,7 +308,7 @@ Creates a new EC2 key pair or uses an existing one with the name "MAAPArceeKeyV1
 
 Deploys the base infrastructure CloudFormation stack, including VPC, subnet, security group, and IAM roles.
 
-### deploy_ec2()
+#### deploy_ec2()
 
 Deploys the EC2 instance and application stack using a CloudFormation template. It includes the following steps:
 - Selects the appropriate AMI ID based on the AWS region
