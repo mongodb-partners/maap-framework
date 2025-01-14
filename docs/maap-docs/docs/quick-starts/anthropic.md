@@ -4,20 +4,20 @@ MongoDB - Anthropic Quickstart is an integrated end-to-end technology stack that
 
 [![ReadMe Card](https://github-readme-stats.vercel.app/api/pin/?username=mongodb-partners&repo=maap-anthropic)](https://github.com/mongodb-partners/maap-anthropic)
 
-
 ## Table of Contents
-1. [Overview](#1-overview)
-2. [System Architecture](#2-system-architecture)
-3. [Components](#3-components)
-4. [Installation & Deployment](#4-installation--deployment)
-5. [Configuration](#5-configuration)
-6. [Usage](#6-usage)
-7. [API Reference](#7-api-reference)
-8. [Security Considerations](#8-security-considerations)
-9. [Monitoring & Logging](#9-monitoring--logging)
-10. [Troubleshooting](#10-troubleshooting)
-11. [Development Guide](#11-development-guide)
-12. [Maintenance & Operations](#12-maintenance--operations)
+1. [Overview](#1-overview)  
+2. [System Architecture](#2-system-architecture)  
+3. [Components](#3-components)  
+4. [Installation & Deployment](#4-installation--deployment)  
+   1. [One-Click Deployment](#41-one-click-deployment)  
+5. [Configuration](#5-configuration)  
+6. [Usage](#6-usage)  
+7. [API Reference](#7-api-reference)  
+8. [Security Considerations](#8-security-considerations)  
+9. [Monitoring & Logging](#9-monitoring--logging)  
+10. [Troubleshooting](#10-troubleshooting)  
+11. [Development Guide](#11-development-guide)  
+12. [Maintenance & Operations](#12-maintenance--operations)  
 
 ## 1. Overview
 
@@ -221,9 +221,9 @@ For more detailed information, refer to [Guide](https://www.mongodb.com/docs/atl
 
 
 
-## 4.1 One-Click Deployment Script
+## 4.1 One-Click Deployment
 
-This Korn shell script automates the deployment of the MongoDB - Anthropic Quickstart application on AWS infrastructure. It sets up the necessary AWS resources, deploys an EC2 instance, and configures the application environment.
+The `one-click.ksh` Korn shell script automates the deployment of the MongoDB - Anthropic Quickstart application on AWS infrastructure. It sets up the necessary AWS resources, deploys an EC2 instance, and configures the application environment.
 
 ### Prerequisites
 

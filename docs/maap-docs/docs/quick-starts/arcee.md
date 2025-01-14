@@ -2,21 +2,22 @@
 
 The MongoDB - Arcee Quickstart is a project aimed at facilitating the rapid and straightforward deployment of AI-driven applications utilizing MongoDB Atlas and the Arcee models. It offers scripts and configurations to streamline and automate the setup process, integrating MongoDB Atlas for data storage and Arcee models for AI functionalities.
 
-[![ReadMe Card](https://github.com/mongodb-partners/maap-arcee)]
+[![ReadMe Card](https://github-readme-stats.vercel.app/api/pin/?username=mongodb-partners&repo=maap-arcee)](https://github.com/mongodb-partners/maap-arcee)
 
 ## Table of Contents
-1. [Overview](#1-overview)
-2. [System Architecture](#2-system-architecture)
-3. [Components](#3-components)
-4. [Installation & Deployment](#4-installation--deployment)
-5. [Configuration](#5-configuration)
-6. [Usage](#6-usage)
-7. [API Reference](#7-api-reference)
-8. [Security Considerations](#8-security-considerations)
-9. [Monitoring & Logging](#9-monitoring--logging)
-10. [Troubleshooting](#10-troubleshooting)
-11. [Development Guide](#11-development-guide)
-12. [Maintenance & Operations](#12-maintenance--operations)
+1. [Overview](#1-overview)  
+2. [System Architecture](#2-system-architecture)  
+3. [Components](#3-components)  
+4. [Installation & Deployment](#4-installation--deployment)  
+   1. [One-Click Deployment](#41-one-click-deployment)  
+5. [Configuration](#5-configuration)  
+6. [Usage](#6-usage)  
+7. [API Reference](#7-api-reference)  
+8. [Security Considerations](#8-security-considerations)  
+9. [Monitoring & Logging](#9-monitoring--logging)  
+10. [Troubleshooting](#10-troubleshooting)  
+11. [Development Guide](#11-development-guide)  
+12. [Maintenance & Operations](#12-maintenance--operations)  
 
 ## 1. Overview
 
@@ -183,6 +184,125 @@ For more detailed information, refer to [Guide](https://www.mongodb.com/docs/atl
 - Sufficient EBS storage for EC2 instance (at least 100 GB recommended)
 - MongoDB Atlas M10 Cluster (auto-deployed by the `one-click` script)
 
+
+## 4.1 One-Click Deployment
+
+The `one-click.ksh` Korn shell script automates the deployment of the MongoDB - Arcee Quickstart application on AWS infrastructure. It sets up the necessary AWS resources, deploys an EC2 instance, and configures the application environment.
+
+### Prerequisites
+
+- AWS CLI installed and configured with appropriate credentials
+- Access to a MongoDB Atlas account with necessary permissions
+- Git SSH key for repository access
+- Korn shell (ksh) environment
+
+### Script Structure
+
+The script is organized into several main functions:
+
+1. `create_key()`: Creates or uses an existing EC2 key pair
+2. `deploy_infra()`: Deploys the base infrastructure using CloudFormation
+3. `deploy_ec2()`: Deploys the EC2 instance and application stack
+4. `deploy_sagemaker()`: Deploys the Sagemaker stack
+5. `read_logs()`: Streams deployment logs from the EC2 instance
+6. Main execution flow
+
+### Configuration
+
+#### Environment Variables
+
+- `AWS_ACCESS_KEY_ID`: AWS access key
+- `AWS_SECRET_ACCESS_KEY`: AWS secret key
+- `AWS_SESSION_TOKEN`: AWS session token (if using temporary credentials)
+
+#### Deployment Parameters
+
+- `INFRA_STACK_NAME`: Name for the infrastructure CloudFormation stack
+- `EC2_STACK_NAME`: Name for the EC2 CloudFormation stack
+- `SAGEMAKER_STACK_NAME`: Name for the Sagemaker CloudFormation stack
+- `AWS_REGION`: AWS region for deployment
+- `EC2_INSTANCE_TYPE`: EC2 instance type (e.g., "t3.xlarge")
+- `SAGEMAKER_INSTANCE_TYPE`: Sagemaker instance type (e.g., "ml.g5.12xlarge")
+- `VolumeSize`: EBS volume size in GB
+- `GIT_REPO_URL`: URL of the application Git repository
+- `GIT_SSH_PRIVATE_KEY_PATH`: Path to the Git SSH private key
+- `MongoDBClusterName`: Name for the MongoDB Atlas cluster
+- `MongoDBUserName`: MongoDB Atlas username
+- `MongoDBPassword`: MongoDB Atlas password
+- `APIPUBLICKEY`: MongoDB Atlas API public key
+- `APIPRIVATEKEY`: MongoDB Atlas API private key
+- `GROUPID`: MongoDB Atlas project ID
+
+
+### Execution Flow
+
+1. Initialize logging
+2. Create or use existing EC2 key pair
+3. Deploy infrastructure CloudFormation stack
+4. Retrieve and store infrastructure stack outputs
+5. Deploy EC2 instance and application CloudFormation stack
+6. Deploy Sagemaker CloudFormation stack
+7. Start streaming EC2 deployment logs
+8. Monitor application URL until it becomes available
+9. Launch application URL in default browser
+
+### Functions
+
+#### create_key()
+
+Creates a new EC2 key pair or uses an existing one with the name "MAAPArceeKeyV1".
+
+#### deploy_infra()
+
+Deploys the base infrastructure CloudFormation stack, including VPC, subnet, security group, and IAM roles.
+
+### deploy_ec2()
+
+Deploys the EC2 instance and application stack using a CloudFormation template. It includes the following steps:
+- Selects the appropriate AMI ID based on the AWS region
+- Creates the CloudFormation stack with necessary parameters
+- Waits for stack creation to complete
+- Retrieves and displays stack outputs
+
+#### read_logs()
+
+Establishes an SSH connection to the EC2 instance and streams the deployment logs in real-time.
+
+### Logging
+
+- Main deployment logs: `./logs/one-click-deployment.log`
+- EC2 live logs: `./logs/ec2-live-logs.log`
+
+### Error Handling
+
+The script includes basic error checking for critical operations such as CloudFormation stack deployments. If an error occurs, the script will log the error and exit.
+
+### Security Considerations
+
+- AWS credentials are expected to be set as environment variables
+- SSH key for Git repository access is read from a file and passed securely
+- MongoDB Atlas credentials and API keys are passed as CloudFormation parameters
+
+### Customization
+
+To customize the deployment:
+1. Modify the CloudFormation template files (`deploy-infra.yaml` and `deploy-ec2.yaml`)
+2. Adjust the deployment parameters at the beginning of the script
+3. Update the AMI IDs in the `ami_map` if newer AMIs are available
+
+### Troubleshooting
+
+- Check the log files for detailed information on the deployment process
+- Ensure all required environment variables and parameters are correctly set
+- Verify AWS CLI configuration and permissions
+- Check CloudFormation stack events in the AWS Console for detailed error messages
+
+### Limitations
+
+- The script is designed for a specific application stack and may require modifications for other use cases
+- It assumes a certain MongoDB Atlas and AWS account setup
+- The script does not include rollback mechanisms for partial deployments. In case of partial failures, delete the related CloudFormation stacks from AWS Console.
+
 ### Deployment Steps
 
 1. **Configure AWS CLI**:
@@ -195,7 +315,7 @@ aws configure
    a. Clone the repository:
    ```bash
    git clone <repository-url>
-   cd MAAP-Framework
+   cd maap-arcee
    ```
    
    b. Or download the following files from the GitHub repository:
