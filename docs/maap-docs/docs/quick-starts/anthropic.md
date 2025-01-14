@@ -279,7 +279,6 @@ The `one-click.ksh` Korn shell script automates the deployment of the MongoDB - 
 
 - AWS CLI installed and configured with appropriate credentials
 - Access to a MongoDB Atlas account with necessary permissions
-- Git SSH key for repository access
 - Korn shell (ksh) environment
 
 ### Script Structure
@@ -308,7 +307,6 @@ The script is organized into several main functions:
 - `EC2_INSTANCE_TYPE`: EC2 instance type (e.g., "t3.xlarge")
 - `VolumeSize`: EBS volume size in GB
 - `GIT_REPO_URL`: URL of the application Git repository
-- `GIT_SSH_PRIVATE_KEY_PATH`: Path to the Git SSH private key
 - `MongoDBClusterName`: Name for the MongoDB Atlas cluster
 - `MongoDBUserName`: MongoDB Atlas username
 - `MongoDBPassword`: MongoDB Atlas password
@@ -368,7 +366,6 @@ The script includes basic error checking for critical operations such as CloudFo
 ### Security Considerations
 
 - AWS credentials are expected to be set as environment variables
-- SSH key for Git repository access is read from a file and passed securely
 - MongoDB Atlas credentials and API keys are passed as CloudFormation parameters
 
 ### Customization
