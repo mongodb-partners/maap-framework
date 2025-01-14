@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="generator" content="Docusaurus v3.4.0">
 <title data-rh="true">MongoDB - Anthropic Quickstart | MAAP</title><meta data-rh="true" name="viewport" content="width=device-width,initial-scale=1"><meta data-rh="true" name="twitter:card" content="summary_large_image"><meta data-rh="true" property="og:image" content="https://maap-framework.github.io/maap-framework/img/docusaurus-social-card.jpg"><meta data-rh="true" name="twitter:image" content="https://maap-framework.github.io/maap-framework/img/docusaurus-social-card.jpg"><meta data-rh="true" property="og:url" content="https://maap-framework.github.io/maap-framework/docs/quick-starts/anthropic"><meta data-rh="true" property="og:locale" content="en"><meta data-rh="true" name="docusaurus_locale" content="en"><meta data-rh="true" name="docsearch:language" content="en"><meta data-rh="true" name="docusaurus_version" content="current"><meta data-rh="true" name="docusaurus_tag" content="docs-default-current"><meta data-rh="true" name="docsearch:version" content="current"><meta data-rh="true" name="docsearch:docusaurus_tag" content="docs-default-current"><meta data-rh="true" property="og:title" content="MongoDB - Anthropic Quickstart | MAAP"><meta data-rh="true" name="description" content="MongoDB - Anthropic Quickstart is an integrated end-to-end technology stack that combines MongoDB Atlas capabilities with Anthropic&#x27;s Claude AI models to create an intelligent Agentic conversational interface. It allows users to interact with MongoDB data sources through natural language queries, leveraging vector search, full-text search, hybrid search and other advanced querying techniques."><meta data-rh="true" property="og:description" content="MongoDB - Anthropic Quickstart is an integrated end-to-end technology stack that combines MongoDB Atlas capabilities with Anthropic&#x27;s Claude AI models to create an intelligent Agentic conversational interface. It allows users to interact with MongoDB data sources through natural language queries, leveraging vector search, full-text search, hybrid search and other advanced querying techniques."><link data-rh="true" rel="icon" href="/maap-framework/img/favicon.ico"><link data-rh="true" rel="canonical" href="https://maap-framework.github.io/maap-framework/docs/quick-starts/anthropic"><link data-rh="true" rel="alternate" href="https://maap-framework.github.io/maap-framework/docs/quick-starts/anthropic" hreflang="en"><link data-rh="true" rel="alternate" href="https://maap-framework.github.io/maap-framework/docs/quick-starts/anthropic" hreflang="x-default"><link rel="stylesheet" href="/maap-framework/assets/css/styles.672a8b88.css">
-<script src="/maap-framework/assets/js/runtime~main.1a101b30.js" defer="defer"></script>
+<script src="/maap-framework/assets/js/runtime~main.a0af0665.js" defer="defer"></script>
 <script src="/maap-framework/assets/js/main.e2160d61.js" defer="defer"></script>
 </head>
 <body class="navigation-with-keyboard">
@@ -351,7 +351,6 @@
 <ul>
 <li>AWS CLI installed and configured with appropriate credentials</li>
 <li>Access to a MongoDB Atlas account with necessary permissions</li>
-<li>Git SSH key for repository access</li>
 <li>Korn shell (ksh) environment</li>
 </ul>
 <h3 class="anchor anchorWithStickyNavbar_LWe7" id="script-structure">Script Structure<a class="hash-link" aria-label="Direct link to Script Structure" title="Direct link to Script Structure" href="/maap-framework/docs/quick-starts/anthropic#script-structure">​</a></h3>
@@ -378,7 +377,6 @@
 <li><code>EC2_INSTANCE_TYPE</code>: EC2 instance type (e.g., &quot;t3.xlarge&quot;)</li>
 <li><code>VolumeSize</code>: EBS volume size in GB</li>
 <li><code>GIT_REPO_URL</code>: URL of the application Git repository</li>
-<li><code>GIT_SSH_PRIVATE_KEY_PATH</code>: Path to the Git SSH private key</li>
 <li><code>MongoDBClusterName</code>: Name for the MongoDB Atlas cluster</li>
 <li><code>MongoDBUserName</code>: MongoDB Atlas username</li>
 <li><code>MongoDBPassword</code>: MongoDB Atlas password</li>
@@ -429,7 +427,6 @@
 <h3 class="anchor anchorWithStickyNavbar_LWe7" id="security-considerations">Security Considerations<a class="hash-link" aria-label="Direct link to Security Considerations" title="Direct link to Security Considerations" href="/maap-framework/docs/quick-starts/anthropic#security-considerations">​</a></h3>
 <ul>
 <li>AWS credentials are expected to be set as environment variables</li>
-<li>SSH key for Git repository access is read from a file and passed securely</li>
 <li>MongoDB Atlas credentials and API keys are passed as CloudFormation parameters</li>
 </ul>
 <h3 class="anchor anchorWithStickyNavbar_LWe7" id="customization">Customization<a class="hash-link" aria-label="Direct link to Customization" title="Direct link to Customization" href="/maap-framework/docs/quick-starts/anthropic#customization">​</a></h3>
