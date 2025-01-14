@@ -58,6 +58,58 @@ Data flow within the system:
 
 This architecture ensures high scalability, allowing the system to handle increasing loads by scaling individual components as needed. It also provides flexibility, enabling easy updates or replacements of specific services without affecting the entire system.
 
+---
+
+### Document Storage and Segmentation in MongoDB
+
+#### Key Fields in MongoDB
+Each document uploaded by a user is stored in MongoDB with the following fields:
+- `_id`: MongoDB-generated unique identifier for the document.
+- `userId`: Unique identifier for the user (e.g., email address or UUID). This field ensures all documents are segmented and associated with their respective users.
+- `document_text`: The full text extracted from the uploaded document.
+- `document_embedding`: Vector embeddings generated from the `document_text` for similarity-based searches.
+- `link_texts`: Anchor texts of hyperlinks within the document.
+- `link_urls`: Corresponding URLs for the hyperlinks.
+- `languages`: Detected language(s) of the document content.
+- `filetype`: The type of file uploaded (e.g., `text/html`).
+- `url`: The source URL of the document (if available).
+- `category`: The classification or type of the document (e.g., `CompositeElement`).
+- `element_id`: A unique identifier for the specific content element.
+
+#### Data Segmentation by User ID
+- The `userId` field is critical for isolating and segmenting data. 
+- During queries, only the documents associated with a specific `userId` are retrieved, ensuring data privacy and security.
+- This segmentation allows for multi-tenant architecture while maintaining strict user data isolation.
+
+---
+
+### Data Upload Process
+
+#### User Actions
+1. **Document Upload**: The user uploads a document through the **UI Service** (running on port 7860).
+2. **User Identification**: The system captures the user's unique identifier (`userId`) during the upload process provided in the `User Id` text field on the UI.
+
+#### System Workflow
+1. **Content Extraction**:
+   - The **Loader Service** (running on port 8001) processes the document, extracting:
+     - `document_text`: The full textual content.
+     - `link_texts` and `link_urls`: Hyperlinked phrases and their corresponding URLs.
+   - Additional metadata is captured, including file type (`filetype`) and detected languages (`languages`).
+
+2. **Embedding Generation**:
+   - The **Loader Service** (running on port 8001) also generates vector embeddings from the `document_text` using an embeddings model.
+   - These embeddings are used for similarity-based searches.
+
+3. **Data Storage in MongoDB**:
+   - All processed data, including `document_text`, `document_embedding`, and metadata, is stored in MongoDB.
+   - The data is associated with the `userId` to ensure proper segmentation.
+
+4. **Search Indexing**:
+   - The vector embeddings are indexed by MongoDB Atlas Vector Search Index.
+   - This indexing allows for efficient similarity searches when querying documents.
+
+---
+
 ## 3. Components
 
 This system is composed of several key components:
