@@ -2,7 +2,8 @@
 
 MongoDB - Anthropic Quickstart is an integrated end-to-end technology stack that combines MongoDB Atlas capabilities with Anthropic's Claude AI models to create an intelligent Agentic conversational interface. It allows users to interact with MongoDB data sources through natural language queries, leveraging vector search, full-text search, hybrid search and other advanced querying techniques.
 
-[![ReadMe Card](https://github.com/mongodb-partners/maap-anthropic)]
+[![ReadMe Card](https://github-readme-stats.vercel.app/api/pin/?username=mongodb-partners&repo=maap-anthropic)](https://github.com/mongodb-partners/maap-anthropic)
+
 
 ## Table of Contents
 1. [Overview](#1-overview)
@@ -218,53 +219,157 @@ For more detailed information, refer to [Guide](https://www.mongodb.com/docs/atl
 - Sufficient EBS storage for EC2 instance (at least 100 GB recommended)
 - MongoDB Atlas M10 Cluster (auto-deployed by the `one-click` script)
 
+
+
+## 4.1 One-Click Deployment Script
+
+This Korn shell script automates the deployment of the MongoDB - Anthropic Quickstart application on AWS infrastructure. It sets up the necessary AWS resources, deploys an EC2 instance, and configures the application environment.
+
+### Prerequisites
+
+- AWS CLI installed and configured with appropriate credentials
+- Access to a MongoDB Atlas account with necessary permissions
+- Git SSH key for repository access
+- Korn shell (ksh) environment
+
+### Script Structure
+
+The script is organized into several main functions:
+
+1. `create_key()`: Creates or uses an existing EC2 key pair
+2. `deploy_infra()`: Deploys the base infrastructure using CloudFormation
+3. `deploy_ec2()`: Deploys the EC2 instance and application stack
+4. `read_logs()`: Streams deployment logs from the EC2 instance
+5. Main execution flow
+
+### Configuration
+
+#### Environment Variables
+
+- `AWS_ACCESS_KEY_ID`: AWS access key
+- `AWS_SECRET_ACCESS_KEY`: AWS secret key
+- `AWS_SESSION_TOKEN`: AWS session token (if using temporary credentials)
+
+#### Deployment Parameters
+
+- `INFRA_STACK_NAME`: Name for the infrastructure CloudFormation stack
+- `EC2_STACK_NAME`: Name for the EC2 CloudFormation stack
+- `AWS_REGION`: AWS region for deployment
+- `EC2_INSTANCE_TYPE`: EC2 instance type (e.g., "t3.xlarge")
+- `VolumeSize`: EBS volume size in GB
+- `GIT_REPO_URL`: URL of the application Git repository
+- `GIT_SSH_PRIVATE_KEY_PATH`: Path to the Git SSH private key
+- `MongoDBClusterName`: Name for the MongoDB Atlas cluster
+- `MongoDBUserName`: MongoDB Atlas username
+- `MongoDBPassword`: MongoDB Atlas password
+- `APIPUBLICKEY`: MongoDB Atlas API public key
+- `APIPRIVATEKEY`: MongoDB Atlas API private key
+- `GROUPID`: MongoDB Atlas project ID
+
+#### Application Service Replicas
+
+- `LoggerReplicas`: Number of Logger service replicas
+- `LoaderReplicas`: Number of Loader service replicas
+- `MainReplicas`: Number of Main service replicas
+- `UIReplicas`: Number of UI service replicas
+
+### Execution Flow
+
+1. Initialize logging
+2. Create or use existing EC2 key pair
+3. Deploy infrastructure CloudFormation stack
+4. Retrieve and store infrastructure stack outputs
+5. Deploy EC2 instance and application CloudFormation stack
+6. Start streaming EC2 deployment logs
+7. Monitor application URL until it becomes available
+8. Launch application URL in default browser
+
+### Functions
+
+#### create_key()
+
+Creates a new EC2 key pair or uses an existing one with the name "MAAPAnthropicKeyV1".
+
+#### deploy_infra()
+
+Deploys the base infrastructure CloudFormation stack, including VPC, subnet, security group, and IAM roles.
+
+### deploy_ec2()
+
+Deploys the EC2 instance and application stack using a CloudFormation template. It includes the following steps:
+- Selects the appropriate AMI ID based on the AWS region
+- Creates the CloudFormation stack with necessary parameters
+- Waits for stack creation to complete
+- Retrieves and displays stack outputs
+
+#### read_logs()
+
+Establishes an SSH connection to the EC2 instance and streams the deployment logs in real-time.
+
+### Logging
+
+- Main deployment logs: `./logs/one-click-deployment.log`
+- EC2 live logs: `./logs/ec2-live-logs.log`
+
+### Error Handling
+
+The script includes basic error checking for critical operations such as CloudFormation stack deployments. If an error occurs, the script will log the error and exit.
+
+### Security Considerations
+
+- AWS credentials are expected to be set as environment variables
+- SSH key for Git repository access is read from a file and passed securely
+- MongoDB Atlas credentials and API keys are passed as CloudFormation parameters
+
+### Customization
+
+To customize the deployment:
+1. Modify the CloudFormation template files (`deploy-infra.yaml` and `deploy-ec2.yaml`)
+2. Adjust the deployment parameters at the beginning of the script
+3. Update the AMI IDs in the `ami_map` if newer AMIs are available
+
+### Troubleshooting
+
+- Check the log files for detailed information on the deployment process
+- Ensure all required environment variables and parameters are correctly set
+- Verify AWS CLI configuration and permissions
+- Check CloudFormation stack events in the AWS Console for detailed error messages
+
+### Limitations
+
+- The script is designed for a specific application stack and may require modifications for other use cases
+- It assumes a certain MongoDB Atlas and AWS account setup
+- The script does not include rollback mechanisms for partial deployments. In case of partial failures, delete the related CloudFormation stacks from AWS Console.
+
+
 ### Deployment Steps
 
 1. Clone the repository:
    ```
    git clone <repository-url>
-   cd MAAP-Framework
+   cd maap-anthropic
    ```
 
-2. Set up environment variables:
-   Create a `.env` file in the root directory with the following variables:
-   ```
-   MONGODB_URI=<your-mongodb-atlas-uri>
-   AWS_ACCESS_KEY_ID=<your-aws-access-key>
-   AWS_SECRET_ACCESS_KEY=<your-aws-secret-key>
-   AWS_REGION=us-east-1
-   ```
-
-3. Configure the `one-click.ksh` script:
+2. Configure the `one-click.ksh` script:
    Open the script in a text editor and fill in the required values for various environment variables:
    - AWS Auth: Specify the `AWS_REGION`, `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY` for deployment.
    - EC2 Instance Types: Choose suitable instance types for your workload.
    - Network Configuration: Update key names, subnet IDs, security group IDs, etc.
    - Authentication Keys: Fetch Project ID, API public and private keys for MongoDB Atlas Cluster setup. Update the script file with the keys for `APIPUBLICKEY`, `APIPRIVATEKEY`, `GROUPID` suitably.
 
-4. Deploy the application:
+3. Deploy the application:
    ```
    chmod +x one-click.ksh
    ./one-click.ksh
    ```
 
-5. Build the Docker images:
-   ```
-   ./build-images.ksh
-   ```
-
-6. Start the services using Docker Compose:
-   ```
-   docker-compose up -d
-   ```
-
-7. Access the application at `http://<ec2-instance-ip>:7860`
+4. Access the application at `http://<ec2-instance-ip>:7860`
 
 ### Post-Deployment Verification
 1. Access the UI service by navigating to `http://<ec2-instance-ip>:7860` in your web browser.
 2. Test the system by entering a query and verifying that you receive an appropriate AI-generated response.
 3. Try uploading a file to ensure the Loader Service is functioning correctly.
-4. Verify that the sample dataset bundled with the script is loaded into your MongoDB Cluster name `MongoDBArceeV1` under the database `travel_agency` and collection `trip_recommendation` by visiting the [MongoDB Atlas Console](https://cloud.mongodb.com).
+4. Verify that the sample dataset bundled with the script is loaded into your MongoDB Cluster name `MongoDBAnthropicV1` under the database `travel_agency` and collection `trip_recommendation` by visiting the [MongoDB Atlas Console](https://cloud.mongodb.com).
 
 ## 5. Configuration
 
@@ -273,7 +378,6 @@ For more detailed information, refer to [Guide](https://www.mongodb.com/docs/atl
 - `AWS_ACCESS_KEY_ID`: AWS access key for Bedrock and Titan Embeddings
 - `AWS_SECRET_ACCESS_KEY`: AWS secret key
 - `AWS_REGION`: AWS region (default: us-east-1)
-- `SAGEMAKER_ENDPOINT_NAME`: Your endpoint name
 - `API_PUBLIC_KEY`: Your API key
 - `API_PRIVATE_KEY`: Your private key
 - `GROUP_ID`: Your project ID
@@ -318,7 +422,7 @@ Example vector index configuration:
 
 1. **Main Service**:
    - Model parameters can be adjusted in the `main/Models.py` file.
-   - Vector search settings are configured in `MongoDBAtlasCustomRetriever.py`.
+   - Vector search settings are configured in `mongodb_atlas_retriever_tools.py`.
 
 2. **Loader Service**:
    - File processing settings are defined in `loader.py`.
@@ -400,7 +504,8 @@ The UI service exposes a Gradio interface and does not have a separate API.
   {
     "input": "Your query here",
     "chat_history": [],
-    "tools": ["MongoDB Vector Search", "MongoDB FullText Search"]
+    "tools": ["MongoDB Vector Search", "MongoDB FullText Search"],
+    "llm_model": "anthropic.claude-3-5-sonnet-20240620-v1:0"
   }
   ```
 
