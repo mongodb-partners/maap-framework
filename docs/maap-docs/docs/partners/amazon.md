@@ -32,6 +32,21 @@ To use Amazon FM with MAAP framework, you would need to the below components to 
       max_tokens: <integer_value>
       temperature: <integer_value>
   ```
+
+  - ##### LlamaIndex framework
+
+    MAAP now provides the option to choose if you want to use LlamaIndex as your main framework to deploy your LLM models.
+  
+    This can be done by adding the 'framework' configuration to the config.yaml file
+      ```
+      llms:
+        class_name: Bedrock
+        model_name: <check_references_below>
+        max_tokens: <integer_value>
+        temperature: <integer_value>
+        framework: 'llamaindex'
+      ```
+
 - #### Environment Variable :
   Below value(s) are to be added in `.env` file, present at `builder/partnerproduct/`.
 
@@ -57,6 +72,18 @@ To use AWS Titan embedding with MAAP framework, you would need to feed below val
       class_name: Bedrock
       model_name: `amazon.titan-embed-image-v1` or `amazon.titan-embed-text-v2:0`
   ```
+
+  - ##### LlamaIndex framework
+  
+    MAAP now provides the option to choose if you want to use LlamaIndex as your main framework to deploy your embeddings.
+
+    This can be done by adding the 'framework' configuration to the config.yaml file
+    ```
+    embedding:
+      class_name: Bedrock
+      model_name: <check_references_below>
+      framework: 'LlamaIndex'
+    ```
 
 - #### Environment Variable :
   Below value(s) are to be added in `.env` file, present at `builder/partnerproduct/`.

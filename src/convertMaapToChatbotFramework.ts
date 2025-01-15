@@ -2,7 +2,7 @@
   @fileoverview Convert various constructs created by the MAAP dev team
   to work with the MongoDB Chatbot Framework.
  */
-import { Chunk, ExtractChunkData } from './global/types.js';
+import { ExtractChunkData } from './global/types.js';
 import { BaseEmbeddings } from './interfaces/base-embeddings.js';
 import { BaseLoader } from './interfaces/base-loader.js';
 import { BaseModel } from './interfaces/base-model.js';
@@ -89,7 +89,7 @@ export async function convertBaseModelToChatLlm(baseModel: BaseModel): Promise<C
                                 delta: {
                                     role: "assistant",
                                     content:
-                                        typeof chunk === "string" ? chunk : "",
+                                        typeof chunk === "string" ? chunk : (chunk.delta?.toString() || ""),
                                     toolCalls: [],
                                 },
                             },
