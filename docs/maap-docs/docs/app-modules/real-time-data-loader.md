@@ -38,7 +38,7 @@ Note: The topics for those connector must be different. Example: userAvailable f
 and intermediateTopic for source connector. The topic used at the source connector is the one that the
 RTDL is going to use to listen to messages.
 
-Sink Connector. Configure <your_atlas_uri>, <your_database>, <your_collection>, <your_topic> and
+Sink Connector. Configure `<your_atlas_uri>`, `<your_database>`, `<your_collection>`, `<your_topic>` and
 the kafka.bootstrap.servers if you're using a different kafka deployment.
 
 ```shell
@@ -62,7 +62,7 @@ curl -X POST -H "Content-Type: application/json" --data '
 }}' http://localhost:8083/connectors -w "\n"
 ```
 
-Source Connector. Configure <your_atlas_uri>, <your_database>, the topic.namespace.map following the pattern and
+Source Connector. Configure `<your_atlas_uri>`, `<your_database>`, the topic.namespace.map following the pattern and
 displayed in the example and the kafka.bootstrap.servers if you're using a different kafka deployment.
 
 ```shell
@@ -94,7 +94,7 @@ curl -X POST -H "Content-Type: application/json" --data '
 
 Create 1 json file for each connector anywhere in your computer:
 
-Configure <your_atlas_uri>, <your_database>, <your_collection>, <your_topic> and the kafka.bootstrap.servers if you're using a different kafka deployment.
+Configure `<your_atlas_uri>`, `<your_database>`, `<your_collection>`, `<your_topic>` and the kafka.bootstrap.servers if you're using a different kafka deployment.
 
 Note: The topics for those connector must be different. Example: userAvailable for sink connector
 and intermediateTopic for source connector. The topic used at the source connector is the one that the
