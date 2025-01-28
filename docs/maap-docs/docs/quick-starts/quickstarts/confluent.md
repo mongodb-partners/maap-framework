@@ -4,7 +4,7 @@ Welcome to the MongoDB - Confluent Quickstart for Small Business Loan Agent Chat
 
 This quick start is designed to help businesses streamline their loan application process by providing a chatbot that understands and answers customer queries, retrieves relevant loan documents, and provides actionable insights. The system also includes structured document indexing into MongoDB's vector database, enabling efficient retrieval-augmented generation (RAG) to enhance the chatbot's response accuracy.
 
-[![ReadMe Card](https://github-readme-stats.vercel.app/api/pin/?username=confluentinc&repo=mongodb-cflt-genai-quickstart)](https://github.com/mongodb-partners/maap-confluent-qs)
+[![ReadMe Card](https://github-readme-stats.vercel.app/api/pin/?username=mongodb-partners&repo=maap-confluent-qs)](https://github.com/mongodb-partners/maap-confluent-qs)
 
 ## Key Features
 

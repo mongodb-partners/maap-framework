@@ -1,14 +1,13 @@
+# Real Time Data Loader
+
+In this document you'll find a guide to configure a kafka environment with the respective
+mongo db connectors and all you need to run a real time data loader in your local environment.
 
 # Table of Contents
 - [Pre-requisites](#pre-requisites)
 - [Kafka Setup](#kafka-setup)
 - [Data Loader Usage](#data-loader)
 - [Test Example](#test)
-
-# Real Time Data Loader
-
-In this document you'll find a guide to configure a kafka environment with the respective
-mongo db connectors and all you need to run a real time data loader in your local environment.
 
 ## Pre-requisites
 

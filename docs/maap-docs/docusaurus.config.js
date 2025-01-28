@@ -73,6 +73,18 @@ const config = {
             label: 'Docs',
           },
           {
+            type: 'docSidebar',
+            sidebarId: 'quickstartSidebar',
+            position: 'left',
+            label: 'Quickstart',
+          },
+          {
+            type: 'docSidebar',
+            sidebarId: 'demosSidebar',
+            position: 'left',
+            label: 'Demo',
+          },
+          {
             href: 'https://github.com/mongodb-partners/maap-framework/',
             label: 'GitHub',
             position: 'right',

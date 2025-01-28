@@ -1,9 +1,0 @@
-{
-  "label": "Quick Starts",
-  
-  "position": 4,
-  "link": {
-    "type": "generated-index",
-    "description": "These modules and our MAAP partners provide rapid and straightforward deployment of AI-driven applications utilizing MongoDB Atlas."
-  }
-}
