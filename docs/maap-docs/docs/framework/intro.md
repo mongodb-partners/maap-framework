@@ -170,15 +170,15 @@ Go to [this](https://mongodb-partners.github.io/maap-framework/docs/category/par
 
 | Sr # | MAAP Partner  | Partner Type  | Documentation                                                                                          |
 |------|---------------|---------------|--------------------------------------------------------------------------------------------------------|
-| 1    | AWS           | Cloud provider| [Link](https://mongodb-partners.github.io/maap-framework/docs/partners/amazon)                   |
-| 2    | Azure         | Cloud provider| [Link](https://mongodb-partners.github.io/maap-framework/docs/partners/azure)                    |
-| 3    | GCP           | Cloud provider| [Link](https://mongodb-partners.github.io/maap-framework/docs/partners/gcp)                      |
-| 4    | Anthropic     | AI tech       | [Link](https://mongodb-partners.github.io/maap-framework/docs/partners/anthropic)                |
-| 5    | Anyscale      | AI tech       | [Link](https://mongodb-partners.github.io/maap-framework/docs/partners/anyscale)                 |
-| 6    | Cohere        | AI tech       | [Link](https://mongodb-partners.github.io/maap-framework/docs/partners/cohere)                   |
-| 7    | Fireworks.AI  | AI tech       | [Link](https://mongodb-partners.github.io/maap-framework/docs/partners/fireworksai)              |
-| 8    | Langchain     | AI tech       | [Link](https://mongodb-partners.github.io/maap-framework/docs/partners/langchain)                |
-| 9    | Nomic         | AI tech       | [Link](https://mongodb-partners.github.io/maap-framework/docs/partners/nomic)                    |
+| 1    | AWS           | Cloud provider| [Link](https://mongodb-partners.github.io/maap-framework/docs/framework/partners/amazon)                   |
+| 2    | Azure         | Cloud provider| [Link](https://mongodb-partners.github.io/maap-framework/docs/framework/partners/azure)                    |
+| 3    | GCP           | Cloud provider| [Link](https://mongodb-partners.github.io/maap-framework/docs/framework/partners/gcp)                      |
+| 4    | Anthropic     | AI tech       | [Link](https://mongodb-partners.github.io/maap-framework/docs/framework/partners/anthropic)                |
+| 5    | Anyscale      | AI tech       | [Link](https://mongodb-partners.github.io/maap-framework/docs/framework/partners/anyscale)                 |
+| 6    | Cohere        | AI tech       | [Link](https://mongodb-partners.github.io/maap-framework/docs/framework/partners/cohere)                   |
+| 7    | Fireworks.AI  | AI tech       | [Link](https://mongodb-partners.github.io/maap-framework/docs/framework/partners/fireworksai)              |
+| 8    | Langchain     | AI tech       | [Link](https://mongodb-partners.github.io/maap-framework/docs/framework/partners/langchain)                |
+| 9    | Nomic         | AI tech       | [Link](https://mongodb-partners.github.io/maap-framework/docs/framework/partners/nomic)                    |
 
 
 
