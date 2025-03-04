@@ -1,0 +1,1001 @@
+<!doctype html>
+<html lang="en" dir="ltr" class="docs-wrapper plugin-docs plugin-id-default docs-version-current docs-doc-page docs-doc-id-quick-starts/meta" data-has-hydrated="false">
+<head>
+<meta charset="UTF-8">
+<meta name="generator" content="Docusaurus v3.4.0">
+<title data-rh="true">MongoDB - Meta Quickstart | MAAP</title><meta data-rh="true" name="viewport" content="width=device-width,initial-scale=1"><meta data-rh="true" name="twitter:card" content="summary_large_image"><meta data-rh="true" property="og:image" content="https://maap-framework.github.io/maap-framework/img/docusaurus-social-card.jpg"><meta data-rh="true" name="twitter:image" content="https://maap-framework.github.io/maap-framework/img/docusaurus-social-card.jpg"><meta data-rh="true" property="og:url" content="https://maap-framework.github.io/maap-framework/docs/quick-starts/meta"><meta data-rh="true" property="og:locale" content="en"><meta data-rh="true" name="docusaurus_locale" content="en"><meta data-rh="true" name="docsearch:language" content="en"><meta data-rh="true" name="docusaurus_version" content="current"><meta data-rh="true" name="docusaurus_tag" content="docs-default-current"><meta data-rh="true" name="docsearch:version" content="current"><meta data-rh="true" name="docsearch:docusaurus_tag" content="docs-default-current"><meta data-rh="true" property="og:title" content="MongoDB - Meta Quickstart | MAAP"><meta data-rh="true" name="description" content="The MongoDB - Meta Quickstart is a comprehensive, integrated end-to-end technology stack meticulously designed to facilitate the rapid development and seamless deployment of AI-powered Agentic applications. This innovative framework combines the robust capabilities of MongoDB Atlas for scalable data storage and advanced vector search functionalities with Meta&#x27;s Llama AI state-of-the-art language models for powerful natural language processing and generation."><meta data-rh="true" property="og:description" content="The MongoDB - Meta Quickstart is a comprehensive, integrated end-to-end technology stack meticulously designed to facilitate the rapid development and seamless deployment of AI-powered Agentic applications. This innovative framework combines the robust capabilities of MongoDB Atlas for scalable data storage and advanced vector search functionalities with Meta&#x27;s Llama AI state-of-the-art language models for powerful natural language processing and generation."><link data-rh="true" rel="icon" href="/maap-framework/img/favicon.ico"><link data-rh="true" rel="canonical" href="https://maap-framework.github.io/maap-framework/docs/quick-starts/meta"><link data-rh="true" rel="alternate" href="https://maap-framework.github.io/maap-framework/docs/quick-starts/meta" hreflang="en"><link data-rh="true" rel="alternate" href="https://maap-framework.github.io/maap-framework/docs/quick-starts/meta" hreflang="x-default"><link rel="stylesheet" href="/maap-framework/assets/css/styles.672a8b88.css">
+<script src="/maap-framework/assets/js/runtime~main.4fbd4c7b.js" defer="defer"></script>
+<script src="/maap-framework/assets/js/main.3de8637b.js" defer="defer"></script>
+</head>
+<body class="navigation-with-keyboard">
+<script>!function(){function t(t){document.documentElement.setAttribute("data-theme",t)}var e=function(){try{return new URLSearchParams(window.location.search).get("docusaurus-theme")}catch(t){}}()||function(){try{return window.localStorage.getItem("theme")}catch(t){}}();t(null!==e?e:"light")}(),function(){try{const n=new URLSearchParams(window.location.search).entries();for(var[t,e]of n)if(t.startsWith("docusaurus-data-")){var a=t.replace("docusaurus-data-","data-");document.documentElement.setAttribute(a,e)}}catch(t){}}()</script><div id="__docusaurus"><div role="region" aria-label="Skip to main content"><a class="skipToContent_fXgn" href="#__docusaurus_skipToContent_fallback">Skip to main content</a></div><nav aria-label="Main" class="navbar navbar--fixed-top"><div class="navbar__inner"><div class="navbar__items"><button aria-label="Toggle navigation bar" aria-expanded="false" class="navbar__toggle clean-btn" type="button"><svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><path stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="M4 7h22M4 15h22M4 23h22"></path></svg></button><a class="navbar__brand" href="/maap-framework/"><div class="navbar__logo"><img src="/maap-framework/img/logo.svg" alt="MAAP Logo" class="themedComponent_mlkZ themedComponent--light_NVdE"><img src="/maap-framework/img/logo.svg" alt="MAAP Logo" class="themedComponent_mlkZ themedComponent--dark_xIcU"></div><b class="navbar__title text--truncate">MAAP</b></a><a aria-current="page" class="navbar__item navbar__link navbar__link--active" href="/maap-framework/docs/intro">Docs</a></div><div class="navbar__items navbar__items--right"><a href="https://github.com/mongodb-partners/maap-framework/" target="_blank" rel="noopener noreferrer" class="navbar__item navbar__link">GitHub<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="iconExternalLink_nPIU"><path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z"></path></svg></a><div class="toggle_vylO colorModeToggle_DEke"><button class="clean-btn toggleButton_gllP toggleButtonDisabled_aARS" type="button" disabled="" title="Switch between dark and light mode (currently light mode)" aria-label="Switch between dark and light mode (currently light mode)" aria-live="polite"><svg viewBox="0 0 24 24" width="24" height="24" class="lightToggleIcon_pyhR"><path fill="currentColor" d="M12,9c1.65,0,3,1.35,3,3s-1.35,3-3,3s-3-1.35-3-3S10.35,9,12,9 M12,7c-2.76,0-5,2.24-5,5s2.24,5,5,5s5-2.24,5-5 S14.76,7,12,7L12,7z M2,13l2,0c0.55,0,1-0.45,1-1s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S1.45,13,2,13z M20,13l2,0c0.55,0,1-0.45,1-1 s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S19.45,13,20,13z M11,2v2c0,0.55,0.45,1,1,1s1-0.45,1-1V2c0-0.55-0.45-1-1-1S11,1.45,11,2z M11,20v2c0,0.55,0.45,1,1,1s1-0.45,1-1v-2c0-0.55-0.45-1-1-1C11.45,19,11,19.45,11,20z M5.99,4.58c-0.39-0.39-1.03-0.39-1.41,0 c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0s0.39-1.03,0-1.41L5.99,4.58z M18.36,16.95 c-0.39-0.39-1.03-0.39-1.41,0c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0c0.39-0.39,0.39-1.03,0-1.41 L18.36,16.95z M19.42,5.99c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06c-0.39,0.39-0.39,1.03,0,1.41 s1.03,0.39,1.41,0L19.42,5.99z M7.05,18.36c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06 c-0.39,0.39-0.39,1.03,0,1.41s1.03,0.39,1.41,0L7.05,18.36z"></path></svg><svg viewBox="0 0 24 24" width="24" height="24" class="darkToggleIcon_wfgR"><path fill="currentColor" d="M9.37,5.51C9.19,6.15,9.1,6.82,9.1,7.5c0,4.08,3.32,7.4,7.4,7.4c0.68,0,1.35-0.09,1.99-0.27C17.45,17.19,14.93,19,12,19 c-3.86,0-7-3.14-7-7C5,9.07,6.81,6.55,9.37,5.51z M12,3c-4.97,0-9,4.03-9,9s4.03,9,9,9s9-4.03,9-9c0-0.46-0.04-0.92-0.1-1.36 c-0.98,1.37-2.58,2.26-4.4,2.26c-2.98,0-5.4-2.42-5.4-5.4c0-1.81,0.89-3.42,2.26-4.4C12.92,3.04,12.46,3,12,3L12,3z"></path></svg></button></div><div class="navbarSearchContainer_Bca1"></div></div></div><div role="presentation" class="navbar-sidebar__backdrop"></div></nav><div id="__docusaurus_skipToContent_fallback" class="main-wrapper mainWrapper_z2l0"><div class="docsWrapper_hBAB"><button aria-label="Scroll back to top" class="clean-btn theme-back-to-top-button backToTopButton_sjWU" type="button"></button><div class="docRoot_UBD9"><aside class="theme-doc-sidebar-container docSidebarContainer_YfHR"><div class="sidebarViewport_aRkj"><div class="sidebar_njMd"><nav aria-label="Docs sidebar" class="menu thin-scrollbar menu_SIkG"><ul class="theme-doc-sidebar-menu menu__list"><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/maap-framework/docs/intro">MAAP Framework</a></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="menu__link menu__link--sublist" href="/maap-framework/docs/category/partners">Partners</a><button aria-label="Expand sidebar category &#x27;Partners&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="menu__link menu__link--sublist" href="/maap-framework/docs/category/app-modules">App Modules</a><button aria-label="Expand sidebar category &#x27;App Modules&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="menu__link menu__link--sublist" href="/maap-framework/docs/category/demo">Demo</a><button aria-label="Expand sidebar category &#x27;Demo&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item"><div class="menu__list-item-collapsible"><a class="menu__link menu__link--sublist menu__link--active" href="/maap-framework/docs/category/quick-starts">Quick Starts</a><button aria-label="Collapse sidebar category &#x27;Quick Starts&#x27;" aria-expanded="true" type="button" class="clean-btn menu__caret"></button></div><ul style="display:block;overflow:visible;height:auto" class="menu__list"><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/maap-framework/docs/quick-starts/anthropic">MongoDB - Anthropic Quickstart</a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/maap-framework/docs/quick-starts/arcee">MongoDB - Arcee Quickstart</a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/maap-framework/docs/quick-starts/confluent">MongoDB - Confluent Quickstart</a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link menu__link--active" aria-current="page" tabindex="0" href="/maap-framework/docs/quick-starts/meta">MongoDB - Meta Quickstart</a></li></ul></li></ul></nav></div></div></aside><main class="docMainContainer_TBSr"><div class="container padding-top--md padding-bottom--lg"><div class="row"><div class="col docItemCol_VOVn"><div class="docItemContainer_Djhp"><article><nav class="theme-doc-breadcrumbs breadcrumbsContainer_Z_bl" aria-label="Breadcrumbs"><ul class="breadcrumbs" itemscope="" itemtype="https://schema.org/BreadcrumbList"><li class="breadcrumbs__item"><a aria-label="Home page" class="breadcrumbs__link" href="/maap-framework/"><svg viewBox="0 0 24 24" class="breadcrumbHomeIcon_YNFT"><path d="M10 19v-5h4v5c0 .55.45 1 1 1h3c.55 0 1-.45 1-1v-7h1.7c.46 0 .68-.57.33-.87L12.67 3.6c-.38-.34-.96-.34-1.34 0l-8.36 7.53c-.34.3-.13.87.33.87H5v7c0 .55.45 1 1 1h3c.55 0 1-.45 1-1z" fill="currentColor"></path></svg></a></li><li itemscope="" itemprop="itemListElement" itemtype="https://schema.org/ListItem" class="breadcrumbs__item"><a class="breadcrumbs__link" itemprop="item" href="/maap-framework/docs/category/quick-starts"><span itemprop="name">Quick Starts</span></a><meta itemprop="position" content="1"></li><li itemscope="" itemprop="itemListElement" itemtype="https://schema.org/ListItem" class="breadcrumbs__item breadcrumbs__item--active"><span class="breadcrumbs__link" itemprop="name">MongoDB - Meta Quickstart</span><meta itemprop="position" content="2"></li></ul></nav><div class="tocCollapsible_ETCw theme-doc-toc-mobile tocMobile_ITEo"><button type="button" class="clean-btn tocCollapsibleButton_TO0P">On this page</button></div><div class="theme-doc-markdown markdown"><h1>MongoDB - Meta Quickstart</h1>
+<p>The MongoDB - Meta Quickstart is a comprehensive, integrated end-to-end technology stack meticulously designed to facilitate the rapid development and seamless deployment of AI-powered Agentic applications. This innovative framework combines the robust capabilities of MongoDB Atlas for scalable data storage and advanced vector search functionalities with Meta&#x27;s Llama AI state-of-the-art language models for powerful natural language processing and generation.</p>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="table-of-contents">Table of Contents<a class="hash-link" aria-label="Direct link to Table of Contents" title="Direct link to Table of Contents" href="/maap-framework/docs/quick-starts/meta#table-of-contents">​</a></h2>
+<ul>
+<li><a href="/maap-framework/docs/quick-starts/meta#1-overview">1. Overview</a></li>
+<li><a href="/maap-framework/docs/quick-starts/meta#2-system-architecture">2. System Architecture</a></li>
+<li><a href="/maap-framework/docs/quick-starts/meta#3-components">3. Components</a>
+<ul>
+<li><a href="/maap-framework/docs/quick-starts/meta#31-ui-service">3.1 UI Service</a></li>
+<li><a href="/maap-framework/docs/quick-starts/meta#32-main-service">3.2 Main Service</a></li>
+<li><a href="/maap-framework/docs/quick-starts/meta#33-ai-memory-service">3.3 AI Memory Service</a></li>
+<li><a href="/maap-framework/docs/quick-starts/meta#34-semantic-cache-service">3.4 Semantic Cache Service</a></li>
+<li><a href="/maap-framework/docs/quick-starts/meta#35-loader-service">3.5 Loader Service</a></li>
+<li><a href="/maap-framework/docs/quick-starts/meta#36-logger-service">3.6 Logger Service</a></li>
+<li><a href="/maap-framework/docs/quick-starts/meta#37-mongodb-management-scripts">3.7 MongoDB Management Scripts</a></li>
+</ul>
+</li>
+<li><a href="/maap-framework/docs/quick-starts/meta#4-installation--deployment">4. Installation &amp; Deployment</a>
+<ul>
+<li><a href="/maap-framework/docs/quick-starts/meta#41-one-click-deployment">4.1 One-Click Deployment</a></li>
+<li><a href="/maap-framework/docs/quick-starts/meta#42-manual-deployment">4.2 Manual Deployment</a></li>
+</ul>
+</li>
+<li><a href="/maap-framework/docs/quick-starts/meta#5-configuration">5. Configuration</a>
+<ul>
+<li><a href="/maap-framework/docs/quick-starts/meta#51-environment-variables">5.1 Environment Variables</a></li>
+<li><a href="/maap-framework/docs/quick-starts/meta#52-mongodb-atlas-configuration">5.2 MongoDB Atlas Configuration</a></li>
+</ul>
+</li>
+<li><a href="/maap-framework/docs/quick-starts/meta#6-usage">6. Usage</a>
+<ul>
+<li><a href="/maap-framework/docs/quick-starts/meta#61-user-interface">6.1 User Interface</a></li>
+<li><a href="/maap-framework/docs/quick-starts/meta#62-uploading-documents">6.2 Uploading Documents</a></li>
+<li><a href="/maap-framework/docs/quick-starts/meta#63-querying-the-system">6.3 Querying the System</a></li>
+</ul>
+</li>
+<li><a href="/maap-framework/docs/quick-starts/meta#7-api-reference">7. API Reference</a>
+<ul>
+<li><a href="/maap-framework/docs/quick-starts/meta#71-main-service-api">7.1 Main Service API</a></li>
+<li><a href="/maap-framework/docs/quick-starts/meta#72-ai-memory-api">7.2 AI Memory API</a></li>
+<li><a href="/maap-framework/docs/quick-starts/meta#73-semantic-cache-api">7.3 Semantic Cache API</a></li>
+<li><a href="/maap-framework/docs/quick-starts/meta#74-loader-api">7.4 Loader API</a></li>
+<li><a href="/maap-framework/docs/quick-starts/meta#75-logger-api">7.5 Logger API</a></li>
+</ul>
+</li>
+<li><a href="/maap-framework/docs/quick-starts/meta#8-security-considerations">8. Security Considerations</a></li>
+<li><a href="/maap-framework/docs/quick-starts/meta#9-monitoring--logging">9. Monitoring &amp; Logging</a></li>
+<li><a href="/maap-framework/docs/quick-starts/meta#10-troubleshooting">10. Troubleshooting</a></li>
+<li><a href="/maap-framework/docs/quick-starts/meta#11-development-guide">11. Development Guide</a></li>
+<li><a href="/maap-framework/docs/quick-starts/meta#12-maintenance--operations">12. Maintenance &amp; Operations</a></li>
+</ul>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="1-overview">1. Overview<a class="hash-link" aria-label="Direct link to 1. Overview" title="Direct link to 1. Overview" href="/maap-framework/docs/quick-starts/meta#1-overview">​</a></h2>
+<p>The MongoDB - Meta Quickstart enables users to upload documents, web content, and images, which are then processed, vectorized, and stored in MongoDB Atlas. The system utilizes a multi-agent architecture powered by Meta&#x27;s Llama Large Language Models (LLMs) to provide contextually relevant responses to user queries by leveraging the stored information.</p>
+<p>Key features include:</p>
+<ul>
+<li>Advanced vector search capabilities for nuanced, contextual information retrieval</li>
+<li>Seamless integration with AWS Bedrock for efficient AI model inference</li>
+<li>Highly intuitive chat interface for natural language querying and streamlined file uploads</li>
+<li>Scalable microservices architecture designed for optimal performance and resource utilization</li>
+<li>Robust data ingestion and processing pipeline capable of handling diverse data types</li>
+<li>Multi-modal file processing for comprehensive data analysis</li>
+<li>Real-time AI interactions for immediate insights and responses</li>
+<li>Stringent security measures to ensure the integrity and confidentiality of all data handled within the system</li>
+<li>Hybrid search capabilities combining vector and full-text search</li>
+</ul>
+<p>This system empowers developers to create sophisticated AI applications that can understand context, process natural language queries, and provide intelligent responses based on ingested data. This makes it an ideal solution for a wide range of applications, from advanced customer support systems and intelligent document analysis tools to complex research assistants and innovative educational platforms.</p>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="2-system-architecture">2. System Architecture<a class="hash-link" aria-label="Direct link to 2. System Architecture" title="Direct link to 2. System Architecture" href="/maap-framework/docs/quick-starts/meta#2-system-architecture">​</a></h2>
+<div class="language-mermaid codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_biex"><pre tabindex="0" class="prism-code language-mermaid codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">graph TD</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    A[User] --&gt;|Interacts with| B[UI Service]</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    B --&gt;|Sends queries| C[Main Service]</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    B --&gt;|Uploads files/URLs| D[Loader Service]</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    </span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    C --&gt;|Orchestrates agents| E[Multi-Agent System]</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    C --&gt;|Retrieves context| F[AI Memory Service]</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    C --&gt;|Checks for cached responses| G[Semantic Cache Service]</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    C --&gt;|Logs activity| H[Logger Service]</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    </span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    D --&gt;|Processes uploads| I[MongoDB Atlas]</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    D --&gt;|Logs activity| H</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    </span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    E --&gt;|Generates embeddings| J[AWS Bedrock]</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    E --&gt;|Queries LLMs| K[Meta Llama Models]</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    E --&gt;|Searches data| I</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    </span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    F --&gt;|Stores/retrieves conversations| I</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    F --&gt;|Logs activity| H</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    </span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    G --&gt;|Stores/retrieves cached responses| I</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    G --&gt;|Logs activity| H</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    </span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    I --&gt;|Vector search| L[MongoDB Vector Search]</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    I --&gt;|Text search| M[MongoDB Atlas Search]</span><br></span></code></pre><div class="buttonGroup__atx"><button type="button" aria-label="Copy code to clipboard" title="Copy" class="clean-btn"><span class="copyButtonIcons_eSgA" aria-hidden="true"><svg viewBox="0 0 24 24" class="copyButtonIcon_y97N"><path fill="currentColor" d="M19,21H8V7H19M19,5H8A2,2 0 0,0 6,7V21A2,2 0 0,0 8,23H19A2,2 0 0,0 21,21V7A2,2 0 0,0 19,5M16,1H4A2,2 0 0,0 2,3V17H4V3H16V1Z"></path></svg><svg viewBox="0 0 24 24" class="copyButtonSuccessIcon_LjdS"><path fill="currentColor" d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"></path></svg></span></button></div></div></div>
+<p>The MAAP architecture consists of several microservices that communicate with each other to process user queries and generate responses:</p>
+<ol>
+<li><strong>UI Service</strong>: Provides the web interface for user interaction (Port 7860)</li>
+<li><strong>Main Service</strong>: Orchestrates the multi-agent system and routes queries (Port 8000)</li>
+<li><strong>AI Memory Service</strong>: Manages conversation history and context (Port 8182)</li>
+<li><strong>Semantic Cache Service</strong>: Caches responses for similar queries (Port 8183)</li>
+<li><strong>Loader Service</strong>: Processes and ingests documents and web content (Port 8001)</li>
+<li><strong>Logger Service</strong>: Centralized logging for all components (Port 8181)</li>
+<li><strong>MongoDB Atlas</strong>: Provides vector search and storage capabilities (Ports 27015 to 27017 (TCP))</li>
+</ol>
+<p>All services are containerized using Docker and can be deployed together using Docker Compose.</p>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="3-components">3. Components<a class="hash-link" aria-label="Direct link to 3. Components" title="Direct link to 3. Components" href="/maap-framework/docs/quick-starts/meta#3-components">​</a></h2>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="31-ui-service">3.1 UI Service<a class="hash-link" aria-label="Direct link to 3.1 UI Service" title="Direct link to 3.1 UI Service" href="/maap-framework/docs/quick-starts/meta#31-ui-service">​</a></h3>
+<p>The UI Service provides a web-based interface for users to interact with the MAAP system. Built with Gradio and FastAPI, it offers:</p>
+<ul>
+<li>A chat interface for sending queries and receiving responses</li>
+<li>File upload capabilities for document ingestion</li>
+<li>Support for URL submission to extract web content</li>
+<li>User identification for personalized responses</li>
+</ul>
+<p>Key files:</p>
+<ul>
+<li><code>main.py</code>: Contains the FastAPI and Gradio application</li>
+<li><code>images.py</code>: Manages image resources for the UI</li>
+<li><code>logger.py</code>: Handles logging to the central logging service</li>
+</ul>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="32-main-service">3.2 Main Service<a class="hash-link" aria-label="Direct link to 3.2 Main Service" title="Direct link to 3.2 Main Service" href="/maap-framework/docs/quick-starts/meta#32-main-service">​</a></h3>
+<p>The Main Service is the core orchestrator of the MAAP system, managing the multi-agent architecture and routing queries to the appropriate specialized agents.</p>
+<p>Components include:</p>
+<ul>
+<li><strong>Agent System</strong>: A collection of specialized AI agents for different types of tasks</li>
+<li><strong>Query Router</strong>: Routes queries to the appropriate agent(s) based on content analysis</li>
+<li><strong>Tools</strong>: Utilities for searching MongoDB and external web sources</li>
+<li><strong>Semantic Cache</strong>: Interface to the semantic caching service</li>
+</ul>
+<p>Key files:</p>
+<ul>
+<li><code>main.py</code>: Entry point for the service</li>
+<li><code>agents.py</code>: Implementation of specialized AI agents</li>
+<li><code>orchestrator.py</code>: Query routing and agent collaboration logic</li>
+<li><code>tools.py</code>: Search and retrieval utilities</li>
+<li><code>memory.py</code>: Interface to the AI Memory service</li>
+<li><code>semantic_cache.py</code>: Interface to the Semantic Cache service</li>
+</ul>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="33-ai-memory-service">3.3 AI Memory Service<a class="hash-link" aria-label="Direct link to 3.3 AI Memory Service" title="Direct link to 3.3 AI Memory Service" href="/maap-framework/docs/quick-starts/meta#33-ai-memory-service">​</a></h3>
+<p>The AI Memory Service manages conversation history and provides contextual awareness to the system. It stores conversations in MongoDB with vector embeddings for semantic retrieval.</p>
+<p>Features:</p>
+<ul>
+<li>Vector embeddings for semantic search of past conversations</li>
+<li>Hybrid search combining vector and text-based search</li>
+<li>Conversation summarization for context retrieval</li>
+<li>TTL (Time-To-Live) indexes for automatic data cleanup</li>
+</ul>
+<p>Key files:</p>
+<ul>
+<li><code>main.py</code>: FastAPI application implementing the memory service</li>
+<li><code>logger.py</code>: Logging utilities</li>
+</ul>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="34-semantic-cache-service">3.4 Semantic Cache Service<a class="hash-link" aria-label="Direct link to 3.4 Semantic Cache Service" title="Direct link to 3.4 Semantic Cache Service" href="/maap-framework/docs/quick-starts/meta#34-semantic-cache-service">​</a></h3>
+<p>The Semantic Cache Service improves response times by storing and retrieving responses for semantically similar queries.</p>
+<p>Features:</p>
+<ul>
+<li>Vector-based similarity matching for queries</li>
+<li>Configurable similarity threshold for cache hits</li>
+<li>TTL-based cache entry expiration</li>
+</ul>
+<p>Key files:</p>
+<ul>
+<li><code>main.py</code>: FastAPI application implementing the cache service</li>
+<li><code>logger.py</code>: Logging utilities</li>
+</ul>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="35-loader-service">3.5 Loader Service<a class="hash-link" aria-label="Direct link to 3.5 Loader Service" title="Direct link to 3.5 Loader Service" href="/maap-framework/docs/quick-starts/meta#35-loader-service">​</a></h3>
+<p>The Loader Service handles the ingestion of documents, files, and web content into the system. It processes various file formats, extracts text, and creates vector embeddings for storage in MongoDB.</p>
+<p>Features:</p>
+<ul>
+<li>Support for multiple file formats (PDF, DOCX, TXT, etc.)</li>
+<li>Web page content extraction</li>
+<li>Document chunking and vectorization</li>
+<li>MongoDB Atlas integration for vector storage</li>
+</ul>
+<p>Key files:</p>
+<ul>
+<li><code>main.py</code>: FastAPI application implementing the loader service</li>
+<li><code>loader.py</code>: Document loading and processing logic</li>
+<li><code>utils.py</code>: Utility functions for file handling and MongoDB integration</li>
+<li><code>logger.py</code>: Logging utilities</li>
+</ul>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="36-logger-service">3.6 Logger Service<a class="hash-link" aria-label="Direct link to 3.6 Logger Service" title="Direct link to 3.6 Logger Service" href="/maap-framework/docs/quick-starts/meta#36-logger-service">​</a></h3>
+<p>The Logger Service provides centralized logging for all components of the MAAP system. It stores logs in MongoDB with TTL indexes for automatic cleanup.</p>
+<p>Features:</p>
+<ul>
+<li>Buffered logging for performance</li>
+<li>File-based and MongoDB-based log storage</li>
+<li>Automatic log rotation and cleanup</li>
+<li>Structured logging with levels and timestamps</li>
+</ul>
+<p>Key files:</p>
+<ul>
+<li><code>main.py</code>: FastAPI application implementing the logging service</li>
+</ul>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="37-mongodb-management-scripts">3.7 MongoDB Management Scripts<a class="hash-link" aria-label="Direct link to 3.7 MongoDB Management Scripts" title="Direct link to 3.7 MongoDB Management Scripts" href="/maap-framework/docs/quick-starts/meta#37-mongodb-management-scripts">​</a></h3>
+<p>Several utility scripts are provided for managing MongoDB Atlas clusters and creating vector indexes:</p>
+<ul>
+<li><code>mongodb_cluster_manager.ksh</code>: Manages MongoDB Atlas cluster deployment</li>
+<li><code>mongodb_atlas_cli.py</code>: Python CLI for MongoDB Atlas operations</li>
+<li><code>mongodb_create_vectorindex.ksh</code>: Creates vector indexes in MongoDB Atlas</li>
+<li><code>mongodb_create_vectorindex.py</code>: Python implementation of vector index creation</li>
+</ul>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="4-installation--deployment">4. Installation &amp; Deployment<a class="hash-link" aria-label="Direct link to 4. Installation &amp; Deployment" title="Direct link to 4. Installation &amp; Deployment" href="/maap-framework/docs/quick-starts/meta#4-installation--deployment">​</a></h2>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="prerequisites">Prerequisites<a class="hash-link" aria-label="Direct link to Prerequisites" title="Direct link to Prerequisites" href="/maap-framework/docs/quick-starts/meta#prerequisites">​</a></h3>
+<ul>
+<li>AWS account with appropriate permissions</li>
+<li>MongoDB Atlas account with appropriate permissions</li>
+<li>Python 3.10+</li>
+<li>Docker and Docker Compose installed</li>
+<li>AWS CLI installed and configured</li>
+<li>EC2 quota for <code>t3.xlarge</code></li>
+<li>Programmatic access to your MongoDB Atlas project</li>
+</ul>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="mongodb-atlas-programmatic-access">MongoDB Atlas Programmatic Access<a class="hash-link" aria-label="Direct link to MongoDB Atlas Programmatic Access" title="Direct link to MongoDB Atlas Programmatic Access" href="/maap-framework/docs/quick-starts/meta#mongodb-atlas-programmatic-access">​</a></h3>
+<p>To enable programmatic access to your MongoDB Atlas project, follow these steps to create and manage API keys securely:</p>
+<h4 class="anchor anchorWithStickyNavbar_LWe7" id="1-create-an-api-key"><strong>1. Create an API Key</strong><a class="hash-link" aria-label="Direct link to 1-create-an-api-key" title="Direct link to 1-create-an-api-key" href="/maap-framework/docs/quick-starts/meta#1-create-an-api-key">​</a></h4>
+<ol>
+<li>
+<p><strong>Navigate to Project Access Manager:</strong></p>
+<ul>
+<li>In the Atlas UI, select your organization and project.</li>
+<li>Go to <strong>Project Access</strong> under the <strong>Access Manager</strong> menu.</li>
+</ul>
+</li>
+<li>
+<p><strong>Create API Key:</strong></p>
+<ul>
+<li>Click on the <strong>Applications</strong> tab.</li>
+<li>Select <strong>API Keys</strong>.</li>
+<li>Click <strong>Create API Key</strong>.</li>
+<li>Provide a description for the key.</li>
+<li>Assign appropriate project permissions by selecting roles that align with the principle of least privilege.</li>
+<li>Click <strong>Next</strong>.</li>
+</ul>
+</li>
+<li>
+<p><strong>Save API Key Credentials:</strong></p>
+<ul>
+<li>Copy and securely store the <strong>Public Key</strong> (username) and <strong>Private Key</strong> (password).</li>
+<li><strong>Important:</strong> The private key is displayed only once; ensure it&#x27;s stored securely.</li>
+</ul>
+</li>
+</ol>
+<h4 class="anchor anchorWithStickyNavbar_LWe7" id="2-configure-api-access-list"><strong>2. Configure API Access List</strong><a class="hash-link" aria-label="Direct link to 2-configure-api-access-list" title="Direct link to 2-configure-api-access-list" href="/maap-framework/docs/quick-starts/meta#2-configure-api-access-list">​</a></h4>
+<ol>
+<li>
+<p><strong>Add Access List Entry:</strong></p>
+<ul>
+<li>After creating the API key, add an IP address or CIDR block to the API access list to specify allowed sources for API requests.</li>
+<li>Click <strong>Add Access List Entry</strong>.</li>
+<li>Enter the IP address or click <strong>Use Current IP Address</strong> if accessing from the current host.</li>
+<li>Click <strong>Save</strong>.</li>
+</ul>
+</li>
+<li>
+<p><strong>Manage Access List:</strong></p>
+<ul>
+<li>To modify the access list, navigate to the <strong>API Keys</strong> section.</li>
+<li>Click the ellipsis (<strong>...</strong>) next to the API key and select <strong>Edit Permissions</strong>.</li>
+<li>Update the access list as needed.</li>
+</ul>
+</li>
+</ol>
+<h4 class="anchor anchorWithStickyNavbar_LWe7" id="3-secure-api-key-usage"><strong>3. Secure API Key Usage</strong><a class="hash-link" aria-label="Direct link to 3-secure-api-key-usage" title="Direct link to 3-secure-api-key-usage" href="/maap-framework/docs/quick-starts/meta#3-secure-api-key-usage">​</a></h4>
+<ul>
+<li>
+<p><strong>Environment Variables:</strong> Store API keys in environment variables to prevent hardcoding them in your application&#x27;s source code.</p>
+</li>
+<li>
+<p><strong>Access Controls:</strong> Limit API key permissions to the minimum required for your application&#x27;s functionality.</p>
+</li>
+<li>
+<p><strong>Regular Rotation:</strong> Periodically rotate API keys and update your applications to use the new keys to enhance security.</p>
+</li>
+<li>
+<p><strong>Audit Logging:</strong> Monitor API key usage through Atlas&#x27;s auditing features to detect any unauthorized access.</p>
+</li>
+</ul>
+<p>By following these steps, you can securely grant programmatic access to your MongoDB Atlas project, ensuring that your API keys are managed and utilized in accordance with best practices.</p>
+<p>For more detailed information, refer to <a href="https://www.mongodb.com/docs/atlas/configure-api-access/#grant-programmatic-access-to-a-project" target="_blank" rel="noopener noreferrer">Guide</a>.</p>
+<hr>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="minimum-system-requirements">Minimum System Requirements<a class="hash-link" aria-label="Direct link to Minimum System Requirements" title="Direct link to Minimum System Requirements" href="/maap-framework/docs/quick-starts/meta#minimum-system-requirements">​</a></h3>
+<ul>
+<li>Sufficient CPU and memory for running Docker containers</li>
+<li>Adequate network bandwidth for data transfer and API calls</li>
+<li>For EC2: At least a <code>t3.medium</code> instance (or higher, depending on workload)</li>
+<li>Sufficient EBS storage for EC2 instance (at least 100 GB recommended)</li>
+<li>MongoDB Atlas M10 Cluster (auto-deployed by the <code>one-click</code> script)</li>
+</ul>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="41-one-click-deployment">4.1 One-Click Deployment<a class="hash-link" aria-label="Direct link to 4.1 One-Click Deployment" title="Direct link to 4.1 One-Click Deployment" href="/maap-framework/docs/quick-starts/meta#41-one-click-deployment">​</a></h2>
+<p>The <code>one-click.ksh</code> Korn shell script automates the deployment of the MongoDB - Meta Quickstart application on AWS infrastructure. It sets up the necessary AWS resources, deploys an EC2 instance, and configures the application environment.</p>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="prerequisites-1">Prerequisites<a class="hash-link" aria-label="Direct link to Prerequisites" title="Direct link to Prerequisites" href="/maap-framework/docs/quick-starts/meta#prerequisites-1">​</a></h3>
+<ul>
+<li>AWS CLI installed and configured with appropriate credentials</li>
+<li>Access to a MongoDB Atlas account with necessary permissions</li>
+<li>Korn shell (ksh) environment</li>
+</ul>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="script-structure">Script Structure<a class="hash-link" aria-label="Direct link to Script Structure" title="Direct link to Script Structure" href="/maap-framework/docs/quick-starts/meta#script-structure">​</a></h3>
+<p>The script is organized into several main functions:</p>
+<ol>
+<li><code>create_key()</code>: Creates or uses an existing EC2 key pair</li>
+<li><code>deploy_infra()</code>: Deploys the base infrastructure using CloudFormation</li>
+<li><code>deploy_ec2()</code>: Deploys the EC2 instance and application stack</li>
+<li><code>read_logs()</code>: Streams deployment logs from the EC2 instance</li>
+<li>Main execution flow</li>
+</ol>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="configuration">Configuration<a class="hash-link" aria-label="Direct link to Configuration" title="Direct link to Configuration" href="/maap-framework/docs/quick-starts/meta#configuration">​</a></h3>
+<h4 class="anchor anchorWithStickyNavbar_LWe7" id="environment-variables">Environment Variables<a class="hash-link" aria-label="Direct link to Environment Variables" title="Direct link to Environment Variables" href="/maap-framework/docs/quick-starts/meta#environment-variables">​</a></h4>
+<ul>
+<li><code>AWS_ACCESS_KEY_ID</code>: AWS access key</li>
+<li><code>AWS_SECRET_ACCESS_KEY</code>: AWS secret key</li>
+<li><code>AWS_SESSION_TOKEN</code>: AWS session token (if using temporary credentials)</li>
+</ul>
+<h4 class="anchor anchorWithStickyNavbar_LWe7" id="deployment-parameters">Deployment Parameters<a class="hash-link" aria-label="Direct link to Deployment Parameters" title="Direct link to Deployment Parameters" href="/maap-framework/docs/quick-starts/meta#deployment-parameters">​</a></h4>
+<ul>
+<li><code>INFRA_STACK_NAME</code>: Name for the infrastructure CloudFormation stack</li>
+<li><code>EC2_STACK_NAME</code>: Name for the EC2 CloudFormation stack</li>
+<li><code>AWS_REGION</code>: AWS region for deployment</li>
+<li><code>EC2_INSTANCE_TYPE</code>: EC2 instance type (e.g., &quot;t3.xlarge&quot;)</li>
+<li><code>VolumeSize</code>: EBS volume size in GB</li>
+<li><code>GIT_REPO_URL</code>: URL of the application Git repository</li>
+<li><code>MongoDBClusterName</code>: Name for the MongoDB Atlas cluster</li>
+<li><code>MongoDBUserName</code>: MongoDB Atlas username</li>
+<li><code>MongoDBPassword</code>: MongoDB Atlas password</li>
+<li><code>APIPUBLICKEY</code>: MongoDB Atlas API public key</li>
+<li><code>APIPRIVATEKEY</code>: MongoDB Atlas API private key</li>
+<li><code>GROUPID</code>: MongoDB Atlas project ID</li>
+<li><code>TAVILY_API_KEY</code>: Tavily Web Search API Key</li>
+</ul>
+<h4 class="anchor anchorWithStickyNavbar_LWe7" id="application-service-replicas">Application Service Replicas<a class="hash-link" aria-label="Direct link to Application Service Replicas" title="Direct link to Application Service Replicas" href="/maap-framework/docs/quick-starts/meta#application-service-replicas">​</a></h4>
+<ul>
+<li><code>LoggerReplicas</code>: Number of Logger service replicas</li>
+<li><code>LoaderReplicas</code>: Number of Loader service replicas</li>
+<li><code>MainReplicas</code>: Number of Main service replicas</li>
+<li><code>UIReplicas</code>: Number of UI service replicas</li>
+<li><code>AIMemoryReplicas</code>: Number of AI Memory service replicas</li>
+<li><code>SemanticCacheReplicas</code>: Number of Semantic Cache service replicas</li>
+</ul>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="execution-flow">Execution Flow<a class="hash-link" aria-label="Direct link to Execution Flow" title="Direct link to Execution Flow" href="/maap-framework/docs/quick-starts/meta#execution-flow">​</a></h3>
+<ol>
+<li>Initialize logging</li>
+<li>Create or use existing EC2 key pair</li>
+<li>Deploy infrastructure CloudFormation stack</li>
+<li>Retrieve and store infrastructure stack outputs</li>
+<li>Deploy EC2 instance and application CloudFormation stack</li>
+<li>Start streaming EC2 deployment logs</li>
+<li>Monitor application URL until it becomes available</li>
+<li>Launch application URL in default browser</li>
+</ol>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="functions">Functions<a class="hash-link" aria-label="Direct link to Functions" title="Direct link to Functions" href="/maap-framework/docs/quick-starts/meta#functions">​</a></h3>
+<h4 class="anchor anchorWithStickyNavbar_LWe7" id="create_key">create_key()<a class="hash-link" aria-label="Direct link to create_key()" title="Direct link to create_key()" href="/maap-framework/docs/quick-starts/meta#create_key">​</a></h4>
+<p>Creates a new EC2 key pair or uses an existing one with the name &quot;MAAPMetaKeyV1&quot;.</p>
+<h4 class="anchor anchorWithStickyNavbar_LWe7" id="deploy_infra">deploy_infra()<a class="hash-link" aria-label="Direct link to deploy_infra()" title="Direct link to deploy_infra()" href="/maap-framework/docs/quick-starts/meta#deploy_infra">​</a></h4>
+<p>Deploys the base infrastructure CloudFormation stack, including VPC, subnet, security group, and IAM roles.</p>
+<h4 class="anchor anchorWithStickyNavbar_LWe7" id="deploy_ec2">deploy_ec2()<a class="hash-link" aria-label="Direct link to deploy_ec2()" title="Direct link to deploy_ec2()" href="/maap-framework/docs/quick-starts/meta#deploy_ec2">​</a></h4>
+<p>Deploys the EC2 instance and application stack using a CloudFormation template. It includes the following steps:</p>
+<ul>
+<li>Selects the appropriate AMI ID based on the AWS region</li>
+<li>Creates the CloudFormation stack with necessary parameters</li>
+<li>Waits for stack creation to complete</li>
+<li>Retrieves and displays stack outputs</li>
+</ul>
+<h4 class="anchor anchorWithStickyNavbar_LWe7" id="read_logs">read_logs()<a class="hash-link" aria-label="Direct link to read_logs()" title="Direct link to read_logs()" href="/maap-framework/docs/quick-starts/meta#read_logs">​</a></h4>
+<p>Establishes an SSH connection to the EC2 instance and streams the deployment logs in real-time.</p>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="logging">Logging<a class="hash-link" aria-label="Direct link to Logging" title="Direct link to Logging" href="/maap-framework/docs/quick-starts/meta#logging">​</a></h3>
+<ul>
+<li>Main deployment logs: <code>./logs/one-click-deployment.log</code></li>
+<li>EC2 live logs: <code>./logs/ec2-live-logs.log</code></li>
+</ul>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="error-handling">Error Handling<a class="hash-link" aria-label="Direct link to Error Handling" title="Direct link to Error Handling" href="/maap-framework/docs/quick-starts/meta#error-handling">​</a></h3>
+<p>The script includes basic error checking for critical operations such as CloudFormation stack deployments. If an error occurs, the script will log the error and exit.</p>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="security-considerations">Security Considerations<a class="hash-link" aria-label="Direct link to Security Considerations" title="Direct link to Security Considerations" href="/maap-framework/docs/quick-starts/meta#security-considerations">​</a></h3>
+<ul>
+<li>AWS credentials are expected to be set as environment variables</li>
+<li>MongoDB Atlas credentials and API keys are passed as CloudFormation parameters</li>
+</ul>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="customization">Customization<a class="hash-link" aria-label="Direct link to Customization" title="Direct link to Customization" href="/maap-framework/docs/quick-starts/meta#customization">​</a></h3>
+<p>To customize the deployment:</p>
+<ol>
+<li>Modify the CloudFormation template files (<code>deploy-infra.yaml</code> and <code>deploy-ec2.yaml</code>)</li>
+<li>Adjust the deployment parameters at the beginning of the script</li>
+<li>Update the AMI IDs in the <code>ami_map</code> if newer AMIs are available</li>
+</ol>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="troubleshooting">Troubleshooting<a class="hash-link" aria-label="Direct link to Troubleshooting" title="Direct link to Troubleshooting" href="/maap-framework/docs/quick-starts/meta#troubleshooting">​</a></h3>
+<ul>
+<li>Check the log files for detailed information on the deployment process</li>
+<li>Ensure all required environment variables and parameters are correctly set</li>
+<li>Verify AWS CLI configuration and permissions</li>
+<li>Check CloudFormation stack events in the AWS Console for detailed error messages</li>
+</ul>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="limitations">Limitations<a class="hash-link" aria-label="Direct link to Limitations" title="Direct link to Limitations" href="/maap-framework/docs/quick-starts/meta#limitations">​</a></h3>
+<ul>
+<li>The script is designed for a specific application stack and may require modifications for other use cases</li>
+<li>It assumes a certain MongoDB Atlas and AWS account setup</li>
+<li>The script does not include rollback mechanisms for partial deployments. In case of partial failures, delete the related CloudFormation stacks from AWS Console.</li>
+</ul>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="deployment-steps">Deployment Steps<a class="hash-link" aria-label="Direct link to Deployment Steps" title="Direct link to Deployment Steps" href="/maap-framework/docs/quick-starts/meta#deployment-steps">​</a></h3>
+<ol>
+<li>
+<p>Clone the repository:</p>
+<div class="codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_biex"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">git clone &lt;repository-url&gt;</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">cd maap-meta-qs</span><br></span></code></pre><div class="buttonGroup__atx"><button type="button" aria-label="Copy code to clipboard" title="Copy" class="clean-btn"><span class="copyButtonIcons_eSgA" aria-hidden="true"><svg viewBox="0 0 24 24" class="copyButtonIcon_y97N"><path fill="currentColor" d="M19,21H8V7H19M19,5H8A2,2 0 0,0 6,7V21A2,2 0 0,0 8,23H19A2,2 0 0,0 21,21V7A2,2 0 0,0 19,5M16,1H4A2,2 0 0,0 2,3V17H4V3H16V1Z"></path></svg><svg viewBox="0 0 24 24" class="copyButtonSuccessIcon_LjdS"><path fill="currentColor" d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"></path></svg></span></button></div></div></div>
+</li>
+<li>
+<p>Configure the <code>one-click.ksh</code> script:
+Open the script in a text editor and fill in the required values for various environment variables:</p>
+<ul>
+<li>AWS Auth: Specify the <code>AWS_REGION</code>, <code>AWS_ACCESS_KEY_ID</code>, <code>AWS_SECRET_ACCESS_KEY</code> for deployment.</li>
+<li>EC2 Instance Types: Choose suitable instance types for your workload.</li>
+<li>Network Configuration: Update key names, subnet IDs, security group IDs, etc.</li>
+<li>Authentication Keys: Fetch Project ID, API public and private keys for MongoDB Atlas Cluster setup. Update the script file with the keys for <code>APIPUBLICKEY</code>, <code>APIPRIVATEKEY</code>, <code>GROUPID</code> suitably.</li>
+</ul>
+</li>
+<li>
+<p>Deploy the application:</p>
+<div class="codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_biex"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">chmod +x one-click.ksh</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">./one-click.ksh</span><br></span></code></pre><div class="buttonGroup__atx"><button type="button" aria-label="Copy code to clipboard" title="Copy" class="clean-btn"><span class="copyButtonIcons_eSgA" aria-hidden="true"><svg viewBox="0 0 24 24" class="copyButtonIcon_y97N"><path fill="currentColor" d="M19,21H8V7H19M19,5H8A2,2 0 0,0 6,7V21A2,2 0 0,0 8,23H19A2,2 0 0,0 21,21V7A2,2 0 0,0 19,5M16,1H4A2,2 0 0,0 2,3V17H4V3H16V1Z"></path></svg><svg viewBox="0 0 24 24" class="copyButtonSuccessIcon_LjdS"><path fill="currentColor" d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"></path></svg></span></button></div></div></div>
+</li>
+<li>
+<p>Access the application at <code>http://&lt;ec2-instance-ip&gt;:7860</code></p>
+</li>
+</ol>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="post-deployment-verification">Post-Deployment Verification<a class="hash-link" aria-label="Direct link to Post-Deployment Verification" title="Direct link to Post-Deployment Verification" href="/maap-framework/docs/quick-starts/meta#post-deployment-verification">​</a></h3>
+<ol>
+<li>Access the UI service by navigating to <code>http://&lt;ec2-instance-ip&gt;:7860</code> in your web browser.</li>
+<li>Test the system by entering a query and verifying that you receive an appropriate AI-generated response.</li>
+<li>Try uploading a file to ensure the Loader Service is functioning correctly.</li>
+<li>Verify that the sample dataset bundled with the script is loaded into your MongoDB Cluster name <code>MongoDBMetaV1</code> under the database <code>travel_agency</code> and collection <code>trip_recommendation</code> by visiting the <a href="https://cloud.mongodb.com" target="_blank" rel="noopener noreferrer">MongoDB Atlas Console</a>.</li>
+</ol>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="42-manual-deployment">4.2 Manual Deployment<a class="hash-link" aria-label="Direct link to 4.2 Manual Deployment" title="Direct link to 4.2 Manual Deployment" href="/maap-framework/docs/quick-starts/meta#42-manual-deployment">​</a></h3>
+<p>For manual deployment, follow these steps:</p>
+<ol>
+<li>
+<p><strong>Set up MongoDB Atlas Cluster</strong>:</p>
+<div class="language-bash codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_biex"><pre tabindex="0" class="prism-code language-bash codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">./mongodb_cluster_manager.ksh deploy &lt;cluster_name&gt; &lt;username&gt; &lt;password&gt;</span><br></span></code></pre><div class="buttonGroup__atx"><button type="button" aria-label="Copy code to clipboard" title="Copy" class="clean-btn"><span class="copyButtonIcons_eSgA" aria-hidden="true"><svg viewBox="0 0 24 24" class="copyButtonIcon_y97N"><path fill="currentColor" d="M19,21H8V7H19M19,5H8A2,2 0 0,0 6,7V21A2,2 0 0,0 8,23H19A2,2 0 0,0 21,21V7A2,2 0 0,0 19,5M16,1H4A2,2 0 0,0 2,3V17H4V3H16V1Z"></path></svg><svg viewBox="0 0 24 24" class="copyButtonSuccessIcon_LjdS"><path fill="currentColor" d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"></path></svg></span></button></div></div></div>
+</li>
+<li>
+<p><strong>Create Vector Indexes</strong>:</p>
+<div class="language-bash codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_biex"><pre tabindex="0" class="prism-code language-bash codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">./mongodb_create_vectorindex.ksh</span><br></span></code></pre><div class="buttonGroup__atx"><button type="button" aria-label="Copy code to clipboard" title="Copy" class="clean-btn"><span class="copyButtonIcons_eSgA" aria-hidden="true"><svg viewBox="0 0 24 24" class="copyButtonIcon_y97N"><path fill="currentColor" d="M19,21H8V7H19M19,5H8A2,2 0 0,0 6,7V21A2,2 0 0,0 8,23H19A2,2 0 0,0 21,21V7A2,2 0 0,0 19,5M16,1H4A2,2 0 0,0 2,3V17H4V3H16V1Z"></path></svg><svg viewBox="0 0 24 24" class="copyButtonSuccessIcon_LjdS"><path fill="currentColor" d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"></path></svg></span></button></div></div></div>
+</li>
+<li>
+<p><strong>Build Docker Images</strong>:</p>
+<div class="language-bash codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_biex"><pre tabindex="0" class="prism-code language-bash codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">cd MAAP-AWS-Meta</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">./build-images.ksh</span><br></span></code></pre><div class="buttonGroup__atx"><button type="button" aria-label="Copy code to clipboard" title="Copy" class="clean-btn"><span class="copyButtonIcons_eSgA" aria-hidden="true"><svg viewBox="0 0 24 24" class="copyButtonIcon_y97N"><path fill="currentColor" d="M19,21H8V7H19M19,5H8A2,2 0 0,0 6,7V21A2,2 0 0,0 8,23H19A2,2 0 0,0 21,21V7A2,2 0 0,0 19,5M16,1H4A2,2 0 0,0 2,3V17H4V3H16V1Z"></path></svg><svg viewBox="0 0 24 24" class="copyButtonSuccessIcon_LjdS"><path fill="currentColor" d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"></path></svg></span></button></div></div></div>
+</li>
+<li>
+<p><strong>Configure Environment Variables</strong>:</p>
+<ul>
+<li>Copy each service&#x27;s sample.env to .env</li>
+<li>Fill in the required environment variables (see Configuration section)</li>
+</ul>
+</li>
+<li>
+<p><strong>Deploy with Docker Compose</strong>:</p>
+<div class="language-bash codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_biex"><pre tabindex="0" class="prism-code language-bash codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">docker-compose up -d</span><br></span></code></pre><div class="buttonGroup__atx"><button type="button" aria-label="Copy code to clipboard" title="Copy" class="clean-btn"><span class="copyButtonIcons_eSgA" aria-hidden="true"><svg viewBox="0 0 24 24" class="copyButtonIcon_y97N"><path fill="currentColor" d="M19,21H8V7H19M19,5H8A2,2 0 0,0 6,7V21A2,2 0 0,0 8,23H19A2,2 0 0,0 21,21V7A2,2 0 0,0 19,5M16,1H4A2,2 0 0,0 2,3V17H4V3H16V1Z"></path></svg><svg viewBox="0 0 24 24" class="copyButtonSuccessIcon_LjdS"><path fill="currentColor" d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"></path></svg></span></button></div></div></div>
+</li>
+</ol>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="5-configuration">5. Configuration<a class="hash-link" aria-label="Direct link to 5. Configuration" title="Direct link to 5. Configuration" href="/maap-framework/docs/quick-starts/meta#5-configuration">​</a></h2>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="51-environment-variables">5.1 Environment Variables<a class="hash-link" aria-label="Direct link to 5.1 Environment Variables" title="Direct link to 5.1 Environment Variables" href="/maap-framework/docs/quick-starts/meta#51-environment-variables">​</a></h3>
+<p>Each service requires specific environment variables for proper operation:</p>
+<p><strong>Main Service</strong>:</p>
+<div class="codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_biex"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">MONGODB_URI=&quot;mongodb+srv://username:password@cluster.mongodb.net/?retryWrites=true&amp;w=majority&quot;</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">AWS_ACCESS_KEY_ID=&quot;your-aws-access-key&quot;</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">AWS_SECRET_ACCESS_KEY=&quot;your-aws-secret-key&quot;</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">AWS_REGION=&quot;us-east-1&quot;</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">REFLECTION_AGENT=&quot;us.meta.llama3-3-70b-instruct-v1:0&quot;</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">SOLUTION_AGENT=&quot;us.meta.llama3-2-11b-instruct-v1:0&quot;</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">INQUIRY_AGENT=&quot;us.meta.llama3-1-8b-instruct-v1:0&quot;</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">GUIDANCE_AGENT=&quot;us.meta.llama3-3-70b-instruct-v1:0&quot;</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">VISUAL_AGENT=&quot;us.meta.llama3-2-90b-instruct-v1:0&quot;</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">CODING_AGENT=&quot;us.meta.llama3-1-8b-instruct-v1:0&quot;</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">ANALYTICS_AGENT=&quot;us.meta.llama3-3-70b-instruct-v1:0&quot;</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">REASONING_AGENT=&quot;us.meta.llama3-2-3b-instruct-v1:0&quot;</span><br></span></code></pre><div class="buttonGroup__atx"><button type="button" aria-label="Copy code to clipboard" title="Copy" class="clean-btn"><span class="copyButtonIcons_eSgA" aria-hidden="true"><svg viewBox="0 0 24 24" class="copyButtonIcon_y97N"><path fill="currentColor" d="M19,21H8V7H19M19,5H8A2,2 0 0,0 6,7V21A2,2 0 0,0 8,23H19A2,2 0 0,0 21,21V7A2,2 0 0,0 19,5M16,1H4A2,2 0 0,0 2,3V17H4V3H16V1Z"></path></svg><svg viewBox="0 0 24 24" class="copyButtonSuccessIcon_LjdS"><path fill="currentColor" d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"></path></svg></span></button></div></div></div>
+<p><strong>Loader, AI Memory, Semantic Cache, and Logger Services</strong>:</p>
+<div class="codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_biex"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">MONGODB_URI=&quot;mongodb+srv://username:password@cluster.mongodb.net/?retryWrites=true&amp;w=majority&quot;</span><br></span></code></pre><div class="buttonGroup__atx"><button type="button" aria-label="Copy code to clipboard" title="Copy" class="clean-btn"><span class="copyButtonIcons_eSgA" aria-hidden="true"><svg viewBox="0 0 24 24" class="copyButtonIcon_y97N"><path fill="currentColor" d="M19,21H8V7H19M19,5H8A2,2 0 0,0 6,7V21A2,2 0 0,0 8,23H19A2,2 0 0,0 21,21V7A2,2 0 0,0 19,5M16,1H4A2,2 0 0,0 2,3V17H4V3H16V1Z"></path></svg><svg viewBox="0 0 24 24" class="copyButtonSuccessIcon_LjdS"><path fill="currentColor" d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"></path></svg></span></button></div></div></div>
+<p><strong>Additional variables for specific services</strong>:</p>
+<ul>
+<li><strong>Loader Service</strong>: AWS credentials for Bedrock embeddings</li>
+<li><strong>AI Memory Service</strong>: Model IDs for embedding and LLM</li>
+<li><strong>UI Service</strong>: Connection strings for backend services</li>
+</ul>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="52-mongodb-atlas-configuration">5.2 MongoDB Atlas Configuration<a class="hash-link" aria-label="Direct link to 5.2 MongoDB Atlas Configuration" title="Direct link to 5.2 MongoDB Atlas Configuration" href="/maap-framework/docs/quick-starts/meta#52-mongodb-atlas-configuration">​</a></h3>
+<p>The system requires specific MongoDB Atlas configuration:</p>
+<ol>
+<li>
+<p><strong>Vector Search Indexes</strong>:</p>
+<ul>
+<li>Create vector indexes for document collections</li>
+<li>Configure with appropriate dimension (1536) and similarity metric (cosine)</li>
+</ul>
+</li>
+<li>
+<p><strong>Text Search Indexes</strong>:</p>
+<ul>
+<li>Create text search indexes for hybrid search capabilities</li>
+</ul>
+</li>
+<li>
+<p><strong>TTL Indexes</strong>:</p>
+<ul>
+<li>Configure TTL indexes for automatic cleanup of logs and cache entries</li>
+</ul>
+</li>
+</ol>
+<p>Example vector index configuration:</p>
+<div class="language-json codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_biex"><pre tabindex="0" class="prism-code language-json codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">{</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">  &quot;fields&quot;: [</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    {</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">      &quot;numDimensions&quot;: 1536,</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">      &quot;path&quot;: &quot;document_embedding&quot;,</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">      &quot;similarity&quot;: &quot;cosine&quot;,</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">      &quot;type&quot;: &quot;vector&quot;</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    },</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    {</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">      &quot;type&quot;: &quot;filter&quot;,</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">      &quot;path&quot;: &quot;userId&quot;</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    }</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">  ]</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">}</span><br></span></code></pre><div class="buttonGroup__atx"><button type="button" aria-label="Copy code to clipboard" title="Copy" class="clean-btn"><span class="copyButtonIcons_eSgA" aria-hidden="true"><svg viewBox="0 0 24 24" class="copyButtonIcon_y97N"><path fill="currentColor" d="M19,21H8V7H19M19,5H8A2,2 0 0,0 6,7V21A2,2 0 0,0 8,23H19A2,2 0 0,0 21,21V7A2,2 0 0,0 19,5M16,1H4A2,2 0 0,0 2,3V17H4V3H16V1Z"></path></svg><svg viewBox="0 0 24 24" class="copyButtonSuccessIcon_LjdS"><path fill="currentColor" d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"></path></svg></span></button></div></div></div>
+<p>Example text search index configuration:</p>
+<div class="language-json codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_biex"><pre tabindex="0" class="prism-code language-json codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">{</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">  &quot;mappings&quot;: {</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    &quot;dynamic&quot;: false,</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    &quot;fields&quot;: {</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">      &quot;document_text&quot;: {</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">        &quot;type&quot;: &quot;string&quot;</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">      }</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    }</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">  }</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">}</span><br></span></code></pre><div class="buttonGroup__atx"><button type="button" aria-label="Copy code to clipboard" title="Copy" class="clean-btn"><span class="copyButtonIcons_eSgA" aria-hidden="true"><svg viewBox="0 0 24 24" class="copyButtonIcon_y97N"><path fill="currentColor" d="M19,21H8V7H19M19,5H8A2,2 0 0,0 6,7V21A2,2 0 0,0 8,23H19A2,2 0 0,0 21,21V7A2,2 0 0,0 19,5M16,1H4A2,2 0 0,0 2,3V17H4V3H16V1Z"></path></svg><svg viewBox="0 0 24 24" class="copyButtonSuccessIcon_LjdS"><path fill="currentColor" d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"></path></svg></span></button></div></div></div>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="6-usage">6. Usage<a class="hash-link" aria-label="Direct link to 6. Usage" title="Direct link to 6. Usage" href="/maap-framework/docs/quick-starts/meta#6-usage">​</a></h2>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="61-user-interface">6.1 User Interface<a class="hash-link" aria-label="Direct link to 6.1 User Interface" title="Direct link to 6.1 User Interface" href="/maap-framework/docs/quick-starts/meta#61-user-interface">​</a></h3>
+<p>The MAAP UI is accessible via a web browser at <code>http://[server-ip]:7860</code>. The interface includes:</p>
+<ol>
+<li><strong>User ID Field</strong>: Enter a unique identifier to associate uploaded documents and conversation history</li>
+<li><strong>Tools Selection</strong>: Choose which search tools to use (MongoDB Hybrid Search, Web Search)</li>
+<li><strong>Chat Interface</strong>: Enter queries and view AI responses</li>
+<li><strong>File Upload</strong>: Attach documents to be processed and included in the knowledge base</li>
+</ol>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="62-uploading-documents">6.2 Uploading Documents<a class="hash-link" aria-label="Direct link to 6.2 Uploading Documents" title="Direct link to 6.2 Uploading Documents" href="/maap-framework/docs/quick-starts/meta#62-uploading-documents">​</a></h3>
+<p>To upload documents to the system:</p>
+<ol>
+<li>Enter your User ID in the designated field</li>
+<li>Click the attachment (clip) button in the chat input area</li>
+<li>Select one or more files to upload</li>
+<li>Optionally include a description or query about the uploaded content</li>
+<li>Submit the query</li>
+</ol>
+<p>Alternatively, you can paste URLs into the chat input to extract and process web content.</p>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="63-querying-the-system">6.3 Querying the System<a class="hash-link" aria-label="Direct link to 6.3 Querying the System" title="Direct link to 6.3 Querying the System" href="/maap-framework/docs/quick-starts/meta#63-querying-the-system">​</a></h3>
+<p>To query the system:</p>
+<ol>
+<li>Enter your User ID to retrieve personalized content</li>
+<li>Type your query in the chat input field</li>
+<li>Select the desired tools (MongoDB Hybrid Search, Web Search)</li>
+<li>Submit the query</li>
+</ol>
+<p>The system will:</p>
+<ol>
+<li>Check the semantic cache for similar previous queries</li>
+<li>Retrieve relevant conversation history from AI Memory</li>
+<li>Route the query to appropriate specialized agents</li>
+<li>Generate a response based on the available information</li>
+<li>Save the conversation to memory for future context</li>
+</ol>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="7-api-reference">7. API Reference<a class="hash-link" aria-label="Direct link to 7. API Reference" title="Direct link to 7. API Reference" href="/maap-framework/docs/quick-starts/meta#7-api-reference">​</a></h2>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="71-main-service-api">7.1 Main Service API<a class="hash-link" aria-label="Direct link to 7.1 Main Service API" title="Direct link to 7.1 Main Service API" href="/maap-framework/docs/quick-starts/meta#71-main-service-api">​</a></h3>
+<p><strong>POST /agents</strong></p>
+<ul>
+<li>Description: Process user queries and route to appropriate agents</li>
+<li>Parameters:<!-- -->
+<ul>
+<li><code>json_input_params</code> (Form): JSON string containing:<!-- -->
+<ul>
+<li><code>message</code>: User message object with text and files</li>
+<li><code>history</code>: Conversation history</li>
+<li><code>userId</code>: User identifier</li>
+<li><code>conversation_id</code>: Unique conversation identifier</li>
+<li><code>tools</code>: List of tools to use</li>
+<li><code>query</code>: User query text</li>
+<li><code>images</code>: List of base64-encoded images</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Returns: Server-sent events with agent responses</li>
+</ul>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="72-ai-memory-api">7.2 AI Memory API<a class="hash-link" aria-label="Direct link to 7.2 AI Memory API" title="Direct link to 7.2 AI Memory API" href="/maap-framework/docs/quick-starts/meta#72-ai-memory-api">​</a></h3>
+<p><strong>POST /conversation/</strong></p>
+<ul>
+<li>Description: Add a message to the conversation memory</li>
+<li>Parameters:<!-- -->
+<ul>
+<li>Request body:<!-- -->
+<ul>
+<li><code>user_id</code>: User identifier</li>
+<li><code>conversation_id</code>: Unique conversation identifier</li>
+<li><code>type</code>: Message type (human or ai)</li>
+<li><code>text</code>: Message text</li>
+<li><code>timestamp</code>: Optional UTC timestamp</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Returns: Success message</li>
+</ul>
+<p><strong>GET /search/</strong></p>
+<ul>
+<li>Description: Search memory items by user_id and query</li>
+<li>Parameters:<!-- -->
+<ul>
+<li><code>user_id</code>: User identifier</li>
+<li><code>query</code>: Search query text</li>
+</ul>
+</li>
+<li>Returns: Matching documents</li>
+</ul>
+<p><strong>GET /retrieve_memory/</strong></p>
+<ul>
+<li>Description: Retrieve memory items, context, and summary</li>
+<li>Parameters:<!-- -->
+<ul>
+<li><code>user_id</code>: User identifier</li>
+<li><code>text</code>: Search query text</li>
+</ul>
+</li>
+<li>Returns: Memory items, conversation context, and summary</li>
+</ul>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="73-semantic-cache-api">7.3 Semantic Cache API<a class="hash-link" aria-label="Direct link to 7.3 Semantic Cache API" title="Direct link to 7.3 Semantic Cache API" href="/maap-framework/docs/quick-starts/meta#73-semantic-cache-api">​</a></h3>
+<p><strong>POST /save_to_cache</strong></p>
+<ul>
+<li>Description: Save a query-response pair to cache</li>
+<li>Parameters:<!-- -->
+<ul>
+<li>Request body:<!-- -->
+<ul>
+<li><code>user_id</code>: User identifier</li>
+<li><code>query</code>: Query text</li>
+<li><code>embedding</code>: Optional pre-computed embedding</li>
+<li><code>response</code>: Response text</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Returns: Success message</li>
+</ul>
+<p><strong>POST /read_cache</strong></p>
+<ul>
+<li>Description: Retrieve a cached response for a query</li>
+<li>Parameters:<!-- -->
+<ul>
+<li>Request body:<!-- -->
+<ul>
+<li><code>user_id</code>: User identifier</li>
+<li><code>query</code>: Query text</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Returns: Cached response if found</li>
+</ul>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="74-loader-api">7.4 Loader API<a class="hash-link" aria-label="Direct link to 7.4 Loader API" title="Direct link to 7.4 Loader API" href="/maap-framework/docs/quick-starts/meta#74-loader-api">​</a></h3>
+<p><strong>POST /upload</strong></p>
+<ul>
+<li>Description: Upload and process files and URLs</li>
+<li>Parameters:<!-- -->
+<ul>
+<li><code>files</code>: List of files to upload</li>
+<li><code>json_input_params</code>: JSON string containing:<!-- -->
+<ul>
+<li><code>userId</code>: User identifier</li>
+<li><code>MongoDB_URI</code>: MongoDB connection string</li>
+<li><code>MongoDB_text_key</code>: Field name for text storage</li>
+<li><code>MongoDB_embedding_key</code>: Field name for embedding storage</li>
+<li><code>MongoDB_index_name</code>: Vector index name</li>
+<li><code>MongoDB_database_name</code>: Database name</li>
+<li><code>MongoDB_collection_name</code>: Collection name</li>
+<li><code>WebPagesToIngest</code>: List of URLs to process</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Returns: Success message</li>
+</ul>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="75-logger-api">7.5 Logger API<a class="hash-link" aria-label="Direct link to 7.5 Logger API" title="Direct link to 7.5 Logger API" href="/maap-framework/docs/quick-starts/meta#75-logger-api">​</a></h3>
+<p><strong>POST /log</strong></p>
+<ul>
+<li>Description: Log a message</li>
+<li>Parameters:<!-- -->
+<ul>
+<li>Request body:<!-- -->
+<ul>
+<li><code>level</code>: Log level (DEBUG, INFO, WARNING, ERROR, CRITICAL)</li>
+<li><code>message</code>: Log message text</li>
+<li><code>app_name</code>: Name of the application</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Returns: Success message</li>
+</ul>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="8-security-considerations">8. Security Considerations<a class="hash-link" aria-label="Direct link to 8. Security Considerations" title="Direct link to 8. Security Considerations" href="/maap-framework/docs/quick-starts/meta#8-security-considerations">​</a></h2>
+<p>To enhance the security of your AWS EC2 instances and MongoDB Atlas integration, consider the following configurations and best practices:</p>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="network-and-firewall-configuration">Network and Firewall Configuration<a class="hash-link" aria-label="Direct link to Network and Firewall Configuration" title="Direct link to Network and Firewall Configuration" href="/maap-framework/docs/quick-starts/meta#network-and-firewall-configuration">​</a></h3>
+<h4 class="anchor anchorWithStickyNavbar_LWe7" id="mongodb-atlas"><strong>MongoDB Atlas:</strong><a class="hash-link" aria-label="Direct link to mongodb-atlas" title="Direct link to mongodb-atlas" href="/maap-framework/docs/quick-starts/meta#mongodb-atlas">​</a></h4>
+<ul>
+<li>
+<p><strong>IP Access List:</strong></p>
+<ul>
+<li>Restrict client connections to your Atlas clusters by configuring IP access lists.</li>
+<li>Add the public IP addresses of your application environments to the IP access list to permit access.</li>
+<li>For enhanced security, consider using VPC peering or private endpoints to allow private IP addresses.</li>
+<li><a href="https://www.mongodb.com/docs/atlas/security/ip-access-list/" target="_blank" rel="noopener noreferrer">Configure IP Access List Entries</a>.</li>
+</ul>
+</li>
+<li>
+<p><strong>Ports 27015 to 27017 (TCP):</strong></p>
+<ul>
+<li>Ensure that your firewall allows outbound connections from your application environment to Atlas on ports <strong>27015 to 27017</strong> for TCP traffic.</li>
+<li>This configuration enables your applications to access databases hosted on Atlas.</li>
+</ul>
+</li>
+</ul>
+<h4 class="anchor anchorWithStickyNavbar_LWe7" id="aws-services-eg-bedrock"><strong>AWS Services (e.g., Bedrock):</strong><a class="hash-link" aria-label="Direct link to aws-services-eg-bedrock" title="Direct link to aws-services-eg-bedrock" href="/maap-framework/docs/quick-starts/meta#aws-services-eg-bedrock">​</a></h4>
+<ul>
+<li><strong>Port 443 (HTTPS):</strong>
+<ul>
+<li>Required for API calls and interactions.</li>
+<li>Configure security groups to allow outbound traffic on port 443.</li>
+<li>Ensure Network ACLs permit inbound and outbound traffic on this port.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="authentication-and-authorization">Authentication and Authorization<a class="hash-link" aria-label="Direct link to Authentication and Authorization" title="Direct link to Authentication and Authorization" href="/maap-framework/docs/quick-starts/meta#authentication-and-authorization">​</a></h3>
+<ul>
+<li>
+<p><strong>Database Users:</strong></p>
+<ul>
+<li>Atlas mandates client authentication to access clusters.</li>
+<li>Create database users with appropriate roles to control access.</li>
+<li><a href="https://www.mongodb.com/docs/atlas/security/config-db-auth/" target="_blank" rel="noopener noreferrer">Configure Database Users</a>.</li>
+</ul>
+</li>
+<li>
+<p><strong>Custom Roles:</strong></p>
+<ul>
+<li>If default roles don&#x27;t meet your requirements, define custom roles with specific privileges.</li>
+<li><a href="https://www.mongodb.com/docs/atlas/security/config-db-auth/#custom-database-roles" target="_blank" rel="noopener noreferrer">Create Custom Roles</a>.</li>
+</ul>
+</li>
+<li>
+<p><strong>AWS IAM Integration:</strong></p>
+<ul>
+<li>Authenticate applications running on AWS services to Atlas clusters using AWS IAM roles.</li>
+<li>Set up database users to use AWS IAM role ARNs for authentication.</li>
+<li><a href="https://www.mongodb.com/docs/atlas/security/config-db-auth/#authentication-with-aws-iam" target="_blank" rel="noopener noreferrer">AWS IAM Authentication</a>.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="data-encryption">Data Encryption<a class="hash-link" aria-label="Direct link to Data Encryption" title="Direct link to Data Encryption" href="/maap-framework/docs/quick-starts/meta#data-encryption">​</a></h3>
+<ul>
+<li>
+<p><strong>Encryption at Rest:</strong></p>
+<ul>
+<li>Atlas encrypts all data stored on your clusters by default.</li>
+<li>For enhanced security, consider using your own key management system.</li>
+<li><a href="https://www.mongodb.com/docs/atlas/security/encryption-at-rest/" target="_blank" rel="noopener noreferrer">Encryption at Rest</a>.</li>
+</ul>
+</li>
+<li>
+<p><strong>TLS/SSL Encryption:</strong></p>
+<ul>
+<li>Atlas requires TLS encryption for client connections and intra-cluster communications.</li>
+<li>Ensure your applications support TLS 1.2 or higher.</li>
+<li><a href="https://www.mongodb.com/docs/atlas/security/tls-ssl/" target="_blank" rel="noopener noreferrer">TLS/SSL Configuration</a>.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="network-peering-and-private-endpoints">Network Peering and Private Endpoints<a class="hash-link" aria-label="Direct link to Network Peering and Private Endpoints" title="Direct link to Network Peering and Private Endpoints" href="/maap-framework/docs/quick-starts/meta#network-peering-and-private-endpoints">​</a></h3>
+<ul>
+<li>
+<p><strong>VPC Peering:</strong></p>
+<ul>
+<li>Establish VPC peering between your AWS VPC and MongoDB Atlas&#x27;s VPC to eliminate public internet exposure.</li>
+<li><a href="https://www.mongodb.com/docs/atlas/security/vpc-peering/" target="_blank" rel="noopener noreferrer">Set Up a Network Peering Connection</a>.</li>
+</ul>
+</li>
+<li>
+<p><strong>Private Endpoints:</strong></p>
+<ul>
+<li>Use AWS PrivateLink to create private endpoints for secure communication within AWS networks.</li>
+<li><a href="https://www.mongodb.com/docs/atlas/security-cluster-private-endpoint/" target="_blank" rel="noopener noreferrer">Configure Private Endpoints</a>.</li>
+</ul>
+</li>
+<li>
+<p><strong>NAT Gateway:</strong></p>
+<ul>
+<li>Use NAT Gateways to route traffic from private subnets while preventing direct internet access to EC2 instances.</li>
+</ul>
+</li>
+<li>
+<p><strong>Specific IP Ranges:</strong></p>
+<ul>
+<li>AWS services like Bedrock use dynamic IPs. Filter these from <a href="https://ip-ranges.amazonaws.com/ip-ranges.json" target="_blank" rel="noopener noreferrer">AWS IP Ranges</a> for egress traffic.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="compliance-and-monitoring">Compliance and Monitoring<a class="hash-link" aria-label="Direct link to Compliance and Monitoring" title="Direct link to Compliance and Monitoring" href="/maap-framework/docs/quick-starts/meta#compliance-and-monitoring">​</a></h3>
+<ul>
+<li>
+<p><strong>Audit Logging:</strong></p>
+<ul>
+<li>Enable audit logging to monitor database activities and ensure compliance with data protection regulations.</li>
+<li><a href="https://www.mongodb.com/docs/atlas/security/audit-logging/" target="_blank" rel="noopener noreferrer">Enable Audit Logging</a>.</li>
+</ul>
+</li>
+<li>
+<p><strong>Regular Updates:</strong></p>
+<ul>
+<li>Keep your dependencies and Docker images up to date to address security vulnerabilities.</li>
+</ul>
+</li>
+</ul>
+<p>By implementing these configurations and best practices, you can enhance the security, efficiency, and compliance of your integration between AWS resources and MongoDB Atlas.</p>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="9-monitoring--logging">9. Monitoring &amp; Logging<a class="hash-link" aria-label="Direct link to 9. Monitoring &amp; Logging" title="Direct link to 9. Monitoring &amp; Logging" href="/maap-framework/docs/quick-starts/meta#9-monitoring--logging">​</a></h2>
+<p>The MAAP system includes a comprehensive logging solution:</p>
+<ol>
+<li>
+<p><strong>Centralized Logging</strong>:</p>
+<ul>
+<li>All services log to the Logger Service</li>
+<li>Logs are stored in both files and MongoDB</li>
+</ul>
+</li>
+<li>
+<p><strong>Log Levels</strong>:</p>
+<ul>
+<li>DEBUG: Detailed debugging information</li>
+<li>INFO: General operational information</li>
+<li>WARNING: Warning events</li>
+<li>ERROR: Error events</li>
+<li>CRITICAL: Critical events</li>
+</ul>
+</li>
+<li>
+<p><strong>Log Retention</strong>:</p>
+<ul>
+<li>File logs are rotated daily and retained for 10 days</li>
+<li>MongoDB logs have a TTL index for automatic cleanup</li>
+</ul>
+</li>
+<li>
+<p><strong>Monitoring</strong>:</p>
+<ul>
+<li>Service health can be monitored via the Logger Service</li>
+<li>MongoDB Atlas provides monitoring for database operations</li>
+</ul>
+</li>
+</ol>
+<p>To access logs:</p>
+<ul>
+<li>View log files in the <code>logs</code> directory of each service</li>
+<li>Query the <code>event_logs.logs</code> collection in MongoDB</li>
+</ul>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="10-troubleshooting">10. Troubleshooting<a class="hash-link" aria-label="Direct link to 10. Troubleshooting" title="Direct link to 10. Troubleshooting" href="/maap-framework/docs/quick-starts/meta#10-troubleshooting">​</a></h2>
+<p>Common issues and solutions:</p>
+<ol>
+<li>
+<p><strong>Connection Issues</strong>:</p>
+<ul>
+<li><strong>Problem</strong>: Services cannot connect to MongoDB</li>
+<li><strong>Solution</strong>: Verify MongoDB URI, network connectivity, and whitelist IP addresses</li>
+</ul>
+</li>
+<li>
+<p><strong>Vector Index Errors</strong>:</p>
+<ul>
+<li><strong>Problem</strong>: Vector search fails</li>
+<li><strong>Solution</strong>: Run <code>mongodb_create_vectorindex.ksh</code> to recreate indexes</li>
+</ul>
+</li>
+<li>
+<p><strong>AWS Bedrock Access</strong>:</p>
+<ul>
+<li><strong>Problem</strong>: Cannot access AWS Bedrock models</li>
+<li><strong>Solution</strong>: Check AWS credentials and region configuration</li>
+</ul>
+</li>
+<li>
+<p><strong>Docker Compose Issues</strong>:</p>
+<ul>
+<li><strong>Problem</strong>: Services fail to start</li>
+<li><strong>Solution</strong>: Check logs with <code>docker-compose logs</code> and ensure environment variables are set</li>
+</ul>
+</li>
+<li>
+<p><strong>Memory Issues</strong>:</p>
+<ul>
+<li><strong>Problem</strong>: Services crash with out-of-memory errors</li>
+<li><strong>Solution</strong>: Increase container memory limits in docker-compose.yml</li>
+</ul>
+</li>
+<li>
+<p><strong>Slow Response Times</strong>:</p>
+<ul>
+<li><strong>Problem</strong>: System responses are slow</li>
+<li><strong>Solution</strong>: Increase service replicas, check MongoDB performance, optimize vector indexes</li>
+</ul>
+</li>
+</ol>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="11-development-guide">11. Development Guide<a class="hash-link" aria-label="Direct link to 11. Development Guide" title="Direct link to 11. Development Guide" href="/maap-framework/docs/quick-starts/meta#11-development-guide">​</a></h2>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="directory-structure">Directory Structure<a class="hash-link" aria-label="Direct link to Directory Structure" title="Direct link to Directory Structure" href="/maap-framework/docs/quick-starts/meta#directory-structure">​</a></h3>
+<div class="codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_biex"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">maap-meta-qs/</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">├── mongodb_cluster_manager.ksh</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">├── one-click.ksh</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">├── mongodb_atlas_cli.py</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">├── mongodb_create_vectorindex.ksh</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">├── mongodb_create_vectorindex.py</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">├── MAAP-AWS-Meta/</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    ├── build-images.ksh</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    ├── docker-compose.yml</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    ├── ui/</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    ├── main/</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    ├── ai-memory/</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    ├── semantic-cache/</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    ├── loader/</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    ├── logger/</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    └── nginx/</span><br></span></code></pre><div class="buttonGroup__atx"><button type="button" aria-label="Copy code to clipboard" title="Copy" class="clean-btn"><span class="copyButtonIcons_eSgA" aria-hidden="true"><svg viewBox="0 0 24 24" class="copyButtonIcon_y97N"><path fill="currentColor" d="M19,21H8V7H19M19,5H8A2,2 0 0,0 6,7V21A2,2 0 0,0 8,23H19A2,2 0 0,0 21,21V7A2,2 0 0,0 19,5M16,1H4A2,2 0 0,0 2,3V17H4V3H16V1Z"></path></svg><svg viewBox="0 0 24 24" class="copyButtonSuccessIcon_LjdS"><path fill="currentColor" d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"></path></svg></span></button></div></div></div>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="development-workflow">Development Workflow<a class="hash-link" aria-label="Direct link to Development Workflow" title="Direct link to Development Workflow" href="/maap-framework/docs/quick-starts/meta#development-workflow">​</a></h3>
+<ol>
+<li>
+<p><strong>Setup Development Environment</strong>:</p>
+<ul>
+<li>Clone the repository</li>
+<li>Install Docker and Docker Compose</li>
+<li>Configure AWS credentials</li>
+<li>Set up a MongoDB Atlas development cluster</li>
+</ul>
+</li>
+<li>
+<p><strong>Local Development</strong>:</p>
+<ul>
+<li>Make changes to service code</li>
+<li>Build the affected service: <code>docker build -t &lt;service-name&gt; .</code></li>
+<li>Update docker-compose.yml if needed</li>
+<li>Restart services: <code>docker-compose up -d</code></li>
+</ul>
+</li>
+<li>
+<p><strong>Testing</strong>:</p>
+<ul>
+<li>Test individual services using their APIs</li>
+<li>Test the full system through the UI</li>
+<li>Check logs for errors: <code>docker-compose logs &lt;service-name&gt;</code></li>
+</ul>
+</li>
+<li>
+<p><strong>Adding New Agents</strong>:</p>
+<ul>
+<li>Create a new agent class in <code>agents.py</code> extending <code>AgentBase</code></li>
+<li>Implement the <code>respond()</code> method</li>
+<li>Add the agent to the <code>MultiAgentSystem</code> class</li>
+<li>Update environment variables with the model ID</li>
+</ul>
+</li>
+<li>
+<p><strong>Adding New Tools</strong>:</p>
+<ul>
+<li>Add new methods to the <code>Tools</code> class in <code>tools.py</code></li>
+<li>Update the agent classes to use the new tools</li>
+</ul>
+</li>
+</ol>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="12-maintenance--operations">12. Maintenance &amp; Operations<a class="hash-link" aria-label="Direct link to 12. Maintenance &amp; Operations" title="Direct link to 12. Maintenance &amp; Operations" href="/maap-framework/docs/quick-starts/meta#12-maintenance--operations">​</a></h2>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="regular-maintenance-tasks">Regular Maintenance Tasks<a class="hash-link" aria-label="Direct link to Regular Maintenance Tasks" title="Direct link to Regular Maintenance Tasks" href="/maap-framework/docs/quick-starts/meta#regular-maintenance-tasks">​</a></h3>
+<ol>
+<li>
+<p><strong>Database Management</strong>:</p>
+<ul>
+<li>Monitor MongoDB Atlas metrics for performance issues</li>
+<li>Review and optimize indexes periodically</li>
+<li>Set up alerts for storage capacity</li>
+</ul>
+</li>
+<li>
+<p><strong>Log Rotation</strong>:</p>
+<ul>
+<li>Verify log rotation is working correctly</li>
+<li>Adjust TTL settings if logs grow too large</li>
+</ul>
+</li>
+<li>
+<p><strong>Security Updates</strong>:</p>
+<ul>
+<li>Regularly update Docker images</li>
+<li>Apply security patches to dependencies</li>
+<li>Rotate AWS and MongoDB credentials</li>
+</ul>
+</li>
+<li>
+<p><strong>Scaling</strong>:</p>
+<ul>
+<li>Monitor resource usage and scale services as needed</li>
+<li>Adjust replica counts in docker-compose.yml</li>
+<li>Consider MongoDB Atlas tier upgrades for larger datasets</li>
+</ul>
+</li>
+</ol>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="backup-and-recovery">Backup and Recovery<a class="hash-link" aria-label="Direct link to Backup and Recovery" title="Direct link to Backup and Recovery" href="/maap-framework/docs/quick-starts/meta#backup-and-recovery">​</a></h3>
+<ol>
+<li>
+<p><strong>MongoDB Backups</strong>:</p>
+<ul>
+<li>MongoDB Atlas provides automated backups</li>
+<li>Configure backup schedule in Atlas console</li>
+<li>Test restoration process periodically</li>
+</ul>
+</li>
+<li>
+<p><strong>Configuration Backup</strong>:</p>
+<ul>
+<li>Back up environment files</li>
+<li>Document any custom configurations</li>
+<li>Store backup copies securely</li>
+</ul>
+</li>
+<li>
+<p><strong>Disaster Recovery</strong>:</p>
+<ul>
+<li>Document recovery procedures</li>
+<li>Test recovery process periodically</li>
+<li>Maintain deployment scripts for quick rebuilding</li>
+</ul>
+</li>
+</ol>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="performance-optimization">Performance Optimization<a class="hash-link" aria-label="Direct link to Performance Optimization" title="Direct link to Performance Optimization" href="/maap-framework/docs/quick-starts/meta#performance-optimization">​</a></h3>
+<ol>
+<li>
+<p><strong>MongoDB Performance</strong>:</p>
+<ul>
+<li>Use appropriate Atlas tier for workload</li>
+<li>Monitor and optimize indexes</li>
+<li>Configure read/write concerns appropriately</li>
+</ul>
+</li>
+<li>
+<p><strong>Service Scaling</strong>:</p>
+<ul>
+<li>Adjust service replicas based on load</li>
+<li>Monitor container resource usage</li>
+<li>Consider horizontal scaling for high-traffic deployments</li>
+</ul>
+</li>
+<li>
+<p><strong>Caching Strategy</strong>:</p>
+<ul>
+<li>Tune semantic cache thresholds</li>
+<li>Adjust TTL settings for optimal cache hit rates</li>
+<li>Monitor cache effectiveness and adjust as needed</li>
+</ul>
+</li>
+</ol></div></article><nav class="pagination-nav docusaurus-mt-lg" aria-label="Docs pages"><a class="pagination-nav__link pagination-nav__link--prev" href="/maap-framework/docs/quick-starts/confluent"><div class="pagination-nav__sublabel">Previous</div><div class="pagination-nav__label">MongoDB - Confluent Quickstart</div></a></nav></div></div><div class="col col--3"><div class="tableOfContents_bqdL thin-scrollbar theme-doc-toc-desktop"><ul class="table-of-contents table-of-contents__left-border"><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/meta#table-of-contents">Table of Contents</a></li><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/meta#1-overview">1. Overview</a></li><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/meta#2-system-architecture">2. System Architecture</a></li><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/meta#3-components">3. Components</a><ul><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/meta#31-ui-service">3.1 UI Service</a></li><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/meta#32-main-service">3.2 Main Service</a></li><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/meta#33-ai-memory-service">3.3 AI Memory Service</a></li><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/meta#34-semantic-cache-service">3.4 Semantic Cache Service</a></li><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/meta#35-loader-service">3.5 Loader Service</a></li><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/meta#36-logger-service">3.6 Logger Service</a></li><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/meta#37-mongodb-management-scripts">3.7 MongoDB Management Scripts</a></li></ul></li><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/meta#4-installation--deployment">4. Installation &amp; Deployment</a><ul><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/meta#prerequisites">Prerequisites</a></li><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/meta#mongodb-atlas-programmatic-access">MongoDB Atlas Programmatic Access</a></li><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/meta#minimum-system-requirements">Minimum System Requirements</a></li></ul></li><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/meta#41-one-click-deployment">4.1 One-Click Deployment</a><ul><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/meta#prerequisites-1">Prerequisites</a></li><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/meta#script-structure">Script Structure</a></li><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/meta#configuration">Configuration</a></li><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/meta#execution-flow">Execution Flow</a></li><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/meta#functions">Functions</a></li><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/meta#logging">Logging</a></li><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/meta#error-handling">Error Handling</a></li><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/meta#security-considerations">Security Considerations</a></li><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/meta#customization">Customization</a></li><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/meta#troubleshooting">Troubleshooting</a></li><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/meta#limitations">Limitations</a></li><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/meta#deployment-steps">Deployment Steps</a></li><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/meta#post-deployment-verification">Post-Deployment Verification</a></li><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/meta#42-manual-deployment">4.2 Manual Deployment</a></li></ul></li><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/meta#5-configuration">5. Configuration</a><ul><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/meta#51-environment-variables">5.1 Environment Variables</a></li><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/meta#52-mongodb-atlas-configuration">5.2 MongoDB Atlas Configuration</a></li></ul></li><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/meta#6-usage">6. Usage</a><ul><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/meta#61-user-interface">6.1 User Interface</a></li><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/meta#62-uploading-documents">6.2 Uploading Documents</a></li><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/meta#63-querying-the-system">6.3 Querying the System</a></li></ul></li><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/meta#7-api-reference">7. API Reference</a><ul><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/meta#71-main-service-api">7.1 Main Service API</a></li><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/meta#72-ai-memory-api">7.2 AI Memory API</a></li><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/meta#73-semantic-cache-api">7.3 Semantic Cache API</a></li><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/meta#74-loader-api">7.4 Loader API</a></li><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/meta#75-logger-api">7.5 Logger API</a></li></ul></li><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/meta#8-security-considerations">8. Security Considerations</a><ul><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/meta#network-and-firewall-configuration">Network and Firewall Configuration</a></li><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/meta#authentication-and-authorization">Authentication and Authorization</a></li><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/meta#data-encryption">Data Encryption</a></li><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/meta#network-peering-and-private-endpoints">Network Peering and Private Endpoints</a></li><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/meta#compliance-and-monitoring">Compliance and Monitoring</a></li></ul></li><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/meta#9-monitoring--logging">9. Monitoring &amp; Logging</a></li><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/meta#10-troubleshooting">10. Troubleshooting</a></li><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/meta#11-development-guide">11. Development Guide</a><ul><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/meta#directory-structure">Directory Structure</a></li><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/meta#development-workflow">Development Workflow</a></li></ul></li><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/meta#12-maintenance--operations">12. Maintenance &amp; Operations</a><ul><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/meta#regular-maintenance-tasks">Regular Maintenance Tasks</a></li><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/meta#backup-and-recovery">Backup and Recovery</a></li><li><a class="table-of-contents__link toc-highlight" href="/maap-framework/docs/quick-starts/meta#performance-optimization">Performance Optimization</a></li></ul></li></ul></div></div></div></div></main></div></div></div><footer class="footer footer--dark"><div class="container container-fluid"><div class="footer__bottom text--center"><div class="footer__copyright">© 2025 MongoDB, Inc.</div></div></div></footer></div>
+</body>
+</html>
