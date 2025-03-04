@@ -56,6 +56,12 @@ This system empowers developers to create sophisticated AI applications that can
 
 ## 2. System Architecture
 
+#### Application Architecture
+
+![Meta MAAP Application Architecture](assets/meta/MetaAWSArchitecture.png)
+
+#### App Service Interactions 
+
 ![Meta App interactions](assets/meta/meta.png)
 
 The MAAP architecture consists of several microservices that communicate with each other to process user queries and generate responses:
