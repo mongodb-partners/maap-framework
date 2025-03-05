@@ -15,6 +15,13 @@ mongo db connectors and all you need to run a real time data loader in your loca
 - Atlas Cluster running with the proper databases and collections.
 - A user with readWrite and changeStream roles for the Atlas Cluster.
 - In Windows you'll need a git bash or some other Linux-based shell to run the script.
+- Install [sdkman](https://sdkman.io/install)
+- Steps to install java 17 using sdkman
+```shell
+sdk install java 17.0.12-oracle
+sdk use java 17.0.12-oracle
+```
+
 
 ## Kafka Setup
 
