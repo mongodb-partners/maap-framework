@@ -55,6 +55,8 @@ import { LlamaOllama } from './models/llamaIndex/llama-ollama-model.js';
 import { LlamaVertexAI } from './models/llamaIndex/llama-vertexai-model.js';
 import { LlamaCohere } from './models/llamaIndex/llama-cohere-model.js';
 import { LlamaHuggingFace } from './models/llamaIndex/llama-huggingface-model.js';
+import { NvidiaModel } from './models/langChain/nvidia-model.js';
+import { NvidiaEmbeddings } from './embeddings/langChain/nvidia-embeddings.js';
 
 export {
     RAGApplication,
@@ -113,7 +115,9 @@ export {
     Fireworks,
     LlamaOllama,
     LlamaVertexAI,
-    LlamaCohere
+    LlamaCohere,
+    NvidiaEmbeddings,
+    NvidiaModel
 };
 export * from './convertMaapToChatbotFramework.js';
 export * from './Rerank.js';

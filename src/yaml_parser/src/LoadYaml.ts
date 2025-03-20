@@ -64,7 +64,8 @@ import { LlamaAnthropic } from '../../models/llamaIndex/llama-anthropic-model.js
 import { SageMaker } from '../../models/sagemaker-model.js';
 import { EnterpriseLoader } from '../../loaders/enterprise-loader.js';
 import { CredalModel } from '../../models/credal-model.js';
-
+import { NvidiaEmbeddings } from '../../embeddings/langChain/nvidia-embeddings.js';
+import { NvidiaModel } from '../../models/langChain/nvidia-model.js';
 // src/loaders/confluence-loader.ts src/loaders/docx-loader.ts src/loaders/excel-loader.ts src/loaders/json-loader.ts src/loaders/pdf-loader.ts src/loaders/ppt-loader.ts src/loaders/sitemap-loader.ts src/loaders/text-loader.ts src/loaders/web-loader.ts src/loaders/youtube-channel-loader.ts src/loaders/youtube-loader.ts src/loaders/youtube-search-loader.ts
 function getDataFromYamlFile() {
     const args = process.argv.slice(2);
@@ -191,7 +192,7 @@ export function getModelClass() {
             params['modelName'] = parsedData.llms.model_name;
             switch (framework) {
                 case 'llamaindex':
-                    return new LlamaVertexAI(params)
+                    return new LlamaVertexAI(params);
                 default:
                     return new VertexAI(params);
             }
@@ -208,12 +209,19 @@ export function getModelClass() {
             assert(typeof parsedData.llms.model_name === 'string', 'model_name of Anyscale is required');
             params['modelName'] = parsedData.llms.model_name;
             return new AnyscaleModel(params);
+        case 'Nvidia':
+            assert(typeof parsedData.llms.model_name === 'string', 'model_name of Nvidia is required');
+            params['modelName'] = parsedData.llms.model_name;
+            return new NvidiaModel(params);
         case 'Credal':
-            assert(typeof parsedData.llms.modelSource === 'string', 'Model source i.e. openai or anthropic of Credal is required');
+            assert(
+                typeof parsedData.llms.modelSource === 'string',
+                'Model source i.e. openai or anthropic of Credal is required',
+            );
             assert(typeof parsedData.llms.model_name === 'string', 'model_name of Credal is required');
-            params["modelSource"] = parsedData.llms.modelSource;
-            params["modelName"] = parsedData.llms.model_name;
-          return new CredalModel(params);
+            params['modelSource'] = parsedData.llms.modelSource;
+            params['modelName'] = parsedData.llms.model_name;
+            return new CredalModel(params);
         case 'Fireworks':
             switch (framework) {
                 case 'llamaindex':
@@ -266,9 +274,9 @@ export function getModelClass() {
                     return new AzureChatAI(params);
             }
         case 'Sagemaker':
-            params["sagemakerEndpoint"] = parsedData.llms.sagemaker_endpoint;
-            params["maxTokens"] = parsedData.llms.max_tokens;
-            params["temperature"] = parsedData.llms.temperature;
+            params['sagemakerEndpoint'] = parsedData.llms.sagemaker_endpoint;
+            params['maxTokens'] = parsedData.llms.max_tokens;
+            params['temperature'] = parsedData.llms.temperature;
             return new SageMaker(params);
         case 'Cohere':
             assert(typeof parsedData.llms.model_name === 'string', 'model_name of Cohere is required');
@@ -389,6 +397,11 @@ export function getEmbeddingModel() {
                         dimension: parsedData.embedding.dimension,
                     });
             }
+        case 'Nvidia':
+            return new NvidiaEmbeddings({
+                model: parsedData.embedding.model_name,
+            });
+
         case 'Nomic-v1':
             switch (framework) {
                 case 'llamaindex':
@@ -557,10 +570,12 @@ export function getIngestLoader() {
                 );
                 break;
             case 'json':
-                dataloaders.push(new JsonLoader({
-                  object: JSON.parse(readFileSync(data.source_path, 'utf-8')),
-                  pickKeysForEmbedding: data.pickKeysForEmbedding,
-                }));
+                dataloaders.push(
+                    new JsonLoader({
+                        object: JSON.parse(readFileSync(data.source_path, 'utf-8')),
+                        pickKeysForEmbedding: data.pickKeysForEmbedding,
+                    }),
+                );
                 break;
             case 'folder':
                 let files = [];
@@ -578,12 +593,14 @@ export function getIngestLoader() {
                 }
                 break;
             case 'enterprise':
-                dataloaders.push(new EnterpriseLoader({
-                  connectorName: data.connectorName,
-                  connectorConfig: JSON.parse(readFileSync(data.connectorConfigPath, 'utf8')),
-                  filterStream: data.filterStream,
-                  pickKeysForEmbedding: data.pickKeysForEmbedding,
-                }));
+                dataloaders.push(
+                    new EnterpriseLoader({
+                        connectorName: data.connectorName,
+                        connectorConfig: JSON.parse(readFileSync(data.connectorConfigPath, 'utf8')),
+                        filterStream: data.filterStream,
+                        pickKeysForEmbedding: data.pickKeysForEmbedding,
+                    }),
+                );
                 break;
             default:
                 // Handle unsupported source type (optional)
