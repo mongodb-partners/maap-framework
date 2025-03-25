@@ -31,7 +31,7 @@ Use Case: Develop an advanced chatbot assistant that provides asset managers wit
 
 ## 2. System Architecture
 
-![Architecture Diagram](docs/maap-docs/docs/quick-starts/quickstarts/assets/cohere/arch_diagram.png)
+![Architecture Diagram](assets/cohere/arch_diagram.png)
 
 The MAAP architecture consists of several microservices that communicate with each other to process user queries and generate responses:
 
