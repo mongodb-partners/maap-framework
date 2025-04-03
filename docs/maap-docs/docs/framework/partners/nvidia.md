@@ -24,7 +24,7 @@ To use NVIDIA NIM models with the MAAP framework, you need to configure the foll
   Add the following values to your `config.yaml` file in the LLM section:
   ```
   llms:
-      class_name: NvidiaModel
+      class_name: Nvidia
       model_name: <check_references_below>
       max_tokens: <integer_value> [Optional]
       temperature: <float_value> [Optional]
@@ -52,7 +52,7 @@ To use NVIDIA embeddings with the MAAP framework, configure your system as follo
   Add the following values to your `config.yaml` file in the embedding section:
   ```
   embedding:
-      class_name: NvidiaEmbeddings
+      class_name: Nvidia
       model_name: <check_references_below>
       truncate: "NONE" [Optional]
       encoding_format: "float" [Optional]
