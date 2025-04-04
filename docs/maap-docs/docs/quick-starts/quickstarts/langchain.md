@@ -79,7 +79,7 @@ Use Case: Create an intelligent agent-based system that can search, retrieve, an
 
 ## 2. System Architecture
 
-<!-- ![Architecture Diagram](/app/static/agents_nodes_graph.png.jpg) -->
+![Architecture Diagram](https://raw.githubusercontent.com/mongodb-partners/langchain-qs/5f93dc0ab663b36d2346441e7521452883ee1eab/app/static/agents_nodes_graph.png)
 
 The architecture consists of several integrated components:
 
@@ -89,6 +89,67 @@ The architecture consists of several integrated components:
 4. **LLM Integration**: Connects with providers like Fireworks AI and AWS Bedrock
 
 All components work together in a graph-based workflow managed by LangGraph Swarm.
+
+The provided code defines a function `initialize_swarm_graph` that sets up a multi-agent system for handling tasks like question answering. This system consists of three agents: *Eve, Bob, and George*. Each agent has specific responsibilities and tools to collaborate effectively. Here's a detailed explanation of the code:
+
+1. Purpose of the Function
+The `initialize_swarm_graph` function is designed to create a multi-agent workflow (referred to as a "swarm") where agents work together to process user queries, retrieve information, and generate responses. The function returns a compiled workflow that can be executed to handle these tasks.
+
+2. Agents in the Swarm
+The system consists of three agents, each with distinct roles:
+
+   #### Eve
+   Role: Eve is the planner and task executor.
+   Responsibilities:
+   Plan the actions required to answer the user's query.
+   Delegate tasks to other agents when necessary.
+   Tools:
+   A handoff tool to call Bob for information that Eve does not have.
+   Behavior:
+   Eve does not fabricate answers and relies on tools to fetch relevant information.
+   Eve is the default active agent in the workflow, meaning it initiates the process.
+   #### Bob
+   *Role:* Bob is the information retriever and question refiner.
+   *Responsibilities:*
+   Search for information using web tools.
+   Rewrite questions to make them more specific.
+   Collaborate with George to generate final responses.
+   *Tools:*
+   A web search tool to find information from the internet.
+   A rewrite tool to refine questions.
+   A grader tool to work with George for generating final responses.
+   *Behavior:*
+   Bob uses the tools to find information not available in private knowledge bases.
+   #### George
+   *Role:* George is the final response generator.
+   *Responsibilities:*
+   Generate the final response to the user's query.
+   Use private knowledge bases to provide accurate answers.
+   *Tools:*
+   A final response tool to generate responses based on private knowledge
+   *Behavior:*
+   George ensures that the final response is accurate and concise.
+3. MongoDB Integration
+The function connects to a MongoDB database for checkpointing purposes. This allows the system to save and retrieve intermediate states of the workflow.
+Details:
+The MongoDB URI is fetched from an environment variable (MONGODB_URI).
+The database name is test_ckp_2, and the collection name is test_ckpt_2.
+The MongoDB client is used to interact with the database.
+4. Workflow Creation
+The function uses the create_swarm method to combine the three agents (Eve, Bob, and George) into a single workflow.
+Default Active Agent: Eve is set as the default active agent, meaning it starts the workflow and delegates tasks as needed.
+5. Workflow Compilation
+The workflow is compiled using a checkpointing mechanism (memory_saver), which ensures that the system can save and restore its state during execution.
+The compiled workflow is stored in the variable app.
+6. Return Value
+The function returns the compiled workflow (app), which can be used to execute the multi-agent system. This workflow allows the agents to collaborate and handle tasks like answering user queries.
+#### Summary
+The `initialize_swarm_graph` function sets up a multi-agent system with three agents (Eve, Bob, and George) that work together to process user queries. Each agent has specific tools and responsibilities:
+
+Eve plans and delegates tasks.
+Bob retrieves information and refines questions.
+George generates the final response.
+The system uses MongoDB for checkpointing and compiles the agents into a workflow that can be executed. This modular and collaborative approach ensures efficient handling of complex tasks.
 
 ## 3. Components
 
