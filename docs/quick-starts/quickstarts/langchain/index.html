@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="generator" content="Docusaurus v3.4.0">
 <title data-rh="true">MongoDB - Langchain Quickstart | MAAP</title><meta data-rh="true" name="viewport" content="width=device-width,initial-scale=1"><meta data-rh="true" name="twitter:card" content="summary_large_image"><meta data-rh="true" property="og:image" content="https://maap-framework.github.io/maap-framework/img/docusaurus-social-card.jpg"><meta data-rh="true" name="twitter:image" content="https://maap-framework.github.io/maap-framework/img/docusaurus-social-card.jpg"><meta data-rh="true" property="og:url" content="https://maap-framework.github.io/maap-framework/docs/quick-starts/quickstarts/langchain"><meta data-rh="true" property="og:locale" content="en"><meta data-rh="true" name="docusaurus_locale" content="en"><meta data-rh="true" name="docsearch:language" content="en"><meta data-rh="true" name="docusaurus_version" content="current"><meta data-rh="true" name="docusaurus_tag" content="docs-default-current"><meta data-rh="true" name="docsearch:version" content="current"><meta data-rh="true" name="docsearch:docusaurus_tag" content="docs-default-current"><meta data-rh="true" property="og:title" content="MongoDB - Langchain Quickstart | MAAP"><meta data-rh="true" name="description" content="Introduction to MongoDB Atlas with LangChain"><meta data-rh="true" property="og:description" content="Introduction to MongoDB Atlas with LangChain"><link data-rh="true" rel="icon" href="/maap-framework/img/favicon.ico"><link data-rh="true" rel="canonical" href="https://maap-framework.github.io/maap-framework/docs/quick-starts/quickstarts/langchain"><link data-rh="true" rel="alternate" href="https://maap-framework.github.io/maap-framework/docs/quick-starts/quickstarts/langchain" hreflang="en"><link data-rh="true" rel="alternate" href="https://maap-framework.github.io/maap-framework/docs/quick-starts/quickstarts/langchain" hreflang="x-default"><link rel="stylesheet" href="/maap-framework/assets/css/styles.672a8b88.css">
-<script src="/maap-framework/assets/js/runtime~main.c030ca91.js" defer="defer"></script>
+<script src="/maap-framework/assets/js/runtime~main.2f578945.js" defer="defer"></script>
 <script src="/maap-framework/assets/js/main.25ec7713.js" defer="defer"></script>
 </head>
 <body class="navigation-with-keyboard">
@@ -95,6 +95,7 @@
 <p>This solution demonstrates how to leverage semantic search on data stored in MongoDB Atlas and create a multi-agent RAG system using LangChain and LangGraph. The integration enables retrieval-augmented generation with various LLM providers, enhanced by MongoDB&#x27;s vector capabilities for semantic search.</p>
 <p>Use Case: Create an intelligent agent-based system that can search, retrieve, and generate responses using both proprietary data and web information.</p>
 <h2 class="anchor anchorWithStickyNavbar_LWe7" id="2-system-architecture">2. System Architecture<a class="hash-link" aria-label="Direct link to 2. System Architecture" title="Direct link to 2. System Architecture" href="/maap-framework/docs/quick-starts/quickstarts/langchain#2-system-architecture">​</a></h2>
+<p><img decoding="async" loading="lazy" src="https://github.com/mongodb-partners/langchain-qs/blob/5f93dc0ab663b36d2346441e7521452883ee1eab/app/static/agents_nodes_graph.png" alt="Architecture Diagram" class="img_ev3q"></p>
 <p>The architecture consists of several integrated components:</p>
 <ol>
 <li><strong>UI Service</strong>: Streamlit-based web interface for user interaction (Port 8501)</li>
@@ -103,6 +104,76 @@
 <li><strong>LLM Integration</strong>: Connects with providers like Fireworks AI and AWS Bedrock</li>
 </ol>
 <p>All components work together in a graph-based workflow managed by LangGraph Swarm.</p>
+<p>The provided code defines a function <code>initialize_swarm_graph</code> that sets up a multi-agent system for handling tasks like question answering. This system consists of three agents: <em>Eve, Bob, and George</em>. Each agent has specific responsibilities and tools to collaborate effectively. Here&#x27;s a detailed explanation of the code:</p>
+<ol>
+<li>
+<p>Purpose of the Function
+The <code>initialize_swarm_graph</code> function is designed to create a multi-agent workflow (referred to as a &quot;swarm&quot;) where agents work together to process user queries, retrieve information, and generate responses. The function returns a compiled workflow that can be executed to handle these tasks.</p>
+</li>
+<li>
+<p>Agents in the Swarm
+The system consists of three agents, each with distinct roles:</p>
+<h4 class="anchor anchorWithStickyNavbar_LWe7" id="eve">Eve<a class="hash-link" aria-label="Direct link to Eve" title="Direct link to Eve" href="/maap-framework/docs/quick-starts/quickstarts/langchain#eve">​</a></h4>
+<p>Role: Eve is the planner and task executor.
+Responsibilities:
+Plan the actions required to answer the user&#x27;s query.
+Delegate tasks to other agents when necessary.
+Tools:
+A handoff tool to call Bob for information that Eve does not have.
+Behavior:
+Eve does not fabricate answers and relies on tools to fetch relevant information.
+Eve is the default active agent in the workflow, meaning it initiates the process.</p>
+<h4 class="anchor anchorWithStickyNavbar_LWe7" id="bob">Bob<a class="hash-link" aria-label="Direct link to Bob" title="Direct link to Bob" href="/maap-framework/docs/quick-starts/quickstarts/langchain#bob">​</a></h4>
+<p><em>Role:</em> Bob is the information retriever and question refiner.
+<em>Responsibilities:</em>
+Search for information using web tools.
+Rewrite questions to make them more specific.
+Collaborate with George to generate final responses.
+<em>Tools:</em>
+A web search tool to find information from the internet.
+A rewrite tool to refine questions.
+A grader tool to work with George for generating final responses.
+<em>Behavior:</em>
+Bob uses the tools to find information not available in private knowledge bases.</p>
+<h4 class="anchor anchorWithStickyNavbar_LWe7" id="george">George<a class="hash-link" aria-label="Direct link to George" title="Direct link to George" href="/maap-framework/docs/quick-starts/quickstarts/langchain#george">​</a></h4>
+<p><em>Role:</em> George is the final response generator.
+<em>Responsibilities:</em>
+Generate the final response to the user&#x27;s query.
+Use private knowledge bases to provide accurate answers.
+<em>Tools:</em>
+A final response tool to generate responses based on private knowledge
+<em>Behavior:</em>
+George ensures that the final response is accurate and concise.</p>
+</li>
+<li>
+<p>MongoDB Integration
+The function connects to a MongoDB database for checkpointing purposes. This allows the system to save and retrieve intermediate states of the workflow.
+Details:
+The MongoDB URI is fetched from an environment variable (MONGODB_URI).
+The database name is test_ckp_2, and the collection name is test_ckpt_2.
+The MongoDB client is used to interact with the database.</p>
+</li>
+<li>
+<p>Workflow Creation
+The function uses the create_swarm method to combine the three agents (Eve, Bob, and George) into a single workflow.
+Default Active Agent: Eve is set as the default active agent, meaning it starts the workflow and delegates tasks as needed.</p>
+</li>
+<li>
+<p>Workflow Compilation
+The workflow is compiled using a checkpointing mechanism (memory_saver), which ensures that the system can save and restore its state during execution.
+The compiled workflow is stored in the variable app.</p>
+</li>
+<li>
+<p>Return Value
+The function returns the compiled workflow (app), which can be used to execute the multi-agent system. This workflow allows the agents to collaborate and handle tasks like answering user queries.</p>
+</li>
+</ol>
+<h4 class="anchor anchorWithStickyNavbar_LWe7" id="summary">Summary<a class="hash-link" aria-label="Direct link to Summary" title="Direct link to Summary" href="/maap-framework/docs/quick-starts/quickstarts/langchain#summary">​</a></h4>
+<p>The <code>initialize_swarm_graph</code> function sets up a multi-agent system with three agents (Eve, Bob, and George) that work together to process user queries. Each agent has specific tools and responsibilities:</p>
+<p>Eve plans and delegates tasks.
+Bob retrieves information and refines questions.
+George generates the final response.
+The system uses MongoDB for checkpointing and compiles the agents into a workflow that can be executed. This modular and collaborative approach ensures efficient handling of complex tasks.</p>
 <h2 class="anchor anchorWithStickyNavbar_LWe7" id="3-components">3. Components<a class="hash-link" aria-label="Direct link to 3. Components" title="Direct link to 3. Components" href="/maap-framework/docs/quick-starts/quickstarts/langchain#3-components">​</a></h2>
 <h3 class="anchor anchorWithStickyNavbar_LWe7" id="31-ui-service">3.1 UI Service<a class="hash-link" aria-label="Direct link to 3.1 UI Service" title="Direct link to 3.1 UI Service" href="/maap-framework/docs/quick-starts/quickstarts/langchain#31-ui-service">​</a></h3>
 <p>The UI Service provides a web-based interface built with Streamlit, offering:</p>
