@@ -1,4 +1,4 @@
-# Temporal
+# MongoDB - Temporal Quickstart
 
 The MongoDB - Temporal Quickstart is an integrated end-to-end AI application framework that combines MongoDB Atlas, Amazon Bedrock, and Temporal Workflow technology. The system provides a conversational AI interface with advanced memory capabilities, semantic caching, and robust document processing abilities.
 
@@ -98,18 +98,18 @@ The diagram illustrates the MongoDB - Temporal system architecture with:
 
 The system consists of the following microservices:
 
-1. **Host Service**: The central coordinator that manages the UI and workflow orchestration
-2. **AI Memory Service**: Provides conversation history and memory functions
-3. **Semantic Cache Service**: Caches AI responses for similar queries
-4. **Data Loader Service**: Ingests and processes documents and web content
-5. **Event Logger Service**: Centralized logging service
-6. **Temporal Service**: Workflow orchestration and execution
+1. **Host Service**: The central coordinator that manages the UI and workflow orchestration (Port 7860)
+2. **AI Memory Service**: Provides conversation history and memory functions (Port 8182)
+3. **Semantic Cache Service**: Caches AI responses for similar queries (Port 8183)
+4. **Data Loader Service**: Ingests and processes documents and web content (Port 8184)
+5. **Event Logger Service**: Centralized logging service (Port 8181)
+6. **Temporal Service**: Workflow orchestration and execution (Port 7233 & 8080)
 
 ### 2.2 Integration Points
 
-- **MongoDB Atlas**: Vector database for storing embeddings, documents, and conversational data
-- **Amazon Bedrock**: Provides AI capabilities through Claude and Titan models
-- **Temporal**: Workflow orchestration system for reliable workflow execution
+- **MongoDB Atlas**: Vector database for storing embeddings, documents, and conversational data (Ports 27015 to 27017 (TCP))
+- **Amazon Bedrock**: Provides AI capabilities through Claude and Titan models (Port 443)
+- **Temporal**: Workflow orchestration system for reliable workflow execution (Port 7233 & 8080)
 - **Docker & Containers**: All services are containerized for deployment
 
 ## 3. Services in Detail
