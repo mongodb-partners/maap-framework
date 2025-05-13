@@ -73,15 +73,18 @@ Here's information on how to find the correct values for your MAAP framework:
 
 - ##### Model Name
   NVIDIA offers several models through NIM. Common models include:
-  - `nvidia/llama-3.1-nemotron-70b-instruct` - High performance instruction-tuned LLM for general tasks
-  - `nvidia/llama-3.2-nv-embedqa-1b-v2` - Embedding model optimized for retrieval tasks (2048 dimensions)
-  - `nvidia/nv-embed-v1` - General purpose embedding model (4096 dimensions)
-  - `nvidia/nv-embedqa-e5-v5` - Embedding model for question-answering (1024 dimensions)
+  ##### LLM Model
+    - `nvidia/llama-3.1-nemotron-70b-instruct` - High performance instruction-tuned LLM for general tasks 
+  #
+  ##### Embedding Model
+    - `nvidia/llama-3.2-nv-embedqa-1b-v2` - Embedding model optimized for retrieval tasks (2048 dimensions)
+    - `nvidia/nv-embed-v1` - General purpose embedding model (4096 dimensions)
+    - `nvidia/nv-embedqa-e5-v5` - Embedding model for question-answering (1024 dimensions)
 
-  For a complete list of available models, consult the [NVIDIA NIM documentation](https://www.nvidia.com/en-us/ai-data-science/products/nim-microservices/).
+  For a complete list of available models, consult the [NVIDIA NIM documentation](https://build.nvidia.com/models/).
 
 - ##### NVIDIA_API_KEY
-  You can obtain your API key by registering for NVIDIA AI Enterprise and accessing the NIM platform. Follow the instructions on the [NVIDIA AI Enterprise](https://www.nvidia.com/en-us/data-center/products/ai-enterprise/) site.
+  You can obtain your API key by registering for NVIDIA AI Enterprise and accessing the NIM platform. Follow the instructions on the [NVIDIA AI Enterprise](https://build.nvidia.com/settings/api-keys/) site.
 
 - ##### NVIDIA_BASE_URL
   The default base URL is `https://integrate.api.nvidia.com/v1`. This may change based on your deployment options or region.

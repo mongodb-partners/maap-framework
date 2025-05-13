@@ -1,4 +1,4 @@
-# MongoDB - Meta Quickstart
+# Meta
 
 The MongoDB - Meta Quickstart is a comprehensive, integrated end-to-end technology stack meticulously designed to facilitate the rapid development and seamless deployment of AI-powered Agentic applications. This innovative framework combines the robust capabilities of MongoDB Atlas for scalable data storage and advanced vector search functionalities with Meta's Llama AI state-of-the-art language models for powerful natural language processing and generation.
 

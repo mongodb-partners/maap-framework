@@ -1,5 +1,5 @@
 
-# MongoDB - IBM Quickstart
+# IBM
 
 Welcome to the MongoDB - IBM Quickstart, we will be using a financial dataset containing customer details, transactions, spending insights, and metadata, which we are storing in **MongoDB Atlas**, a fully managed cloud database platform. These records represent real-world scenarios such as payments, savings, and expenses, making the dataset highly relevant for building an intelligent finance assistant. To generate the vector embeddings for storing and retrieving this data, we will use the **Granite Embedding Models (ibm-granite/granite-embedding-125m-english)** from **IBM Watsonx.ai**. These embeddings capture the semantic meaning of financial data, enabling efficient similarity searches and contextual data retrieval. In addition to embedding models, Watsonx.ai also provides large language models (LLMs) for conversational chat query and retrieval capabilities, in our use case we are using **Granite 3.0 (ibm/granite-3-8b-instruct) model**, which are integral to this tutorial. By the end of this tutorial, you’ll have a functional system ready to support real-time financial assistance and personalized recommendations.
 

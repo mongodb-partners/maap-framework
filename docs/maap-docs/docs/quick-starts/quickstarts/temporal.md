@@ -1,4 +1,4 @@
-# MongoDB - Temporal Quickstart
+# Temporal
 
 The MongoDB - Temporal Quickstart is an integrated end-to-end AI application framework that combines MongoDB Atlas, Amazon Bedrock, and Temporal Workflow technology. The system provides a conversational AI interface with advanced memory capabilities, semantic caching, and robust document processing abilities.
 

@@ -1,4 +1,4 @@
-# MongoDB - Langchain Quickstart
+# Langchain
 
 ## Introduction to MongoDB Atlas with LangChain
 

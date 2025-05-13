@@ -1,4 +1,4 @@
-# MongoDB - Cohere Quickstart
+# Cohere
 
 The MongoDB - Cohere Quickstart is a comprehensive, integrated end-to-end technology stack meticulously designed to facilitate the rapid development and seamless deployment of gen AI-powered applications. This innovative framework combines the robust capabilities of MongoDB Atlas for scalable data storage and advanced vector search functionalities with Cohere's state-of-the-art command-r-plus language model and Cohere's re-ranker for powerful natural language processing and retrieval.
 
