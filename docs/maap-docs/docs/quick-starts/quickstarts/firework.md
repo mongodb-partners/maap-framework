@@ -4,6 +4,26 @@
 
 A modular, containerized full-stack solution for BFSI credit recommendation and scoring, featuring a Python/Flask backend, a React/Next.js frontend, and MongoDB for persistent storage.
 
+The quick start demonstrates how alternative data, artificial intelligence (AI), and generative AI (Gen AI) are revolutionizing credit scoring and application processes. Traditional credit scoring models face several challenges, including limited credit history, inconsistent income, high credit utilization, and lack of transparency in rejection reasons. To overcome these issues, MongoDB's modern database solutions and AI-powered analytics offer a more inclusive, efficient, and personalized credit assessment approach.
+
+### **Challenges with Traditional Credit Scoring**
+Traditional credit scoring relies on historical financial data, often excluding individuals without established credit histories or stable income sources. High credit utilization can also negatively impact scoring, and many applicants receive vague rejection notices without understanding the reasons behind their declined applications.
+
+### **Transforming Credit Applications with MongoDB and AI**
+MongoDB enables more efficient credit application processing by supporting JSON-based document storage, eliminating redundant information collection, and improving data accuracy. AI-driven credit scoring models assess risk based on a broader range of financial behaviors, enhancing precision and inclusivity.
+
+### **Enhancing Credit Scoring and Risk Profiling**
+Using MongoDB's modern data platform, banks and financial institutions can create comprehensive user profiles, integrating information from multiple sources, including credit bureaus and open banking systems. AI models, such as XGBoost, analyze these datasets to predict delinquency risks and personalize credit offerings. MongoDB Atlas simplifies data transformation and retrieval, improving processing speed and efficiency.
+
+### **Explaining Credit Application Declinations**
+Generative AI, particularly large language models (LLMs), can provide detailed and transparent explanations for credit application rejections. By incorporating explainable AI techniques, banks can communicate the reasons for declination, allowing applicants to understand and improve their creditworthiness.
+
+### **Alternative Product Recommendations**
+Financial institutions can leverage Gen AI to recommend tailored credit products to applicants based on their risk profiles and financial behaviors. MongoDB Atlas Vector Search supports retrieval-augmented generation (RAG), enabling dynamic and personalized recommendations. This approach enhances customer engagement, improving the likelihood of product acceptance.
+
+### **Key Considerations for AI-Powered Credit Scoring**
+The adoption of AI-driven credit scoring models introduces new opportunities to address traditional scoring limitations, improve transparency, and integrate alternative data points, such as utility bills and certification histories. However, mitigating AI hallucination risks and maintaining factual accuracy through RAG techniques are crucial for reliable credit assessments.
+
 [![ReadMe Card](https://github-readme-stats.vercel.app/api/pin/?username=ashwin-gangadhar-mdb&repo=mdb-bfsi-credit-reco-genai)](https://github.com/ashwin-gangadhar-mdb/mdb-bfsi-credit-reco-genai)
 
 ## Demo Video
@@ -14,6 +34,14 @@ Watch a walkthrough of the MongoDB Credit Scoring Application:
 
 ## Table of Contents
 
+- [BFSI Credit Recommendation & Scoring Application](#bfsi-credit-recommendation--scoring-application)
+   - [Challenges with Traditional Credit Scoring](#challenges-with-traditional-credit-scoring)
+   - [Transforming Credit Applications with MongoDB and AI](#transforming-credit-applications-with-mongodb-and-ai)
+   - [Enhancing Credit Scoring and Risk Profiling](#enhancing-credit-scoring-and-risk-profiling)
+   - [Explaining Credit Application Declinations](#explaining-credit-application-declinations)
+   - [Alternative Product Recommendations](#alternative-product-recommendations)
+   - [Key Considerations for AI-Powered Credit Scoring](#key-considerations-for-ai-powered-credit-scoring)
+- [Demo Video](#demo-video)
 - [Features](#features)
 - [Architecture Overview](#architecture-overview)
    - [Components](#components)
@@ -28,7 +56,6 @@ Watch a walkthrough of the MongoDB Credit Scoring Application:
    - [Credit Product Recommendation and Personalization](#credit-product-recommendation-and-personalization)
 - [Agentic Workflow for Credit Recommendation](#agentic-workflow-for-credit-recommendation)
    - [Agentic Workflow Steps](#agentic-workflow-steps)
-   - [Agentic Workflow Diagram](#agentic-workflow-diagram)
    - [Why Agentic Workflow?](#why-agentic-workflow)
 - [Prerequisites](#prerequisites)
 - [Quick Start](#quick-start)
@@ -37,7 +64,16 @@ Watch a walkthrough of the MongoDB Credit Scoring Application:
 - [Project Structure](#project-structure)
 - [Testing](#testing)
 - [Sample cURL Commands](#sample-curl-commands)
+- [Installation & Deployment to AWS](#installation--deployment-to-aws)
+   - [Environment Setup](#environment-setup)
+   - [Configuration Files](#configuration-files)
+   - [Prerequisites](#prerequisites-1)
+   - [MongoDB Atlas Programmatic Access](#mongodb-atlas-programmatic-access)
+   - [Minimum System Requirements](#minimum-system-requirements)
+   - [One-Click Deployment](#one-click-deployment)
+   - [Post-Deployment Verification](#post-deployment-verification)
 - [License](#license)
+
 
 ## Features
 
@@ -199,9 +235,16 @@ cd mdb-bfsi-credit-reco-genai
 Edit the `.env` file in the root directory as needed. Example:
 
 ```env
-MONGO_CONNECTION_STRING=mongodb://root:example@mongo:27017/?authSource=admin
 FIREWORKS_API_KEY=fw_
-NEXT_PUBLIC_API_URL=http://localhost:5001
+FIREWORKS_MODEL_ID=
+# mongodb atlas config
+API_PUBLIC_KEY=
+API_PRIVATE_KEY=
+GROUP_ID=
+# aws config
+AWS_REGION=
+AWS_ACCESS_KEY_ID=
+AWS_SECRET_ACCESS_KEY=
 # Add other keys as needed
 ```
 
@@ -232,7 +275,6 @@ make down
 ## Development
 
 - View logs: `make logs`
-- Start only backend or frontend: `make backend` or `make frontend`
 
 ## API Endpoints
 
@@ -257,7 +299,7 @@ To run backend tests:
 
 ```sh
 cd backend_agentic
-python -m pytest test_app.py 
+python test_app.py 
 ```
 
 ## Sample cURL Commands
@@ -315,6 +357,156 @@ curl http://localhost:5001/product_suggestions/<user_id>
 ```
 
 Replace `<user_id>` with the actual user ID.
+
+---
+
+## Installation & Deployment to AWS
+
+### Environment Setup
+
+The system requires:
+- MongoDB Atlas cluster
+- AWS credentials for Bedrock access
+- Docker and Docker Compose
+
+### Configuration Files
+
+Each service has its own `.env` file for configuration:
+- **MongoDB Configuration**:
+  - `MONGODB_CONNECTION_STR`: Connection string
+- **AWS Configuration**:
+  - `AWS_REGION`: AWS region
+  - `AWS_ACCESS_KEY_ID`: Access key
+  - `AWS_SECRET_ACCESS_KEY`: Secret key
+  - `FIREWORKS_API_KEY`: Access to Fireworks serverless models
+  - `FIREWORKS_MODEL_ID`: LLM Model ID you choose to use
+
+### Prerequisites
+
+- AWS account with appropriate permissions
+- MongoDB Atlas account with appropriate permissions
+- Python 3.10+
+- Docker and Docker Compose installed
+- AWS CLI installed and configured
+- EC2 quota for `t3.medium`
+- Programmatic access to your MongoDB Atlas project
+
+### MongoDB Atlas Programmatic Access
+
+To enable programmatic access to your MongoDB Atlas project, follow these steps to create and manage API keys securely:
+
+#### **1. Create an API Key**
+1. **Navigate to Project Access Manager:**
+   - In the Atlas UI, select your organization and project.
+   - Go to **Project Access** under the **Access Manager** menu.
+2. **Create API Key:**
+   - Click on the **Applications** tab.
+   - Select **API Keys**.
+   - Click **Create API Key**.
+   - Provide a description for the key.
+   - Assign appropriate project permissions by selecting roles that align with the principle of least privilege.
+   - Click **Next**.
+3. **Save API Key Credentials:**
+   - Copy and securely store the **Public Key** (username) and **Private Key** (password).
+   - **Important:** The private key is displayed only once; ensure it's stored securely.
+
+#### **2. Configure API Access List**
+1. **Add Access List Entry:**
+   - After creating the API key, add an IP address or CIDR block to the API access list to specify allowed sources for API requests.
+   - Click **Add Access List Entry**.
+   - Enter the IP address or click **Use Current IP Address** if accessing from the current host.
+   - Click **Save**.
+2. **Manage Access List:**
+   - To modify the access list, navigate to the **API Keys** section.
+   - Click the ellipsis (**...**) next to the API key and select **Edit Permissions**.
+   - Update the access list as needed.
+
+#### **3. Secure API Key Usage**
+- **Environment Variables:** Store API keys in environment variables to prevent hardcoding them in your application's source code.
+- **Access Controls:** Limit API key permissions to the minimum required for your application's functionality.
+- **Regular Rotation:** Periodically rotate API keys and update your applications to use the new keys to enhance security.
+- **Audit Logging:** Monitor API key usage through Atlas's auditing features to detect any unauthorized access.
+
+By following these steps, you can securely grant programmatic access to your MongoDB Atlas project, ensuring that your API keys are managed and utilized in accordance with best practices.
+For more detailed information, refer to [Guide](https://www.mongodb.com/docs/atlas/configure-api-access/#grant-programmatic-access-to-a-project).
+
+### Minimum System Requirements
+
+- Sufficient CPU and memory for running Docker containers
+- Adequate network bandwidth for data transfer and API calls
+- For EC2: At least a `t3.medium` instance (or higher, depending on workload)
+- Sufficient EBS storage for EC2 instance (at least 100 GB recommended)
+- MongoDB Atlas M10 Cluster (auto-deployed by the `one-click` script)
+
+### One-Click Deployment
+
+The `one-click.ksh` Korn shell script automates the deployment of the MongoDB - Fireworks Quickstart application on AWS infrastructure. It sets up the necessary AWS resources, deploys an EC2 instance, and configures the application environment.
+
+#### Prerequisites
+- AWS CLI installed and configured with appropriate credentials
+- Access to a MongoDB Atlas account with necessary permissions
+- Korn shell (ksh) environment
+
+#### Execution Flow
+1. Initialize logging
+2. Create or use existing EC2 key pair
+3. Deploy infrastructure CloudFormation stack
+4. Retrieve and store infrastructure stack outputs
+5. Deploy EC2 instance and application CloudFormation stack
+6. Start streaming EC2 deployment logs
+7. Monitor application URL until it becomes available
+8. Launch application URL in default browser
+
+#### Logging
+You can monitor all the steps of one click deployment scripts by tailing the following files
+- Main deployment logs: `./logs/one-click-deployment.log`
+- EC2 live logs: `./logs/ec2-live-logs.log`
+
+#### Error Handling
+The script includes basic error checking for critical operations such as CloudFormation stack deployments. If an error occurs, the script will log the error and exit.
+
+#### Security Considerations
+- AWS credentials are expected to be set as environment variables
+- MongoDB Atlas credentials and API keys are passed as CloudFormation parameters
+
+#### Customization
+To customize the deployment:
+1. Modify the CloudFormation template files (`deploy-infra.yaml` and `deploy-ec2-using-ecr.yaml`)
+2. Adjust the deployment parameters at the beginning of the script
+3. Update the AMI IDs in the `ami_map` if newer AMIs are available
+
+#### Troubleshooting
+- Check the log files for detailed information on the deployment process
+- Ensure all required environment variables and parameters are correctly set
+- Verify AWS CLI configuration and permissions
+- Check CloudFormation stack events in the AWS Console for detailed error messages
+
+#### Limitations
+- The script is designed for a specific application stack and may require modifications for other use cases
+- It assumes a certain MongoDB Atlas and AWS account setup
+- The script does not include rollback mechanisms for partial deployments. In case of partial failures, delete the related CloudFormation stacks from AWS Console.
+
+#### Deployment Steps
+1. Clone the repository:
+   ```
+   git clone <repository-url>
+   cd mdb-bfsi-credit-reco-genai
+   ```
+2. Configure the `.env` file:
+   - AWS Auth: Specify the `AWS_REGION`, `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY` for deployment.
+   - Authentication Keys: Fetch Project ID, API public and private keys for MongoDB Atlas Cluster setup. Update the script file with the keys for `APIPUBLICKEY`, `APIPRIVATEKEY`, `GROUPID` suitably.
+3. Deploy the application:
+
+   ```sh
+   make deploy-aws-ec2
+   ```
+4. Access the application at `http://<ec2-instance-ip>:3000`
+
+#### Post-Deployment Verification
+1. Access the UI service by navigating to `http://<ec2-instance-ip>:3000` in your web browser.
+2. Test the system by entering a query and verifying that you receive an appropriate AI-generated response.
+3. Try uploading a file to ensure the Loader Service is functioning correctly.
+4. Verify that the sample dataset bundled with the script is loaded into your MongoDB Cluster name `MongoDBFireworksV1` with the database `bfsi-genai` and collections `cc-products` and `user-data` by visiting the [MongoDB Atlas Console](https://cloud.mongodb.com).
 
 ## License
 
