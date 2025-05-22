@@ -6,6 +6,8 @@
 
 TogtherAI + MongoDB QuickStart integrates various services to provide an intelligent assistant capable of understanding context, managing tasks, and facilitating team communication. The platform is built with scalability and flexibility in mind, ensuring it can adapt to diverse organizational needs.
 
+[![ReadMe Card](https://github-readme-stats.vercel.app/api/pin/?username=mongodb-partners&repo=maap-together-qs)](https://github.com/mongodb-partners/maap-together-qs)
+
 ## Quick Start
 
 Welcome to TogtherAI + MongoDB - your advanced virtual executive collaboration platform. Here's what makes it powerful:
