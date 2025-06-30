@@ -65,6 +65,7 @@ import { SageMaker } from '../../models/sagemaker-model.js';
 import { EnterpriseLoader } from '../../loaders/enterprise-loader.js';
 import { CredalModel } from '../../models/credal-model.js';
 import { NvidiaEmbeddings } from '../../embeddings/langChain/nvidia-embeddings.js';
+import { VoyageAIEmbeddings } from '../../embeddings/langChain/voyageai-embeddings.js'; 
 import { NvidiaModel } from '../../models/langChain/nvidia-model.js';
 // src/loaders/confluence-loader.ts src/loaders/docx-loader.ts src/loaders/excel-loader.ts src/loaders/json-loader.ts src/loaders/pdf-loader.ts src/loaders/ppt-loader.ts src/loaders/sitemap-loader.ts src/loaders/text-loader.ts src/loaders/web-loader.ts src/loaders/youtube-channel-loader.ts src/loaders/youtube-loader.ts src/loaders/youtube-search-loader.ts
 function getDataFromYamlFile() {
@@ -400,6 +401,10 @@ export function getEmbeddingModel() {
         case 'Nvidia':
             return new NvidiaEmbeddings({
                 model: parsedData.embedding.model_name,
+            });
+        case 'VoyageAI':
+            return new VoyageAIEmbeddings({
+                modelName: parsedData.embedding.model_name
             });
 
         case 'Nomic-v1':
