@@ -72,7 +72,7 @@
         "@types/aws-sdk": "^0.0.42",
         "aws-sdk": "^2.1692.0",
         "@types/kafkajs": "^1.8.2",
-        "axios": "^1.7.2",
+        "axios": ">=1.8.2",
         "axios-digest": "^0.3.0",
         "compute-cosine-similarity": "^1.1.0",
         "confluence.js": "^1.7.4",
