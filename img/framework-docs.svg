@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+    <!-- Book base -->
+    <rect x="20" y="20" width="60" height="60" rx="2" fill="#00ED64" />
+    <!-- Pages -->
+    <rect x="25" y="25" width="50" height="50" fill="white" />
+    <!-- Database symbol -->
+    <ellipse cx="50" cy="45" rx="15" ry="5" fill="#001E2B" />
+    <path d="M35 45v15 c0 2.76 6.72 5 15 5 s15-2.24 15-5 v-15" fill="none" stroke="#001E2B" stroke-width="2"/>
+    <!-- AI network lines -->
+    <circle cx="40" cy="55" r="2" fill="#00ED64"/>
+    <circle cx="50" cy="60" r="2" fill="#00ED64"/>
+    <circle cx="60" cy="55" r="2" fill="#00ED64"/>
+    <path d="M40 55L50 60L60 55" stroke="#00ED64" stroke-width="1"/>
+</svg>
