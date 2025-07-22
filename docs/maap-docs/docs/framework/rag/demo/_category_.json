@@ -1,0 +1,8 @@
+{
+  "label": "Demo",
+  "position": 4,
+  "link": {
+    "type": "generated-index",
+    "description": "Welcome to the Demo setup page. Here you will find step-by-step instructions on how to set up and configure the Demo application. Follow the instructions carefully to ensure a smooth and successful setup process. Let's get started!"
+  }
+}

@@ -11,6 +11,10 @@ const config = {
   title: 'MAAP',
   tagline: 'MongoDB AI Applications Program',
   favicon: 'img/favicon.ico',
+  markdown: {
+    mermaid: true,
+  },
+  themes: ['@docusaurus/theme-mermaid'],
 
   // Set the production url of your site here
   url: 'https://maap-framework.github.io',
@@ -70,19 +74,19 @@ const config = {
             type: 'docSidebar',
             sidebarId: 'tutorialSidebar',
             position: 'left',
-            label: 'Docs',
+            label: 'Frameworks',
           },
           {
             type: 'docSidebar',
             sidebarId: 'quickstartSidebar',
             position: 'left',
-            label: 'Quickstart',
+            label: 'Quick starts',
           },
           {
             type: 'docSidebar',
-            sidebarId: 'demosSidebar',
+            sidebarId: 'blogsSidebar',
             position: 'left',
-            label: 'Demo',
+            label: 'Partner Blogs',
           },
           {
             href: 'https://github.com/mongodb-partners/maap-framework/',

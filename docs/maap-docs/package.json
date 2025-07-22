@@ -62,18 +62,19 @@
     "@csstools/selector-resolve-nested": "3.0.0",
     "@docsearch/css": "3.9.0",
     "@docsearch/react": "3.9.0",
-    "@docusaurus/bundler": "3.7.0",
-    "@docusaurus/core": "^3.7.0",
-    "@docusaurus/cssnano-preset": "3.7.0",
-    "@docusaurus/plugin-debug": "3.7.0",
-    "@docusaurus/plugin-google-analytics": "3.7.0",
-    "@docusaurus/plugin-google-gtag": "3.7.0",
-    "@docusaurus/plugin-google-tag-manager": "3.7.0",
-    "@docusaurus/plugin-sitemap": "3.7.0",
-    "@docusaurus/plugin-svgr": "3.7.0",
-    "@docusaurus/preset-classic": "3.7.0",
-    "@docusaurus/theme-classic": "3.7.0",
-    "@docusaurus/theme-search-algolia": "3.7.0",
+    "@docusaurus/bundler": "^3.8.1",
+    "@docusaurus/core": "^3.8.1",
+    "@docusaurus/cssnano-preset": "^3.8.1",
+    "@docusaurus/plugin-debug": "^3.8.1",
+    "@docusaurus/plugin-google-analytics": "^3.8.1",
+    "@docusaurus/plugin-google-gtag": "^3.8.1",
+    "@docusaurus/plugin-google-tag-manager": "^3.8.1",
+    "@docusaurus/plugin-sitemap": "^3.8.1",
+    "@docusaurus/plugin-svgr": "^3.8.1",
+    "@docusaurus/preset-classic": "^3.8.1",
+    "@docusaurus/theme-classic": "^3.8.1",
+    "@docusaurus/theme-mermaid": "^3.8.1",
+    "@docusaurus/theme-search-algolia": "^3.8.1",
     "@mdx-js/react": "^3.0.0",
     "@types/eslint-scope": "3.7.7",
     "@webassemblyjs/helper-wasm-section": "1.14.1",
@@ -141,8 +142,8 @@
     "yarn": "^1.22.22"
   },
   "devDependencies": {
-    "@docusaurus/module-type-aliases": "3.7.0",
-    "@docusaurus/types": "3.7.0"
+    "@docusaurus/module-type-aliases": "^3.8.1",
+    "@docusaurus/types": "^3.8.1"
   },
   "browserslist": {
     "production": [

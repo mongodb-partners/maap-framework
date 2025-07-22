@@ -1,0 +1,8 @@
+{
+  "label": "📝 Blogs",
+  "position": 5,
+  "link": {
+    "type": "generated-index",
+    "description": "Explore our latest blogs to stay updated with the MAAP Framework, including insights, tutorials, and best practices for building AI applications with MongoDB Atlas."
+  }
+}

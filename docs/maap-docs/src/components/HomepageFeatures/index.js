@@ -4,33 +4,33 @@ import styles from './styles.module.css';
 // #001e2b
 const FeatureList = [
   {
-    title: 'Reference architectures',
-    Svg: require('@site/static/img/connectors.svg').default,
+    title: 'Framework Documentation',
+    Svg: require('@site/static/img/framework-docs.svg').default,
     description: (
       <>
-        With hands-on Professional Services, gen AI reference architectures, and integrated technology and partners, customers can build secure, high-performing applications that function as intended.
+        Explore our comprehensive framework documentation covering RAG and Agentic implementations. Learn about data processing pipelines, vector search integration, memory systems, and intelligent agents built on MongoDB Atlas.
 
 
       </>
     ),
   },
   {
-    title: 'Full-service engagement',
-    Svg: require('@site/static/img/general_features_on_demand.svg').default,
+    title: 'Quick Start Guides',
+    Svg: require('@site/static/img/quickstart.svg').default,
     description: (
       <>
-        Engagement begins with personalized deep dives from Professional Services to evaluate your current technology stack and identify business problems to solve.
+        Get started quickly with step-by-step guides for building AI applications. Our quickstart tutorials cover everything from initial setup to deploying your first RAG or agent-based application.
 
 
       </>
     ),
   },
   {
-    title: 'Atlas support package',
-    Svg: require('@site/static/img/realm_real_time_collaboration.svg').default,
+    title: 'Technical Blog Posts',
+    Svg: require('@site/static/img/blog-posts.svg').default,
     description: (
       <>
-        Develop end-to-end strategies and roadmaps to build, deploy, and scale generative AI applications with hands-on support.
+        Stay updated with the latest technical insights, best practices, and real-world implementation examples. Our blog posts showcase advanced features and integration patterns using MongoDB and partner technologies.
 
 
       </>

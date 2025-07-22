@@ -1,9 +1,8 @@
 {
-  "label": "Quick Starts",
-  
-  "position": 4,
+  "label": "🚀 Quick Starts",
+  "position": 5,
   "link": {
     "type": "generated-index",
-    "description": "These quickstart guides and our MAAP partners offer easy and fast deployment of AI-powered applications using MongoDB Atlas."
+    "description": "Get started with the MAAP Framework quickly using these guides and examples. These quick starts provide step-by-step instructions to help you set up and configure your environment, integrate with MongoDB Atlas, and build your first application using the MAAP Framework. Perfect for developers looking to hit the ground running!"
   }
 }
