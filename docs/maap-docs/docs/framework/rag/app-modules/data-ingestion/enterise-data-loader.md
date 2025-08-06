@@ -61,7 +61,7 @@ To install and deploy the MAAP Data Loader application, follow these steps:
 
 2. **Clone the repository:**
    ```sh
-   git clone https://github.com/maap-partners/maap-data-loader.git
+   git clone https://github.com/mongodb-partners/maap-data-loader.git
    cd maap-data-loader
    ```
 
