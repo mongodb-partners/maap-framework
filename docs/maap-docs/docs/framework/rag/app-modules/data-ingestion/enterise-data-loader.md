@@ -61,7 +61,7 @@ To install and deploy the MAAP Data Loader application, follow these steps:
 
 2. **Clone the repository:**
    ```sh
-   git clone https://github.com/maap-partners/maap-data-loader.git
+   git clone https://github.com/mongodb-partners/maap-data-loader.git
    cd maap-data-loader
    ```
 
@@ -157,4 +157,4 @@ The tool can be enhanced by adding other [source connectors](https://docs.unstru
 
 To contribute a new source connector, you can fork the repository, create a new branch, implement the connector, and thoroughly test it. Once done, you can raise a pull request with a detailed description of the changes and any relevant documentation updates. The maintainers will review the pull request and provide feedback or merge it into the main branch.
 
-For more details on contributing, refer to the [contributing guidelines](https://github.com/maap-partners/maap-data-loader/).
+For more details on contributing, refer to the [contributing guidelines](https://github.com/mongodb-partners/maap-data-loader).
