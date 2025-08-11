@@ -17,7 +17,7 @@ const config = {
   themes: ['@docusaurus/theme-mermaid'],
 
   // Set the production url of your site here
-  url: 'https://maap-framework.github.io',
+  url: 'https://mongodb-partners.github.io/maap-framework/',
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
   baseUrl: '/maap-framework/',

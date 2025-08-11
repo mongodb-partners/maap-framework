@@ -10,8 +10,8 @@ This demonstration showcases a complete solution for pharmaceutical representati
 
 | Capability | Description |
 |------------|-------------|
-| **Product Knowledge** | Answer detailed questions about medication indications, contraindications, dosages, and side ef# 🧠 PHASE 2B: MCP SERVER INTEGRATIONects |
-| **Inventory Management** | Check real-time stock levels across multiple distribution centers# 🚀 PHASE 3: VALIDATION & EXPANSION|
+| **Product Knowledge** | Answer detailed questions about medication indications, contraindications, dosages, and side efects |
+| **Inventory Management** | Check real-time stock levels across multiple distribution centers|
 | **Memory** | Maintain conversation context and recall previous interactions |
 | **Compliance** | Generate accurate responses based only on approved documentation |
 
@@ -154,8 +154,8 @@ graph TB
 |-----------|---------|
 | **MAAP Data Loader** | Ingest and process pharmaceutical documentation (PDFs, package inserts, technical data) |
 | **MAAP Agent Builder** | Create a conversational AI interface with specialized tool-calling capabilities |
-| **MongoDB Atlas** | Store and query both unstructured product knowledge and structured inventory data |
 | **Memory MCP Server** | Store and manage conversational memory for contextual responses |
+| **MongoDB Atlas** | Store and query both unstructured product knowledge and structured inventory data |
 
 ## 🔄 Implementation Process
 
