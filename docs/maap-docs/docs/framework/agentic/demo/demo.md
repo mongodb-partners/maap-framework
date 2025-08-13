@@ -1,4 +1,4 @@
-# 🧪 Dr. Reddy's Pharma Product QnA Assistant
+# 🧪 PharmaOne Pharma Product QnA Assistant
 
 > **Build an AI-powered assistant for pharmaceutical representatives to answer product questions and check inventory**
 
@@ -21,9 +21,10 @@ This demonstration showcases a complete solution for pharmaceutical representati
 graph TB
     %% Data Sources
     subgraph "Data Sources"
-        PDF[Dr. Reddy's Product PDFs<br/>📄 Package Inserts<br/>📄 Technical Documentation]
+        PDF[PharmaOne Product PDFs<br/>📄 Package Inserts<br/>📄 Technical Documentation]
         JSON[Structured Product Data<br/>📊 dr_reddys_products.json]
     end
+
 
     %% Phase 1: Data Pipeline
     subgraph "Phase 1: Data Pipeline"
@@ -162,7 +163,7 @@ graph TB
 This implementation guide is organized into three sequential phases:
 
 ### 📊 Phase 1: Data Pipeline
-- Download pharmaceutical product PDFs from Dr. Reddy's
+- Download pharmaceutical product PDFs from PharmaOne
 - Process documents using MAAP Data Loader
 - Extract and index meaningful content
 - Import structured inventory and product data
@@ -181,7 +182,7 @@ This implementation guide is organized into three sequential phases:
 
 # 📚 PHASE 1: DATA PIPELINE
 
-> **Ingest and process Dr. Reddy's pharmaceutical documentation**
+> **Ingest and process PharmaOne pharmaceutical documentation**
 
 This phase walks through setting up the data pipeline that will power your pharmaceutical assistant. We'll process product documentation and create searchable collections in MongoDB Atlas.
 
@@ -194,7 +195,7 @@ Before starting, verify you have the following components ready:
 | **MongoDB Atlas** | Active cluster with connection string |
 | **MAAP Data Loader** | Installed and configured |
 | **Python Environment** | Python 3.8+ with required libraries |
-| **Source Data** | Access to Dr. Reddy's product documentation URLs |
+| **Source Data** | Access to PharmaOne product documentation URLs |
 | **AWS Account** | Optional: For AWS Bedrock embedding generation |
 
 ## 🛠️ Setup Process
@@ -246,7 +247,7 @@ RUN_ENV=local
 
 #### 3.1 Download Product Documentation
 
-Gather Dr. Reddy's pharmaceutical product documentation using the provided scripts:
+Gather PharmaOne pharmaceutical product documentation using the provided scripts:
 
 **Python Script (Advanced)**
 ```bash
@@ -611,7 +612,7 @@ Create or update your `config/agents.yaml` file with the following configuration
 
 ```yaml
 #===================================
-# Dr. Reddy's Pharma Sales Rep Agent - Configuration
+# PharmaOne Pharma Sales Rep Agent - Configuration
 #===================================
 
 # Configure the embedding models
@@ -649,7 +650,7 @@ tools:
   # Product Information Tool (Vector search)
   - name: product_information
     tool_type: vector_search
-    description: Searches for relevant documents in the vector store to help with FAQ on dr reddys product information
+    description: Searches for relevant documents in the vector store to help with FAQ on pharmaone product information
     connection_str: ${MONGODB_URI:-mongodb://localhost:27017}
     namespace: dr_reddys.product_info
     embedding_model: voyage_embeddings  # Reference to the embedding model defined above
@@ -732,7 +733,7 @@ You are an AI assistant specialized in helping pharmaceutical sales representati
 
 ## Guidelines
 
-1. Always provide factually accurate information based on official Dr. Reddy's product documentation
+1. Always provide factually accurate information based on official PharmaOne product documentation
 2. When discussing medications, include important safety information and contraindications
 3. For inventory queries, provide specific details on availability, location, and quantity
 4. Use professional, clear language appropriate for pharmaceutical professionals
